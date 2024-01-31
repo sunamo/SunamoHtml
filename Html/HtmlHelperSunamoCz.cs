@@ -34,9 +34,9 @@ public partial class HtmlHelperSunamoCz
         var italic = SH.IndexesOfChars(p, '_');
         var strike = SH.IndexesOfChars(p, '-');
 
-        SH.RemoveWhichHaveWhitespaceAtBothSides(p, bold);
-        SH.RemoveWhichHaveWhitespaceAtBothSides(p, italic);
-        SH.RemoveWhichHaveWhitespaceAtBothSides(p, strike);
+        SHSplit.RemoveWhichHaveWhitespaceAtBothSides(p, bold);
+        SHSplit.RemoveWhichHaveWhitespaceAtBothSides(p, italic);
+        SHSplit.RemoveWhichHaveWhitespaceAtBothSides(p, strike);
 
         if (CA.IsOdd(bold, italic, strike))
         {

@@ -509,7 +509,7 @@ isWildCard -
         for (int i = textNodes.Count - 1; i >= 0; i--)
         {
             var item = textNodes[i];
-            if (CA.IsEqualToAnyElement<string>(item.ParentNode.Name, "pre"))
+            if (CAGSH.IsEqualToAnyElement<string>(item.ParentNode.Name, "pre"))
             {
                 continue;
             }
@@ -603,7 +603,7 @@ isWildCard -
         {
             if (item.Name == textNode)
             {
-                if (!CA.IsEqualToAnyElement<string>(item.ParentNode.Name, dontHaveAsParentTag))
+                if (!CAGSH.IsEqualToAnyElement<string>(item.ParentNode.Name, dontHaveAsParentTag))
                 {
                     vr.Add(item);
                 }

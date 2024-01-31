@@ -1,6 +1,6 @@
-namespace SunamoHtml._sunamo;
+//namespace SunamoHtml._sunamo;
 
-internal class UH
-{
-    internal static Func<string, string> AppendHttpIfNotExists;
-}
+//public class UH
+//{
+//    public static Func<string, string> AppendHttpIfNotExists;
+//}

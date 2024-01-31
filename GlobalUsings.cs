@@ -37,3 +37,5 @@ global using SunamoXml;
 global using SunamoEnums.Enums;
 global using SunamoI18N;
 global using SunamoThisApp.Helpers;
+global using SunamoString;
+global using SunamoUri;

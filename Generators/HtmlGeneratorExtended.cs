@@ -77,7 +77,7 @@ void
         //            if (!string.IsNullOrEmpty(css))
         //            {
         //                WriteTagWithAttr(HtmlTags.style, HtmlAttrs.type, HtmlAttrValue.textCss);
-        //                if (FS.ExistsFile(css))
+        //                if (File.Exists(css))
         //                {
         //                    WriteRaw(
         //#if ASYNC

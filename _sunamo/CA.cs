@@ -6,8 +6,8 @@ namespace SunamoHtml._sunamo;
 //using System.Text;
 //using System.Threading.Tasks;
 
-//internal class CA
+//public class CA
 //{
-//    internal static Func<List<string>, List<string>> RemoveDuplicitiesList;
+//    public static Func<List<string>, List<string>> RemoveDuplicitiesList;
 
 //}
