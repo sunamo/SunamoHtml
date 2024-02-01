@@ -1,4 +1,11 @@
+
 namespace SunamoHtml;
+
+using SunamoCollectionsChangeContent;
+using SunamoHtml._sunamo;
+using SunamoRegex;
+using SunamoString;
+
 
 
 
@@ -429,7 +436,7 @@ isWildCard -
     #region 1 Node
     public static HtmlNode Node(HtmlNode node, bool recursive, string tag)
     {
-        return CA.FirstOrNull<HtmlNode>(Nodes(node, recursive, true, tag));
+        return Nodes(node, recursive, true, tag).First();
     }
     #endregion
 
@@ -509,7 +516,7 @@ isWildCard -
         for (int i = textNodes.Count - 1; i >= 0; i--)
         {
             var item = textNodes[i];
-            if (CAGSH.IsEqualToAnyElement<string>(item.ParentNode.Name, "pre"))
+            if (item.ParentNode.Name == "pre")
             {
                 continue;
             }
@@ -603,7 +610,7 @@ isWildCard -
         {
             if (item.Name == textNode)
             {
-                if (!CAGSH.IsEqualToAnyElement<string>(item.ParentNode.Name, dontHaveAsParentTag))
+                if (!dontHaveAsParentTag.Any(d => d != item.ParentNode.Name) /*!CAGSH.IsEqualToAnyElement<string>(item.ParentNode.Name, dontHaveAsParentTag)*/)
                 {
                     vr.Add(item);
                 }

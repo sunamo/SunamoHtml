@@ -1,4 +1,8 @@
+
 namespace SunamoHtml.Generators;
+using SunamoHtml._sunamo;
+using SunamoString;
+
 
 
 
@@ -222,20 +226,20 @@ public partial class HtmlGenerator2 : HtmlGenerator
         int count = odkazyPhoto.Count;
         if (count == 0)
         {
-            //ThrowEx.Custom("Metoda HtmlGenerator2.TopListWithImages - odkazyPhoto nemá žádný prvek");
+            //throw new Exception("Metoda HtmlGenerator2.TopListWithImages - odkazyPhoto nemá žádný prvek");
             return "";
         }
         if (count != odkazyText.Count)
         {
-            ThrowEx.Custom("Metoda HtmlGenerator2.TopListWithImages - odkazyPhoto se nerovn\u00E1 po\u010Dtem odkazyText");
+            throw new Exception("Metoda HtmlGenerator2.TopListWithImages - odkazyPhoto se nerovn\u00E1 po\u010Dtem odkazyText");
         }
         if (count != innerHtmlText.Count)
         {
-            ThrowEx.Custom("Metoda HtmlGenerator2.TopListWithImages - odkazyPhoto se nerovn\u00E1 po\u010Dtem innerHtmlText");
+            throw new Exception("Metoda HtmlGenerator2.TopListWithImages - odkazyPhoto se nerovn\u00E1 po\u010Dtem innerHtmlText");
         }
         if (count != srcPhoto.Count)
         {
-            ThrowEx.Custom("Metoda HtmlGenerator2.TopListWithImages - odkazyPhoto se nerovn\u00E1 po\u010Dtem srcPhoto");
+            throw new Exception("Metoda HtmlGenerator2.TopListWithImages - odkazyPhoto se nerovn\u00E1 po\u010Dtem srcPhoto");
         }
 
         //HtmlGenerator hg = new HtmlGenerator();
@@ -280,24 +284,24 @@ public partial class HtmlGenerator2 : HtmlGenerator
         int count = odkazyPhoto.Count;
         if (count == 0)
         {
-            //ThrowEx.Custom("Metoda HtmlGenerator2.TopListWithImages - odkazyPhoto nemá žádný prvek");
+            //throw new Exception("Metoda HtmlGenerator2.TopListWithImages - odkazyPhoto nemá žádný prvek");
             return "";
         }
         if (count != odkazyText.Count)
         {
-            ThrowEx.Custom("Metoda HtmlGenerator2.TopListWithImages - odkazyPhoto se nerovn\u00E1 po\u010Dtem odkazyText");
+            throw new Exception("Metoda HtmlGenerator2.TopListWithImages - odkazyPhoto se nerovn\u00E1 po\u010Dtem odkazyText");
         }
         if (count != innerHtmlText.Count)
         {
-            ThrowEx.Custom("Metoda HtmlGenerator2.TopListWithImages - odkazyPhoto se nerovn\u00E1 po\u010Dtem innerHtmlText");
+            throw new Exception("Metoda HtmlGenerator2.TopListWithImages - odkazyPhoto se nerovn\u00E1 po\u010Dtem innerHtmlText");
         }
         if (count != srcPhoto.Count)
         {
-            ThrowEx.Custom("Metoda HtmlGenerator2.TopListWithImages - odkazyPhoto se nerovn\u00E1 po\u010Dtem srcPhoto");
+            throw new Exception("Metoda HtmlGenerator2.TopListWithImages - odkazyPhoto se nerovn\u00E1 po\u010Dtem srcPhoto");
         }
         if (count != idBadges.Count)
         {
-            ThrowEx.Custom(sess.i18n(XlfKeys.MetodaHtmlGenerator2TopListWithImagesOdkazyPhoto) + " " + count + " se nerovn\u00E1 po\u010Dtem idBadges " + idBadges.Count);
+            throw new Exception(sess.i18n(XlfKeys.MetodaHtmlGenerator2TopListWithImagesOdkazyPhoto) + " " + count + " se nerovn\u00E1 po\u010Dtem idBadges " + idBadges.Count);
         }
 
         //HtmlGenerator hg = new HtmlGenerator();
@@ -393,7 +397,7 @@ public partial class HtmlGenerator2 : HtmlGenerator
 
         if (skipDuplicates)
         {
-            texty = CAG.RemoveDuplicitiesList(texty);
+            texty = texty.Distinct().ToList(); //CAG.RemoveDuplicitiesList(texty);
         }
 
         for (int i = 0; i < texty.Count; i++)
@@ -522,7 +526,7 @@ public partial class HtmlGenerator2 : HtmlGenerator
     {
         if (anchors.Count != to.Count)
         {
-            ThrowEx.Custom("Po\u010Dty odr\u00E1\u017Eek a odkaz\u016F se li\u0161\u00ED");
+            throw new Exception("Po\u010Dty odr\u00E1\u017Eek a odkaz\u016F se li\u0161\u00ED");
         }
 
         HtmlGenerator hg = new HtmlGenerator();
@@ -580,9 +584,13 @@ public partial class HtmlGenerator2 : HtmlGenerator
     public static string AnchorWithHttp(string www)
     {
         // Prvně ho přidám pokud tam není
-        string http = UH.AppendHttpIfNotExists(www);
+        if (!www.StartsWith("http"))
+        {
+            www = "http://" + www;
+        }
+        string http = www;// UH.AppendHttpIfNotExists(www);
         // pak ho odstraním aby tam nebyl 2x
-        var sh = SHReplace.ReplaceOnce(www, "https://", "");
+        var sh = new Regex("https://").Replace(www, "", 1); //SHReplace.ReplaceOnce(www, , "");
 
         return "<a href=\"" + http + AllStrings.qm + AllStrings.gt + sh + "</a>";
     }
@@ -590,7 +598,7 @@ public partial class HtmlGenerator2 : HtmlGenerator
     public static string AnchorWithHttp(string www, string text)
     {
         string http = UH.AppendHttpIfNotExists(www);
-        return "<a href=\"" + http + AllStrings.qm + AllStrings.gt + text + "</a>";
+        return "<a href=\"" + http + AllStringsSE.qm + AllStrings.gt + text + "</a>";
     }
 
     public static string AnchorWithHttp(bool targetBlank, string www, string text)
@@ -699,7 +707,7 @@ public partial class HtmlGenerator2 : HtmlGenerator
         {
             string whatLeave = SH.ShortForLettersCount(p1, p2);
             //"<span static class='tooltip'>" +
-            whatLeave += "<span static class='showonhover'><a href='#'> ... </a><span static class='hovertext'>" + SHReplace.ReplaceOnce(p1, whatLeave, "") + "</span></span>";
+            whatLeave += "<span static class='showonhover'><a href='#'> ... </a><span static class='hovertext'>" + new Regex(whatLeave).Replace(p1, "", 1) + "</span></span>";
             return whatLeave;
         }
         return p1;
@@ -715,7 +723,7 @@ public partial class HtmlGenerator2 : HtmlGenerator
         HtmlGenerator hg = new HtmlGenerator();
         if (idCheckBoxes.Count != list.Count)
         {
-            ThrowEx.Custom("Nestejn\u00FD po\u010Det parametr\u016F v metod\u011B GetForCheckBoxListWoCheckDuplicate " + idCheckBoxes.Count + AllStrings.colon + list.Count);
+            throw new Exception("Nestejn\u00FD po\u010Det parametr\u016F v metod\u011B GetForCheckBoxListWoCheckDuplicate " + idCheckBoxes.Count + AllStrings.colon + list.Count);
         }
 
         for (int i = 0; i < idCheckBoxes.Count; i++)
@@ -766,11 +774,11 @@ public partial class HtmlGenerator2 : HtmlGenerator
     {
         if (AllYearsHtmlBoxes.Count != 12)
         {
-            ThrowEx.Custom("D\u00E9lka AllMonthsHtmlBoxes nen\u00ED 12.");
+            throw new Exception("D\u00E9lka AllMonthsHtmlBoxes nen\u00ED 12.");
         }
         if (AllMonthsBoxColors.Count != 12)
         {
-            ThrowEx.Custom("D\u00E9lka AllMonthsBoxColors nen\u00ED 12.");
+            throw new Exception("D\u00E9lka AllMonthsBoxColors nen\u00ED 12.");
         }
         HtmlGenerator hg = new HtmlGenerator();
         hg.WriteTagWith2Attrs("table", "class", "tabulkaNaStredAutoSirka", "style", "width: 100%");
@@ -831,11 +839,11 @@ public partial class HtmlGenerator2 : HtmlGenerator
         int yearsCount = years.Count;
         if (AllYearsHtmlBoxes.Count != yearsCount)
         {
-            ThrowEx.Custom("Po\u010Det prvk\u016F v AllYearsHtmlBoxes nen\u00ED stejn\u00FD jako v kolekci years");
+            throw new Exception("Po\u010Det prvk\u016F v AllYearsHtmlBoxes nen\u00ED stejn\u00FD jako v kolekci years");
         }
         if (AllYearsBoxColors.Count != yearsCount)
         {
-            ThrowEx.Custom("Po\u010Det prvk\u016F v AllYearsBoxColors nen\u00ED stejn\u00FD jako v kolekci years");
+            throw new Exception("Po\u010Det prvk\u016F v AllYearsBoxColors nen\u00ED stejn\u00FD jako v kolekci years");
         }
         HtmlGenerator hg = new HtmlGenerator();
         hg.WriteTagWith2Attrs("table", "class", "tabulkaNaStredAutoSirka", "style", "width: 200px");

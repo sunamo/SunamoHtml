@@ -1,3 +1,5 @@
+using SunamoRegex;
+
 namespace SunamoHtml.Html;
 
 public static class SecurityHelper

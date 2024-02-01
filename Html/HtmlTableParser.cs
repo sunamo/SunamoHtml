@@ -1,3 +1,5 @@
+using SunamoBts;
+
 namespace SunamoHtml.Html;
 
 // Row/column
@@ -76,7 +78,7 @@ public class HtmlTableParser
             List<HtmlNode> ths = HtmlHelper.ReturnAllTags(rows[r], "th", "td");
             for (int c = 0; c < maxColumn; c++)
             {
-                if (CA.HasIndexWithoutException(c, ths))
+                if (ths.Count > c)
                 {
                     HtmlNode cellRow = ths[c];
                     var cell = cellRow.InnerText.Trim();

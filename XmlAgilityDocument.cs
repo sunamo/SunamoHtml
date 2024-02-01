@@ -19,7 +19,7 @@ void
 #if ASYNC
         await
 #endif
-        TF.ReadAllText(file);
+        File.ReadAllTextAsync(file);
         c = XH.RemoveXmlDeclaration(c);
         hd.LoadHtml(c);
     }
@@ -36,6 +36,6 @@ void
 #if ASYNC
         await
 #endif
-        TF.WriteAllText(path, XmlTemplates.xml + Consts.nl2 + hd.DocumentNode.OuterHtml);
+        File.WriteAllTextAsync(path, XmlTemplates.xml + Consts.nl2 + hd.DocumentNode.OuterHtml);
     }
 }

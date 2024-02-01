@@ -1,4 +1,10 @@
-namespace SunamoHtml.Html;
+
+using SunamoCollectionsChangeContent;
+using SunamoStringSplit;
+
+
+
+
 
 
 
@@ -112,7 +118,7 @@ public partial class HtmlHelperText
             {
                 if (dexEnd > dex2)
                 {
-                    ThrowEx.Custom($"Another starting tag is before ending <{pre}>");
+                    throw new Exception($"Another starting tag is before ending <{pre}>");
                 }
             }
 
@@ -137,7 +143,8 @@ public partial class HtmlHelperText
     {
         var lines = SHGetLines.GetLines(text);
 
-        CA.RemoveStringsEmpty2(lines);
+        //CA.RemoveStringsEmpty2(lines);
+        lines = lines.Where(d => !string.IsNullOrWhiteSpace(d)).ToList();
 
         var endP = "</p>";
 
@@ -182,6 +189,11 @@ public partial class HtmlHelperText
             //s2 = s.Substring(1);
         }
         return WrapWith(s, "p");
+    }
+
+    private static string WrapWith(string s, string v)
+    {
+        throw new NotImplementedException();
     }
 
     private static string GetFirstTag(string s)

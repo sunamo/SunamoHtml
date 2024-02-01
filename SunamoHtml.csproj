@@ -3,7 +3,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>24.1.24.1</Version>
+    <Version>24.2.1.2</Version>
     <Description>Many ways to work with XML (extensible markup language)</Description>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -13,9 +13,12 @@
     <DefineConstants>$(DefineConstants);ASYNC</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="SunamoCollections" Version="24.1.24.1" />
-    <PackageReference Include="SunamoString" Version="24.1.22.1" />
-    <PackageReference Include="SunamoUri" Version="24.1.14.1" />
-    <PackageReference Include="SunamoXml" Version="24.1.14.1" />
+    <PackageReference Include="SunamoBts" Version="24.2.1.2" />
+    <PackageReference Include="SunamoCollectionsChangeContent" Version="24.2.1.1" />
+    <PackageReference Include="SunamoRegex" Version="24.2.1.2" />
+    <PackageReference Include="SunamoString" Version="24.2.1.1" />
+    <PackageReference Include="SunamoStringReplace" Version="24.2.1.1" />
+    <PackageReference Include="SunamoStringSplit" Version="24.2.1.1" />
+    <PackageReference Include="SunamoXml" Version="24.2.1.3" />
   </ItemGroup>
 </Project>

@@ -1,13 +1,37 @@
 //namespace SunamoHtml._sunamo;
 
+////namespace SunamoHtml._sunamo;
 
-//public partial class SH
+
+//internal partial class SHSplit
 //{
-//    //public static Func<string, IList, List<string>> SplitAndKeepDelimiters;
-//    //public static Func<string, char, List<string>> SplitNoneChar;
-//    //public static Func<string, String[], List<string>> SplitMore;
-//    //public static Func<string, String, List<string>> SplitNoneString;
-//    //public static Func<string, List<string>> SplitByWhiteSpaces;
-//    //public static Func<string, List<string>> SplitBySpaceAndPunctuationCharsLeave;
+//    internal static List<string> Split(string p, params string[] newLine)
+//    {
+//        return p.Split(newLine, StringSplitOptions.RemoveEmptyEntries).ToList();
+//    }
+
+//    internal static List<string> SplitNone(string p, params string[] newLine)
+//    {
+//        return p.Split(newLine, StringSplitOptions.None).ToList();
+//    }
+
+//    internal static List<string> SplitNoneChar(string p, params char[] newLine)
+//    {
+//        return p.Split(newLine, StringSplitOptions.None).ToList();
+//    }
+
+
+
+//    internal static List<string> SplitChar(string p, params char[] newLine)
+//    {
+//        return p.Split(newLine, StringSplitOptions.RemoveEmptyEntries).ToList();
+//    }
+
+//    //    //internal static Func<string, IList, List<string>> SplitAndKeepDelimiters;
+//    //    //internal static Func<string, char, List<string>> SplitNoneChar;
+//    //    //internal static Func<string, String[], List<string>> SplitMore;
+//    //    //internal static Func<string, String, List<string>> SplitNoneString;
+//    //    //internal static Func<string, List<string>> SplitByWhiteSpaces;
+//    //    //internal static Func<string, List<string>> SplitBySpaceAndPunctuationCharsLeave;
 
 //}

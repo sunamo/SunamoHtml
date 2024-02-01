@@ -18,7 +18,7 @@ HtmlNode
 #if ASYNC
         await
 #endif
-        TF.ReadAllText(path);
+        File.ReadAllTextAsync(path);
         s_html2 = WebUtility.HtmlDecode(s_html2);
         //string html =HtmlHelper.ToXml();
         hd.LoadHtml(s_html2);

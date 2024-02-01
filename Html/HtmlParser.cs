@@ -25,7 +25,7 @@ void
 #if ASYNC
         await
 #endif
-        TF.ReadAllText(path);
+        File.ReadAllTextAsync(path);
         _html = WebUtility.HtmlDecode(_html);
         //string html =HtmlHelper.ToXml();
         _hd.LoadHtml(_html);

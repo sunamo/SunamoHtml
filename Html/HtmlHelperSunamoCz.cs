@@ -1,4 +1,9 @@
+
 namespace SunamoHtml.Html;
+
+using SunamoHtml._sunamo;
+using SunamoString;
+
 
 
 
@@ -13,7 +18,7 @@ public partial class HtmlHelperSunamoCz
         p = HtmlHelper.ConvertTextToHtml(p);
 
         p = p.Replace("<", " <");
-        var d = SHSplit.SplitAndKeepDelimiters(p, CAG.ToList<char>(AllChars.space, AllChars.lt, AllChars.gt).ConvertAll(d => d.ToString()));
+        var d = SHSplit.SplitAndKeepDelimiters(p, new List<char>([AllChars.space, AllChars.lt, AllChars.gt]).ConvertAll(d => d.ToString()));
 
         for (int i = 0; i < d.Count; i++)
         {
@@ -38,7 +43,17 @@ public partial class HtmlHelperSunamoCz
         SHSplit.RemoveWhichHaveWhitespaceAtBothSides(p, italic);
         SHSplit.RemoveWhichHaveWhitespaceAtBothSides(p, strike);
 
-        if (CA.IsOdd(bold, italic, strike))
+        var isOdd = false;
+
+        foreach (var item in new List<List<int>>([bold, italic, strike]))
+        {
+            if (item.Count % 2 == 1)
+            {
+                isOdd = true;
+            }
+        }
+
+        if (isOdd)
         {
             var exc = Exc.GetStackTrace();
             var cm = Exc.CallingMethod();
@@ -78,15 +93,17 @@ public partial class HtmlHelperSunamoCz
         var end = true;
         foreach (var item in id)
         {
-            p = p.Remove(item.Key, 1);
-            if (end)
-            {
-                p = p.Insert(item.Key, HtmlEndingTags.Get(item.Value));
-            }
-            else
-            {
-                p = p.Insert(item.Key, HtmlStartingTags.Get(item.Value));
-            }
+            throw new NotImplementedException();
+
+            //p = p.Remove(item.Key, 1);
+            //if (end)
+            //{
+            //    p = p.Insert(item.Key, HtmlEndingTags.Get(item.Value));
+            //}
+            //else
+            //{
+            //    p = p.Insert(item.Key, HtmlStartingTags.Get(item.Value));
+            //}
 
             end = !end;
         }

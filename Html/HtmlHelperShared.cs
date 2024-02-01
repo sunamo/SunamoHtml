@@ -1,4 +1,9 @@
+
 namespace SunamoHtml.Html;
+
+using SunamoRegex;
+using SunamoString;
+
 
 
 
@@ -198,7 +203,11 @@ public static partial class HtmlHelper
     /// <param name="hledaneSlova"></param>
     public static string HighlightingWords(string celyObsah, int maxPocetPismenNaVetu, int pocetVet, List<string> hledaneSlova)
     {
-        hledaneSlova = CA.ToLower(hledaneSlova);
+        //hledaneSlova = CA.ToLower(hledaneSlova);
+        for (int i = 0; i < hledaneSlova.Count; i++)
+        {
+            hledaneSlova[i] = hledaneSlova[i].ToLower();
+        }
         celyObsah = celyObsah.Trim();
         List<FromToWord> ftw = SH.ReturnOccurencesOfStringFromToWord(celyObsah, hledaneSlova.ToArray());
         if (ftw.Count > 0)

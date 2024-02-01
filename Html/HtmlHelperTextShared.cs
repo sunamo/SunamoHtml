@@ -1,4 +1,7 @@
+
 namespace SunamoHtml.Html;
+using SunamoString;
+
 
 
 public partial class HtmlHelperText
@@ -74,7 +77,11 @@ public partial class HtmlHelperText
 
     public static List<string> CreateH2FromNumberedList(List<string> lines)
     {
-        CA.Trim(lines);
+        for (int i = 0; i < lines.Count; i++)
+        {
+            lines[i] = lines[i].Trim();
+        }
+        //CA.Trim(lines);
 
         for (int i = 0; i < lines.Count; i++)
         {
