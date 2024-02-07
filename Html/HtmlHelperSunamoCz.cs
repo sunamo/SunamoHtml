@@ -1,13 +1,7 @@
 
-namespace SunamoHtml.Html;
-
 using SunamoHtml._sunamo;
-using SunamoString;
 
-
-
-
-
+namespace SunamoHtml.Html;
 public partial class HtmlHelperSunamoCz
 {
     public static string ConvertTextToHtmlWithAnchors(string p, ref string error)
@@ -75,7 +69,7 @@ public partial class HtmlHelperSunamoCz
                 ls.Add("strike");
             }
 
-            error = StatusHelperSunamo.info + string.Join(",", ls) + " was odd count of elements. ";
+            error = StatusPrefixes.info + string.Join(",", ls) + " was odd count of elements. ";
             return p; //HtmlAgilityHelper.WrapIntoTagIfNot(t, "b") + p;
         }
 

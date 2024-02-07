@@ -7,7 +7,7 @@ public static class SecurityHelper
     public static string TreatHtmlCode(string r)
     {
         r = RemoveJsAttributesFromEveryNode(r);
-        r = SHReplace.ReplaceAll2(r, AllStringsSE.space, AllStringsSE.doubleSpace);
+        r = r.Replace(AllStrings.doubleSpace, AllStrings.space); //SHReplace.ReplaceAll2(r, AllStringsSE.space, AllStringsSE.doubleSpace);
         r = RegexHelper.rHtmlScript.Replace(r, "");
         r = RegexHelper.rHtmlComment.Replace(r, "");
 

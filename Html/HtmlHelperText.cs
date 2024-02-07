@@ -1,13 +1,4 @@
-
-using SunamoCollectionsChangeContent;
-using SunamoStringSplit;
-
-
-
-
-
-
-
+using SunamoHtml._sunamo;
 
 /// <summary>
 /// HtmlHelperText - for methods which NOT operate on HtmlAgiityHelper!
@@ -151,7 +142,7 @@ public partial class HtmlHelperText
         CAChangeContent.ChangeContent0(null, lines, AddIntoParagraph);
 
         var result = SHSE.JoinNL(lines);
-        result = SHReplace.ReplaceAll(result, endP + AllStrings.cr + AllStrings.nl, endP);
+        result = result.Replace(endP, endP + AllStrings.cr + AllStrings.nl); // SHReplace.ReplaceAll(result, endP + AllStrings.cr + AllStrings.nl, endP);
 
 
 

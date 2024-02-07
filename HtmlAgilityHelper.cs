@@ -1,14 +1,8 @@
 
-namespace SunamoHtml;
-
-using SunamoCollectionsChangeContent;
 using SunamoHtml._sunamo;
 using SunamoRegex;
-using SunamoString;
 
-
-
-
+namespace SunamoHtml;
 /// <summary>
 /// HtmlHelperText - for methods which NOT operate on HtmlAgiityHelper!
 /// HtmlAgilityHelper - getting new nodes
@@ -513,6 +507,9 @@ isWildCard -
         input = WrapIntoTagIfNot(input);
         hd.LoadHtml(input);
         List<HtmlNode> textNodes = HtmlAgilityHelper.TextNodes(hd.DocumentNode, "a");
+
+        //RegexHelper.rUri = rUri;
+
         for (int i = textNodes.Count - 1; i >= 0; i--)
         {
             var item = textNodes[i];

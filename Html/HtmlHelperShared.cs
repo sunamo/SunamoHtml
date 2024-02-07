@@ -1,13 +1,8 @@
 
-namespace SunamoHtml.Html;
-
+using SunamoHtml._sunamo;
 using SunamoRegex;
-using SunamoString;
 
-
-
-
-
+namespace SunamoHtml.Html;
 public static partial class HtmlHelper
 {
     /// <summary>
@@ -309,6 +304,12 @@ public static partial class HtmlHelper
             return SH.ShortForLettersCountThreeDotsReverse(celyObsah, pocetVet * maxPocetPismenNaVetu);
         }
     }
+
+
+
+
+
+
 
     public static string ConvertHtmlToText(string h)
     {

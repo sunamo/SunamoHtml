@@ -1,9 +1,7 @@
 
+using SunamoHtml._sunamo;
+
 namespace SunamoHtml.Html;
-using SunamoString;
-
-
-
 public partial class HtmlHelperText
 {
     public static string ReplacePairTag(string input, string tag, string forWhat)
