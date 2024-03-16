@@ -13,10 +13,7 @@
     <DefineConstants>$(DefineConstants);ASYNC</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="SunamoArgs" Version="24.2.6.4" />
-    <PackageReference Include="SunamoData" Version="24.2.6.2" />
     <PackageReference Include="SunamoRegex" Version="24.2.6.3" />
-    <PackageReference Include="SunamoValues" Version="24.2.6.3" />
     <PackageReference Include="SunamoXlfKeys" Version="24.2.6.2" />
     <PackageReference Include="SunamoXml" Version="24.2.6.2" />
   </ItemGroup>
