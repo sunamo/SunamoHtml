@@ -226,7 +226,7 @@ public class HtmlAgilityHelper
     /// <param name="tag"></param>
     private static bool HasTagName(HtmlNode hn, string tag)
     {
-        if (tag == AllStringsSE.asterisk)
+        if (tag == AllStrings.asterisk)
         {
             return true;
         }
@@ -237,7 +237,7 @@ public class HtmlAgilityHelper
 
     private static bool HasTagAttr(HtmlNode item, string atribut, string hodnotaAtributu, bool isWildCard, bool enoughIsContainsAttribute, bool searchAsSingleString)
     {
-        if (hodnotaAtributu == AllStringsSE.asterisk)
+        if (hodnotaAtributu == AllStrings.asterisk)
         {
             return true;
         }
@@ -262,7 +262,7 @@ public class HtmlAgilityHelper
             else
             {
                 bool cont = true;
-                var p = SHSplit.Split(hodnotaAtributu, AllStringsSE.space);
+                var p = SHSplit.Split(hodnotaAtributu, AllStrings.space);
                 foreach (var item2 in p)
                 {
                     if (!attrValue.Contains(item2))
@@ -602,7 +602,7 @@ isWildCard -
 
         List<HtmlNode> vr = new List<HtmlNode>();
         List<HtmlNode> allNodes = new List<HtmlNode>();
-        RecursiveReturnTags(allNodes, node, true, false, AllStringsSE.asterisk);
+        RecursiveReturnTags(allNodes, node, true, false, AllStrings.asterisk);
         foreach (var item in allNodes)
         {
             if (item.Name == textNode)

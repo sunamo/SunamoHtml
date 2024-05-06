@@ -1,0 +1,11 @@
+HtmlAssistant
+Type
+HtmlNode
+SHReplace
+AllStrings
+WebUtility
+HtmlAgilityHelper
+Empty
+Dictionary
+Attributes
+Name

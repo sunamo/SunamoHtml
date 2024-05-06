@@ -9,8 +9,8 @@ public class HtmlGeneratorExtended : HtmlGenerator
     {
         if (!string.IsNullOrEmpty(oNameYouthProfile))
         {
-            WriteElement("b", label + AllStringsSE.colon);
-            WriteRaw(AllStringsSE.space);
+            WriteElement("b", label + AllStrings.colon);
+            WriteRaw(AllStrings.space);
             if (string.IsNullOrEmpty(oUriYouthProfile))
             {
                 WriteRaw(oNameYouthProfile);
@@ -29,8 +29,8 @@ public class HtmlGeneratorExtended : HtmlGenerator
     {
         if (!string.IsNullOrEmpty(timeInterval))
         {
-            WriteElement("b", label + AllStringsSE.colon);
-            WriteRaw(AllStringsSE.space);
+            WriteElement("b", label + AllStrings.colon);
+            WriteRaw(AllStrings.space);
             WriteRaw(timeInterval);
             WriteBr();
         }
@@ -51,8 +51,8 @@ public class HtmlGeneratorExtended : HtmlGenerator
     {
         if (!string.IsNullOrEmpty(oMail))
         {
-            WriteElement("b", label + AllStringsSE.colon);
-            WriteRaw(AllStringsSE.space);
+            WriteElement("b", label + AllStrings.colon);
+            WriteRaw(AllStrings.space);
             WriteTagWithAttr("a", "href", "mailto:" + oMail);
             WriteRaw(oMail);
             TerminateTag("a");
