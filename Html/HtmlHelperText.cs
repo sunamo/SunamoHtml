@@ -1,3 +1,5 @@
+
+namespace SunamoHtml.Html;
 using SunamoHtml._sunamo;
 
 /// <summary>
