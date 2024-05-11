@@ -546,7 +546,7 @@ isWildCard -
     public static string WrapIntoTagIfNot(string input, string tag = HtmlTags.div)
     {
         input = input.Trim();
-        if (input[0] != AllCharsSE.lt)
+        if (input[0] != AllChars.lt)
         {
             input = WrapIntoTag(tag, input);
         }
@@ -557,15 +557,15 @@ isWildCard -
     private static string WrapIntoTag(string div, string input)
     {
         StringBuilder sb = new StringBuilder();
-        sb.Append(AllCharsSE.lt);
+        sb.Append(AllChars.lt);
         sb.Append(div);
-        sb.Append(AllCharsSE.gt);
+        sb.Append(AllChars.gt);
 
         sb.Append(input);
 
-        sb.Append(AllCharsSE.lt + string.Empty + AllCharsSE.slash);
+        sb.Append(AllChars.lt + string.Empty + AllChars.slash);
         sb.Append(div);
-        sb.Append(AllCharsSE.gt);
+        sb.Append(AllChars.gt);
 
         return sb.ToString();
     }
@@ -574,7 +574,7 @@ isWildCard -
     {
         foreach (var item in list)
         {
-            insertAfter.InnerHtml += SH.WrapWithChar(item, AllCharsSE.space, false, true);
+            insertAfter.InnerHtml += SH.WrapWithChar(item, AllChars.space, false, true);
             //insertAfter = insertAfter.ParentNode.InsertAfter(CreateNode(item), insertAfter);
         }
         insertAfter.InnerHtml = SHReplace.ReplaceAllDoubleSpaceToSingle(insertAfter.InnerHtml).Trim();
@@ -584,7 +584,7 @@ isWildCard -
     {
         if (!RegexHelper.rHtmlTag.IsMatch(html))
         {
-            html = SH.WrapWithChar(html, AllCharsSE.space, false, true);
+            html = SH.WrapWithChar(html, AllChars.space, false, true);
         }
         return HtmlNode.CreateNode(html);
     }
