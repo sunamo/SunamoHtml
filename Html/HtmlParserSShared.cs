@@ -1,4 +1,4 @@
-namespace SunamoHtml.Html;
+namespace SunamoHtml;
 
 
 public static partial class HtmlDocumentS

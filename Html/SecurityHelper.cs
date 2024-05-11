@@ -1,6 +1,6 @@
 
 
-namespace SunamoHtml.Html;
+namespace SunamoHtml;
 
 public static class SecurityHelper
 {

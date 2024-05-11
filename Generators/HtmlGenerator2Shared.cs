@@ -1,5 +1,5 @@
 
-namespace SunamoHtml.Generators;
+namespace SunamoHtml;
 using SunamoHtml._sunamo;
 using SunamoXlfKeys;
 

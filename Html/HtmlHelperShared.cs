@@ -2,7 +2,7 @@
 using SunamoHtml._sunamo;
 using SunamoRegex;
 
-namespace SunamoHtml.Html;
+namespace SunamoHtml;
 public static partial class HtmlHelper
 {
     /// <summary>

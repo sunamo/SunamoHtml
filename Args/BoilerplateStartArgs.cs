@@ -1,4 +1,4 @@
-namespace SunamoHtml.Args;
+namespace SunamoHtml;
 
 public class BoilerplateStartArgs
 {

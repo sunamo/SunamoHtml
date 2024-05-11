@@ -1,4 +1,4 @@
-﻿namespace SunamoHtml._sunamo;
+namespace SunamoHtml;
 internal class SHGetLines
 {
     internal static List<string?> GetLines(string text)

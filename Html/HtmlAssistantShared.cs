@@ -1,6 +1,6 @@
 using SunamoHtml._sunamo;
 
-namespace SunamoHtml.Html;
+namespace SunamoHtml;
 
 
 public partial class HtmlAssistant

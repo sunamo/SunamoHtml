@@ -1,7 +1,7 @@
 
 using SunamoHtml._sunamo;
 
-namespace SunamoHtml.Html;
+namespace SunamoHtml;
 public partial class HtmlHelperSunamoCz
 {
     public static string ConvertTextToHtmlWithAnchors(string p, ref string error)

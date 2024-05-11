@@ -1,4 +1,4 @@
-namespace SunamoHtml._sunamo;
+namespace SunamoHtml;
 
 //namespace SunamoHtml._sunamo;
 

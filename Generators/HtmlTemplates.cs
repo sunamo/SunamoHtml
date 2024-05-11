@@ -1,4 +1,4 @@
-namespace SunamoHtml.Generators;
+namespace SunamoHtml;
 
 
 public static partial class HtmlTemplates
