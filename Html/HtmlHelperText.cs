@@ -143,7 +143,7 @@ public partial class HtmlHelperText
 
         CAChangeContent.ChangeContent0(null, lines, AddIntoParagraph);
 
-        var result = SHSE.JoinNL(lines);
+        var result = SHSunamoExceptions.JoinNL(lines);
         result = result.Replace(endP, endP + AllStrings.cr + AllStrings.nl); // SHReplace.ReplaceAll(result, endP + AllStrings.cr + AllStrings.nl, endP);
 
 
