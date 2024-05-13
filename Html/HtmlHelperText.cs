@@ -1,6 +1,6 @@
 
 namespace SunamoHtml;
-using SunamoHtml._sunamo;
+
 
 /// <summary>
 /// HtmlHelperText - for methods which NOT operate on HtmlAgiityHelper!
