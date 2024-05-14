@@ -39,5 +39,21 @@
     <Compile Include="..\SunamoExceptions\_AddedToAllCsproj\CASunamoExceptions.cs" Link="_linked\SunamoExceptions\_AddedToAllCsproj\CASunamoExceptions.cs" />
     <Compile Include="..\SunamoExceptions\OnlyInSE\Types.cs" Link="_linked\SunamoExceptions\OnlyInSE\Types.cs" />
     <Compile Include="..\SunamoXlfKeys\XlfKeys.cs" Link="_linked\SunamoXlfKeys\XlfKeys.cs" />
+    <Compile Include="..\SunamoString\SH.cs" Link="_linked\SunamoString\SH.cs" />
+    <Compile Include="..\SunamoStringSplit\SHSplit.cs" Link="_linked\SunamoStringSplit\SHSplit.cs" />
+    <Compile Include="..\SunamoFubuCore\DependencyAnalysis\Node.cs" Link="_linked\SunamoFubuCore\DependencyAnalysis\Node.cs" />
+    <Compile Include="..\SunamoCollectionsChangeContent\CAChangeContent.cs" Link="_linked\SunamoCollectionsChangeContent\CAChangeContent.cs" />
+    <Compile Include="..\SunamoRegex\RegexHelper.cs" Link="_linked\SunamoRegex\RegexHelper.cs" />
+    <Compile Include="..\SunamoStringReplace\SHReplace.cs" Link="_linked\SunamoStringReplace\SHReplace.cs" />
+    <Compile Include="..\SunamoXml\XH.cs" Link="_linked\SunamoXml\XH.cs" />
+    <Compile Include="..\SunamoXml\Generators\XmlTemplates.cs" Link="_linked\SunamoXml\Generators\XmlTemplates.cs" />
+    <Compile Include="..\SunamoXml\Generators\XmlGenerator.cs" Link="_linked\SunamoXml\Generators\XmlGenerator.cs" />
+    <Compile Include="..\SunamoParsing\TryParse.cs" Link="_linked\SunamoParsing\TryParse.cs" />
+    <Compile Include="..\SunamoUri\UH.cs" Link="_linked\SunamoUri\UH.cs" />
+    <Compile Include="..\SunamoXml\Generators\XmlGeneratorSelective.cs" Link="_linked\SunamoXml\Generators\XmlGeneratorSelective.cs" />
+    <Compile Include="..\SunamoFubuCore\Attributes.cs" Link="_linked\SunamoFubuCore\Attributes.cs" />
+    <Compile Include="..\SunamoData\Data\FromToWord.cs" Link="_linked\SunamoData\Data\FromToWord.cs" />
+    <Compile Include="..\SunamoStringGetLines\SHGetLines.cs" Link="_linked\SunamoStringGetLines\SHGetLines.cs" />
+    <Compile Include="..\SunamoBts\BTS.cs" Link="_linked\SunamoBts\BTS.cs" />
   </ItemGroup>
 </Project>
