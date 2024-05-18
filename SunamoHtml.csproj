@@ -13,9 +13,6 @@
     <DefineConstants>$(DefineConstants);ASYNC;SunamoHtml</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="SunamoRegex" Version="24.2.6.3" />
-    <PackageReference Include="SunamoXlfKeys" Version="24.2.6.2" />
-    <PackageReference Include="SunamoXml" Version="24.2.6.2" />
     <Compile Include="..\SunamoExceptions\OnlyInSE\ThrowEx.cs" Link="_linked\SunamoExceptions\OnlyInSE\ThrowEx.cs" />
     <Compile Include="..\SunamoValues\Values\AspxConsts.cs" Link="_linked\SunamoValues\Values\AspxConsts.cs" />
     <Compile Include="..\SunamoValues\AllStrings.cs" Link="_linked\SunamoValues\AllStrings.cs" />
