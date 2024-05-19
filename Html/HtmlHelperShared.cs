@@ -269,7 +269,7 @@ public static partial class HtmlHelper
 
                 int naKazdeStrane = maxPocetPismenNaVetu / 2;
 
-                string veta = SH.XCharsBeforeAndAfterWholeWords(SHReplace.ReplaceAllArray(celyObsah, AllStrings.space, SunamoValues.AllStrings.whiteSpacesChars.ToArray()), stred, naKazdeStrane);
+                string veta = SH.XCharsBeforeAndAfterWholeWords(SHReplace.ReplaceAllArray(celyObsah, AllStrings.space, AllStrings.whiteSpacesChars.ToArray()), stred, naKazdeStrane);
 
                 // Teď zvýrazním nalezené slova
                 List<string> slova = SHSplit.SplitBySpaceAndPunctuationCharsLeave(veta);
