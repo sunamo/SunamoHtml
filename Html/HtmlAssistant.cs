@@ -1,6 +1,12 @@
 
 
-namespace SunamoHtml;
+namespace
+#if SunamoDevCode
+SunamoDevCode
+#else
+SunamoHtml
+#endif
+;
 
 
 
