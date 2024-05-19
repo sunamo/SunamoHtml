@@ -13,44 +13,5 @@
     <DefineConstants>$(DefineConstants);ASYNC;SunamoHtml</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\SunamoExceptions\OnlyInSE\ThrowEx.cs" Link="_linked\SunamoExceptions\OnlyInSE\ThrowEx.cs" />
-    <Compile Include="..\SunamoValues\Values\AspxConsts.cs" Link="_linked\SunamoValues\Values\AspxConsts.cs" />
-    <Compile Include="..\SunamoValues\AllStrings.cs" Link="_linked\SunamoValues\AllStrings.cs" />
-    <Compile Include="..\SunamoData\Data\CreateHtmlDocumentInitData.cs" Link="_linked\SunamoData\Data\CreateHtmlDocumentInitData.cs" />
-    <Compile Include="..\SunamoValues\Constants\HtmlTags.cs" Link="_linked\SunamoValues\Constants\HtmlTags.cs" />
-    <Compile Include="..\SunamoValues\Consts.cs" Link="_linked\SunamoValues\Consts.cs" />
-    <Compile Include="..\SunamoData\Data\NTree.cs" Link="_linked\SunamoData\Data\NTree.cs" />
-    <Compile Include="..\SunamoValues\Constants\DTConstants.cs" Link="_linked\SunamoValues\Constants\DTConstants.cs" />
-    <Compile Include="..\SunamoValues\Constants\HtmlAttrs.cs" Link="_linked\SunamoValues\Constants\HtmlAttrs.cs" />
-    <Compile Include="..\SunamoValues\Constants\HtmlAttrValue.cs" Link="_linked\SunamoValues\Constants\HtmlAttrValue.cs" />
-    <Compile Include="..\SunamoValues\Values\AllLists.cs" Link="_linked\SunamoValues\Values\AllLists.cs" />
-    <Compile Include="..\SunamoValues\AllChars.cs" Link="_linked\SunamoValues\AllChars.cs" />
-    <Compile Include="..\SunamoExceptions\OnlyInSE\Exc.cs" Link="_linked\SunamoExceptions\OnlyInSE\Exc.cs" />
-    <Compile Include="..\SunamoExceptions\OnlyInSE\Exceptions.cs" Link="_linked\SunamoExceptions\OnlyInSE\Exceptions.cs" />
-    <Compile Include="..\SunamoValues\Values\StatusPrefixes.cs" Link="_linked\SunamoValues\Values\StatusPrefixes.cs" />
-    <Compile Include="..\SunamoValues\Constants\HtmlEndingTags.cs" Link="_linked\SunamoValues\Constants\HtmlEndingTags.cs" />
-    <Compile Include="..\SunamoValues\Constants\HtmlStartingTags.cs" Link="_linked\SunamoValues\Constants\HtmlStartingTags.cs" />
-    <Compile Include="..\SunamoEnums\Enums\HtmlTagSyntax.cs" Link="_linked\SunamoEnums\Enums\HtmlTagSyntax.cs" />
-    <Compile Include="..\SunamoExceptions\OnlyInSE\TranslateAble.cs" Link="_linked\SunamoExceptions\OnlyInSE\TranslateAble.cs" />
-    <Compile Include="..\SunamoExceptions\_AddedToAllCsproj\SHSunamoExceptions.cs" Link="_linked\SunamoExceptions\_AddedToAllCsproj\SHSunamoExceptions.cs" />
-    <Compile Include="..\SunamoExceptions\_AddedToAllCsproj\CASunamoExceptions.cs" Link="_linked\SunamoExceptions\_AddedToAllCsproj\CASunamoExceptions.cs" />
-    <Compile Include="..\SunamoExceptions\OnlyInSE\Types.cs" Link="_linked\SunamoExceptions\OnlyInSE\Types.cs" />
-    <Compile Include="..\SunamoXlfKeys\XlfKeys.cs" Link="_linked\SunamoXlfKeys\XlfKeys.cs" />
-    <Compile Include="..\SunamoString\SH.cs" Link="_linked\SunamoString\SH.cs" />
-    <Compile Include="..\SunamoStringSplit\SHSplit.cs" Link="_linked\SunamoStringSplit\SHSplit.cs" />
-    <Compile Include="..\SunamoFubuCore\DependencyAnalysis\Node.cs" Link="_linked\SunamoFubuCore\DependencyAnalysis\Node.cs" />
-    <Compile Include="..\SunamoCollectionsChangeContent\CAChangeContent.cs" Link="_linked\SunamoCollectionsChangeContent\CAChangeContent.cs" />
-    <Compile Include="..\SunamoRegex\RegexHelper.cs" Link="_linked\SunamoRegex\RegexHelper.cs" />
-    <Compile Include="..\SunamoStringReplace\SHReplace.cs" Link="_linked\SunamoStringReplace\SHReplace.cs" />
-    <Compile Include="..\SunamoXml\XH.cs" Link="_linked\SunamoXml\XH.cs" />
-    <Compile Include="..\SunamoXml\Generators\XmlTemplates.cs" Link="_linked\SunamoXml\Generators\XmlTemplates.cs" />
-    <Compile Include="..\SunamoXml\Generators\XmlGenerator.cs" Link="_linked\SunamoXml\Generators\XmlGenerator.cs" />
-    <Compile Include="..\SunamoParsing\TryParse.cs" Link="_linked\SunamoParsing\TryParse.cs" />
-    <Compile Include="..\SunamoUri\UH.cs" Link="_linked\SunamoUri\UH.cs" />
-    <Compile Include="..\SunamoXml\Generators\XmlGeneratorSelective.cs" Link="_linked\SunamoXml\Generators\XmlGeneratorSelective.cs" />
-    <Compile Include="..\SunamoFubuCore\Attributes.cs" Link="_linked\SunamoFubuCore\Attributes.cs" />
-    <Compile Include="..\SunamoData\Data\FromToWord.cs" Link="_linked\SunamoData\Data\FromToWord.cs" />
-    <Compile Include="..\SunamoStringGetLines\SHGetLines.cs" Link="_linked\SunamoStringGetLines\SHGetLines.cs" />
-    <Compile Include="..\SunamoBts\BTS.cs" Link="_linked\SunamoBts\BTS.cs" />
   </ItemGroup>
 </Project>
