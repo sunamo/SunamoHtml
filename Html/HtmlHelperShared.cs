@@ -2,6 +2,8 @@
 
 
 
+using HtmlAgilityPack;
+
 namespace SunamoHtml;
 public static partial class HtmlHelper
 {

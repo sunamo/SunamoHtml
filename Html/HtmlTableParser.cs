@@ -1,7 +1,10 @@
-
-
-namespace SunamoHtml;
-
+namespace
+#if SunamoWikipedia
+SunamoWikipedia
+#else
+SunamoHtml
+#endif
+;
 // Row/column
 public class HtmlTableParser
 {
@@ -9,10 +12,8 @@ public class HtmlTableParser
     /// Pokud se bude v prvku vyskytovat null, jednalo se o colspan
     /// </summary>
     public string[,] data = null;
-
     public int RowCount => data.GetLength(0);
     public int ColumnCount => data.GetLength(1);
-
     /// <summary>
     /// 
     /// </summary>
@@ -24,10 +25,6 @@ public class HtmlTableParser
         {
             startRow++;
         }
-
-
-
-
         if (html.Name != "table")
         {
             var htmlFirst = html.FirstChild;
@@ -37,16 +34,13 @@ public class HtmlTableParser
             }
             html = htmlFirst;
         }
-
         int maxColumn = 0;
-
         List<HtmlNode> rows = HtmlHelper.ReturnAllTags(html, "tr");
         int maxRow = rows.Count;
         if (ignoreFirstRow)
         {
             maxRow--;
         }
-
         for (int r = startRow; r < rows.Count; r++)
         {
             List<HtmlNode> tds = HtmlHelper.ReturnAllTags(rows[r], "td", "th");
@@ -69,9 +63,7 @@ public class HtmlTableParser
                 maxColumn = maxColumnActual;
             }
         }
-
         data = new string[maxRow, maxColumn];
-
         for (int r = startRow; r < rows.Count; r++)
         {
             //List<HtmlNode> tds = HtmlHelper.ReturnAllTags()
@@ -85,8 +77,6 @@ public class HtmlTableParser
                     //cell = HtmlHelperText.ConvertTextToHtml(cell);
                     cell = WebUtility.HtmlDecode(cell);
                     cell = SHReplace.ReplaceAllDoubleSpaceToSingle(cell);
-
-
                     data[r - startRow, c] = cell;
                     string tdWithColspan = HtmlHelper.GetValueOfAttribute(HtmlAttrValue.colspan, cellRow, true);
                     if (tdWithColspan != "")
@@ -105,7 +95,6 @@ public class HtmlTableParser
             }
         }
     }
-
     public static void NormalizeValuesInColumn(List<string> chars, bool removeAlsoInnerHtmlOfSubNodes)
     {
         for (int i = 0; i < chars.Count; i++)
@@ -120,38 +109,28 @@ public class HtmlTableParser
             }
             chars[i] = WebUtility.HtmlDecode(chars[i]);
         }
-
-
     }
-
     public List<string> ColumnValues(int dxColumn, bool normalizeValuesInColumn, bool removeAlsoInnerHtmlOfSubNodes, bool skipFirstRow)
     {
         var d0 = data.GetLength(0);
         List<string> vr = new List<string>();
-
         int i = 0;
         if (skipFirstRow)
         {
             i = 1;
         }
-
         for (; i < d0; i++)
         {
             vr.Add(data[i, dxColumn]);
         }
-
         FinalizeColumnValues(normalizeValuesInColumn, removeAlsoInnerHtmlOfSubNodes, vr);
-
         return vr;
     }
-
     public List<string> ColumnValues(string v, bool normalizeValuesInColumn, bool removeAlsoInnerHtmlOfSubNodes)
     {
         var d0 = data.GetLength(0);
         var d1 = data.GetLength(1);
-
         List<string> vr = new List<string>();
-
         for (int i = 0; i < d1; i++)
         {
             var nameColumn = data[0, i];
@@ -167,14 +146,10 @@ public class HtmlTableParser
             {
                 break;
             }
-
         }
-
         FinalizeColumnValues(normalizeValuesInColumn, removeAlsoInnerHtmlOfSubNodes, vr);
-
         return vr;
     }
-
     private static void FinalizeColumnValues(bool normalizeValuesInColumn, bool removeAlsoInnerHtmlOfSubNodes, List<string> vr)
     {
         if (normalizeValuesInColumn || removeAlsoInnerHtmlOfSubNodes)

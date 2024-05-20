@@ -36,6 +36,6 @@ void
 #if ASYNC
         await
 #endif
-        File.WriteAllTextAsync(path, XmlTemplates.xml + Consts.nl2 + hd.DocumentNode.OuterHtml);
+        File.WriteAllTextAsync(path, XmlTemplates.xml + "\r\n" + hd.DocumentNode.OuterHtml);
     }
 }

@@ -1,6 +1,6 @@
 namespace SunamoHtml;
 
-//namespace SunamoHtml._sunamo;
+//namespace SunamoHtml;
 
 
 internal partial class SHSplit

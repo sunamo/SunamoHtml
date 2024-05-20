@@ -1,11 +1,12 @@
+using System.Text.RegularExpressions;
 
-
-namespace SunamoHtml;
-
-
-
-
-
+namespace
+#if SunamoWikipedia
+SunamoWikipedia
+#else
+SunamoHtml
+#endif
+;
 public static partial class HtmlHelper
 {
     static Type type = typeof(HtmlHelper);
@@ -14,6 +15,11 @@ public static partial class HtmlHelper
         xml = HtmlHelper.ReplaceHtmlNonPairTagsWithXmlValid(xml);
         xml = XH.RemoveXmlDeclaration(xml);
         return "<?xml version=\"1.0\" encoding=\"utf-8\" ?>" + HtmlHelper.ReplaceHtmlNonPairTagsWithXmlValid(XH.RemoveXmlDeclaration(xml.Replace("<?xml version=\"1.0\" encoding=\"iso-8859-2\" />", "").Replace("<?xml version=\"1.0\" encoding=\"utf-8\" />", "").Replace("<?xml version=\"1.0\" encoding=\"UTF-8\" />", "")));
+    }
+
+    private static string ReplaceHtmlNonPairTagsWithXmlValid(string v)
+    {
+        throw new NotImplementedException();
     }
 
     public static void DeleteAttributesFromAllNodes(List<HtmlNode> nodes)
@@ -26,7 +32,6 @@ public static partial class HtmlHelper
             }
         }
     }
-
     /// <summary>
     /// Již volá ReplaceHtmlNonPairTagsWithXmlValid
     /// </summary>
@@ -50,7 +55,6 @@ public static partial class HtmlHelper
         vr = HtmlHelper.ReplaceHtmlNonPairTagsWithXmlValid(vr);
         return vr;
     }
-
     /// <summary>
     /// Již volá RemoveXmlDeclaration i ReplaceHtmlNonPairTagsWithXmlValid
     /// </summary>
@@ -59,7 +63,6 @@ public static partial class HtmlHelper
     {
         return ToXml(xml, true);
     }
-
     /// <summary>
     /// Strip all tags and return only
     /// Use RemoveAllNodes when need remove also with innerhtml
@@ -70,7 +73,6 @@ public static partial class HtmlHelper
         string replaced = StripAllTags(d, AllStrings.doubleSpace);
         return SHSplit.Split(replaced, AllStrings.doubleSpace);
     }
-
     /// <summary>
     /// Nahradí každý text <*> za mezeru. Vnitřní ne-xml obsah nechá být.
     /// </summary>
@@ -79,7 +81,6 @@ public static partial class HtmlHelper
     {
         return Regex.Replace(p, @"<[^>]*>", AllStrings.space);
     }
-
     /// <summary>
     /// Jen volá metodu StripAllTags
     /// Nahradí každý text <*> za SE. Vnitřní ne-xml obsah nechá být.
@@ -89,8 +90,6 @@ public static partial class HtmlHelper
     {
         return StripAllTags(p);
     }
-
-
     /// <summary>
     /// Used in ParseChromeAPIs. Searched everywhere, DNF
     /// </summary>
@@ -103,23 +102,16 @@ public static partial class HtmlHelper
         ThrowEx.NotImplementedMethod();
         return null;
     }
-
-
-
     public static bool HasTagAttrContains(HtmlNode htmlNode, string delimiter, string attr, string value)
     {
         string attrValue = HtmlHelper.GetValueOfAttribute(attr, htmlNode);
         var spl = SHSplit.Split(attrValue, delimiter);
         return spl.Contains(value);
     }
-
-
-
     public static bool HasChildTag(HtmlNode spanInHeader, string v)
     {
         return ReturnTags(spanInHeader, v).Count != 0;
     }
-
     /// <summary>
     /// Used in ParseChromeAPIs. Nowhere is executed
     /// </summary>
@@ -130,9 +122,6 @@ public static partial class HtmlHelper
         ThrowEx.NotImplementedMethod();
         return null;
     }
-
-
-
     /// <summary>
     /// Nehodí se na vrácení obsahu celé stránky
     /// A1 je zdrojový kód celé stránky
@@ -153,7 +142,6 @@ public static partial class HtmlHelper
         return htmlNode.OuterHtml;
         ;
     }
-
     /// <summary>
     /// A1 je kolekce uzlů na které jsem zavolal A4
     /// A2 je referencovaný uzel, do kterého se změny přímo projevují
@@ -177,7 +165,6 @@ public static partial class HtmlHelper
                 if (!vr.Contains(item))
                 {
                     vr.Add(item);
-
                     string d = ssh.Invoke(ref item, value);
                 }
             }
@@ -187,11 +174,6 @@ public static partial class HtmlHelper
             }
         }
     }
-
-
-
-
-
     public static Dictionary<string, string> GetValuesOfStyle(HtmlNode item)
     {
         Dictionary<string, string> vr = new Dictionary<string, string>();
@@ -210,12 +192,6 @@ public static partial class HtmlHelper
         }
         return vr;
     }
-
-
-
-
-
-
     public static HtmlNode GetTag(HtmlNode cacheAuthorNode, string p)
     {
         foreach (HtmlNode item in cacheAuthorNode.ChildNodes)
@@ -227,13 +203,11 @@ public static partial class HtmlHelper
         }
         return null;
     }
-
     public static HtmlNode ReturnNextSibling(HtmlNode h4Callback, string v)
     {
         ThrowEx.NotImplementedMethod();
         return null;
     }
-
     public static HtmlNode ReturnTagRek(HtmlNode hn, string nameOfTag)
     {
         hn = HtmlHelper.TrimNode(hn);
@@ -259,8 +233,6 @@ public static partial class HtmlHelper
         }
         return null;
     }
-
-
     /// <summary>
     /// Method with just single parameter are used in ParseChromeAPIs
     /// </summary>
@@ -270,7 +242,6 @@ public static partial class HtmlHelper
         ThrowEx.NotImplementedMethod();
         return null;
     }
-
     /// <summary>
     /// Return 0 instead of 10
     /// If tag is A2, don't apply recursive on that
@@ -298,7 +269,6 @@ public static partial class HtmlHelper
         }
         return vr;
     }
-
     /// <summary>
     /// Do A2 se může vložit * ale nemělo by to moc smysl
     /// </summary>
@@ -307,7 +277,6 @@ public static partial class HtmlHelper
     public static List<HtmlNode> ReturnTags(HtmlNode parent, string tag)
     {
         List<HtmlNode> vr = new List<HtmlNode>();
-
         foreach (var item in parent.ChildNodes)
         {
             if (HasTagName(item, tag))
@@ -315,10 +284,8 @@ public static partial class HtmlHelper
                 vr.Add(item);
             }
         }
-
         return vr;
     }
-
     public static HtmlNode GetTagOfAtribute(HtmlNode hn, string nameOfTag, string nameOfAtr, string valueOfAtr)
     {
         hn = HtmlHelper.TrimNode(hn);
@@ -339,21 +306,11 @@ public static partial class HtmlHelper
                         return var2;
                     }
                 }
-
                 //}
             }
         }
         return null;
     }
-
-
-
-
-
-
-
-
-
     /// <summary>
     /// Return 0 instead of 10
     /// Originally from HtmlDocument
@@ -375,8 +332,6 @@ public static partial class HtmlHelper
         }
         return node;
     }
-
-
     /// <param name="hn"></param>
     /// <param name="nameOfTag"></param>
     /// <param name="nameOfAtr"></param>
@@ -396,13 +351,10 @@ public static partial class HtmlHelper
         }
         return vr;
     }
-
-
     private static void RecursiveReturnTagsWithContainsAttr(List<HtmlNode> vr, HtmlNode node, string p, string atribut, string hodnotaAtributu)
     {
         RecursiveReturnTagsWithContainsAttr(vr, node, p, atribut, hodnotaAtributu, true, true);
     }
-
     /// <summary>
     /// Do A3 se může zadat * pro vrácení všech tagů
     /// </summary>
@@ -441,7 +393,6 @@ public static partial class HtmlHelper
             }
         }
     }
-
     /// <summary>
     /// Do A3 se může zadat * pro vrácení všech tagů
     /// </summary>
@@ -468,7 +419,6 @@ public static partial class HtmlHelper
             }
         }
     }
-
     /// <summary>
     /// Do A2 se může zadat * pro získaní všech tagů
     /// </summary>
@@ -479,19 +429,15 @@ public static partial class HtmlHelper
     public static List<HtmlNode> ReturnTagsWithContainsAttrRek(HtmlNode htmlNode, string tag, string atribut, string hodnotaAtributu)
     {
         List<HtmlNode> vr = new List<HtmlNode>();
-
         RecursiveReturnTagsWithContainsAttr(vr, htmlNode, tag, atribut, hodnotaAtributu);
         return vr;
     }
-
     public static List<HtmlNode> ReturnTagsWithContainsAttrRek(HtmlNode htmlNode, string tag, string atribut, string hodnotaAtributu, bool contains, bool recursively)
     {
         List<HtmlNode> vr = new List<HtmlNode>();
-
         RecursiveReturnTagsWithContainsAttr(vr, htmlNode, tag, atribut, hodnotaAtributu, contains, recursively);
         return vr;
     }
-
     /// <summary>
     /// Do A2 se může zadat * pro získaní všech tagů
     /// </summary>
@@ -502,7 +448,6 @@ public static partial class HtmlHelper
     public static List<HtmlNode> ReturnTagsWithContainsClassRek(HtmlNode htmlNode, string tag, string t)
     {
         List<HtmlNode> vr = new List<HtmlNode>();
-
         RecursiveReturnTagsWithContainsAttrWithSplittedElement(vr, htmlNode, tag, "class", t, AllStrings.space);
         return vr;
     }

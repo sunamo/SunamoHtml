@@ -22,5 +22,15 @@
     <Compile Include="..\SunamoValues\AllChars.cs" Link="_linked\SunamoValues\AllChars.cs" />
     <Compile Include="..\SunamoValues\AllStrings.cs" Link="_linked\SunamoValues\AllStrings.cs" />
     <Compile Include="..\SunamoValues\Consts.cs" Link="_linked\SunamoValues\Consts.cs" />
+    <Compile Include="..\SunamoExceptions\OnlyInSE\ThrowEx.cs" Link="_linked\SunamoExceptions\OnlyInSE\ThrowEx.cs" />
+    <Compile Include="..\SunamoRegex\RegexHelper.cs" Link="_linked\SunamoRegex\RegexHelper.cs" />
+    <Compile Include="..\SunamoValues\Values\AllLists.cs" Link="_linked\SunamoValues\Values\AllLists.cs" />
+    <Compile Include="..\SunamoData\Data\FromToWord.cs" Link="_linked\SunamoData\Data\FromToWord.cs" />
+    <Compile Include="..\SunamoValues\Constants\HtmlTags.cs" Link="_linked\SunamoValues\Constants\HtmlTags.cs" />
+    <Compile Include="..\SunamoDelegates\BoolString.cs" Link="_linked\SunamoDelegates\BoolString.cs" />
+    <Compile Include="..\SunamoArgs\ChangeContentArgs.cs" Link="_linked\SunamoArgs\ChangeContentArgs.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.58" />
   </ItemGroup>
 </Project>
