@@ -29,6 +29,7 @@
     <Compile Include="..\SunamoValues\Constants\HtmlTags.cs" Link="_linked\SunamoValues\Constants\HtmlTags.cs" />
     <Compile Include="..\SunamoDelegates\BoolString.cs" Link="_linked\SunamoDelegates\BoolString.cs" />
     <Compile Include="..\SunamoArgs\ChangeContentArgs.cs" Link="_linked\SunamoArgs\ChangeContentArgs.cs" />
+    <Compile Include="..\SunamoEnums\Enums\HtmlTagSyntax.cs" Link="_linked\SunamoEnums\Enums\HtmlTagSyntax.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.11.58" />
