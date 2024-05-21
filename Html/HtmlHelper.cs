@@ -1,4 +1,5 @@
 
+using SunamoHtml;
 using System.Text.RegularExpressions;
 
 namespace
@@ -18,10 +19,7 @@ public static partial class HtmlHelper
         return "<?xml version=\"1.0\" encoding=\"utf-8\" ?>" + HtmlHelper.ReplaceHtmlNonPairTagsWithXmlValid(XH.RemoveXmlDeclaration(xml.Replace("<?xml version=\"1.0\" encoding=\"iso-8859-2\" />", "").Replace("<?xml version=\"1.0\" encoding=\"utf-8\" />", "").Replace("<?xml version=\"1.0\" encoding=\"UTF-8\" />", "")));
     }
 
-    private static string ReplaceHtmlNonPairTagsWithXmlValid(string v)
-    {
-        throw new NotImplementedException();
-    }
+    
 
     public static void DeleteAttributesFromAllNodes(List<HtmlNode> nodes)
     {

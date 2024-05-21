@@ -184,10 +184,7 @@ public partial class HtmlHelperText
         return WrapWith(s, "p");
     }
 
-    private static string WrapWith(string s, string v)
-    {
-        throw new NotImplementedException();
-    }
+    
 
     private static string GetFirstTag(string s)
     {

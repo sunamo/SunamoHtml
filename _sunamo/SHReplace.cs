@@ -59,8 +59,20 @@ internal class SHReplace
         return text;
     }
 
-    internal static string ReplaceAll(string value, string v1, string v2)
+    internal static string ReplaceAll(string vstup, string zaCo, params string[] co)
     {
-        throw new NotImplementedException();
+        foreach (var item in co)
+        {
+            if (string.IsNullOrEmpty(item))
+            {
+                return vstup;
+            }
+        }
+
+        foreach (var item in co)
+        {
+            vstup = vstup.Replace(item, zaCo);
+        }
+        return vstup;
     }
 }

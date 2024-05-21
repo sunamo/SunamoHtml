@@ -87,17 +87,17 @@ public partial class HtmlHelperSunamoCz
         var end = true;
         foreach (var item in id)
         {
-            throw new NotImplementedException();
+            
 
-            //p = p.Remove(item.Key, 1);
-            //if (end)
-            //{
-            //    p = p.Insert(item.Key, HtmlEndingTags.Get(item.Value));
-            //}
-            //else
-            //{
-            //    p = p.Insert(item.Key, HtmlStartingTags.Get(item.Value));
-            //}
+            p = p.Remove(item.Key, 1);
+            if (end)
+            {
+                p = p.Insert(item.Key, HtmlEndingTags.Get(item.Value));
+            }
+            else
+            {
+                p = p.Insert(item.Key, HtmlStartingTags.Get(item.Value));
+            }
 
             end = !end;
         }

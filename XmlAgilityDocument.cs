@@ -1,3 +1,5 @@
+using SunamoHtml;
+
 namespace SunamoHtml;
 
 public class XmlAgilityDocument

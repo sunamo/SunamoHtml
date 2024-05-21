@@ -30,6 +30,20 @@
     <Compile Include="..\SunamoDelegates\BoolString.cs" Link="_linked\SunamoDelegates\BoolString.cs" />
     <Compile Include="..\SunamoArgs\ChangeContentArgs.cs" Link="_linked\SunamoArgs\ChangeContentArgs.cs" />
     <Compile Include="..\SunamoEnums\Enums\HtmlTagSyntax.cs" Link="_linked\SunamoEnums\Enums\HtmlTagSyntax.cs" />
+    <Compile Include="..\SunamoXlfKeys\XlfKeys.cs" Link="_linked\SunamoXlfKeys\XlfKeys.cs" />
+    <Compile Include="..\SunamoXml\Generators\XmlGenerator.cs" Link="_linked\SunamoXml\Generators\XmlGenerator.cs" />
+    <Compile Include="..\SunamoData\Data\CreateHtmlDocumentInitData.cs" Link="_linked\SunamoData\Data\CreateHtmlDocumentInitData.cs" />
+    <Compile Include="..\SunamoValues\Values\AspxConsts.cs" Link="_linked\SunamoValues\Values\AspxConsts.cs" />
+    <Compile Include="..\SunamoData\Data\NTree.cs" Link="_linked\SunamoData\Data\NTree.cs" />
+    <Compile Include="..\SunamoXml\Generators\XmlGeneratorSelective.cs" Link="_linked\SunamoXml\Generators\XmlGeneratorSelective.cs" />
+    <Compile Include="..\SunamoXml\Generators\XmlTemplates.cs" Link="_linked\SunamoXml\Generators\XmlTemplates.cs" />
+    <Compile Include="..\SunamoValues\Constants\HtmlAttrValue.cs" Link="_linked\SunamoValues\Constants\HtmlAttrValue.cs" />
+    <Compile Include="..\SunamoValues\Constants\HtmlAttrs.cs" Link="_linked\SunamoValues\Constants\HtmlAttrs.cs" />
+    <Compile Include="..\SunamoValues\Values\StatusPrefixes.cs" Link="_linked\SunamoValues\Values\StatusPrefixes.cs" />
+    <Compile Include="..\SunamoCollectionsGeneric\CAGConsts.cs" Link="_linked\SunamoCollectionsGeneric\CAGConsts.cs" />
+    <Compile Include="..\SunamoValues\Constants\DTConstants.cs" Link="_linked\SunamoValues\Constants\DTConstants.cs" />
+    <Compile Include="..\SunamoValues\Constants\HtmlEndingTags.cs" Link="_linked\SunamoValues\Constants\HtmlEndingTags.cs" />
+    <Compile Include="..\SunamoValues\Constants\HtmlStartingTags.cs" Link="_linked\SunamoValues\Constants\HtmlStartingTags.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.11.58" />
