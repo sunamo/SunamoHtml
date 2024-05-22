@@ -5,52 +5,52 @@ namespace SunamoHtml;
 /// plural - as string
 /// all have be lower - even if defaultly is upper case (like web forms)
 /// </summary>
-public class HtmlAttrs
+internal class HtmlAttrs
 {
-    public const string jscontroller = "jscontroller";
-    public const string cAttr = "class";
-    public const string src = "src";
-    public const string href = "href";
-    public const string id = "id";
-    public const string type = "type";
-    public const string rel = "rel";
+    internal const string jscontroller = "jscontroller";
+    internal const string cAttr = "class";
+    internal const string src = "src";
+    internal const string href = "href";
+    internal const string id = "id";
+    internal const string type = "type";
+    internal const string rel = "rel";
     /// <summary>
     /// cant name it class due to mass replacing of class
     /// </summary>
-    public static string c = "class";
-    public static string runat = "runat";
-    public static string textmode = "textmode";
-    public static string maxlength = "maxlength";
-    public static string dataRole = "data-role";
-    public static string groupname = "groupname";
-    public static string name = "name";
-    public static string cssclass = "cssclass";
-    public static string text = "text";
-    public static string width = "width";
-    public static string height = "height";
-    public static string tooltip = "tooltip";
-    public static string enableviewstate = "enableviewstate";
-    public static string visible = "visible";
-    public static string allowmultiple = "allowmultiple";
-    public static string multiple = "multiple";
-    public static string imageurl = "imageurl";
-    public static string value = "value";
-    public static string ro = "readonly";
-    public static string target = "target";
-    public static string navigateurl = "navigateurl";
-    public static string checked_ = "checked";
-    public static string dataCaption = "data-caption";
-    public static string style = "style";
-    public static string dataVia = "data-via";
-    public static string dataUrl = "data-url";
-    public static string description = "description";
-    public static string alt = "alt";
-    public static string keywords = "keywords";
-    public static string placeholder = "placeholder";
-    public static string ariaLabel = "aria-label";
-    public const string uibTooltip = "uib-tooltip";
-    public const string dataType = "data-type";
-    public const string dataDescription = "data-description";
-    public const string dataTitle = "data-title";
-    public const string dataMedia = "data-media";
+    internal static string c = "class";
+    internal static string runat = "runat";
+    internal static string textmode = "textmode";
+    internal static string maxlength = "maxlength";
+    internal static string dataRole = "data-role";
+    internal static string groupname = "groupname";
+    internal static string name = "name";
+    internal static string cssclass = "cssclass";
+    internal static string text = "text";
+    internal static string width = "width";
+    internal static string height = "height";
+    internal static string tooltip = "tooltip";
+    internal static string enableviewstate = "enableviewstate";
+    internal static string visible = "visible";
+    internal static string allowmultiple = "allowmultiple";
+    internal static string multiple = "multiple";
+    internal static string imageurl = "imageurl";
+    internal static string value = "value";
+    internal static string ro = "readonly";
+    internal static string target = "target";
+    internal static string navigateurl = "navigateurl";
+    internal static string checked_ = "checked";
+    internal static string dataCaption = "data-caption";
+    internal static string style = "style";
+    internal static string dataVia = "data-via";
+    internal static string dataUrl = "data-url";
+    internal static string description = "description";
+    internal static string alt = "alt";
+    internal static string keywords = "keywords";
+    internal static string placeholder = "placeholder";
+    internal static string ariaLabel = "aria-label";
+    internal const string uibTooltip = "uib-tooltip";
+    internal const string dataType = "data-type";
+    internal const string dataDescription = "data-description";
+    internal const string dataTitle = "data-title";
+    internal const string dataMedia = "data-media";
 }
