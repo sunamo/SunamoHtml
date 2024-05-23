@@ -1,7 +1,7 @@
 namespace SunamoHtml;
-internal class sess
+public class sess
 {
-    internal static string i18n(string metodaHtmlGenerator2TopListWithImagesOdkazyPhoto)
+    public static string i18n(string metodaHtmlGenerator2TopListWithImagesOdkazyPhoto)
     {
         return metodaHtmlGenerator2TopListWithImagesOdkazyPhoto;
     }

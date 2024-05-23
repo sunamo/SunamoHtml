@@ -1,9 +1,9 @@
 namespace SunamoHtml;
 
 
-internal class FromToWord
+public class FromToWord
 {
-    internal int from = 0;
-    internal int to = 0;
-    internal string word = "";
+    public int from = 0;
+    public int to = 0;
+    public string word = "";
 }

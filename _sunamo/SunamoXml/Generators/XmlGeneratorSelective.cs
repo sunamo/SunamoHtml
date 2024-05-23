@@ -1,7 +1,7 @@
 namespace SunamoHtml;
 
 
-internal class XmlGeneratorSelective : XmlGenerator
+public class XmlGeneratorSelective : XmlGenerator
 {
     /// <summary>
     /// A1 nemůže být null, musí to být v nejhorším případě Array.Empty
@@ -9,7 +9,7 @@ internal class XmlGeneratorSelective : XmlGenerator
     /// <param name="p"></param>
     /// <param name="vynechat"></param>
     /// <param name="p_2"></param>
-    internal void WriteTagWithAttrsSelective(string p, List<string> vynechat, List<string> p_2)
+    public void WriteTagWithAttrsSelective(string p, List<string> vynechat, List<string> p_2)
     {
         sb.AppendFormat("<{0} ", p);
         for (int i = 0; i < p_2.Count / 2; i++)

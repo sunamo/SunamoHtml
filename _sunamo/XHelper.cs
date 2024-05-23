@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SunamoHtml;
-internal class XHelper
+public class XHelper
 {
-    internal static Dictionary<string, string> ns = new Dictionary<string, string>();
+    public static Dictionary<string, string> ns = new Dictionary<string, string>();
 
-    internal static Dictionary<string, string> XmlNamespaces(XmlNamespaceManager nsmgr, bool withPrexixedXmlnsColon)
+    public static Dictionary<string, string> XmlNamespaces(XmlNamespaceManager nsmgr, bool withPrexixedXmlnsColon)
     {
         Dictionary<string, string> ns = new Dictionary<string, string>();
         foreach (string item2 in nsmgr)
@@ -41,7 +41,7 @@ internal class XHelper
         return ns;
     }
 
-    internal static void AddXmlNamespaces(XmlNamespaceManager nsmgr)
+    public static void AddXmlNamespaces(XmlNamespaceManager nsmgr)
     {
         foreach (string item in nsmgr)
         {
