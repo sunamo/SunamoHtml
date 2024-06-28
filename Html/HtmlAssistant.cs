@@ -1,12 +1,5 @@
 
 
-namespace
-#if SunamoDevCode
-SunamoDevCode
-#else
-SunamoHtml
-#endif
-;
 
 
 
@@ -161,3 +154,4 @@ public partial class HtmlAssistant
         return result;
     }
 }
+

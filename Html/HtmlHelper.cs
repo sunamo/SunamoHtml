@@ -2,13 +2,6 @@
 using SunamoHtml;
 using System.Text.RegularExpressions;
 
-namespace
-#if SunamoWikipedia
-SunamoWikipedia
-#else
-SunamoHtml
-#endif
-;
 public static partial class HtmlHelper
 {
     static Type type = typeof(HtmlHelper);
@@ -451,3 +444,4 @@ public static partial class HtmlHelper
         return vr;
     }
 }
+
