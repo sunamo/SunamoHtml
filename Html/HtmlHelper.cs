@@ -1,3 +1,4 @@
+namespace SunamoHtml;
 
 using SunamoHtml;
 using System.Text.RegularExpressions;

@@ -1,3 +1,5 @@
+
+namespace SunamoHtml;
 public class AllStrings
 {
     public const string dot = ".";

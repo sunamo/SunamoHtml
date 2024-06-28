@@ -1,3 +1,5 @@
+
+namespace SunamoHtml;
 /// <summary>
 /// HtmlHelperText - for methods which NOT operate on HtmlAgiityHelper!
 /// HtmlAgilityHelper - getting new nodes

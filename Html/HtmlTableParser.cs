@@ -1,3 +1,5 @@
+
+namespace SunamoHtml;
 // Row/column
 public class HtmlTableParser
 {

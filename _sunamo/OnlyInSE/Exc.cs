@@ -1,3 +1,5 @@
+
+namespace SunamoHtml;
 using System.Diagnostics;
 using System.Text;
 

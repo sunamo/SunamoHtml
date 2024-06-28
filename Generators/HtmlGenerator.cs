@@ -1,3 +1,5 @@
+
+namespace SunamoHtml;
 public class HtmlGenerator : XmlGenerator
 {
     public void WriteBr()
