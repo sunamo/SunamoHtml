@@ -1,10 +1,3 @@
-namespace
-#if SunamoWikipedia
-SunamoWikipedia
-#else
-SunamoHtml
-#endif
-;
 /// <summary>
 /// HtmlHelperText - for methods which NOT operate on HtmlAgiityHelper!
 /// HtmlAgilityHelper - getting new nodes
