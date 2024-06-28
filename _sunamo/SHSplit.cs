@@ -3,14 +3,14 @@ namespace SunamoHtml;
 //namespace SunamoHtml;
 
 
-public partial class SHSplit
+internal partial class SHSplit
 {
 
-    public static List<string> SplitMore(string parametry, params string[] deli)
+    internal static List<string> SplitMore(string parametry, params string[] deli)
     {
         return parametry.Split(deli, StringSplitOptions.RemoveEmptyEntries).ToList();
     }
-    public static List<string> SplitBySpaceAndPunctuationCharsLeave(string veta)
+    internal static List<string> SplitBySpaceAndPunctuationCharsLeave(string veta)
     {
         List<string> vr = new List<string>();
         vr.Add("");
@@ -46,13 +46,13 @@ public partial class SHSplit
         }
         return vr;
     }
-    public static List<string> SplitAndKeepDelimiters(string originalString, List<string> ienu)
+    internal static List<string> SplitAndKeepDelimiters(string originalString, List<string> ienu)
     {
         //var ienu = (IList)deli;
         var vr = Regex.Split(originalString, @"(?<=[" + string.Join("", ienu) + "])");
         return vr.ToList();
     }
-    public static void RemoveWhichHaveWhitespaceAtBothSides(string s, List<int> bold)
+    internal static void RemoveWhichHaveWhitespaceAtBothSides(string s, List<int> bold)
     {
         for (int i = bold.Count - 1; i >= 0; i--)
         {
@@ -64,38 +64,38 @@ public partial class SHSplit
 
     }
 
-    public static List<string> Split(string p, params string[] newLine)
+    internal static List<string> Split(string p, params string[] newLine)
     {
         return p.Split(newLine, StringSplitOptions.RemoveEmptyEntries).ToList();
     }
 
-    public static List<string> SplitNone(string p, params string[] newLine)
+    internal static List<string> SplitNone(string p, params string[] newLine)
     {
         return p.Split(newLine, StringSplitOptions.None).ToList();
     }
 
-    public static List<string> SplitNoneChar(string p, params char[] newLine)
+    internal static List<string> SplitNoneChar(string p, params char[] newLine)
     {
         return p.Split(newLine, StringSplitOptions.None).ToList();
     }
 
 
 
-    public static List<string> SplitChar(string p, params char[] newLine)
+    internal static List<string> SplitChar(string p, params char[] newLine)
     {
         return p.Split(newLine, StringSplitOptions.RemoveEmptyEntries).ToList();
     }
 
-    public static List<string> SplitByWhiteSpaces(string innerText)
+    internal static List<string> SplitByWhiteSpaces(string innerText)
     {
         return innerText.Split(AllChars.whiteSpacesChars.ToArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
     }
 
-    //    //public static Func<string, IList, List<string>> SplitAndKeepDelimiters;
-    //    //public static Func<string, char, List<string>> SplitNoneChar;
-    //    //public static Func<string, String[], List<string>> SplitMore;
-    //    //public static Func<string, String, List<string>> SplitNoneString;
-    //    //public static Func<string, List<string>> SplitByWhiteSpaces;
-    //    //public static Func<string, List<string>> SplitBySpaceAndPunctuationCharsLeave;
+    //    //internal static Func<string, IList, List<string>> SplitAndKeepDelimiters;
+    //    //internal static Func<string, char, List<string>> SplitNoneChar;
+    //    //internal static Func<string, String[], List<string>> SplitMore;
+    //    //internal static Func<string, String, List<string>> SplitNoneString;
+    //    //internal static Func<string, List<string>> SplitByWhiteSpaces;
+    //    //internal static Func<string, List<string>> SplitBySpaceAndPunctuationCharsLeave;
 
 }

@@ -1,9 +1,9 @@
 
 
 namespace SunamoHtml;
-public class CAChangeContent
+internal class CAChangeContent
 {
-    public static List<string> ChangeContent0(dynamic /*ChangeContentArgs*/ a, List<string> files_in, Func<string, string> func)
+    internal static List<string> ChangeContent0(dynamic /*ChangeContentArgs*/ a, List<string> files_in, Func<string, string> func)
     {
         for (int i = 0; i < files_in.Count; i++)
         {
@@ -37,7 +37,7 @@ public class CAChangeContent
 
         }
     }
-    public static bool ChangeContentWithCondition(ChangeContentArgs a, List<string> files_in, Predicate<string> predicate, Func<string, string> func)
+    internal static bool ChangeContentWithCondition(ChangeContentArgs a, List<string> files_in, Predicate<string> predicate, Func<string, string> func)
     {
         bool changed = false;
         for (int i = 0; i < files_in.Count; i++)

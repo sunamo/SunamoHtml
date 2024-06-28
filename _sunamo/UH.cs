@@ -2,11 +2,11 @@ namespace SunamoHtml;
 
 //namespace SunamoHtml;
 
-public class UH
+internal class UH
 {
-    //public static Func<string, string> AppendHttpIfNotExists;
+    //internal static Func<string, string> AppendHttpIfNotExists;
 
-    public static string AppendHttpIfNotExists(string p)
+    internal static string AppendHttpIfNotExists(string p)
     {
         string p2 = p;
         if (!p.StartsWith("http"))

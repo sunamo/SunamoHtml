@@ -2,9 +2,9 @@ namespace SunamoHtml;
 
 //namespace SunamoHtml;
 
-public partial class SH
+internal partial class SH
 {
-    public static string ShortForLettersCountThreeDotsReverse(string p, int p_2)
+    internal static string ShortForLettersCountThreeDotsReverse(string p, int p_2)
     {
         p = p.Trim();
         int pl = p.Length;
@@ -51,7 +51,7 @@ public partial class SH
         return p;
     }
 
-    public static bool IsInLastXCharsTheseLetters(string p, int pl, params char[] letters)
+    internal static bool IsInLastXCharsTheseLetters(string p, int pl, params char[] letters)
     {
         for (int i = p.Length - 1; i >= pl; i--)
         {
@@ -66,7 +66,7 @@ public partial class SH
         return false;
     }
 
-    public static List<FromToWord> ReturnOccurencesOfStringFromToWord(string celyObsah, params string[] hledaneSlova)
+    internal static List<FromToWord> ReturnOccurencesOfStringFromToWord(string celyObsah, params string[] hledaneSlova)
     {
         if (hledaneSlova == null || hledaneSlova.Length == 0)
         {
@@ -114,14 +114,14 @@ public partial class SH
         return vr;
     }
 
-    public static string GetFirstPartByLocation(string p1, char deli)
+    internal static string GetFirstPartByLocation(string p1, char deli)
     {
         int dx = p1.IndexOf(deli);
 
         return GetFirstPartByLocation(p1, dx);
     }
 
-    public static void GetPartsByLocation(out string pred, out string za, string text, int pozice)
+    internal static void GetPartsByLocation(out string pred, out string za, string text, int pozice)
     {
         if (pozice == -1)
         {
@@ -142,7 +142,7 @@ public partial class SH
         }
     }
 
-    public static string GetFirstPartByLocation(string p1, int dx)
+    internal static string GetFirstPartByLocation(string p1, int dx)
     {
         string p, z;
         p = p1;
@@ -220,12 +220,12 @@ public partial class SH
         return p;
     }
 
-    public static string ShortForLettersCount(string p, int p_2)
+    internal static string ShortForLettersCount(string p, int p_2)
     {
         bool pridatTriTecky = false;
         return ShortForLettersCount(p, p_2, out pridatTriTecky);
     }
-    public static string GetToFirst(string input, string searchFor)
+    internal static string GetToFirst(string input, string searchFor)
     {
         int indexOfChar = input.IndexOf(searchFor);
         if (indexOfChar != -1)
@@ -234,14 +234,14 @@ public partial class SH
         }
         return input;
     }
-    public static string GetTextBetweenSimple(string p, string after, string before, bool throwExceptionIfNotContains = true)
+    internal static string GetTextBetweenSimple(string p, string after, string before, bool throwExceptionIfNotContains = true)
     {
         int dxOfFounded = int.MinValue;
         var t = GetTextBetween(p, after, before, out dxOfFounded, 0, throwExceptionIfNotContains);
         return t;
     }
 
-    public static string GetTextBetween(string p, string after, string before, out int dxOfFounded, int startSearchingAt, bool throwExceptionIfNotContains = true)
+    internal static string GetTextBetween(string p, string after, string before, out int dxOfFounded, int startSearchingAt, bool throwExceptionIfNotContains = true)
     {
         string vr = null;
         dxOfFounded = p.IndexOf(after, startSearchingAt);
@@ -278,7 +278,7 @@ public partial class SH
         return vr.Trim();
     }
 
-    public static string XCharsBeforeAndAfterWholeWords(string celyObsah, int stred, int naKazdeStrane)
+    internal static string XCharsBeforeAndAfterWholeWords(string celyObsah, int stred, int naKazdeStrane)
     {
         StringBuilder prava = new StringBuilder();
         StringBuilder slovo = new StringBuilder();
@@ -353,7 +353,7 @@ public partial class SH
         return vr;
     }
 
-    public static string GetTextBetweenTwoCharsInts(string p, int begin, int end)
+    internal static string GetTextBetweenTwoCharsInts(string p, int begin, int end)
     {
         if (end > begin)
             // a(1) - 1,3
@@ -363,7 +363,7 @@ public partial class SH
         return p;
     }
 
-    public static bool IsNumbered(string v)
+    internal static bool IsNumbered(string v)
     {
         int i = 0;
 
@@ -389,7 +389,7 @@ public partial class SH
 
         return false;
     }
-    public static string FirstCharUpper(string nazevPP)
+    internal static string FirstCharUpper(string nazevPP)
     {
         if (nazevPP.Length == 1)
         {
@@ -399,7 +399,7 @@ public partial class SH
         string sb = nazevPP.Substring(1);
         return nazevPP[0].ToString().ToUpper() + sb;
     }
-    public static string FirstCharOfEveryWordUpperDash(string v)
+    internal static string FirstCharOfEveryWordUpperDash(string v)
     {
         return FirstCharOfEveryWordUpper(v, AllChars.dash);
     }
@@ -422,7 +422,7 @@ public partial class SH
         return string.Join(AllStrings.space, p);
     }
 
-    public static bool MatchWildcard(string name, string mask)
+    internal static bool MatchWildcard(string name, string mask)
     {
         return IsMatchRegex(name, mask, AllChars.q, AllChars.asterisk);
     }
@@ -445,7 +445,7 @@ public partial class SH
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string WrapWithChar(string value, char v, bool _trimWrapping = false, bool alsoIfIsWhitespaceOrEmpty = true)
+    internal static string WrapWithChar(string value, char v, bool _trimWrapping = false, bool alsoIfIsWhitespaceOrEmpty = true)
     {
         if (string.IsNullOrWhiteSpace(value) && !alsoIfIsWhitespaceOrEmpty)
         {
@@ -457,42 +457,42 @@ public partial class SH
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string WrapWith(string value, string h)
+    internal static string WrapWith(string value, string h)
     {
         return h + value + h;
     }
 
-    //    public static Func<string, string, string> ReplaceWhiteSpacesWithoutSpacesWithReplaceWith;
-    //    public static Func<string, string, string, string> ReplaceAll2;
+    //    internal static Func<string, string, string> ReplaceWhiteSpacesWithoutSpacesWithReplaceWith;
+    //    internal static Func<string, string, string, string> ReplaceAll2;
 
-    //    public static Func<string, List<string>> GetLines;
-    //    public static Func<List<string>, string> JoinNL;
-    //    public static Func<string, int, int, string> GetTextBetweenTwoCharsInts;
+    //    internal static Func<string, List<string>> GetLines;
+    //    internal static Func<List<string>, string> JoinNL;
+    //    internal static Func<string, int, int, string> GetTextBetweenTwoCharsInts;
 
-    //    public static Func<string, char, List<int>> IndexesOfChars;
-    //    public static Action<string, List<int>> RemoveWhichHaveWhitespaceAtBothSides;
-    //    public static Func<string, string, List<int>> ReturnOccurencesOfString;
-    //    public static Func<string, bool> IsNumbered;
-    //    public static Func<string, string, string> GetToFirst;
-    //    public static Func<string, string> FirstCharOfEveryWordUpperDash;
-    //    public static Func<string, int, string> ShortForLettersCount;
-    //    public static Func<string, string, string, string> ReplaceOnce;
+    //    internal static Func<string, char, List<int>> IndexesOfChars;
+    //    internal static Action<string, List<int>> RemoveWhichHaveWhitespaceAtBothSides;
+    //    internal static Func<string, string, List<int>> ReturnOccurencesOfString;
+    //    internal static Func<string, bool> IsNumbered;
+    //    internal static Func<string, string, string> GetToFirst;
+    //    internal static Func<string, string> FirstCharOfEveryWordUpperDash;
+    //    internal static Func<string, int, string> ShortForLettersCount;
+    //    internal static Func<string, string, string, string> ReplaceOnce;
 
-    //    public static Func<string, string, string, string> ReplaceAll;
-    //    public static Func<string, string, string[], string> ReplaceAllArray;
-    //    public static Func<string, char, bool, bool, string> WrapWithChar;
-    //    public static Func<string, string> ReplaceAllDoubleSpaceToSingle;
+    //    internal static Func<string, string, string, string> ReplaceAll;
+    //    internal static Func<string, string, string[], string> ReplaceAllArray;
+    //    internal static Func<string, char, bool, bool, string> WrapWithChar;
+    //    internal static Func<string, string> ReplaceAllDoubleSpaceToSingle;
 
-    //    public static Func<string, int, int, string> XCharsBeforeAndAfterWholeWords;
+    //    internal static Func<string, int, int, string> XCharsBeforeAndAfterWholeWords;
 
-    //    public static Func<string, int, string> ShortForLettersCountThreeDotsReverse;
-    //    public static Func<string, string, bool> MatchWildcard;
-    //    public static Func<string, string, List<string>> Split;
-    //    public static Func<string, string[], List<FromToWord>> ReturnOccurencesOfStringFromToWord;
-    //    public static Func<string, char, string> GetFirstPartByLocation;
-    //    public static Func<string, string, string, bool, string> GetTextBetweenSimple;
+    //    internal static Func<string, int, string> ShortForLettersCountThreeDotsReverse;
+    //    internal static Func<string, string, bool> MatchWildcard;
+    //    internal static Func<string, string, List<string>> Split;
+    //    internal static Func<string, string[], List<FromToWord>> ReturnOccurencesOfStringFromToWord;
+    //    internal static Func<string, char, string> GetFirstPartByLocation;
+    //    internal static Func<string, string, string, bool, string> GetTextBetweenSimple;
 
-    public static List<int> IndexesOfChars(string input, char ch)
+    internal static List<int> IndexesOfChars(string input, char ch)
     {
         return IndexesOfCharsList(input, new List<char>(ch));
     }
@@ -504,7 +504,7 @@ public partial class SH
     /// <param name="input"></param>
     /// <param name="whiteSpacesChars"></param>
     /// <returns></returns>
-    public static List<int> IndexesOfCharsList(string input, List<char> whiteSpacesChars)
+    internal static List<int> IndexesOfCharsList(string input, List<char> whiteSpacesChars)
     {
         var dx = new List<int>();
         foreach (var item in whiteSpacesChars)
@@ -515,7 +515,7 @@ public partial class SH
         return dx;
     }
 
-    public static string NormalizeString(string s)
+    internal static string NormalizeString(string s)
     {
         if (s.Contains(AllChars.nbsp))
         {
@@ -537,7 +537,7 @@ public partial class SH
         return s;
     }
 
-    public static List<int> ReturnOccurencesOfString(string vcem, string co)
+    internal static List<int> ReturnOccurencesOfString(string vcem, string co)
     {
         vcem = NormalizeString(vcem);
         List<int> Results = new List<int>();

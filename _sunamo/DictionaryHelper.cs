@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SunamoHtml;
-public class DictionaryHelper
+internal class DictionaryHelper
 {
-    public static List<string> GetListStringFromDictionary(Dictionary<string, string> p)
+    internal static List<string> GetListStringFromDictionary(Dictionary<string, string> p)
     {
         List<string> vr = new List<string>();
 

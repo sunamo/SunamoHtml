@@ -1,12 +1,12 @@
 namespace SunamoHtml;
-public class BTS
+internal class BTS
 {
-    public static int TryParseInt(string entry, int def)
+    internal static int TryParseInt(string entry, int def)
     {
         return TryParseInt(entry, def, false);
     }
 
-    public static int TryParseInt(string entry, int def, bool throwEx)
+    internal static int TryParseInt(string entry, int def, bool throwEx)
     {
         int lastInt = 0;
         if (int.TryParse(entry, out lastInt))

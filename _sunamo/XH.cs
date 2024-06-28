@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SunamoHtml;
-public class XH
+internal class XH
 {
-    public static string RemoveXmlDeclaration(string vstup)
+    internal static string RemoveXmlDeclaration(string vstup)
     {
         vstup = Regex.Replace(vstup, @"<\?xml.*?\?>", "");
         vstup = Regex.Replace(vstup, @"<\?xml.*?\>", "");

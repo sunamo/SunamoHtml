@@ -1,12 +1,12 @@
 namespace SunamoHtml;
-public class SHReplace
+internal class SHReplace
 {
 
-    public static string ReplaceWhiteSpacesWithoutSpacesWithReplaceWith(string p, string replaceWith = "")
+    internal static string ReplaceWhiteSpacesWithoutSpacesWithReplaceWith(string p, string replaceWith = "")
     {
         return p.Replace("\r", replaceWith).Replace("\n", replaceWith).Replace("\t", replaceWith);
     }
-    public static string ReplaceAllArray(string vstup, string zaCo, params string[] co)
+    internal static string ReplaceAllArray(string vstup, string zaCo, params string[] co)
     {
         //Stupid, zaCo can be null
 
@@ -29,7 +29,7 @@ public class SHReplace
         }
         return vstup;
     }
-    public static string ReplaceAllDoubleSpaceToSingle(string text, bool alsoHtml = false)
+    internal static string ReplaceAllDoubleSpaceToSingle(string text, bool alsoHtml = false)
     {
         //text = SHSH.FromSpace160To32(text);
 
@@ -59,7 +59,7 @@ public class SHReplace
         return text;
     }
 
-    public static string ReplaceAll(string vstup, string zaCo, params string[] co)
+    internal static string ReplaceAll(string vstup, string zaCo, params string[] co)
     {
         foreach (var item in co)
         {
