@@ -22,7 +22,7 @@ internal class XmlGeneratorSelective : XmlGenerator
         }
         sb.Append(AllStrings.gt);
     }
-    internal override string ToString()
+    public override string ToString()
     {
         return sb.ToString();
     }

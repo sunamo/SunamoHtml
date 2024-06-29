@@ -37,7 +37,7 @@ internal class CAChangeContent
 
         }
     }
-    internal static bool ChangeContentWithCondition(ChangeContentArgs a, List<string> files_in, Predicate<string> predicate, Func<string, string> func)
+    internal static bool ChangeContentWithCondition(ChangeContentArgsHtml a, List<string> files_in, Predicate<string> predicate, Func<string, string> func)
     {
         bool changed = false;
         for (int i = 0; i < files_in.Count; i++)
@@ -56,7 +56,7 @@ internal class CAChangeContent
         return changed;
     }
 
-    private static void RemoveNullOrEmpty(ChangeContentArgs a, List<string> files_in)
+    private static void RemoveNullOrEmpty(ChangeContentArgsHtml a, List<string> files_in)
     {
         if (a != null)
         {

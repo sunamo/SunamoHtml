@@ -106,7 +106,7 @@ internal class XmlGenerator //: IXmlGenerator
         }
         sb.Append(r);
     }
-    internal override string ToString()
+    public override string ToString()
     {
         return sb.ToString();
     }
