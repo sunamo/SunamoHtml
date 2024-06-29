@@ -9,9 +9,9 @@ using System.Xml;
 /// Element - prvek kterému se zapisují ihned i innerObsah. Může být i prázdný.
 /// Tag - prvek kterému to mohu zapsat později nebo vůbec.
 /// </summary>
-internal class XmlGenerator //: IXmlGenerator
+public class XmlGeneratorHtml //: IXmlGenerator
 {
-    static Type type = typeof(XmlGenerator);
+    static Type type = typeof(XmlGeneratorHtml);
     internal StringBuilder sb = new StringBuilder();
     private bool _useStack = false;
     private Stack<string> _stack = null;
@@ -35,10 +35,10 @@ internal class XmlGenerator //: IXmlGenerator
     {
         sb.AppendLine();
     }
-    internal XmlGenerator() : this(false)
+    internal XmlGeneratorHtml() : this(false)
     {
     }
-    internal XmlGenerator(bool useStack)
+    internal XmlGeneratorHtml(bool useStack)
     {
         _useStack = useStack;
         if (useStack)

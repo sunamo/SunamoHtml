@@ -1,7 +1,7 @@
 namespace SunamoHtml;
 
 
-internal enum HtmlTagSyntax
+public enum HtmlTagSyntax
 {
     Start,
     End,

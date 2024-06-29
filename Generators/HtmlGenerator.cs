@@ -1,6 +1,6 @@
 
 namespace SunamoHtml;
-public class HtmlGenerator : XmlGenerator
+public class HtmlGenerator : XmlGeneratorHtml
 {
     public void WriteBr()
     {

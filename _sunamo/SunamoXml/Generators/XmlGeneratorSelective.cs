@@ -1,7 +1,7 @@
 namespace SunamoHtml;
 
 
-internal class XmlGeneratorSelective : XmlGenerator
+internal class XmlGeneratorSelective : XmlGeneratorHtml
 {
     /// <summary>
     /// A1 nemůže být null, musí to být v nejhorším případě Array.Empty

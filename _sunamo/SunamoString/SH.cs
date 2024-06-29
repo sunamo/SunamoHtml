@@ -539,7 +539,7 @@ internal partial class SH
 
     internal static List<int> ReturnOccurencesOfString(string vcem, string co)
     {
-        vcem = NormalizeString(vcem);
+
         List<int> Results = new List<int>();
         for (int Index = 0; Index < (vcem.Length - co.Length) + 1; Index++)
         {

@@ -7,7 +7,7 @@ SunamoHtml
 ;
 public partial class HtmlGenerator2 : HtmlGenerator
 {
-    public static string GenerateTreeWithCheckBoxes(NTree<string> tree)
+    public static string GenerateTreeWithCheckBoxes(NTreeHtml<string> tree)
     {
         HtmlGenerator hg = new HtmlGenerator();
         //hg.WriteTag(HtmlTags.ol);
@@ -16,7 +16,7 @@ public partial class HtmlGenerator2 : HtmlGenerator
         //hg.TerminateTag(HtmlTags.ol);
         return hg.ToString();
     }
-    private static void AddTree(ref int inner, HtmlGenerator hg, NTree<string> tree)
+    private static void AddTree(ref int inner, HtmlGenerator hg, NTreeHtml<string> tree)
     {
         inner++;
         //hg.WriteTag(HtmlTags.li);

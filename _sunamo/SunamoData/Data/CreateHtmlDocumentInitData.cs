@@ -1,7 +1,7 @@
 namespace SunamoHtml;
 
 
-internal class CreateHtmlDocumentInitData
+public class CreateHtmlDocumentInitData
 {
     // Cant be, load
     //internal bool AutoCloseTags = true;

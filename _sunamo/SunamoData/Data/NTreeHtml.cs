@@ -6,32 +6,32 @@ internal delegate void TreeVisitor<T>(T nodeData);
 /// Another big popular tree is on https://www.codeproject.com/Articles/12592/Generic-Tree-T-in-C
 /// </summary>
 /// <typeparam name="T"></typeparam>
-internal class NTree<T>
+public class NTreeHtml<T>
 {
     internal T data;
-    internal LinkedList<NTree<T>> children;
-    internal NTree(T data)
+    internal LinkedList<NTreeHtml<T>> children;
+    internal NTreeHtml(T data)
     {
         this.data = data;
-        children = new LinkedList<NTree<T>>();
+        children = new LinkedList<NTreeHtml<T>>();
     }
-    internal NTree<T> AddChild(T data)
+    internal NTreeHtml<T> AddChild(T data)
     {
-        var child = new NTree<T>(data);
+        var child = new NTreeHtml<T>(data);
         children.AddFirst(child);
         return child;
     }
-    internal NTree<T> GetChild(int i)
+    internal NTreeHtml<T> GetChild(int i)
     {
-        foreach (NTree<T> n in children)
+        foreach (NTreeHtml<T> n in children)
             if (--i == 0)
                 return n;
         return null;
     }
-    internal void Traverse(NTree<T> node, TreeVisitor<T> visitor)
+    internal void Traverse(NTreeHtml<T> node, TreeVisitor<T> visitor)
     {
         visitor(node.data);
-        foreach (NTree<T> kid in node.children)
+        foreach (NTreeHtml<T> kid in node.children)
             Traverse(kid, visitor);
     }
 }
