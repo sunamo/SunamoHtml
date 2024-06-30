@@ -2,7 +2,7 @@ namespace SunamoHtml;
 
 //namespace SunamoHtml;
 
-internal partial class SH
+internal class SH
 {
     internal static string ShortForLettersCountThreeDotsReverse(string p, int p_2)
     {

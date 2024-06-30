@@ -2,7 +2,8 @@
 
 
 namespace SunamoHtml;
-public partial class HtmlHelperSunamoCz
+
+public class HtmlHelperSunamoCz
 {
     public static string ConvertTextToHtmlWithAnchors(string p, ref string error)
     {
@@ -87,7 +88,7 @@ public partial class HtmlHelperSunamoCz
         var end = true;
         foreach (var item in id)
         {
-            
+
 
             p = p.Remove(item.Key, 1);
             if (end)
@@ -118,5 +119,17 @@ public partial class HtmlHelperSunamoCz
             }
         }
         return string.Join(AllChars.space, d);
+    }
+
+    static Type type = typeof(HtmlHelperSunamoCz);
+
+
+
+    private static void AddToDict(Dictionary<int, string> italic2, List<int> italic, string v)
+    {
+        foreach (var item in italic)
+        {
+            italic2.Add(item, v);
+        }
     }
 }

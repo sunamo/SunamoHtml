@@ -1,7 +1,7 @@
 namespace SunamoHtml;
 
 
-public static partial class HtmlDocumentS
+public static class HtmlDocumentS
 {
     private static string s_html2 = null;
     public static HtmlNode LoadHtml(string html)

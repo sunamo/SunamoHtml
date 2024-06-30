@@ -3,7 +3,7 @@ namespace SunamoHtml;
 //namespace SunamoHtml;
 
 
-internal partial class SHSplit
+internal class SHSplit
 {
 
     internal static List<string> SplitMore(string parametry, params string[] deli)
