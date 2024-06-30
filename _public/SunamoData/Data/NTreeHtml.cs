@@ -2,33 +2,33 @@ namespace SunamoHtml;
 
 
 
-/// <summary>
-/// Another big popular tree is on https://www.codeproject.com/Articles/12592/Generic-Tree-T-in-C
-/// </summary>
-/// <typeparam name="T"></typeparam>
+
+
+
+
 public class NTreeHtml<T>
 {
-    internal T data;
-    internal LinkedList<NTreeHtml<T>> children;
-    internal NTreeHtml(T data)
+    public T data;
+    public LinkedList<NTreeHtml<T>> children;
+    public NTreeHtml(T data)
     {
         this.data = data;
         children = new LinkedList<NTreeHtml<T>>();
     }
-    internal NTreeHtml<T> AddChild(T data)
+    public NTreeHtml<T> AddChild(T data)
     {
         var child = new NTreeHtml<T>(data);
         children.AddFirst(child);
         return child;
     }
-    internal NTreeHtml<T> GetChild(int i)
+    public NTreeHtml<T> GetChild(int i)
     {
         foreach (NTreeHtml<T> n in children)
             if (--i == 0)
                 return n;
         return null;
     }
-    internal void Traverse(NTreeHtml<T> node, Action<T> visitor)
+    public void Traverse(NTreeHtml<T> node, Action<T> visitor)
     {
         visitor(node.data);
         foreach (NTreeHtml<T> kid in node.children)
