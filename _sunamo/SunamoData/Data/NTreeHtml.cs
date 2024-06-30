@@ -1,7 +1,7 @@
 namespace SunamoHtml;
 
 
-internal delegate void TreeVisitor<T>(T nodeData);
+
 /// <summary>
 /// Another big popular tree is on https://www.codeproject.com/Articles/12592/Generic-Tree-T-in-C
 /// </summary>
@@ -28,7 +28,7 @@ public class NTreeHtml<T>
                 return n;
         return null;
     }
-    internal void Traverse(NTreeHtml<T> node, TreeVisitor<T> visitor)
+    internal void Traverse(NTreeHtml<T> node, Action<T> visitor)
     {
         visitor(node.data);
         foreach (NTreeHtml<T> kid in node.children)
