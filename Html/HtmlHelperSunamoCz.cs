@@ -1,6 +1,3 @@
-
-
-
 namespace SunamoHtml.Html;
 
 public class HtmlHelperSunamoCz

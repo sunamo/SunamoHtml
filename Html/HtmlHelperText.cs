@@ -1,4 +1,3 @@
-
 namespace SunamoHtml.Html;
 
 public class HtmlHelperText

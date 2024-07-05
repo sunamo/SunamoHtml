@@ -45,3 +45,4 @@ global using SunamoHtml._sunamo.SunamoLang.SunamoI18N;
 global using SunamoHtml._sunamo.SunamoValues.Constants;
 global using SunamoHtml._sunamo.SunamoValues.Values;
 global using SunamoHtml._sunamo.SunamoXml.Generators;
+global using System.Diagnostics;

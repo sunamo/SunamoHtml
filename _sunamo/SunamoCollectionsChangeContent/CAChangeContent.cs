@@ -1,5 +1,3 @@
-
-
 namespace SunamoHtml._sunamo.SunamoCollectionsChangeContent;
 internal class CAChangeContent
 {
