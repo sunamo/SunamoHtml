@@ -1,4 +1,4 @@
-namespace SunamoHtml;
+namespace SunamoHtml._sunamo.SunamoArgs;
 
 
 internal class ChangeContentArgsHtml

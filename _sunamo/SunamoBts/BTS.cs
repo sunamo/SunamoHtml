@@ -1,4 +1,4 @@
-namespace SunamoHtml;
+namespace SunamoHtml._sunamo.SunamoBts;
 internal class BTS
 {
     internal static int TryParseInt(string entry, int def)

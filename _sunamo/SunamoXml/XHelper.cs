@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SunamoHtml;
+namespace SunamoHtml._sunamo.SunamoXml;
 internal class XHelper
 {
     internal static Dictionary<string, string> ns = new Dictionary<string, string>();

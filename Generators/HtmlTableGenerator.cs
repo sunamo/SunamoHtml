@@ -1,4 +1,4 @@
-namespace SunamoHtml;
+namespace SunamoHtml.Generators;
 
 public class HtmlTableGenerator : HtmlGeneratorExtended
 {

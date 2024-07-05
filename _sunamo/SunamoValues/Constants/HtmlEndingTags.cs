@@ -1,4 +1,4 @@
-namespace SunamoHtml;
+namespace SunamoHtml._sunamo.SunamoValues.Constants;
 
 
 internal class HtmlEndingTags

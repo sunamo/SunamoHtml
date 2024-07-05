@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SunamoHtml;
+namespace SunamoHtml._sunamo.SunamoDictionary;
 internal class DictionaryHelper
 {
     internal static List<string> GetListStringFromDictionary(Dictionary<string, string> p)

@@ -1,4 +1,4 @@
-namespace SunamoHtml;
+namespace SunamoHtml.Args;
 
 public class BoilerplateMiddleArgs
 {

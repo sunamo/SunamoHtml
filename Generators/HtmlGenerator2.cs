@@ -1,8 +1,8 @@
-﻿namespace
+namespace
 #if SunamoWikipedia
 SunamoWikipedia
 #else
-SunamoHtml
+SunamoHtml.Generators
 #endif
 ;
 

@@ -4,7 +4,7 @@
 
 using HtmlAgilityPack;
 
-namespace SunamoHtml;
+namespace SunamoHtml.Html;
 
 public static class HtmlHelper
 {

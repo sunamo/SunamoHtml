@@ -1,6 +1,6 @@
 
 
-namespace SunamoHtml;
+namespace SunamoHtml._sunamo.SunamoCollectionsChangeContent;
 internal class CAChangeContent
 {
     internal static List<string> ChangeContent0(dynamic /*ChangeContentArgs*/ a, List<string> files_in, Func<string, string> func)

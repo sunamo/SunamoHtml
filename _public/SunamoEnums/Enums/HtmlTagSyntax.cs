@@ -1,4 +1,4 @@
-namespace SunamoHtml;
+namespace SunamoHtml._public.SunamoEnums.Enums;
 
 
 public enum HtmlTagSyntax
