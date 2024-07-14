@@ -2,6 +2,19 @@ namespace SunamoHtml.Html;
 
 public class HtmlAssistant
 {
+    public static List<string> ParseInnerTextOfEveryTd(HtmlNode tr)
+    {
+        var tds = HtmlAgilityHelper.Nodes(tr, false, "td");
+
+        List<string> r = new List<string>();
+        foreach (var item in tds)
+        {
+            r.Add(item.InnerText.Trim());
+        }
+
+        return r;
+    }
+
     /// <summary>
     /// return se if wont be found
     /// return (null) Consts.nulled when attr exists without value (input readonly atc.)
