@@ -1,7 +1,5 @@
 namespace SunamoHtml._sunamo.SunamoString;
 
-//namespace SunamoHtml;
-
 internal class SH
 {
     internal static string ShortForLettersCountThreeDotsReverse(string p, int p_2)
@@ -413,7 +411,7 @@ internal class SH
     /// <param name="dash"></param>
     private static string FirstCharOfEveryWordUpper(string v, char dash)
     {
-        var p = SHSplit.SplitChar(v, dash);
+        var p = SHSplit.SplitCharMore(v, dash);
         for (int i = 0; i < p.Count; i++)
         {
             p[i] = SH.FirstCharUpper(p[i]);

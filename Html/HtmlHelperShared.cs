@@ -665,7 +665,7 @@ public static class HtmlHelper
     public static List<string> StripAllTagsList(string d)
     {
         string replaced = StripAllTags(d, AllStrings.doubleSpace);
-        return SHSplit.Split(replaced, AllStrings.doubleSpace);
+        return SHSplit.SplitMore(replaced, AllStrings.doubleSpace);
     }
     /// <summary>
     /// Nahradí každý text <*> za mezeru. Vnitřní ne-xml obsah nechá být.
@@ -699,7 +699,7 @@ public static class HtmlHelper
     public static bool HasTagAttrContains(HtmlNode htmlNode, string delimiter, string attr, string value)
     {
         string attrValue = HtmlHelper.GetValueOfAttribute(attr, htmlNode);
-        var spl = SHSplit.Split(attrValue, delimiter);
+        var spl = SHSplit.SplitMore(attrValue, delimiter);
         return spl.Contains(value);
     }
     public static bool HasChildTag(HtmlNode spanInHeader, string v)
@@ -774,7 +774,7 @@ public static class HtmlHelper
         string at = GetValueOfAttribute("style", item);
         if (at.Contains(AllStrings.sc))
         {
-            var d = SHSplit.Split(at, AllStrings.sc);
+            var d = SHSplit.SplitMore(at, AllStrings.sc);
             foreach (string item2 in d)
             {
                 if (item2.Contains(AllStrings.colon))

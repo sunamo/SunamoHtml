@@ -1,4 +1,5 @@
 namespace SunamoHtml;
+
 /// <summary>
 /// HtmlHelperText - for methods which NOT operate on HtmlAgiityHelper!
 /// HtmlAgilityHelper - getting new nodes
@@ -222,7 +223,7 @@ public class HtmlAgilityHelper
             else
             {
                 bool cont = true;
-                var p = SHSplit.Split(hodnotaAtributu, AllStrings.space);
+                var p = SHSplit.SplitMore(hodnotaAtributu, AllStrings.space);
                 foreach (var item2 in p)
                 {
                     if (!attrValue.Contains(item2))
