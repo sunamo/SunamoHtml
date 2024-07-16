@@ -1,6 +1,5 @@
 namespace SunamoHtml._sunamo.SunamoXml.Generators;
 
-
 internal class XmlGeneratorSelective : XmlGeneratorHtml
 {
     /// <summary>

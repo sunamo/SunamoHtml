@@ -1,8 +1,5 @@
 namespace SunamoHtml._sunamo.SunamoStringSplit;
 
-//namespace SunamoHtml;
-
-
 internal class SHSplit
 {
 

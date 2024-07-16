@@ -1,13 +1,5 @@
 namespace SunamoHtml._public.SunamoXml.Generators;
 
-
-
-
-
-
-
-
-
 public class XmlGeneratorHtml 
 {
     static Type type = typeof(XmlGeneratorHtml);

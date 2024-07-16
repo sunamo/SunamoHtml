@@ -1,4 +1,5 @@
 namespace SunamoHtml._sunamo.SunamoXml;
+
 internal class XHelper
 {
     internal static Dictionary<string, string> ns = new Dictionary<string, string>();

@@ -510,7 +510,7 @@ isWildCard -
         {
             if (item.Name == textNode)
             {
-                if (!dontHaveAsParentTag.Any(d => d != item.ParentNode.Name) /*!CAGSH.IsEqualToAnyElement<string>(item.ParentNode.Name, dontHaveAsParentTag)*/)
+                if (!dontHaveAsParentTag.Any(d => d != item.ParentNode.Name) /*!CAG.IsEqualToAnyElement<string>(item.ParentNode.Name, dontHaveAsParentTag)*/)
                 {
                     vr.Add(item);
                 }

@@ -1,9 +1,5 @@
 namespace SunamoHtml.Html;
 
-
-
-
-
 /// <summary>
 /// Is 2, never use HtmlDocument!!! have too many methods.
 /// </summary>
@@ -135,7 +131,7 @@ void
     #region Strip
 
     /// <summary>
-    /// Nahradí každý text <*> za SE. Vnitřní ne-xml obsah nechá být.
+    /// Nahradí každý text <*> za . Vnitřní ne-xml obsah nechá být.
     /// </summary>
     /// <param name="p"></param>
     public string StripAllTags(string p)
@@ -168,7 +164,7 @@ void
 
     /// <summary>
     /// Jen volá metodu StripAllTags
-    /// Nahradí každý text <*> za SE. Vnitřní ne-xml obsah nechá být.
+    /// Nahradí každý text <*> za . Vnitřní ne-xml obsah nechá být.
     /// </summary>
     /// <param name="p"></param>
     public string RemoveAllTags(string p)

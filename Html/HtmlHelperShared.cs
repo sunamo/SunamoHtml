@@ -317,7 +317,7 @@ public static class HtmlHelper
     }
 
     /// <summary>
-    /// Nahradí každý text <*> za SE. Vnitřní ne-xml obsah nechá být.
+    /// Nahradí každý text <*> za . Vnitřní ne-xml obsah nechá být.
     /// </summary>
     /// <param name="p"></param>
     public static string StripAllTags(string p)
@@ -677,7 +677,7 @@ public static class HtmlHelper
     }
     /// <summary>
     /// Jen volá metodu StripAllTags
-    /// Nahradí každý text <*> za SE. Vnitřní ne-xml obsah nechá být.
+    /// Nahradí každý text <*> za . Vnitřní ne-xml obsah nechá být.
     /// </summary>
     /// <param name="p"></param>
     public static string RemoveAllTags(string p)

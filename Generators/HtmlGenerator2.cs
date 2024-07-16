@@ -1,10 +1,4 @@
-namespace
-#if SunamoWikipedia
-SunamoWikipedia
-#else
-SunamoHtml.Generators
-#endif
-;
+
 
 public class HtmlGenerator2 : HtmlGenerator
 {
