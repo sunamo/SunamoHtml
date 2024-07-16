@@ -302,7 +302,7 @@ public class HtmlHelperText
 
         CAChangeContent.ChangeContent0(null, lines, AddIntoParagraph);
 
-        var result = SHSunamoExceptions.JoinNL(lines);
+        var result = SH.JoinNL(lines);
         result = result.Replace(endP, endP + AllStrings.cr + AllStrings.nl); // SHReplace.ReplaceAll(result, endP + AllStrings.cr + AllStrings.nl, endP);
 
 
