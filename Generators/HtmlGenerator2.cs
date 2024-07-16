@@ -1,4 +1,4 @@
-
+namespace SunamoHtml.Generators;
 
 public class HtmlGenerator2 : HtmlGenerator
 {
