@@ -42,3 +42,5 @@ global using SunamoHtml._sunamo.SunamoValues.Values;
 global using SunamoHtml._sunamo.SunamoXml.Generators;
 global using System.Diagnostics;
 global using SunamoHtml._sunamo.SunamoString;
+global using SunamoHtml;
+global using SunamoHtml._sunamo;

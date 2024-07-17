@@ -12,10 +12,10 @@ public class HtmlAgilityHelper
     /// </summary>
     public static bool _trimTexts = true;
     public const string textNode = "#text";
-    public static Dictionary<string, string> PairsDdDt(HtmlNode dl)
+    public static Dictionary<string, string> PairsDdDt(HtmlNode dl, bool recursive)
     {
-        var dd = Nodes(dl, false, "dd");
-        var dt = Nodes(dl, false, "dt");
+        var dd = Nodes(dl, recursive, "dd");
+        var dt = Nodes(dl, recursive, "dt");
         if (dd.Count == 0 && dt.Count == 0)
         {
             throw new Exception("dd && dt is zero");
