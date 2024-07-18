@@ -12,7 +12,7 @@ public class HtmlAgilityHelper
     /// </summary>
     public static bool _trimTexts = true;
     public const string textNode = "#text";
-    public static Dictionary<string, string> PairsDdDt(HtmlNode dl, bool recursive)
+    public static Dictionary<string, string> PairsDdDt(HtmlNode dl, bool recursive, Dictionary<string, string> replaceHtmLForText)
     {
         var dd = Nodes(dl, recursive, "dd");
         var dt = Nodes(dl, recursive, "dt");
@@ -26,8 +26,21 @@ public class HtmlAgilityHelper
         Dictionary<string, string> result = new Dictionary<string, string>();
         for (int i = 0; i < dd.Count; i++)
         {
-            result.Add(dt[i].InnerHtml, dd[i].InnerHtml);
+            // zde je nutný text
+            var key = dt[i].InnerHtml;
+            var val = dd[i].InnerHtml;
+
+            foreach (var item in replaceHtmLForText)
+            {
+                key = key.Replace(item.Key, item.Value);
+                val = val.Replace(item.Key, item.Value);
+            }
+
+            // Ve defaultu nahrazuje za " "
+            // Zde dávám "" protože u rozlohy nehcci 63 m 2. Pokud bych to potřeboval jinak, přidat zde parametr
+            result.Add(HtmlHelper.StripAllTags(key, "").Trim(), HtmlHelper.StripAllTags(val, "").Trim());
         }
+
         return result;
     }
     #region Helpers
