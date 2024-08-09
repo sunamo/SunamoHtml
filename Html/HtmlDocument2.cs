@@ -1,27 +1,29 @@
 namespace SunamoHtml.Html;
 
 /// <summary>
-/// Is 2, never use HtmlDocument!!! have too many methods.
+///     Is 2, never use HtmlDocument!!! have too many methods.
 /// </summary>
 public class HtmlDocument2
 {
-    private HtmlDocument _hd = HtmlAgilityHelper.CreateHtmlDocument();
-    private string _html = null;
+    private readonly HtmlDocument _hd = HtmlAgilityHelper.CreateHtmlDocument();
+    private string _html;
+
+    public HtmlNode DocumentNode => _hd.DocumentNode;
 
     public
 #if ASYNC
-    async Task
+        async Task
 #else
 void
 #endif
-    Load(string path)
+        Load(string path)
     {
         //hd.Encoding = Encoding.UTF8;
         _html =
 #if ASYNC
-        await
+            await
 #endif
-        File.ReadAllTextAsync(path);
+                File.ReadAllTextAsync(path);
         _html = WebUtility.HtmlDecode(_html);
         //string html =HtmlHelper.ToXml();
         _hd.LoadHtml(_html);
@@ -36,19 +38,11 @@ void
         _hd.LoadHtml(html);
     }
 
-    public HtmlNode DocumentNode
-    {
-        get
-        {
-            return _hd.DocumentNode;
-        }
-    }
-
     public string ToXml()
     {
         //return html;
-        StringWriter sw = new StringWriter();
-        XmlWriter tw = XmlWriter.Create(sw);
+        var sw = new StringWriter();
+        var tw = XmlWriter.Create(sw);
         DocumentNode.WriteTo(tw);
         sw.Flush();
         //sw.Close();
@@ -57,15 +51,61 @@ void
         return sw.ToString().Replace("<?xml version=\"1.0\" encoding=\"iso-8859-2\"?>", "");
     }
 
+    #region Set
+
+    /// <param name="node"></param>
+    /// <param name="atr"></param>
+    /// <param name="hod"></param>
+    public void SetAttribute(HtmlNode node, string atr, string hod)
+    {
+        HtmlHelper.SetAttribute(node, atr, hod);
+    }
+
+    #endregion
+
+    #region Get
+
+    public string GetValueOfAttribute(string p, HtmlNode divMain, bool _trim = false)
+    {
+        return HtmlHelper.GetValueOfAttribute(p, divMain, _trim);
+    }
+
+    #endregion
+
+    #region Check name and value
+
+    public bool HasTagAttrContains(HtmlNode htmlNode, string delimiter, string attr, string value)
+    {
+        return HtmlHelper.HasTagAttrContains(htmlNode, delimiter, attr, value);
+    }
+
+    #endregion
+
+    #region 2 Nodes - no recursive
+
+    /// <summary>
+    ///     Do A2 se může vložit * ale nemělo by to moc smysl
+    /// </summary>
+    /// <param name="parent"></param>
+    /// <param name="tag"></param>
+    public List<HtmlNode> ReturnTags(HtmlNode parent, string tag)
+    {
+        return HtmlHelper.ReturnTags(parent, tag);
+    }
+
+    #endregion
+
     #region Without HtmlAgility
+
     #region ToXml
+
     public string ToXmlFinal(string xml)
     {
         return HtmlHelper.ToXmlFinal(xml);
     }
 
     /// <summary>
-    /// Již volá ReplaceHtmlNonPairTagsWithXmlValid
+    ///     Již volá ReplaceHtmlNonPairTagsWithXmlValid
     /// </summary>
     /// <param name="xml"></param>
     /// <param name="odstranitXmlDeklaraci"></param>
@@ -75,13 +115,14 @@ void
     }
 
     /// <summary>
-    /// Již volá RemoveXmlDeclaration i ReplaceHtmlNonPairTagsWithXmlValid
+    ///     Již volá RemoveXmlDeclaration i ReplaceHtmlNonPairTagsWithXmlValid
     /// </summary>
     /// <param name="xml"></param>
     public string ToXml(string xml)
     {
         return HtmlHelper.ToXml(xml);
     }
+
     #endregion
 
     public string ClearSpaces(string dd)
@@ -107,7 +148,8 @@ void
     }
 
     /// <summary>
-    /// Před zavoláním této metody musí být v A1 převedeny bílé znaky na mezery - pouze tak budou označeny všechny výskyty daných slov
+    ///     Před zavoláním této metody musí být v A1 převedeny bílé znaky na mezery - pouze tak budou označeny všechny výskyty
+    ///     daných slov
     /// </summary>
     /// <param name="celyObsah"></param>
     /// <param name="maxPocetPismenNaVetu"></param>
@@ -131,7 +173,7 @@ void
     #region Strip
 
     /// <summary>
-    /// Nahradí každý text <*> za . Vnitřní ne-xml obsah nechá být.
+    ///     Nahradí každý text <*> za . Vnitřní ne-xml obsah nechá být.
     /// </summary>
     /// <param name="p"></param>
     public string StripAllTags(string p)
@@ -145,7 +187,7 @@ void
     }
 
     /// <summary>
-    /// Strip all tags and return only
+    ///     Strip all tags and return only
     /// </summary>
     /// <param name="d"></param>
     public List<string> StripAllTagsList(string d)
@@ -154,7 +196,7 @@ void
     }
 
     /// <summary>
-    /// Nahradí každý text <*> za mezeru. Vnitřní ne-xml obsah nechá být.
+    ///     Nahradí každý text <*> za mezeru. Vnitřní ne-xml obsah nechá být.
     /// </summary>
     /// <param name="p"></param>
     public string StripAllTagsSpace(string p)
@@ -163,42 +205,17 @@ void
     }
 
     /// <summary>
-    /// Jen volá metodu StripAllTags
-    /// Nahradí každý text <*> za . Vnitřní ne-xml obsah nechá být.
+    ///     Jen volá metodu StripAllTags
+    ///     Nahradí každý text <*> za . Vnitřní ne-xml obsah nechá být.
     /// </summary>
     /// <param name="p"></param>
     public string RemoveAllTags(string p)
     {
         return HtmlHelper.RemoveAllTags(p);
     }
-    #endregion
-    #endregion
 
-    #region Set
-    /// <param name="node"></param>
-    /// <param name="atr"></param>
-    /// <param name="hod"></param>
-    public void SetAttribute(HtmlNode node, string atr, string hod)
-    {
-        HtmlHelper.SetAttribute(node, atr, hod);
-    }
     #endregion
 
-    #region Get
-
-    public string GetValueOfAttribute(string p, HtmlNode divMain, bool _trim = false)
-    {
-        return HtmlHelper.GetValueOfAttribute(p, divMain, _trim);
-    }
-    #endregion
-
-    #region Check name and value
-
-
-    public bool HasTagAttrContains(HtmlNode htmlNode, string delimiter, string attr, string value)
-    {
-        return HtmlHelper.HasTagAttrContains(htmlNode, delimiter, attr, value);
-    }
     #endregion
 
     #region Helper methods
@@ -209,6 +226,7 @@ void
     }
 
     #region Text nodes
+
     public List<HtmlNode> GetWithoutTextNodes(HtmlNode htmlNode)
     {
         return HtmlHelper.GetWithoutTextNodes(htmlNode);
@@ -220,7 +238,7 @@ void
     }
 
     /// <summary>
-    /// Used in ParseChromeAPIs.
+    ///     Used in ParseChromeAPIs.
     /// </summary>
     /// <param name="api_reference"></param>
     public List<HtmlNode> ReturnTags(HtmlNode api_reference)
@@ -232,6 +250,7 @@ void
     {
         return HtmlHelper.TrimTexts(c2);
     }
+
     #endregion
 
     public bool HasChildTag(HtmlNode spanInHeader, string v)
@@ -240,12 +259,11 @@ void
     }
 
 
-
     #region Apply
+
     /// <summary>
-    /// Nehodí se na vrácení obsahu celé stránky
-    /// A1 je zdrojový kód celé stránky
-    ///
+    ///     Nehodí se na vrácení obsahu celé stránky
+    ///     A1 je zdrojový kód celé stránky
     /// </summary>
     /// <param name="s"></param>
     /// <param name="p"></param>
@@ -259,29 +277,24 @@ void
     #endregion
 
 
-
-
-
     public Dictionary<string, string> GetValuesOfStyle(HtmlNode item)
     {
         return HtmlHelper.GetValuesOfStyle(item);
     }
 
-
-
-
     #endregion
 
 
     #region 1 Node
+
     public HtmlNode GetTag(HtmlNode cacheAuthorNode, string p)
     {
         return HtmlHelper.GetTag(cacheAuthorNode, p);
     }
 
     /// <summary>
-    /// Prochází děti A1 a pokud některý má název A2, G
-    /// Vrátí null pokud se takový tag nepodaří najít
+    ///     Prochází děti A1 a pokud některý má název A2, G
+    ///     Vrátí null pokud se takový tag nepodaří najít
     /// </summary>
     /// <param name="body"></param>
     /// <param name="nazevTagu"></param>
@@ -294,16 +307,15 @@ void
     {
         return HtmlHelper.ReturnTagRek(hn, nameTag);
     }
+
     #endregion
 
     #region 2 Nodes - recursive
 
-
-
     /// <summary>
-    /// Vratilo 15 namisto 10
-    /// Používá metodu RecursiveReturnTags
-    /// Do A2 se může vložit *
+    ///     Vratilo 15 namisto 10
+    ///     Používá metodu RecursiveReturnTags
+    ///     Do A2 se může vložit *
     /// </summary>
     /// <param name="htmlNode"></param>
     /// <param name="tag"></param>
@@ -313,9 +325,9 @@ void
     }
 
     /// <summary>
-    /// Vratilo 0 misto 10
-    /// A1 je uzel který se bude rekurzivně porovnávat
-    /// A2 je název tagu(div, a, atd.) které chci vrátit.
+    ///     Vratilo 0 misto 10
+    ///     A1 je uzel který se bude rekurzivně porovnávat
+    ///     A2 je název tagu(div, a, atd.) které chci vrátit.
     /// </summary>
     /// <param name="htmlNode"></param>
     /// <param name="p"></param>
@@ -325,9 +337,9 @@ void
     }
 
     /// <summary>
-    /// Return 0 instead of 10
-    /// If tag is A2, don't apply recursive on that
-    /// A2 je název tagu, napříkald img
+    ///     Return 0 instead of 10
+    ///     If tag is A2, don't apply recursive on that
+    ///     A2 je název tagu, napříkald img
     /// </summary>
     /// <param name="html"></param>
     /// <param name="p"></param>
@@ -335,21 +347,11 @@ void
     {
         return HtmlHelper.ReturnAllTagsImg(html, p);
     }
-    #endregion
 
-    #region 2 Nodes - no recursive
-    /// <summary>
-    /// Do A2 se může vložit * ale nemělo by to moc smysl
-    /// </summary>
-    /// <param name="parent"></param>
-    /// <param name="tag"></param>
-    public List<HtmlNode> ReturnTags(HtmlNode parent, string tag)
-    {
-        return HtmlHelper.ReturnTags(parent, tag);
-    }
     #endregion
 
     #region 3 NodeWithAttr
+
     public HtmlNode GetTagOfAtributeRek(HtmlNode hn, string nameTag, string nameAtr, string valueOfAtr)
     {
         return HtmlHelper.GetTagOfAtributeRek(hn, nameTag, nameAtr, valueOfAtr);
@@ -361,7 +363,7 @@ void
     }
 
     /// <summary>
-    /// Pokud bude nalezen alespoň jeden tag, vrátí ho, pokud žádný, GN
+    ///     Pokud bude nalezen alespoň jeden tag, vrátí ho, pokud žádný, GN
     /// </summary>
     /// <param name="htmlNode"></param>
     /// <param name="tag"></param>
@@ -372,18 +374,16 @@ void
         return HtmlHelper.ReturnTagWithAttr(htmlNode, tag, attr, value);
     }
 
-
     #endregion
-
 
 
     #region 4 NodesWithAttr
 
-
     #region Only call other method
+
     /// <summary>
-    /// Do A2 se může zadat * pro získaní všech tagů
-    /// Do A4 se může vložit * pro vrácení tagů s hledaným atributem s jakoukoliv hodnotou
+    ///     Do A2 se může zadat * pro získaní všech tagů
+    ///     Do A4 se může vložit * pro vrácení tagů s hledaným atributem s jakoukoliv hodnotou
     /// </summary>
     /// <param name="htmlNode"></param>
     /// <param name="tag"></param>
@@ -395,7 +395,7 @@ void
     }
 
     /// <summary>
-    /// G null když tag nebude nalezen
+    ///     G null když tag nebude nalezen
     /// </summary>
     /// <param name="htmlNode"></param>
     /// <param name="tag"></param>
@@ -405,11 +405,12 @@ void
     {
         return HtmlHelper.ReturnTagWithAttrRek(htmlNode, tag, attr, value);
     }
+
     #endregion
 
     /// <summary>
-    /// Return 0 instead of 10
-    /// Originally from HtmlDocument
+    ///     Return 0 instead of 10
+    ///     Originally from HtmlDocument
     /// </summary>
     /// <param name="htmlNode"></param>
     /// <param name="tagName"></param>
@@ -421,8 +422,8 @@ void
     }
 
 
-
     #region No recursive
+
     /// <param name="hn"></param>
     /// <param name="nameTag"></param>
     /// <param name="nameAtr"></param>
@@ -431,45 +432,49 @@ void
     {
         return HtmlHelper.GetTagsOfAtribute(hn, nameAtr, nameAtr, valueOfAtr);
     }
+
     #endregion
 
     #endregion
 
     #region 5 NodesWhichContainsInAttr
 
-
     /// <summary>
-    /// Do A3 se může zadat * pro vrácení všech tagů
+    ///     Do A3 se může zadat * pro vrácení všech tagů
     /// </summary>
     /// <param name="vr"></param>
     /// <param name="htmlNode"></param>
     /// <param name="p"></param>
     /// <param name="atribut"></param>
     /// <param name="hodnotaAtributu"></param>
-    public void RecursiveReturnTagsWithContainsAttr(List<HtmlNode> vr, HtmlNode htmlNode, string p, string atribut, string hodnotaAtributu, bool contains, bool recursively)
+    public void RecursiveReturnTagsWithContainsAttr(List<HtmlNode> vr, HtmlNode htmlNode, string p, string atribut,
+        string hodnotaAtributu, bool contains, bool recursively)
     {
-        HtmlHelper.RecursiveReturnTagsWithContainsAttr(vr, htmlNode, p, atribut, hodnotaAtributu, contains, recursively);
+        HtmlHelper.RecursiveReturnTagsWithContainsAttr(vr, htmlNode, p, atribut, hodnotaAtributu, contains,
+            recursively);
     }
 
     /// <summary>
-    /// Do A2 se může zadat * pro získaní všech tagů
+    ///     Do A2 se může zadat * pro získaní všech tagů
     /// </summary>
     /// <param name="htmlNode"></param>
     /// <param name="tag"></param>
     /// <param name="atribut"></param>
     /// <param name="hodnotaAtributu"></param>
-    public List<HtmlNode> ReturnTagsWithContainsAttrRek(HtmlNode htmlNode, string tag, string atribut, string hodnotaAtributu)
+    public List<HtmlNode> ReturnTagsWithContainsAttrRek(HtmlNode htmlNode, string tag, string atribut,
+        string hodnotaAtributu)
     {
         return HtmlHelper.ReturnTagsWithContainsAttrRek(htmlNode, tag, atribut, hodnotaAtributu);
     }
 
-    public List<HtmlNode> ReturnTagsWithContainsAttrRek(HtmlNode htmlNode, string tag, string atribut, string hodnotaAtributu, bool contains, bool recursively)
+    public List<HtmlNode> ReturnTagsWithContainsAttrRek(HtmlNode htmlNode, string tag, string atribut,
+        string hodnotaAtributu, bool contains, bool recursively)
     {
         return HtmlHelper.ReturnTagsWithContainsAttrRek(htmlNode, tag, atribut, hodnotaAtributu, contains, recursively);
     }
 
     /// <summary>
-    /// Do A2 se může zadat * pro získaní všech tagů
+    ///     Do A2 se může zadat * pro získaní všech tagů
     /// </summary>
     /// <param name="htmlNode"></param>
     /// <param name="tag"></param>
@@ -479,5 +484,6 @@ void
     {
         return HtmlHelper.ReturnTagsWithContainsClassRek(htmlNode, tag, t);
     }
+
     #endregion
 }

@@ -1,4 +1,5 @@
 namespace SunamoHtml._sunamo.SunamoBts;
+
 internal class BTS
 {
     internal static int TryParseInt(string entry, int def)
@@ -8,18 +9,13 @@ internal class BTS
 
     internal static int TryParseInt(string entry, int def, bool throwEx)
     {
-        int lastInt = 0;
+        var lastInt = 0;
         if (int.TryParse(entry, out lastInt))
         {
             return lastInt;
         }
-        else
-        {
-            if (throwEx)
-            {
-                ThrowEx.NotInt(entry, null);
-            }
-        }
+
+        if (throwEx) ThrowEx.NotInt(entry, null);
         return def;
     }
 }

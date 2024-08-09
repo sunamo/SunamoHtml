@@ -1,12 +1,12 @@
 namespace SunamoHtml.Html;
 
-
 public static class HtmlDocumentS
 {
-    private static string s_html2 = null;
+    private static string s_html2;
+
     public static HtmlNode LoadHtml(string html)
     {
-        HtmlDocument hd = HtmlAgilityHelper.CreateHtmlDocument();
+        var hd = HtmlAgilityHelper.CreateHtmlDocument();
 
         html = WebUtility.HtmlDecode(html);
         s_html2 = html;
@@ -17,19 +17,19 @@ public static class HtmlDocumentS
 
     public static
 #if ASYNC
-    async Task<HtmlNode>
+        async Task<HtmlNode>
 #else
 HtmlNode
 #endif
-    Load(string path)
+        Load(string path)
     {
-        HtmlDocument hd = HtmlAgilityHelper.CreateHtmlDocument();
+        var hd = HtmlAgilityHelper.CreateHtmlDocument();
         //hd.Encoding = Encoding.UTF8;
         s_html2 =
 #if ASYNC
-        await
+            await
 #endif
-        File.ReadAllTextAsync(path);
+                File.ReadAllTextAsync(path);
         s_html2 = WebUtility.HtmlDecode(s_html2);
         //string html =HtmlHelper.ToXml();
         hd.LoadHtml(s_html2);
@@ -43,10 +43,7 @@ HtmlNode
 
     public static string InnerHtmlToStringEmpty(HtmlNode htmlNode)
     {
-        if (htmlNode == null)
-        {
-            return string.Empty;
-        }
+        if (htmlNode == null) return string.Empty;
 
         return htmlNode.InnerHtml.Trim();
     }

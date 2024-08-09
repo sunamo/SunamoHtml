@@ -1,16 +1,15 @@
 namespace SunamoHtml._sunamo.SunamoValues.Constants;
 
-
 internal class HtmlEndingTags
 {
-    static Type type = typeof(HtmlEndingTags);
     internal const string b = "</b>";
     internal const string i = "</i>";
     internal const string s = "</s>";
+    private static Type type = typeof(HtmlEndingTags);
 
     internal static string Get(string value)
     {
-        return "</" + value + ">"; 
+        return "</" + value + ">";
     }
     //internal static string Get(string value)
     //{

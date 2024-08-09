@@ -2,7 +2,7 @@ namespace SunamoHtml.Generators;
 
 public class HtmlTableGenerator : HtmlGeneratorExtended
 {
-    static Type type = typeof(HtmlTableGenerator);
+    private static Type type = typeof(HtmlTableGenerator);
     //public HtmlGeneratorExtended g = new HtmlGeneratorExtended();
 
     public void StartTable()
@@ -27,7 +27,7 @@ public class HtmlTableGenerator : HtmlGeneratorExtended
     }
 
     /// <summary>
-    /// td
+    ///     td
     /// </summary>
     /// <param name="additionalQuestionCssClass"></param>
     /// <param name="possibleAnswersAll"></param>
@@ -36,13 +36,11 @@ public class HtmlTableGenerator : HtmlGeneratorExtended
         WriteRowWorker(WriteTd, additionalQuestionCssClass, possibleAnswersAll);
     }
 
-    public void WriteRowWorker(Action<string> WriteTd, string additionalQuestionCssClass, List<string> possibleAnswersAll)
+    public void WriteRowWorker(Action<string> WriteTd, string additionalQuestionCssClass,
+        List<string> possibleAnswersAll)
     {
-        WriteTagWithAttr(HtmlTags.tr, HtmlAttrs.c, additionalQuestionCssClass, false);
-        foreach (var item in possibleAnswersAll)
-        {
-            WriteTd(item);
-        }
+        WriteTagWithAttr(HtmlTags.tr, HtmlAttrs.c, additionalQuestionCssClass);
+        foreach (var item in possibleAnswersAll) WriteTd(item);
         TerminateTag(HtmlTags.tr);
     }
 
@@ -58,11 +56,8 @@ public class HtmlTableGenerator : HtmlGeneratorExtended
 
     public void WriteRow(string additionalQuestionCssClass, int count)
     {
-        List<string> list = new List<string>(count);
-        for (int i = 0; i < count; i++)
-        {
-            list.Add(string.Empty);
-        }
+        var list = new List<string>(count);
+        for (var i = 0; i < count; i++) list.Add(string.Empty);
         WriteRow(additionalQuestionCssClass, list);
     }
 

@@ -1,6 +1,5 @@
 namespace SunamoHtml._sunamo.SunamoData.Data;
 
-
 internal class FromToWord
 {
     internal int from = 0;

@@ -1,6 +1,5 @@
 namespace SunamoHtml._sunamo.SunamoValues.Values;
 
-
 internal class StatusPrefixes
 {
     internal const string error = "error:";

@@ -3,36 +3,31 @@ namespace SunamoHtml.Generators;
 public static class HtmlGeneratorList
 {
     /// <summary>
-    /// If A3 is null, will be used data from A2
+    ///     If A3 is null, will be used data from A2
     /// </summary>
     /// <param name="baseAnchor"></param>
     /// <param name="to"></param>
     /// <param name="titles"></param>
     /// <param name="checkDuplicates"></param>
     /// <param name="tag"></param>
-    public static string GetFor(string baseAnchor, List<string> to, List<string> titles, bool checkDuplicates, string tag)
+    public static string GetFor(string baseAnchor, List<string> to, List<string> titles, bool checkDuplicates,
+        string tag)
     {
-        HtmlGenerator hg = new HtmlGenerator();
+        var hg = new HtmlGenerator();
         List<string> zapsane = null;
 
 
-        if (titles == null)
-        {
-            titles = to;
-        }
+        if (titles == null) titles = to;
 
 
         zapsane = new List<string>();
         hg.WriteTag(tag);
-        for (int i = 0; i < to.Count; i++)
+        for (var i = 0; i < to.Count; i++)
         {
-            string s = to[i];
+            var s = to[i];
             if (!zapsane.Contains(s))
             {
-                if (checkDuplicates)
-                {
-                    zapsane.Add(s);
-                }
+                if (checkDuplicates) zapsane.Add(s);
 
                 hg.WriteTag("li");
 
@@ -43,6 +38,7 @@ public static class HtmlGeneratorList
                 hg.TerminateTag("li");
             }
         }
+
         hg.TerminateTag(tag);
         return hg.ToString();
     }

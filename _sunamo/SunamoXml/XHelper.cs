@@ -2,11 +2,11 @@ namespace SunamoHtml._sunamo.SunamoXml;
 
 internal class XHelper
 {
-    internal static Dictionary<string, string> ns = new Dictionary<string, string>();
+    internal static Dictionary<string, string> ns = new();
 
     internal static Dictionary<string, string> XmlNamespaces(XmlNamespaceManager nsmgr, bool withPrexixedXmlnsColon)
     {
-        Dictionary<string, string> ns = new Dictionary<string, string>();
+        var ns = new Dictionary<string, string>();
         foreach (string item2 in nsmgr)
         {
             var item = item2;
@@ -14,23 +14,15 @@ internal class XHelper
             if (withPrexixedXmlnsColon)
             {
                 if (item == string.Empty || item == Consts.xmlns)
-                {
                     item = Consts.xmlns;
-                }
                 else
-                {
                     item = "xmlns:" + item;
-                }
-
             }
 
             // Jaký je typ item, at nemusím používat slovník
             var v = nsmgr.LookupNamespace(item2);
 
-            if (!ns.ContainsKey(item))
-            {
-                ns.Add(item, v);
-            }
+            if (!ns.ContainsKey(item)) ns.Add(item, v);
         }
 
         return ns;
@@ -42,10 +34,7 @@ internal class XHelper
         {
             // Jaký je typ item, at nemusím používat slovník
             var v = nsmgr.LookupNamespace(item);
-            if (!ns.ContainsKey(item))
-            {
-                ns.Add(item, v);
-            }
+            if (!ns.ContainsKey(item)) ns.Add(item, v);
         }
     }
 }

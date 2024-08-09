@@ -2,22 +2,21 @@ namespace SunamoHtml.Html;
 
 public class HtmlAssistant
 {
+    private static Type type = typeof(HtmlAssistant);
+
     public static List<string> ParseInnerTextOfEveryTd(HtmlNode tr)
     {
         var tds = HtmlAgilityHelper.Nodes(tr, false, "td");
 
-        List<string> r = new List<string>();
-        foreach (var item in tds)
-        {
-            r.Add(item.InnerText.Trim());
-        }
+        var r = new List<string>();
+        foreach (var item in tds) r.Add(item.InnerText.Trim());
 
         return r;
     }
 
     /// <summary>
-    /// return se if wont be found
-    /// return (null) Consts.nulled when attr exists without value (input readonly atc.)
+    ///     return se if wont be found
+    ///     return (null) Consts.nulled when attr exists without value (input readonly atc.)
     /// </summary>
     /// <param name="p"></param>
     /// <param name="divMain"></param>
@@ -27,16 +26,10 @@ public class HtmlAssistant
         object o = divMain.Attributes[p]; // divMain.GetAttributeValue(p, null);//
         if (o != null)
         {
-            string st = ((HtmlAttribute)o).Value;
-            if (_trim)
-            {
-                st = st.Trim();
-            }
+            var st = ((HtmlAttribute)o).Value;
+            if (_trim) st = st.Trim();
 
-            if (st == string.Empty)
-            {
-                return Consts.nulled;
-            }
+            if (st == string.Empty) return Consts.nulled;
 
             return st;
         }
@@ -46,15 +39,11 @@ public class HtmlAssistant
 
     public static string TrimInnerHtml(string value)
     {
-        HtmlDocument hd = HtmlAgilityHelper.CreateHtmlDocument();
+        var hd = HtmlAgilityHelper.CreateHtmlDocument();
         hd.LoadHtml(value);
         foreach (var item in hd.DocumentNode.DescendantsAndSelf())
-        {
             if (item.NodeType == HtmlNodeType.Element)
-            {
                 item.InnerHtml = item.InnerHtml.Trim();
-            }
-        }
         return hd.DocumentNode.OuterHtml;
     }
 
@@ -63,26 +52,18 @@ public class HtmlAssistant
         return SplitByTag(input, "br");
     }
 
-    static void RemoveComments(HtmlNode node)
+    private static void RemoveComments(HtmlNode node)
     {
-        if (!node.HasChildNodes)
-        {
-            return;
-        }
+        if (!node.HasChildNodes) return;
 
-        for (int i = 0; i < node.ChildNodes.Count; i++)
-        {
+        for (var i = 0; i < node.ChildNodes.Count; i++)
             if (node.ChildNodes[i].NodeType == HtmlNodeType.Comment)
             {
                 node.ChildNodes.RemoveAt(i);
                 --i;
             }
-        }
 
-        foreach (HtmlNode subNode in node.ChildNodes)
-        {
-            RemoveComments(subNode);
-        }
+        foreach (var subNode in node.ChildNodes) RemoveComments(subNode);
     }
 
 
@@ -101,13 +82,9 @@ public class HtmlAssistant
         {
             o = node.Attributes.FirstOrDefault(a => a.Name == atr);
             if (o != null)
-            {
                 node.Attributes.Remove((HtmlAttribute)o);
-            }
             else
-            {
                 break;
-            }
         }
 
         var atr2 = node.OwnerDocument.CreateAttribute(atr, hod);
@@ -117,32 +94,31 @@ public class HtmlAssistant
         var html = node.OuterHtml;
     }
 
-    public static string InnerText(HtmlNode node, bool recursive, string tag, string attr, string attrValue, bool contains = false)
+    public static string InnerText(HtmlNode node, bool recursive, string tag, string attr, string attrValue,
+        bool contains = false)
     {
         return InnerContentWithAttr(node, recursive, tag, attr, attrValue, false, contains);
     }
 
-    public static string InnerHtmlWithAttr(HtmlNode node, bool recursive, string tag, string attr, string attrValue, bool contains = false)
+    public static string InnerHtmlWithAttr(HtmlNode node, bool recursive, string tag, string attr, string attrValue,
+        bool contains = false)
     {
         return InnerContentWithAttr(node, recursive, tag, attr, attrValue, true, contains);
     }
 
-    public static string InnerContentWithAttr(HtmlNode node, bool recursive, string tag, string attr, string attrValue, bool html, bool contains = false)
+    public static string InnerContentWithAttr(HtmlNode node, bool recursive, string tag, string attr, string attrValue,
+        bool html, bool contains = false)
     {
-        HtmlNode node2 = HtmlAgilityHelper.NodeWithAttr(node, true, tag, attr, attrValue, contains);
+        var node2 = HtmlAgilityHelper.NodeWithAttr(node, true, tag, attr, attrValue, contains);
         if (node2 != null)
         {
             var c = string.Empty;
             if (html)
-            {
                 c = node2.InnerHtml;
-            }
             else
-            {
                 c = node2.InnerText;
-            }
 
-            return HtmlAssistant.HtmlDecode(c.Trim());
+            return HtmlDecode(c.Trim());
         }
 
         return string.Empty;
@@ -155,18 +131,15 @@ public class HtmlAssistant
 
     public static List<HtmlNode> GetAnyHeader(HtmlNode docs, bool rec, bool stopAfterFirst)
     {
-        List<HtmlNode> hd2 = new List<HtmlNode>();
-        for (int i = 1; i < 7; i++)
+        var hd2 = new List<HtmlNode>();
+        for (var i = 1; i < 7; i++)
         {
             var hd = HtmlAgilityHelper.Node(docs, rec, "h" + i);
 
             if (hd != null)
             {
                 hd2.Add(hd);
-                if (stopAfterFirst)
-                {
-                    break;
-                }
+                if (stopAfterFirst) break;
             }
         }
 
@@ -176,15 +149,11 @@ public class HtmlAssistant
     public static HtmlNode RemoveAllAttrs(HtmlNode img)
     {
         var tagL = img.Name.ToLower();
-        string html = "";
+        var html = "";
         if (AllLists.HtmlNonPairTags.Contains(tagL))
-        {
             html = "<" + tagL + " />";
-        }
         else
-        {
             html = "<" + tagL + "></" + tagL + ">";
-        }
 
         var hn = HtmlNode.CreateNode(html);
         return img.ParentNode.ReplaceChild(hn, img);
@@ -192,17 +161,12 @@ public class HtmlAssistant
 
     public static List<string> AttrsValues(List<HtmlNode> anchors, string v)
     {
-        List<string> result = new List<string>();
+        var result = new List<string>();
 
-        foreach (var item in anchors)
-        {
-            result.Add(HtmlAssistant.GetValueOfAttribute(v, item));
-        }
+        foreach (var item in anchors) result.Add(GetValueOfAttribute(v, item));
 
         return result;
     }
-
-    static Type type = typeof(HtmlAssistant);
 
     public static string InnerTextDecodeTrim(HtmlNode n)
     {
@@ -212,40 +176,29 @@ public class HtmlAssistant
         r = SHReplace.ReplaceAllDoubleSpaceToSingle(r);
         return r;
     }
+
     public static string InnerText(HtmlNode item, bool recursive, string tag)
     {
         var node = HtmlAgilityHelper.Node(item, recursive, tag);
-        if (node == null)
-        {
-            return string.Empty;
-        }
+        if (node == null) return string.Empty;
         return node.InnerText;
     }
 
     public static string InnerHtml(HtmlNode item, bool recursive, string tag)
     {
         var node = HtmlAgilityHelper.Node(item, recursive, tag);
-        if (node == null)
-        {
-            return string.Empty;
-        }
+        if (node == null) return string.Empty;
         return node.InnerHtml;
     }
 
     public static Dictionary<string, string> GetAttributesPairs(string s)
     {
-        if (!s.Contains("<"))
-        {
-            s = "<img " + s + "/>";
-        }
+        if (!s.Contains("<")) s = "<img " + s + "/>";
 
-        Dictionary<string, string> result = new Dictionary<string, string>();
+        var result = new Dictionary<string, string>();
 
-        HtmlNode node = HtmlNode.CreateNode(s);
-        foreach (var item in node.Attributes)
-        {
-            result.Add(item.Name, item.Value);
-        }
+        var node = HtmlNode.CreateNode(s);
+        foreach (var item in node.Attributes) result.Add(item.Name, item.Value);
 
         return result;
     }

@@ -1,8 +1,7 @@
 namespace SunamoHtml._sunamo.SunamoValues.Constants;
 
-
 /// <summary>
-/// plural - as string
+///     plural - as string
 /// </summary>
 internal class HtmlTags
 {

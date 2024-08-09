@@ -2,6 +2,10 @@ namespace SunamoHtml.Html;
 
 public class HtmlHelperText
 {
+    private const string regexHtmlTag = "<[^<>]+>";
+
+    private static Type type = typeof(HtmlHelperText);
+
     public static string ReplacePairTag(string input, string tag, string forWhat)
     {
         input = input.Replace("<" + tag + ">", "<" + forWhat + ">");
@@ -12,7 +16,7 @@ public class HtmlHelperText
 
     public static string InsertMissingEndingTags(string s, string tag)
     {
-        StringBuilder text = new StringBuilder(s);
+        var text = new StringBuilder(s);
 
         var start = SH.ReturnOccurencesOfString(s, "<" + tag);
         var endingTag = "</" + tag + ">";
@@ -24,22 +28,16 @@ public class HtmlHelperText
         if (start.Count > ends.Count)
         {
             // In keys are start, in value end. If end isnt, then -1
-            Dictionary<int, int> se = new Dictionary<int, int>();
+            var se = new Dictionary<int, int>();
 
-            for (int i = start.Count - 1; i >= 0; i--)
+            for (var i = start.Count - 1; i >= 0; i--)
             {
                 var startActual = start[i];
 
                 var endDx = -1;
-                if (ends.Count != 0)
-                {
-                    endDx = ends.Count - 1;
-                }
+                if (ends.Count != 0) endDx = ends.Count - 1;
                 var endActual = -1;
-                if (endDx != -1)
-                {
-                    endActual = ends[endDx];
-                }
+                if (endDx != -1) endActual = ends[endDx];
                 if (startActual > endActual)
                 {
                     se.Add(startActual, -1);
@@ -52,20 +50,14 @@ public class HtmlHelperText
             }
 
             foreach (var item in se)
-            {
                 if (item.Value == -1)
                 {
                     var dexEndOfStart = s.IndexOf(AllChars.gt, item.Key);
 
                     var space = s.IndexOf(AllChars.space, dexEndOfStart);
 
-                    if (space != -1)
-                    {
-
-                        text.Insert(space, endingTag);
-                    }
+                    if (space != -1) text.Insert(space, endingTag);
                 }
-            }
         }
 
         return text.ToString();
@@ -73,19 +65,12 @@ public class HtmlHelperText
 
     public static List<string> CreateH2FromNumberedList(List<string> lines)
     {
-        for (int i = 0; i < lines.Count; i++)
-        {
-            lines[i] = lines[i].Trim();
-        }
+        for (var i = 0; i < lines.Count; i++) lines[i] = lines[i].Trim();
         //CA.Trim(lines);
 
-        for (int i = 0; i < lines.Count; i++)
-        {
+        for (var i = 0; i < lines.Count; i++)
             if (SH.IsNumbered(lines[i]))
-            {
                 lines[i] = WrapWith(lines[i], "h2");
-            }
-        }
 
         return lines;
     }
@@ -96,7 +81,7 @@ public class HtmlHelperText
     }
 
     /// <summary>
-    /// A2 only name like p, title etc.
+    ///     A2 only name like p, title etc.
     /// </summary>
     /// <param name="s"></param>
     /// <param name="v"></param>
@@ -111,39 +96,30 @@ public class HtmlHelperText
         hd.LoadHtml(v);
 
         var nodes = hd.DocumentNode.Descendants().ToList();
-        for (int i = 0; i < nodes.Count(); i++)
+        for (var i = 0; i < nodes.Count(); i++)
         {
-
-
             var node = nodes[i];
 
-            if (node.NodeType != HtmlAgilityPack.HtmlNodeType.Text)
+            if (node.NodeType != HtmlNodeType.Text)
             {
-                if (node.ParentNode.NodeType != HtmlAgilityPack.HtmlNodeType.Document)
-                {
+                if (node.ParentNode.NodeType != HtmlNodeType.Document)
                     node.ParentNode.Remove();
-                }
                 else
-                {
                     node.Remove();
-                }
             }
         }
 
         return hd.DocumentNode.OuterHtml;
     }
 
-    public static Tuple<string, string> GetTextBetweenTags(string c2, string scriptS, string scriptE, bool throwExceptionIfNotContains = true)
+    public static Tuple<string, string> GetTextBetweenTags(string c2, string scriptS, string scriptE,
+        bool throwExceptionIfNotContains = true)
     {
         if (scriptS.EndsWith(">"))
-        {
-            return new Tuple<string, string>(SH.GetTextBetweenSimple(c2, scriptS, scriptE, throwExceptionIfNotContains), "");
-        }
+            return new Tuple<string, string>(SH.GetTextBetweenSimple(c2, scriptS, scriptE, throwExceptionIfNotContains),
+                "");
         var sc = c2.IndexOf(scriptS);
-        if (sc == -1)
-        {
-            return new Tuple<string, string>("", "");
-        }
+        if (sc == -1) return new Tuple<string, string>("", "");
 
         var ending = c2.IndexOf('>', sc);
         var e = c2.IndexOf(scriptE, ending);
@@ -161,25 +137,17 @@ public class HtmlHelperText
 
             if (attrs == " scop")
             {
-
             }
         }
 
         return new Tuple<string, string>(r, attrs);
     }
 
-    private static Type type = typeof(HtmlHelperText);
-
-    const string regexHtmlTag = "<[^<>]+>";
-
     public static List<string> GetAllTags(string i)
     {
         var tags = Regex.Matches(i, regexHtmlTag);
-        List<string> ls = new List<string>();
-        foreach (Match item in tags)
-        {
-            ls.Add(item.Value);
-        }
+        var ls = new List<string>();
+        foreach (Match item in tags) ls.Add(item.Value);
         return ls;
     }
 
@@ -190,24 +158,21 @@ public class HtmlHelperText
 
     public static string RemoveAspxComments(string c)
     {
-        c = Regex.Replace(c, AspxConsts.startAspxComment + ".*?" + AspxConsts.endAspxComment, String.Empty, RegexOptions.Singleline);
+        c = Regex.Replace(c, AspxConsts.startAspxComment + ".*?" + AspxConsts.endAspxComment, string.Empty,
+            RegexOptions.Singleline);
         return c;
     }
 
     public static bool ContainsTag(string s, List<string> allHtmlTagsWithLeftArrow)
     {
         foreach (var item in allHtmlTagsWithLeftArrow)
-        {
             if (s.Contains(item))
-            {
                 return true;
-            }
-        }
         return false;
     }
 
     /// <summary>
-    /// Get type of tag (paired ended, paired not ended, non paired)
+    ///     Get type of tag (paired ended, paired not ended, non paired)
     /// </summary>
     /// <param name="tag"></param>
     public static HtmlTagSyntax GetSyntax(ref string tag)
@@ -217,19 +182,10 @@ public class HtmlHelperText
         tag = SH.GetToFirst((string)tag, AllStrings.space);
         tag = tag.Trim().TrimStart(AllChars.lt).TrimEnd(AllChars.gt).ToLower();
 
-        if (AllLists.HtmlNonPairTags.Contains((string)tag))
-        {
-            return HtmlTagSyntax.NonPairingNotEnded;
-        }
+        if (AllLists.HtmlNonPairTags.Contains((string)tag)) return HtmlTagSyntax.NonPairingNotEnded;
         tag = tag.TrimEnd(AllChars.slash);
-        if (AllLists.HtmlNonPairTags.Contains((string)tag))
-        {
-            return HtmlTagSyntax.NonPairingEnded;
-        }
-        if (tag[tag.Length - 1] == AllChars.slash)
-        {
-            return HtmlTagSyntax.End;
-        }
+        if (AllLists.HtmlNonPairTags.Contains((string)tag)) return HtmlTagSyntax.NonPairingEnded;
+        if (tag[tag.Length - 1] == AllChars.slash) return HtmlTagSyntax.End;
         return HtmlTagSyntax.Start;
     }
 
@@ -243,7 +199,7 @@ public class HtmlHelperText
 
     public static List<string> SplitBySpaceAndLtGt(string shortDescription)
     {
-        var f = SHSplit.SplitMore(shortDescription, new String[] { AllStrings.lt, AllStrings.gt, AllStrings.space });
+        var f = SHSplit.SplitMore(shortDescription, AllStrings.lt, AllStrings.gt, AllStrings.space);
         return f;
     }
 
@@ -255,24 +211,20 @@ public class HtmlHelperText
 
     public static List<string> GetContentOfTags(string text, string pre)
     {
-        List<string> result = new List<string>();
-        string start = $"<{pre}";
-        string end = $"</{pre}>";
-        int dex = text.IndexOf(start);
+        var result = new List<string>();
+        var start = $"<{pre}";
+        var end = $"</{pre}>";
+        var dex = text.IndexOf(start);
         while (dex != -1)
         {
-            int dexEndLetter = text.IndexOf(AllChars.gt, dex);
+            var dexEndLetter = text.IndexOf(AllChars.gt, dex);
 
-            int dex2 = text.IndexOf(start, dex + start.Length);
-            int dexEnd = text.IndexOf(end, dex);
+            var dex2 = text.IndexOf(start, dex + start.Length);
+            var dexEnd = text.IndexOf(end, dex);
 
             if (dex2 != -1)
-            {
                 if (dexEnd > dex2)
-                {
                     throw new Exception($"Another starting tag is before ending <{pre}>");
-                }
-            }
 
             result.Add(SH.GetTextBetweenTwoCharsInts(text, dexEndLetter, dexEnd).Trim());
 
@@ -284,10 +236,7 @@ public class HtmlHelperText
 
     public static bool IsCssDeclarationName(string decl)
     {
-        if (AllLists.allCssKeys.Contains(decl))
-        {
-            return true;
-        }
+        if (AllLists.allCssKeys.Contains(decl)) return true;
         return false;
     }
 
@@ -303,8 +252,9 @@ public class HtmlHelperText
         CAChangeContent.ChangeContent0(null, lines, AddIntoParagraph);
 
         var result = SH.JoinNL(lines);
-        result = result.Replace(endP, endP + AllStrings.cr + AllStrings.nl); // SHReplace.ReplaceAll(result, endP + AllStrings.cr + AllStrings.nl, endP);
-
+        result = result.Replace(endP,
+            endP + AllStrings.cr +
+            AllStrings.nl); // SHReplace.ReplaceAll(result, endP + AllStrings.cr + AllStrings.nl, endP);
 
 
         return result;
@@ -324,35 +274,25 @@ public class HtmlHelperText
         //string s2 = string.Empty;
         if (s[0] == AllChars.lt)
         {
-            var tag = HtmlHelperText.GetFirstTag(s).ToLower();
+            var tag = GetFirstTag(s).ToLower();
 
-            if (AllLists.PairingTagsDontWrapToParagraph.Contains(tag))
-            {
-                return s;
-            }
+            if (AllLists.PairingTagsDontWrapToParagraph.Contains(tag)) return s;
             if (tag.StartsWith(AllStrings.slash))
-            {
                 if (AllLists.PairingTagsDontWrapToParagraph.Contains(tag.Substring(1)))
-                {
                     return s;
-                }
-            }
 
             //s2 = s.Substring(1);
         }
+
         return WrapWith(s, "p");
     }
 
 
-
     private static string GetFirstTag(string s)
     {
-        var between = SH.GetTextBetweenSimple(s, AllStrings.lt, AllStrings.gt, true);
+        var between = SH.GetTextBetweenSimple(s, AllStrings.lt, AllStrings.gt);
 
-        if (between.Contains(AllStrings.space))
-        {
-            return SH.GetToFirst(between, AllStrings.space);
-        }
+        if (between.Contains(AllStrings.space)) return SH.GetToFirst(between, AllStrings.space);
         return between;
     }
 }

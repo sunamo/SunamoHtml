@@ -8,11 +8,8 @@ internal class UH
 
     internal static string AppendHttpIfNotExists(string p)
     {
-        string p2 = p;
-        if (!p.StartsWith("http"))
-        {
-            p2 = "http://" + p;
-        }
+        var p2 = p;
+        if (!p.StartsWith("http")) p2 = "http://" + p;
 
         return p2;
     }

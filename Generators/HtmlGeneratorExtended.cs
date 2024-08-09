@@ -1,9 +1,8 @@
 namespace SunamoHtml.Generators;
 
-
 public class HtmlGeneratorExtended : HtmlGenerator
 {
-    static Type type = typeof(HtmlGeneratorExtended);
+    private static Type type = typeof(HtmlGeneratorExtended);
 
     public void DetailAnchor(string label, string oUriYouthProfile, string oNameYouthProfile)
     {
@@ -21,6 +20,7 @@ public class HtmlGeneratorExtended : HtmlGenerator
                 WriteRaw(oNameYouthProfile);
                 TerminateTag("a");
             }
+
             WriteBr();
         }
     }
@@ -62,11 +62,11 @@ public class HtmlGeneratorExtended : HtmlGenerator
 
     public
 #if ASYNC
-    async Task
+        async Task
 #else
 void
 #endif
-    BoilerplateStart(BoilerplateStartArgs a)
+        BoilerplateStart(BoilerplateStartArgs a)
     {
         throw new Exception();
 

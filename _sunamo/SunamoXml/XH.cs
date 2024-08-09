@@ -1,4 +1,5 @@
 namespace SunamoHtml._sunamo.SunamoXml;
+
 internal class XH
 {
     internal static string RemoveXmlDeclaration(string vstup)

@@ -1,9 +1,8 @@
 namespace SunamoHtml._sunamo.SunamoValues.Constants;
 
-
 /// <summary>
-/// plural - as string
-/// all have be lower - even if defaultly is upper case (like web forms)
+///     plural - as string
+///     all have be lower - even if defaultly is upper case (like web forms)
 /// </summary>
 internal class HtmlAttrs
 {
@@ -14,10 +13,17 @@ internal class HtmlAttrs
     internal const string id = "id";
     internal const string type = "type";
     internal const string rel = "rel";
+    internal const string uibTooltip = "uib-tooltip";
+    internal const string dataType = "data-type";
+    internal const string dataDescription = "data-description";
+    internal const string dataTitle = "data-title";
+    internal const string dataMedia = "data-media";
+
     /// <summary>
-    /// cant name it class due to mass replacing of class
+    ///     cant name it class due to mass replacing of class
     /// </summary>
     internal static string c = "class";
+
     internal static string runat = "runat";
     internal static string textmode = "textmode";
     internal static string maxlength = "maxlength";
@@ -48,9 +54,4 @@ internal class HtmlAttrs
     internal static string keywords = "keywords";
     internal static string placeholder = "placeholder";
     internal static string ariaLabel = "aria-label";
-    internal const string uibTooltip = "uib-tooltip";
-    internal const string dataType = "data-type";
-    internal const string dataDescription = "data-description";
-    internal const string dataTitle = "data-title";
-    internal const string dataMedia = "data-media";
 }
