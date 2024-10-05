@@ -29,7 +29,6 @@ global using SunamoHtml._sunamo.SunamoStringReplace;
 global using SunamoHtml._sunamo.SunamoStringSplit;
 global using SunamoHtml._sunamo.SunamoUri;
 global using SunamoHtml._sunamo.SunamoValues;
-
 global using SunamoHtml._sunamo.SunamoXml;
 global using SunamoHtml._public.SunamoData.Data;
 global using SunamoHtml._public.SunamoEnums.Enums;
