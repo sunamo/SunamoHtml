@@ -6,7 +6,7 @@ public class HtmlTableParser
     /// <summary>
     ///     Pokud se bude v prvku vyskytovat null, jednalo se o colspan
     /// </summary>
-    public string[,] data;
+    public string[,] data { get; set; }
 
     /// <summary>
     /// </summary>

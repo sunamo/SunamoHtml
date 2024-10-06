@@ -48,7 +48,7 @@ public class HtmlAgilityHelper
 
     public static HtmlNode Node(HtmlNode node, bool recursive, string tag)
     {
-        return Nodes(node, recursive, true, tag).First();
+        return Nodes(node, recursive, true, tag).FirstOrDefault();
     }
 
     #endregion
