@@ -1,3 +1,5 @@
+using TextCopy;
+
 namespace SunamoHtml;
 
 /// <summary>
@@ -325,7 +327,12 @@ public class HtmlAgilityHelper
     private static bool HasTagName(HtmlNode hn, string tag)
     {
         if (tag == AllStrings.asterisk) return true;
-        return hn.Name == tag;
+        var result = hn.Name == tag;
+        //if (!result && hn.Name != "a")
+        //{
+        //    Debugger.Break();
+        //}
+        return result;
     }
 
     private static bool HasTagAttr(HtmlNode item, string atribut, string hodnotaAtributu, bool isWildCard,
@@ -446,17 +453,51 @@ public class HtmlAgilityHelper
         /*
 isWildCard -
          */
+#if DEBUG
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine("Text nodes:");
+        sb.AppendLine();
+        foreach (var item in htmlNode.ChildNodes)
+        {
+            if (item.Name != "#text")
+            {
+                continue;
+            }
+
+            sb.AppendLine(item.OuterHtml);
+            sb.AppendLine();
+            sb.AppendLine();
+            sb.AppendLine();
+            sb.AppendLine();
+            sb.AppendLine();
+            sb.AppendLine();
+            sb.AppendLine();
+            sb.AppendLine();
+            sb.AppendLine();
+            sb.AppendLine();
+            sb.AppendLine();
+            sb.AppendLine();
+
+        }
+
+        ClipboardService.SetText(sb.ToString());
+#endif
+
+
+
+        var childNodeWithoutText = TrimTexts(htmlNode.ChildNodes);
         p = p.ToLower();
         //atribut = atribut.ToLower();
         //hodnotaAtributu = atribut.ToLower();
         if (htmlNode == null) return;
-        foreach (var item in htmlNode.ChildNodes)
+        foreach (var item in childNodeWithoutText)
         {
             var attrValue = HtmlHelper.GetValueOfAttribute(atribut, item);
             if (HasTagName(item, p))
             {
                 if (HasTagAttr(item, atribut, hodnotaAtributu, isWildCard, enoughIsContainsAttribute,
-                        searchAsSingleString)) vr.Add(item);
+                        searchAsSingleString))
+                    vr.Add(item);
                 if (recursively)
                     RecursiveReturnTagsWithContainsAttr(vr, item, recursively, p, atribut, hodnotaAtributu, isWildCard,
                         enoughIsContainsAttribute, searchAsSingleString);
