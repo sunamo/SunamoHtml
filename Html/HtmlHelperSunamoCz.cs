@@ -1,5 +1,4 @@
 namespace SunamoHtml.Html;
-
 public class HtmlHelperSunamoCz
 {
     private static Type type = typeof(HtmlHelperSunamoCz);
@@ -47,8 +46,7 @@ public class HtmlHelperSunamoCz
 
         if (isOdd)
         {
-            var exc = Exc.GetStackTrace();
-            var cm = Exc.CallingMethod();
+            var cm = Exceptions.CallingMethod();
             var b2 = Exceptions.IsOdd(string.Empty, "bold", bold);
             var i2 = Exceptions.IsOdd(string.Empty, "italic", italic);
             var s2 = Exceptions.IsOdd(string.Empty, "strike", strike);
