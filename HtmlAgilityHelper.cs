@@ -1,6 +1,6 @@
+namespace SunamoHtml;
 using TextCopy;
 
-namespace SunamoHtml;
 /// <summary>
 ///     HtmlHelperText - for methods which NOT operate on HtmlAgiityHelper!
 ///     HtmlAgilityHelper - getting new nodes
@@ -146,33 +146,33 @@ public class HtmlAgilityHelper
     public static string WrapIntoTagIfNot(string input, string tag = HtmlTags.div)
     {
         input = input.Trim();
-        if (input[0] != AllChars.lt) input = WrapIntoTag(tag, input);
+        if (input[0] != '<') input = WrapIntoTag(tag, input);
         return input;
     }
 
     private static string WrapIntoTag(string div, string input)
     {
         var sb = new StringBuilder();
-        sb.Append(AllChars.lt);
+        sb.Append('<');
         sb.Append(div);
-        sb.Append(AllChars.gt);
+        sb.Append('>');
         sb.Append(input);
-        sb.Append(AllChars.lt + string.Empty + AllChars.slash);
+        sb.Append('<' + string.Empty + '/');
         sb.Append(div);
-        sb.Append(AllChars.gt);
+        sb.Append('>');
         return sb.ToString();
     }
 
     public static void InsertGroup(HtmlNode insertAfter, List<string> list)
     {
-        foreach (var item in list) insertAfter.InnerHtml += SH.WrapWithChar(item, AllChars.space);
+        foreach (var item in list) insertAfter.InnerHtml += SH.WrapWithChar(item, ' ');
         //insertAfter = insertAfter.ParentNode.InsertAfter(CreateNode(item), insertAfter);
         insertAfter.InnerHtml = SHReplace.ReplaceAllDoubleSpaceToSingle(insertAfter.InnerHtml).Trim();
     }
 
     public static HtmlNode CreateNode(string html)
     {
-        if (!RegexHelper.rHtmlTag.IsMatch(html)) html = SH.WrapWithChar(html, AllChars.space);
+        if (!RegexHelper.rHtmlTag.IsMatch(html)) html = SH.WrapWithChar(html, ' ');
         return HtmlNode.CreateNode(html);
     }
 
@@ -188,7 +188,7 @@ public class HtmlAgilityHelper
          */
         var vr = new List<HtmlNode>();
         var allNodes = new List<HtmlNode>();
-        RecursiveReturnTags(allNodes, node, true, false, AllStrings.asterisk);
+        RecursiveReturnTags(allNodes, node, true, false, "*");
         foreach (var item in allNodes)
             if (item.Name == textNode)
                 if (!dontHaveAsParentTag.Any(d =>
@@ -325,7 +325,7 @@ public class HtmlAgilityHelper
     /// <param name="tag"></param>
     private static bool HasTagName(HtmlNode hn, string tag)
     {
-        if (tag == AllStrings.asterisk) return true;
+        if (tag == "*") return true;
         var result = hn.Name == tag;
         //if (!result && hn.Name != "a")
         //{
@@ -337,7 +337,7 @@ public class HtmlAgilityHelper
     private static bool HasTagAttr(HtmlNode item, string atribut, string hodnotaAtributu, bool isWildCard,
         bool enoughIsContainsAttribute, bool searchAsSingleString)
     {
-        if (hodnotaAtributu == AllStrings.asterisk) return true;
+        if (hodnotaAtributu == "*") return true;
         var contains = false;
         var attrValue = HtmlHelper.GetValueOfAttribute(atribut, item);
         if (enoughIsContainsAttribute)
@@ -353,7 +353,7 @@ public class HtmlAgilityHelper
             else
             {
                 var cont = true;
-                var p = SHSplit.SplitMore(hodnotaAtributu, AllStrings.space);
+                var p = SHSplit.SplitMore(hodnotaAtributu, "");
                 foreach (var item2 in p)
                     if (!attrValue.Contains(item2))
                     {

@@ -52,9 +52,9 @@ public class HtmlHelperText
             foreach (var item in se)
                 if (item.Value == -1)
                 {
-                    var dexEndOfStart = s.IndexOf(AllChars.gt, item.Key);
+                    var dexEndOfStart = s.IndexOf('>', item.Key);
 
-                    var space = s.IndexOf(AllChars.space, dexEndOfStart);
+                    var space = s.IndexOf(' ', dexEndOfStart);
 
                     if (space != -1) text.Insert(space, endingTag);
                 }
@@ -87,7 +87,7 @@ public class HtmlHelperText
     /// <param name="v"></param>
     private static string WrapWith(string s, string p)
     {
-        return AllStrings.lt + p + AllStrings.gt + s + "</" + p + AllStrings.gt;
+        return "<" + p + ">" + s + "</" + p + ">";
     }
 
     public static string RemoveAllNodes(string v)
@@ -153,7 +153,7 @@ public class HtmlHelperText
 
     public static string RemoveHtmlTags(string ClipboardS2)
     {
-        return SHReplace.ReplaceAll(HtmlHelper.RemoveAllTags(ClipboardS2), AllStrings.space, AllStrings.doubleSpace);
+        return SHReplace.ReplaceAll(HtmlHelper.RemoveAllTags(ClipboardS2), "", "");
     }
 
     public static string RemoveAspxComments(string c)
@@ -179,13 +179,13 @@ public class HtmlHelperText
     {
         ThrowEx.InvalidParameter((string)tag, "tag");
 
-        tag = SH.GetToFirst((string)tag, AllStrings.space);
-        tag = tag.Trim().TrimStart(AllChars.lt).TrimEnd(AllChars.gt).ToLower();
+        tag = SH.GetToFirst((string)tag, "");
+        tag = tag.Trim().TrimStart('<').TrimEnd('>').ToLower();
 
         if (AllLists.HtmlNonPairTags.Contains((string)tag)) return HtmlTagSyntax.NonPairingNotEnded;
-        tag = tag.TrimEnd(AllChars.slash);
+        tag = tag.TrimEnd('/');
         if (AllLists.HtmlNonPairTags.Contains((string)tag)) return HtmlTagSyntax.NonPairingEnded;
-        if (tag[tag.Length - 1] == AllChars.slash) return HtmlTagSyntax.End;
+        if (tag[tag.Length - 1] == '/') return HtmlTagSyntax.End;
         return HtmlTagSyntax.Start;
     }
 
@@ -199,7 +199,7 @@ public class HtmlHelperText
 
     public static List<string> SplitBySpaceAndLtGt(string shortDescription)
     {
-        var f = SHSplit.SplitMore(shortDescription, AllStrings.lt, AllStrings.gt, AllStrings.space);
+        var f = SHSplit.SplitMore(shortDescription, "<", ">", "");
         return f;
     }
 
@@ -217,7 +217,7 @@ public class HtmlHelperText
         var dex = text.IndexOf(start);
         while (dex != -1)
         {
-            var dexEndLetter = text.IndexOf(AllChars.gt, dex);
+            var dexEndLetter = text.IndexOf('>', dex);
 
             var dex2 = text.IndexOf(start, dex + start.Length);
             var dexEnd = text.IndexOf(end, dex);
@@ -240,10 +240,8 @@ public class HtmlHelperText
         return false;
     }
 
-    public static string ConvertTextToHtml(string text)
+    public static string ConvertTextToHtml(List<string> lines)
     {
-        var lines = SHGetLines.GetLines(text);
-
         //CA.RemoveStringsEmpty2(lines);
         lines = lines.Where(d => !string.IsNullOrWhiteSpace(d)).ToList();
 
@@ -253,8 +251,8 @@ public class HtmlHelperText
 
         var result = SH.JoinNL(lines);
         result = result.Replace(endP,
-            endP + AllStrings.cr +
-            AllStrings.nl); // SHReplace.ReplaceAll(result, endP + AllStrings.cr + AllStrings.nl, endP);
+            endP + "\r" +
+            "\n"); // SHReplace.ReplaceAll(result, endP + "\r" + "\n", endP);
 
 
         return result;
@@ -272,12 +270,12 @@ public class HtmlHelperText
         }
 
         //string s2 = string.Empty;
-        if (s[0] == AllChars.lt)
+        if (s[0] == '<')
         {
             var tag = GetFirstTag(s).ToLower();
 
             if (AllLists.PairingTagsDontWrapToParagraph.Contains(tag)) return s;
-            if (tag.StartsWith(AllStrings.slash))
+            if (tag.StartsWith("/"))
                 if (AllLists.PairingTagsDontWrapToParagraph.Contains(tag.Substring(1)))
                     return s;
 
@@ -290,9 +288,9 @@ public class HtmlHelperText
 
     private static string GetFirstTag(string s)
     {
-        var between = SH.GetTextBetweenSimple(s, AllStrings.lt, AllStrings.gt);
+        var between = SH.GetTextBetweenSimple(s, "<", ">");
 
-        if (between.Contains(AllStrings.space)) return SH.GetToFirst(between, AllStrings.space);
+        if (between.Contains("")) return SH.GetToFirst(between, "");
         return between;
     }
 }

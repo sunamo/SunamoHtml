@@ -137,7 +137,7 @@ public class XmlGeneratorHtml
 
     private bool IsNulledOrEmpty(string s)
     {
-        if (string.IsNullOrEmpty(s) || s == Consts.nulled) return true;
+        if (string.IsNullOrEmpty(s) || s == "(null)") return true;
         return false;
     }
 
@@ -162,7 +162,7 @@ public class XmlGeneratorHtml
         }
 
         sb.Append(" /");
-        sb.Append(AllStrings.gt);
+        sb.Append(">");
         var r = sb.ToString();
         if (_useStack) _stack.Push(r);
         this.sb.Append(r);
@@ -182,7 +182,7 @@ public class XmlGeneratorHtml
                     sb.AppendFormat("{0}=\"{1}\" ", attr, val);
         }
 
-        sb.Append(AllStrings.gt);
+        sb.Append(">");
         var r = sb.ToString();
         if (_useStack) _stack.Push(r);
         this.sb.Append(r);

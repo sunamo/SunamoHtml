@@ -1,5 +1,6 @@
 namespace SunamoHtml.Html;
 
+
 public static class HtmlHelper
 {
     private static Type type = typeof(HtmlHelper);
@@ -17,14 +18,14 @@ public static class HtmlHelper
 
         foreach (Match item in mc)
         {
-            var d = item.Value.Replace(" >", AllStrings.gt);
+            var d = item.Value.Replace(" >", ">");
             var tag = "";
-            if (item.Value.Contains(AllStrings.space))
-                tag = SH.GetFirstPartByLocation(item.Value, AllChars.space);
+            if (item.Value.Contains(""))
+                tag = SH.GetFirstPartByLocation(item.Value, ' ');
             else
-                tag = d.Replace(AllStrings.slash, "").Replace(AllStrings.gt, "");
+                tag = d.Replace("/", "").Replace(">", "");
 
-            tag = tag.TrimStart(AllChars.lt).Trim().ToLower();
+            tag = tag.TrimStart('<').Trim().ToLower();
             if (col.Contains(tag))
                 if (!item.Value.Contains("/>"))
                     if (!jizNahrazeno.Contains(item.Value))
@@ -47,7 +48,7 @@ public static class HtmlHelper
 
     public static string PrepareToAttribute(string title)
     {
-        return title.Replace(AllChars.qm, AllChars.apostrophe);
+        return title.Replace('"', '\'');
     }
 
     public static string ReplaceAllFontCase(string r)
@@ -71,7 +72,7 @@ public static class HtmlHelper
 
     public static string ClearSpaces(string dd)
     {
-        return dd.Replace("&nbsp;", AllStrings.space).Replace(AllStrings.doubleSpace, AllStrings.space);
+        return dd.Replace("&nbsp;", "").Replace("", "");
     }
 
     private static void RecursiveReturnTagWithAttr(List<HtmlNode> vr, HtmlNode htmlNode, string tag, string attr,
@@ -154,8 +155,8 @@ public static class HtmlHelper
     /// <param name="nameOfTag"></param>
     public static string TrimOpenAndEndTags(string html, string nameOfTag)
     {
-        html = html.Replace(AllStrings.lt + nameOfTag + AllStrings.gt, "");
-        html = html.Replace("</" + nameOfTag + AllStrings.gt, "");
+        html = html.Replace("<" + nameOfTag + ">", "");
+        html = html.Replace("</" + nameOfTag + ">", "");
         return html;
     }
 
@@ -237,8 +238,10 @@ public static class HtmlHelper
 
                 var naKazdeStrane = maxPocetPismenNaVetu / 2;
 
+                WhitespaceCharService whitespaceChar = new();
+
                 var veta = SH.XCharsBeforeAndAfterWholeWords(
-                    SHReplace.ReplaceAllArray(celyObsah, AllStrings.space, AllStrings.whiteSpacesChars.ToArray()),
+                    SHReplace.ReplaceAllArray(celyObsah, " ", whitespaceChar.whiteSpaceChars.ConvertAll(d => d.ToString()).ToArray()),
                     stred, naKazdeStrane);
 
                 // Teď zvýrazním nalezené slova
@@ -282,7 +285,7 @@ public static class HtmlHelper
     /// <param name="p"></param>
     public static string StripAllTags(string p)
     {
-        return StripAllTags(p, AllStrings.doubleSpace);
+        return StripAllTags(p, "");
     }
 
     public static string StripAllTags(string p, string replaceFor)
@@ -452,7 +455,7 @@ public static class HtmlHelper
     /// <param name="tag"></param>
     private static bool HasTagName(HtmlNode hn, string tag)
     {
-        if (tag == AllStrings.asterisk) return true;
+        if (tag == "*") return true;
         return hn.Name == tag;
     }
 
@@ -485,7 +488,7 @@ public static class HtmlHelper
     private static bool HasTagAttr(HtmlNode item, string atribut, string hodnotaAtributu,
         bool enoughIsContainsAttribute)
     {
-        if (hodnotaAtributu == AllStrings.asterisk) return true;
+        if (hodnotaAtributu == "*") return true;
         var contains = false;
         var attrValue = GetValueOfAttribute(atribut, item);
         if (enoughIsContainsAttribute)
@@ -585,8 +588,8 @@ public static class HtmlHelper
     /// <param name="d"></param>
     public static List<string> StripAllTagsList(string d)
     {
-        var replaced = StripAllTags(d, AllStrings.doubleSpace);
-        return SHSplit.SplitMore(replaced, AllStrings.doubleSpace);
+        var replaced = StripAllTags(d, "");
+        return SHSplit.SplitMore(replaced, "");
     }
 
     /// <summary>
@@ -595,7 +598,7 @@ public static class HtmlHelper
     /// <param name="p"></param>
     public static string StripAllTagsSpace(string p)
     {
-        return Regex.Replace(p, @"<[^>]*>", AllStrings.space);
+        return Regex.Replace(p, @"<[^>]*>", "");
     }
 
     /// <summary>
@@ -702,13 +705,13 @@ public static class HtmlHelper
     {
         var vr = new Dictionary<string, string>();
         var at = GetValueOfAttribute("style", item);
-        if (at.Contains(AllStrings.sc))
+        if (at.Contains(";"))
         {
-            var d = SHSplit.SplitMore(at, AllStrings.sc);
+            var d = SHSplit.SplitMore(at, ";");
             foreach (var item2 in d)
-                if (item2.Contains(AllStrings.colon))
+                if (item2.Contains(":"))
                 {
-                    var r = SHSplit.SplitNone(item2, AllStrings.colon);
+                    var r = SHSplit.SplitNone(item2, ":");
                     vr.Add(r[0].Trim().ToLower(), r[1].Trim().ToLower());
                 }
         }
@@ -944,7 +947,7 @@ public static class HtmlHelper
     public static List<HtmlNode> ReturnTagsWithContainsClassRek(HtmlNode htmlNode, string tag, string t)
     {
         var vr = new List<HtmlNode>();
-        RecursiveReturnTagsWithContainsAttrWithSplittedElement(vr, htmlNode, tag, "class", t, AllStrings.space);
+        RecursiveReturnTagsWithContainsAttrWithSplittedElement(vr, htmlNode, tag, "class", t, "");
         return vr;
     }
 }

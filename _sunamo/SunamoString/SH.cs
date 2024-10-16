@@ -28,7 +28,7 @@ internal class SH
 
     internal static string NullToStringOrDefault(object n)
     {
-        return n == null ? " " + Consts.nulled : AllStrings.space + n;
+        return n == null ? " " + "(null)" : "" + n;
     }
 
     internal static string TrimEnd(string name, string ext)
@@ -47,7 +47,7 @@ internal class SH
 
         if (jeDelsiA1)
         {
-            if (IsInLastXCharsTheseLetters(p, p_2, AllChars.space))
+            if (IsInLastXCharsTheseLetters(p, p_2, ' '))
             {
                 var dexMezery = 0;
                 var d = p; //p.Substring(p.Length - zkratitO);
@@ -58,7 +58,7 @@ internal class SH
                 {
                     napocitano++;
 
-                    if (d[i] == AllChars.space)
+                    if (d[i] == ' ')
                     {
                         if (napocitano >= p_2) break;
 
@@ -187,7 +187,7 @@ internal class SH
 
         if (jeDelsiA1)
         {
-            if (IsInFirstXCharsTheseLetters(p, p_2, AllChars.space))
+            if (IsInFirstXCharsTheseLetters(p, p_2, ' '))
             {
                 var dexMezery = 0;
                 var d = p; //p.Substring(p.Length - zkratitO);
@@ -198,7 +198,7 @@ internal class SH
                 {
                     napocitano++;
 
-                    if (d[i] == AllChars.space)
+                    if (d[i] == ' ')
                     {
                         if (napocitano >= p_2) break;
 
@@ -286,14 +286,14 @@ internal class SH
         for (var i = stred - 1; i >= 0; i--)
         {
             var ch = celyObsah[i];
-            if (ch == AllChars.space)
+            if (ch == ' ')
             {
                 var ts = slovo.ToString();
                 slovo.Clear();
                 if (ts != "")
                 {
-                    leva.Insert(0, ts + AllStrings.space);
-                    if (leva.Length + AllStrings.space.Length + ts.Length > naKazdeStrane) break;
+                    leva.Insert(0, ts + "");
+                    if (leva.Length + "".Length + ts.Length > naKazdeStrane) break;
                 }
             }
             else
@@ -302,22 +302,22 @@ internal class SH
             }
         }
 
-        var l = slovo + AllStrings.space + leva.ToString().TrimEnd(AllChars.space);
-        l = l.TrimEnd(AllChars.space);
+        var l = slovo + "" + leva.ToString().TrimEnd(' ');
+        l = l.TrimEnd(' ');
         naKazdeStrane += naKazdeStrane - l.Length;
         slovo.Clear();
         // Počítám po pravé straně započítám i to středové písmenko
         for (var i = stred; i < celyObsah.Length; i++)
         {
             var ch = celyObsah[i];
-            if (ch == AllChars.space)
+            if (ch == ' ')
             {
                 var ts = slovo.ToString();
                 slovo.Clear();
                 if (ts != "")
                 {
-                    prava.Append(AllStrings.space + ts);
-                    if (prava.Length + AllStrings.space.Length + ts.Length > naKazdeStrane) break;
+                    prava.Append("" + ts);
+                    if (prava.Length + "".Length + ts.Length > naKazdeStrane) break;
                 }
             }
             else
@@ -326,11 +326,11 @@ internal class SH
             }
         }
 
-        var p = prava.ToString().TrimStart(AllChars.space) + AllStrings.space + slovo;
-        p = p.TrimStart(AllChars.space);
+        var p = prava.ToString().TrimStart(' ') + "" + slovo;
+        p = p.TrimStart(' ');
         var vr = "";
-        if (celyObsah.Contains(l + AllStrings.space) && celyObsah.Contains(AllStrings.space + p))
-            vr = l + AllStrings.space + p;
+        if (celyObsah.Contains(l + "") && celyObsah.Contains("" + p))
+            vr = l + "" + p;
         else
             vr = l + p;
         return vr;
@@ -355,7 +355,7 @@ internal class SH
             {
                 i++;
             }
-            else if (item == AllChars.dot)
+            else if (item == '.')
             {
                 if (i > 0) return true;
             }
@@ -377,7 +377,7 @@ internal class SH
 
     internal static string FirstCharOfEveryWordUpperDash(string v)
     {
-        return FirstCharOfEveryWordUpper(v, AllChars.dash);
+        return FirstCharOfEveryWordUpper(v, '-');
     }
 
 
@@ -391,12 +391,12 @@ internal class SH
         var p = SHSplit.SplitCharMore(v, dash);
         for (var i = 0; i < p.Count; i++) p[i] = FirstCharUpper(p[i]);
         //p = CAChangeContent.ChangeContent0(null, p, FirstCharUpper);
-        return string.Join(AllStrings.space, p);
+        return string.Join("", p);
     }
 
     internal static bool MatchWildcard(string name, string mask)
     {
-        return IsMatchRegex(name, mask, AllChars.q, AllChars.asterisk);
+        return IsMatchRegex(name, mask, '?', '*');
     }
 
     private static bool IsMatchRegex(string str, string pat, char singleWildcard, char multipleWildcard)
@@ -407,7 +407,7 @@ internal class SH
         var escapedSingle = Regex.Escape(new string(singleWildcard, 1));
         var escapedMultiple = Regex.Escape(new string(multipleWildcard, 1));
         pat = Regex.Escape(pat);
-        pat = pat.Replace(escapedSingle, AllStrings.dot);
+        pat = pat.Replace(escapedSingle, ".");
         pat = "^" + pat.Replace(escapedMultiple, ".*") + "$";
         var reg = new Regex(pat);
         return reg.IsMatch(str);
@@ -469,24 +469,24 @@ internal class SH
     ///     ReturnOccurencesOfString - string
     /// </summary>
     /// <param name="input"></param>
-    /// <param name="whiteSpacesChars"></param>
+    /// <param name="whiteSpaceChars"></param>
     /// <returns></returns>
-    internal static List<int> IndexesOfCharsList(string input, List<char> whiteSpacesChars)
+    internal static List<int> IndexesOfCharsList(string input, List<char> whiteSpaceChars)
     {
         var dx = new List<int>();
-        foreach (var item in whiteSpacesChars) dx.AddRange(ReturnOccurencesOfString(input, item.ToString()));
+        foreach (var item in whiteSpaceChars) dx.AddRange(ReturnOccurencesOfString(input, item.ToString()));
         dx.Sort();
         return dx;
     }
 
     internal static string NormalizeString(string s)
     {
-        if (s.Contains(AllChars.nbsp))
+        if (s.Contains((char)160))
         {
             var sb = new StringBuilder();
             foreach (var item in s)
-                if (item == AllChars.nbsp)
-                    sb.Append(AllChars.space);
+                if (item == (char)160)
+                    sb.Append(' ');
                 else
                     sb.Append(item);
             return sb.ToString();
@@ -506,7 +506,7 @@ internal class SH
             // 32 space
             var ch = subs[0];
             var ch2 = co[0];
-            if (subs == AllStrings.space)
+            if (subs == "")
             {
             }
 

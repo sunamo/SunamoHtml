@@ -8,5 +8,5 @@ internal class AspxConsts
     internal static readonly string endHtmlComment = "-->";
 
     internal static readonly List<string> all = new List<string>([startAspxComment, endAspxComment, startHtmlComment,
-        endHtmlComment, AllStrings.gt, AllStrings.lt]);
+        endHtmlComment, ">", "<"]);
 }

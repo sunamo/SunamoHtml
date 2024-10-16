@@ -13,8 +13,8 @@ internal class XHelper
 
             if (withPrexixedXmlnsColon)
             {
-                if (item == string.Empty || item == Consts.xmlns)
-                    item = Consts.xmlns;
+                if (item == string.Empty || item == "xmlns")
+                    item = "xmlns";
                 else
                     item = "xmlns:" + item;
             }

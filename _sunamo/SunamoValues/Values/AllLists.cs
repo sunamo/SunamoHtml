@@ -13,10 +13,10 @@ internal class AllLists
     /// </summary>
     internal static Dictionary<string, string> htmlEntitiesFullNames;
 
-    internal static List<char> leftBrackets = CAGConsts.ToList(AllChars.lb, AllChars.lcub, AllChars.lsqb);
-    internal static List<char> rightBrackets = CAGConsts.ToList(AllChars.rb, AllChars.rcub, AllChars.rsqb);
-    internal static List<string> leftBracketsS = CAGConsts.ToList(AllStrings.lb, AllStrings.lcub, AllStrings.lsqb);
-    internal static List<string> rightBracketsS = CAGConsts.ToList(AllStrings.rb, AllStrings.rcub, AllStrings.rsqb);
+    internal static List<char> leftBrackets = CAGConsts.ToList('(', '{', '[');
+    internal static List<char> rightBrackets = CAGConsts.ToList(')', '}', ']');
+    internal static List<string> leftBracketsS = CAGConsts.ToList("(", "{", "[");
+    internal static List<string> rightBracketsS = CAGConsts.ToList(")", "}", "]");
     internal static List<string> featUpper = new List<string>(["Feat.", "Featuring", "Ft."]);
     internal static List<string> featLower = new List<string>(["feat.", "featuring", "ft."]);
     internal static List<string> OstravaCityParts = null;
@@ -155,7 +155,7 @@ internal class AllLists
     internal static readonly List<string> cssTemplatesSites = new List<string>(["justfreetemplates.com",
         "templatemo.com", "free-css.com", "templated.co", "w3layouts.com"]);
 
-    internal static readonly List<string> numberPoints = new() { AllStrings.comma, AllStrings.dot };
+    internal static readonly List<string> numberPoints = new() { ",", "." };
 
     static AllLists()
     {

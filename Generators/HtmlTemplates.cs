@@ -53,7 +53,7 @@ public static class HtmlTemplates
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static string a(string href, string displayText)
     {
-        return "<a href=\"" + href + AllStrings.gt + displayText + "</a>";
+        return "<a href=\"" + href + ">" + displayText + "</a>";
     }
 
     public static string trColspan2(string name, string value, bool pridavatDvojtecku)

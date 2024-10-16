@@ -6,12 +6,12 @@ public class HtmlHelperSunamoCz
     public static string ConvertTextToHtmlWithAnchors(string p, ref string error)
     {
         const string li = "li";
-        p = p.Replace(AllStrings.dash + li, AllStrings.space + li);
+        p = p.Replace("-" + li, "" + li);
 
         p = HtmlHelper.ConvertTextToHtml(p);
 
         p = p.Replace("<", " <");
-        var d = SHSplit.SplitAndKeepDelimiters(p, new List<char>([AllChars.space, AllChars.lt, AllChars.gt])
+        var d = SHSplit.SplitAndKeepDelimiters(p, new List<char>([' ', '<', '>'])
             .ConvertAll(d => d.ToString()));
 
         for (var i = 0; i < d.Count; i++)
@@ -21,7 +21,7 @@ public class HtmlHelperSunamoCz
             {
                 var res = item;
                 res = HtmlGenerator2.AnchorWithHttp(res);
-                d[i] = AllStrings.space + res + AllStrings.space;
+                d[i] = "" + res + "";
             }
         }
 
@@ -89,11 +89,11 @@ public class HtmlHelperSunamoCz
 
     public static string ConvertTextToHtmlWithAnchors(string p)
     {
-        var d = SHSplit.SplitNoneChar(HtmlHelper.ConvertTextToHtml(p), AllChars.space);
+        var d = SHSplit.SplitNoneChar(HtmlHelper.ConvertTextToHtml(p), ' ');
         for (var i = 0; i < d.Count; i++)
             if (d[i].StartsWith("http://") || d[i].StartsWith("https://"))
                 d[i] = HtmlGenerator2.AnchorWithHttp(d[i]);
-        return string.Join(AllChars.space, d);
+        return string.Join(' ', d);
     }
 
 

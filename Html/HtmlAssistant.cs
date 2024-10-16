@@ -16,7 +16,7 @@ public class HtmlAssistant
 
     /// <summary>
     ///     return se if wont be found
-    ///     return (null) Consts.nulled when attr exists without value (input readonly atc.)
+    ///     return (null) "(null)" when attr exists without value (input readonly atc.)
     /// </summary>
     /// <param name="p"></param>
     /// <param name="divMain"></param>
@@ -29,7 +29,7 @@ public class HtmlAssistant
             var st = ((HtmlAttribute)o).Value;
             if (_trim) st = st.Trim();
 
-            if (st == string.Empty) return Consts.nulled;
+            if (st == string.Empty) return "(null)";
 
             return st;
         }
@@ -171,7 +171,7 @@ public class HtmlAssistant
     public static string InnerTextDecodeTrim(HtmlNode n)
     {
         var r = n.InnerText.Trim();
-        r = SHReplace.ReplaceWhiteSpacesWithoutSpacesWithReplaceWith(r, AllStrings.space);
+        r = SHReplace.ReplaceWhiteSpacesWithoutSpacesWithReplaceWith(r, "");
         r = WebUtility.HtmlDecode(r);
         r = SHReplace.ReplaceAllDoubleSpaceToSingle(r);
         return r;
