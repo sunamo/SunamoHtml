@@ -47,9 +47,9 @@ public class HtmlHelperSunamoCz
         if (isOdd)
         {
             var cm = Exceptions.CallingMethod();
-            var b2 = Exceptions.IsOdd(string.Empty, "bold", bold);
-            var i2 = Exceptions.IsOdd(string.Empty, "italic", italic);
-            var s2 = Exceptions.IsOdd(string.Empty, "strike", strike);
+            var b2 = Exceptions.HasOddNumberOfElements(string.Empty, "bold", bold);
+            var i2 = Exceptions.HasOddNumberOfElements(string.Empty, "italic", italic);
+            var s2 = Exceptions.HasOddNumberOfElements(string.Empty, "strike", strike);
 
             var ls = new List<string>();
             if (b2 != null) ls.Add("bold");

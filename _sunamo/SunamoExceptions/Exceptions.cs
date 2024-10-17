@@ -1,14 +1,14 @@
 namespace SunamoHtml._sunamo.SunamoExceptions;
 // © www.sunamo.cz. All Rights Reserved.
-public sealed partial class Exceptions
+internal sealed partial class Exceptions
 {
     #region Other
-    public static string CheckBefore(string before)
+    internal static string CheckBefore(string before)
     {
         return string.IsNullOrWhiteSpace(before) ? string.Empty : before + ": ";
     }
 
-    public static Tuple<string, string, string> PlaceOfException(
+    internal static Tuple<string, string, string> PlaceOfException(
 bool fillAlsoFirstTwo = true)
     {
         StackTrace st = new();
@@ -36,7 +36,7 @@ bool fillAlsoFirstTwo = true)
         }
         return new Tuple<string, string, string>(type, methodName, string.Join(Environment.NewLine, l));
     }
-    public static void TypeAndMethodName(string l, out string type, out string methodName)
+    internal static void TypeAndMethodName(string l, out string type, out string methodName)
     {
         var s2 = l.Split("at ")[1].Trim();
         var s = s2.Split("(")[0];
@@ -45,7 +45,7 @@ bool fillAlsoFirstTwo = true)
         p.RemoveAt(p.Count - 1);
         type = string.Join(".", p);
     }
-    public static string CallingMethod(int v = 1)
+    internal static string CallingMethod(int v = 1)
     {
         StackTrace stackTrace = new();
         var methodBase = stackTrace.GetFrame(v)?.GetMethod();
@@ -59,7 +59,7 @@ bool fillAlsoFirstTwo = true)
     #endregion
 
     #region IsNullOrWhitespace
-    public static string? IsNullOrWhitespace(string before, string argName, string argValue, bool notAllowOnlyWhitespace)
+    internal static string? IsNullOrWhitespace(string before, string argName, string argValue, bool notAllowOnlyWhitespace)
     {
         string addParams;
         if (argValue == null)
@@ -81,7 +81,7 @@ bool fillAlsoFirstTwo = true)
     }
     readonly static StringBuilder sbAdditionalInfoInner = new();
     readonly static StringBuilder sbAdditionalInfo = new();
-    public static string AddParams()
+    internal static string AddParams()
     {
         sbAdditionalInfo.Insert(0, Environment.NewLine);
         sbAdditionalInfo.Insert(0, "Outer:");
@@ -96,22 +96,29 @@ bool fillAlsoFirstTwo = true)
     #endregion
 
     #region OnlyReturnString 
-    public static string? NotImplementedMethod(string before)
+    internal static string? NotImplementedMethod(string before)
     {
         return CheckBefore(before) + "Not implemented method.";
     }
     #endregion
-    public static string? NotInt(string before, string what, int? value)
+
+
+    internal static string? HasOddNumberOfElements(string before, string listName, ICollection list)
+    {
+        return list.Count % 2 == 1 ? CheckBefore(before) + listName + " has odd number of elements " + list.Count : null;
+    }
+
+    internal static string? NotInt(string before, string what, int? value)
     {
         return !value.HasValue ? CheckBefore(before) + what + " is not with value " + value + " valid integer number" : null;
     }
-    public static string? InvalidParameter(string before, string valueVar, string nameVar)
+    internal static string? InvalidParameter(string before, string valueVar, string nameVar)
     {
         return valueVar != WebUtility.UrlDecode(valueVar)
         ? CheckBefore(before) + valueVar + " is url encoded " + nameVar
         : null;
     }
-    public static string? NotContains(string before, string originalText, params string[] shouldContains)
+    internal static string? NotContains(string before, string originalText, params string[] shouldContains)
     {
         List<string> notContained = [];
         foreach (var item in shouldContains)
@@ -121,7 +128,7 @@ bool fillAlsoFirstTwo = true)
         ? null
         : CheckBefore(before) + originalText + " dont contains: " + string.Join(",", notContained);
     }
-    public static string? IsEmpty(string before, IEnumerable folders, string colName,
+    internal static string? IsEmpty(string before, IEnumerable folders, string colName,
     string additionalMessage = "")
     {
         return !folders.OfType<object>().Any()
@@ -129,7 +136,7 @@ bool fillAlsoFirstTwo = true)
         : null;
     }
 
-    public static string? DifferentCountInLists(string before, string namefc, int countfc, string namesc, int countsc)
+    internal static string? DifferentCountInLists(string before, string namefc, int countfc, string namesc, int countsc)
     {
         if (countfc != countsc)
             return CheckBefore(before) + " different count elements in collection" + " " +
