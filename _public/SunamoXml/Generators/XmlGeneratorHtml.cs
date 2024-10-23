@@ -75,6 +75,13 @@ public class XmlGeneratorHtml
         WriteRaw(string.Format("<![CDATA[{0}]]>", innerCData));
     }
 
+    public void WriteLink(string link, string innerText)
+    {
+        WriteTagWithAttrs("a", "href", link);
+        WriteRaw(innerText);
+        TerminateTag("a");
+    }
+
     [Obsolete("only WriteTagWithAttrs should be used anymore")]
     public void WriteTagWithAttr(string tag, string atribut, string hodnota, bool skipEmptyOrNull = false)
     {
