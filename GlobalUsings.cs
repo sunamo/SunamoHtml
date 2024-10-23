@@ -40,3 +40,4 @@ global using SunamoHtml._sunamo.SunamoString;
 global using SunamoHtml._sunamo;
 global using System.Reflection;
 global using System.Diagnostics.CodeAnalysis;
+global using SunamoHtml;

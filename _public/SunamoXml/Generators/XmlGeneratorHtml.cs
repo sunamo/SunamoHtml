@@ -75,6 +75,7 @@ public class XmlGeneratorHtml
         WriteRaw(string.Format("<![CDATA[{0}]]>", innerCData));
     }
 
+    [Obsolete("only WriteTagWithAttrs should be used anymore")]
     public void WriteTagWithAttr(string tag, string atribut, string hodnota, bool skipEmptyOrNull = false)
     {
         if (skipEmptyOrNull)
@@ -198,6 +199,7 @@ public class XmlGeneratorHtml
         sb.Append(XmlTemplates.xml);
     }
 
+    [Obsolete("only WriteTagWithAttrs should be used anymore")]
     public void WriteTagWith2Attrs(string p, string p_2, string p_3, string p_4, string p_5)
     {
         var r = string.Format("<{0} {1}=\"{2}\" {3}=\"{4}\">", p, p_2, p_3, p_4, p_5);
