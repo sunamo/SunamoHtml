@@ -168,13 +168,18 @@ public class HtmlAssistant
         return result;
     }
 
-    public static string InnerTextDecodeTrim(HtmlNode n)
+    public static string InnerTextDecodeTrim(string r)
     {
-        var r = n.InnerText.Trim();
         r = SHReplace.ReplaceWhiteSpacesWithoutSpacesWithReplaceWith(r, "");
         r = WebUtility.HtmlDecode(r);
         r = SHReplace.ReplaceAllDoubleSpaceToSingle(r);
         return r;
+    }
+
+    public static string InnerTextDecodeTrim(HtmlNode n)
+    {
+        var r = n.InnerText.Trim();
+        return InnerTextDecodeTrim(r);
     }
 
     public static string InnerText(HtmlNode item, bool recursive, string tag)

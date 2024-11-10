@@ -446,7 +446,7 @@ public class HtmlGenerator2 : HtmlGenerator
         var hg = new HtmlGenerator();
         foreach (var item in dWordCount)
         {
-            var bezmezer = item.Key.Replace("", "");
+            var bezmezer = item.Key.Replace(" ", "");
             hg.WriteTagWithAttrs("a", "id", "tag" + bezmezer, "href",
                 "javascript:" + prefixWithDot + nameJavascriptMethod + "($('#tag" + bezmezer + "'), '" + item.Key +
                 "');", "rel", item.Value.ToString());
@@ -486,7 +486,7 @@ public class HtmlGenerator2 : HtmlGenerator
 
     public static string ShortForLettersCount(string p1, int p2)
     {
-        p1 = p1.Replace("", "");
+        p1 = p1.Replace(" ", "");
         if (p1.Length > p2)
         {
             var whatLeave = SH.ShortForLettersCount(p1, p2);

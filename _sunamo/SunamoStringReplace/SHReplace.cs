@@ -35,8 +35,8 @@ internal class SHReplace
             text = text.Replace("&nbsp;", " ");
         }
 
-        while (text.Contains(""))
-            text = text.Replace("",
+        while (text.Contains(" "))
+            text = text.Replace(" ",
                 ""); //ReplaceAll2(text, "", "");
 
         // Here it was cycling, dont know why, therefore without while

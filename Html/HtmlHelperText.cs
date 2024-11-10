@@ -119,7 +119,7 @@ public class HtmlHelperText
             return new Tuple<string, string>(SH.GetTextBetweenSimple(c2, scriptS, scriptE, throwExceptionIfNotContains),
                 "");
         var sc = c2.IndexOf(scriptS);
-        if (sc == -1) return new Tuple<string, string>("", "");
+        if (sc == -1) return new Tuple<string, string>(" ", "");
 
         var ending = c2.IndexOf('>', sc);
         var e = c2.IndexOf(scriptE, ending);
@@ -153,7 +153,7 @@ public class HtmlHelperText
 
     public static string RemoveHtmlTags(string ClipboardS2)
     {
-        return SHReplace.ReplaceAll(HtmlHelper.RemoveAllTags(ClipboardS2), "", "");
+        return SHReplace.ReplaceAll(HtmlHelper.RemoveAllTags(ClipboardS2), " ", "");
     }
 
     public static string RemoveAspxComments(string c)

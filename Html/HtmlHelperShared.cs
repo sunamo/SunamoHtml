@@ -72,7 +72,7 @@ public static class HtmlHelper
 
     public static string ClearSpaces(string dd)
     {
-        return dd.Replace("&nbsp;", "").Replace("", "");
+        return dd.Replace("&nbsp;", "").Replace(" ", "");
     }
 
     private static void RecursiveReturnTagWithAttr(List<HtmlNode> vr, HtmlNode htmlNode, string tag, string attr,
