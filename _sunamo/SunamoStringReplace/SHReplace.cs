@@ -35,9 +35,9 @@ internal class SHReplace
             text = text.Replace("&nbsp;", " ");
         }
 
-        while (text.Contains(" "))
-            text = text.Replace(" ",
-                ""); //ReplaceAll2(text, "", "");
+        while (text.Contains("  "))
+            text = text.Replace("  ",
+                " "); //ReplaceAll2(text, "", "");
 
         // Here it was cycling, dont know why, therefore without while
         //while (text.Contains("space160 + space"))
