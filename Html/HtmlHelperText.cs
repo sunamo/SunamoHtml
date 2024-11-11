@@ -179,7 +179,7 @@ public class HtmlHelperText
     {
         ThrowEx.InvalidParameter((string)tag, "tag");
 
-        tag = SH.GetToFirst((string)tag, "");
+        tag = SH.GetToFirst((string)tag, " ");
         tag = tag.Trim().TrimStart('<').TrimEnd('>').ToLower();
 
         if (AllLists.HtmlNonPairTags.Contains((string)tag)) return HtmlTagSyntax.NonPairingNotEnded;
@@ -199,7 +199,7 @@ public class HtmlHelperText
 
     public static List<string> SplitBySpaceAndLtGt(string shortDescription)
     {
-        var f = SHSplit.SplitMore(shortDescription, "<", ">", "");
+        var f = SHSplit.SplitMore(shortDescription, "<", ">", " ");
         return f;
     }
 
@@ -290,7 +290,7 @@ public class HtmlHelperText
     {
         var between = SH.GetTextBetweenSimple(s, "<", ">");
 
-        if (between.Contains("")) return SH.GetToFirst(between, "");
+        if (between.Contains(" ")) return SH.GetToFirst(between, " ");
         return between;
     }
 }

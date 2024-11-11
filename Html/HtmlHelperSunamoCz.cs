@@ -21,7 +21,7 @@ public class HtmlHelperSunamoCz
             {
                 var res = item;
                 res = HtmlGenerator2.AnchorWithHttp(res);
-                d[i] = "" + res + "";
+                d[i] = " " + res + " ";
             }
         }
 

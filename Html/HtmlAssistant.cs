@@ -170,7 +170,7 @@ public class HtmlAssistant
 
     public static string InnerTextDecodeTrim(string r)
     {
-        r = SHReplace.ReplaceWhiteSpacesWithoutSpacesWithReplaceWith(r, "");
+        r = SHReplace.ReplaceWhiteSpacesWithoutSpacesWithReplaceWith(r, " ");
         r = WebUtility.HtmlDecode(r);
         r = SHReplace.ReplaceAllDoubleSpaceToSingle(r);
         return r;

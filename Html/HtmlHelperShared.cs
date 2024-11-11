@@ -20,7 +20,7 @@ public static class HtmlHelper
         {
             var d = item.Value.Replace(" >", ">");
             var tag = "";
-            if (item.Value.Contains(""))
+            if (item.Value.Contains(" "))
                 tag = SH.GetFirstPartByLocation(item.Value, ' ');
             else
                 tag = d.Replace("/", "").Replace(">", "");
@@ -285,7 +285,7 @@ public static class HtmlHelper
     /// <param name="p"></param>
     public static string StripAllTags(string p)
     {
-        return StripAllTags(p, "");
+        return StripAllTags(p, " ");
     }
 
     public static string StripAllTags(string p, string replaceFor)
@@ -588,8 +588,8 @@ public static class HtmlHelper
     /// <param name="d"></param>
     public static List<string> StripAllTagsList(string d)
     {
-        var replaced = StripAllTags(d, "");
-        return SHSplit.SplitMore(replaced, "");
+        var replaced = StripAllTags(d, " ");
+        return SHSplit.SplitMore(replaced, " ");
     }
 
     /// <summary>
@@ -598,7 +598,7 @@ public static class HtmlHelper
     /// <param name="p"></param>
     public static string StripAllTagsSpace(string p)
     {
-        return Regex.Replace(p, @"<[^>]*>", "");
+        return Regex.Replace(p, @"<[^>]*>", " ");
     }
 
     /// <summary>
@@ -947,7 +947,7 @@ public static class HtmlHelper
     public static List<HtmlNode> ReturnTagsWithContainsClassRek(HtmlNode htmlNode, string tag, string t)
     {
         var vr = new List<HtmlNode>();
-        RecursiveReturnTagsWithContainsAttrWithSplittedElement(vr, htmlNode, tag, "class", t, "");
+        RecursiveReturnTagsWithContainsAttrWithSplittedElement(vr, htmlNode, tag, "class", t, " ");
         return vr;
     }
 }

@@ -545,7 +545,7 @@ public class HtmlGenerator2 : HtmlGenerator
         hg.WriteTagWithAttr("button", a1, v1);
         hg.WriteTagWithAttr("i", "class", "icon-remove");
         hg.TerminateTag("i");
-        hg.WriteRaw("" + text);
+        hg.WriteRaw(text);
         hg.TerminateTag("button");
     }
 

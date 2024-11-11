@@ -2400,7 +2400,7 @@ internal class AllLists
             htmlEntitiesDict.Add("bne", "=⃥");
             htmlEntitiesDict.Add("nvgt", ">⃒");
             htmlEntitiesDict.Add("fjlig", "fj");
-            htmlEntitiesDict.Add("ThickSpace", "");
+            htmlEntitiesDict.Add("ThickSpace", " ");
             htmlEntitiesDict.Add("nrarrw", "↝̸");
             htmlEntitiesDict.Add("npart", "∂̸");
             htmlEntitiesDict.Add("nang", "∠⃒");

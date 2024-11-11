@@ -9,7 +9,7 @@ public class HtmlGeneratorExtended : HtmlGenerator
         if (!string.IsNullOrEmpty(oNameYouthProfile))
         {
             WriteElement("b", label + ":");
-            WriteRaw("");
+            WriteRaw(" ");
             if (string.IsNullOrEmpty(oUriYouthProfile))
             {
                 WriteRaw(oNameYouthProfile);
@@ -52,7 +52,7 @@ public class HtmlGeneratorExtended : HtmlGenerator
         if (!string.IsNullOrEmpty(oMail))
         {
             WriteElement("b", label + ":");
-            WriteRaw("");
+            WriteRaw(" ");
             WriteTagWithAttr("a", "href", "mailto:" + oMail);
             WriteRaw(oMail);
             TerminateTag("a");

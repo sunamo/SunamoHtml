@@ -2,7 +2,7 @@ namespace SunamoHtml._sunamo.SunamoStringReplace;
 
 internal class SHReplace
 {
-    internal static string ReplaceWhiteSpacesWithoutSpacesWithReplaceWith(string p, string replaceWith = "")
+    internal static string ReplaceWhiteSpacesWithoutSpacesWithReplaceWith(string p, string replaceWith)
     {
         return p.Replace("\r", replaceWith).Replace("\n", replaceWith).Replace("\t", replaceWith);
     }

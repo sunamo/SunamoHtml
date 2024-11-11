@@ -28,7 +28,7 @@ internal class SH
 
     internal static string NullToStringOrDefault(object n)
     {
-        return n == null ? " " + "(null)" : "" + n;
+        return n == null ? " " + "(null)" : " " + n;
     }
 
     internal static string TrimEnd(string name, string ext)
@@ -292,8 +292,8 @@ internal class SH
                 slovo.Clear();
                 if (ts != "")
                 {
-                    leva.Insert(0, ts + "");
-                    if (leva.Length + "".Length + ts.Length > naKazdeStrane) break;
+                    leva.Insert(0, ts + " ");
+                    if (leva.Length + " ".Length + ts.Length > naKazdeStrane) break;
                 }
             }
             else
@@ -302,7 +302,7 @@ internal class SH
             }
         }
 
-        var l = slovo + "" + leva.ToString().TrimEnd(' ');
+        var l = slovo + " " + leva.ToString().TrimEnd(' ');
         l = l.TrimEnd(' ');
         naKazdeStrane += naKazdeStrane - l.Length;
         slovo.Clear();
@@ -316,8 +316,8 @@ internal class SH
                 slovo.Clear();
                 if (ts != "")
                 {
-                    prava.Append("" + ts);
-                    if (prava.Length + "".Length + ts.Length > naKazdeStrane) break;
+                    prava.Append(" " + ts);
+                    if (prava.Length + " ".Length + ts.Length > naKazdeStrane) break;
                 }
             }
             else
@@ -326,10 +326,10 @@ internal class SH
             }
         }
 
-        var p = prava.ToString().TrimStart(' ') + "" + slovo;
+        var p = prava.ToString().TrimStart(' ') + " " + slovo;
         p = p.TrimStart(' ');
         var vr = "";
-        if (celyObsah.Contains(l + "") && celyObsah.Contains("" + p))
+        if (celyObsah.Contains(l + " ") && celyObsah.Contains(" " + p))
             vr = l + "" + p;
         else
             vr = l + p;
@@ -391,7 +391,7 @@ internal class SH
         var p = SHSplit.SplitCharMore(v, dash);
         for (var i = 0; i < p.Count; i++) p[i] = FirstCharUpper(p[i]);
         //p = CAChangeContent.ChangeContent0(null, p, FirstCharUpper);
-        return string.Join("", p);
+        return string.Join(" ", p);
     }
 
     internal static bool MatchWildcard(string name, string mask)
@@ -506,9 +506,7 @@ internal class SH
             // 32 space
             var ch = subs[0];
             var ch2 = co[0];
-            if (subs == "")
-            {
-            }
+
 
             if (subs == co)
                 Results.Add(Index);
