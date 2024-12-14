@@ -123,7 +123,7 @@ public static class HtmlHelper
         return vr;
     }
 
-    public static HtmlNode GetTagOfAtributeRek(HtmlNode hn, string nameOfTag, string nameOfAtr, string valueOfAtr)
+    public static HtmlNode? GetTagOfAtributeRek(HtmlNode hn, string nameOfTag, string nameOfAtr, string valueOfAtr)
     {
         hn = TrimNode(hn);
         foreach (var var in hn.ChildNodes)
