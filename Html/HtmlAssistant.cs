@@ -52,7 +52,7 @@ public class HtmlAssistant
         return SplitByTag(input, "br");
     }
 
-    private static void RemoveComments(HtmlNode node)
+    public static void RemoveComments(HtmlNode node)
     {
         if (!node.HasChildNodes) return;
 

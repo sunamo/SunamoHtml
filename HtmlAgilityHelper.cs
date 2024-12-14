@@ -28,8 +28,17 @@ public class HtmlAgilityHelper
         for (var i = 0; i < dd.Count; i++)
         {
             // zde je nutný text
-            var key = dt[i].InnerHtml;
-            var val = dd[i].InnerHtml;
+            var key = JoinHtmlElementsToOneString(dt[i]);
+
+#if DEBUG
+            if (key == "Plocha:")
+            {
+
+            }
+#endif
+
+
+            var val = JoinHtmlElementsToOneString(dd[i]);
 
             foreach (var item in replaceHtmLForText)
             {
@@ -39,10 +48,84 @@ public class HtmlAgilityHelper
 
             // Ve defaultu nahrazuje za " "
             // Zde dávám "" protože u rozlohy nehcci 63 m 2. Pokud bych to potřeboval jinak, přidat zde parametr
-            result.Add(HtmlHelper.StripAllTags(key, "").Trim(), HtmlHelper.StripAllTags(val, "").Trim());
+            try
+            {
+                result.Add(HtmlHelper.StripAllTags(key, "").Trim(), HtmlHelper.StripAllTags(val, "").Trim());
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
         }
 
         return result;
+    }
+
+    private static string JoinHtmlElementsToOneString(HtmlNode htmlNode, string delimiter = ", ")
+    {
+        string result = "";
+
+        HtmlAssistant.RemoveComments(htmlNode);
+        var nodes = HtmlAgilityHelper.Nodes(htmlNode, false, "*");
+
+        if (nodes.Count == 0)
+        {
+            result = htmlNode.InnerText;
+        }
+        else
+        {
+            var previousInnerText = htmlNode.InnerText;
+            htmlNode = GetNodeWithoutInnerHtmlNodes(htmlNode);
+            var nodesNew = HtmlAgilityHelper.Nodes(htmlNode, false, "*");
+            if (nodesNew.Count != 0)
+            {
+                nodes = nodesNew;
+            }
+
+            if (nodes.Count != 0)
+            {
+                StringBuilder sb = new StringBuilder();
+                foreach (var item in nodes)
+                {
+                    sb.Append(item.InnerText + ", ");
+                }
+                result = sb.ToString().Substring(0, sb.Length - 2);
+                if (result == "")
+                {
+                    result = previousInnerText.Trim();
+                }
+            }
+        }
+
+        if (result == "")
+        {
+
+        }
+
+        return result;
+    }
+
+    private static HtmlNode GetNodeWithoutInnerHtmlNodes(HtmlNode htmlNode)
+    {
+        var nodes = HtmlAgilityHelper.Nodes(htmlNode, false, "*");
+
+        if (nodes.Count == 0)
+        {
+            // U plochy se mi to vrátí už zde
+            return htmlNode;
+        }
+
+        // U příslušenství až zde
+        return nodes[0];
+
+
+    }
+
+    private static void JoinHtmlElementsToOneString(string innerHtml)
+    {
+        throw new NotImplementedException();
     }
 
     #region 1 Node
