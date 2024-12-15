@@ -1,4 +1,4 @@
-namespace SunamoHtml.Html;
+﻿namespace SunamoHtml.Html;
 
 public class HtmlAssistant
 {
@@ -12,6 +12,24 @@ public class HtmlAssistant
         foreach (var item in tds) r.Add(item.InnerText.Trim());
 
         return r;
+    }
+
+    public static string RemoveStyleTagsText(string html)
+    {
+        var doc = new HtmlDocument();
+        doc.LoadHtml(html);
+
+        // Odebrání všech <style> tagů
+        var styleNodes = doc.DocumentNode.SelectNodes("//style");
+        if (styleNodes != null)
+        {
+            foreach (var node in styleNodes)
+            {
+                node.Remove();
+            }
+        }
+
+        return doc.DocumentNode.OuterHtml;
     }
 
     /// <summary>
