@@ -276,7 +276,7 @@ public class HtmlGenerator2 : HtmlGenerator
             throw new Exception(
                 "Metoda HtmlGenerator2.TopListWithImages - odkazyPhoto se nerovn\u00E1 po\u010Dtem srcPhoto");
         if (count != idBadges.Count)
-            throw new Exception(sess.i18n(XlfKeys.MetodaHtmlGenerator2TopListWithImagesOdkazyPhoto) + " " + count +
+            throw new Exception(Translate.FromKey(XlfKeys.MetodaHtmlGenerator2TopListWithImagesOdkazyPhoto) + " " + count +
                                 " se nerovn\u00E1 po\u010Dtem idBadges " + idBadges.Count);
 
         //HtmlGenerator hg = new HtmlGenerator();
