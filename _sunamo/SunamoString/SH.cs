@@ -11,31 +11,10 @@ internal class SH
         return r;
     }
 
-    internal static List<string> SplitCharMore(string s, params char[] dot)
-    {
-        return s.Split(dot, StringSplitOptions.RemoveEmptyEntries).ToList();
-    }
 
-    internal static List<string> SplitMore(string s, params string[] dot)
-    {
-        return s.Split(dot, StringSplitOptions.RemoveEmptyEntries).ToList();
-    }
 
-    internal static List<string> SplitNone(string text, params string[] deli)
-    {
-        return text.Split(deli, StringSplitOptions.None).ToList();
-    }
 
-    internal static string NullToStringOrDefault(object n)
-    {
-        return n == null ? " " + "(null)" : " " + n;
-    }
 
-    internal static string TrimEnd(string name, string ext)
-    {
-        while (name.EndsWith(ext)) return name.Substring(0, name.Length - ext.Length);
-        return name;
-    }
 
 
     internal static string ShortForLettersCountThreeDotsReverse(string p, int p_2)
@@ -479,21 +458,6 @@ internal class SH
         return dx;
     }
 
-    internal static string NormalizeString(string s)
-    {
-        if (s.Contains((char)160))
-        {
-            var sb = new StringBuilder();
-            foreach (var item in s)
-                if (item == (char)160)
-                    sb.Append(' ');
-                else
-                    sb.Append(item);
-            return sb.ToString();
-        }
-
-        return s;
-    }
 
     internal static List<int> ReturnOccurencesOfString(string vcem, string co)
     {

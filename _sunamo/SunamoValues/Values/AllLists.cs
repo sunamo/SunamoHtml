@@ -2494,35 +2494,8 @@ internal class AllLists
         }
     }
 
-    internal static void InitHtmlEntitiesFullNames( /*ITwoWayDictionary<string, string> htmlEntitiesFullNames2*/)
-    {
-        if (htmlEntitiesFullNames == null)
-        {
-            InitHtmlEntitiesDict();
-            htmlEntitiesFullNames = /*htmlEntitiesFullNames2;*/ new Dictionary<string, string>();
-            foreach (var item in htmlEntitiesDict)
-                if (!htmlEntitiesFullNames.ContainsKey(item.Value))
-                    htmlEntitiesFullNames.Add(item.Value, item.Key);
-        }
-    }
 
-    /// <summary>
-    ///     Before calling is needed to call InitHtmlEntitiesFullNames
-    /// </summary>
-    /// <param name="v"></param>
-    /// <returns></returns>
-    internal static string HtmlEncode(string v)
-    {
-        if (v.Length == 1)
-        {
-            return HtmlEncodeOne(v);
-        }
-
-        var sb = new StringBuilder();
-        foreach (var item in v) sb.Append(HtmlEncodeOne(item.ToString()));
-        return sb.ToString();
-    }
-
+    
     private static string HtmlEncodeOne(string v)
     {
         if (htmlEntitiesFullNames.ContainsKey(v))

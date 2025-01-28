@@ -85,71 +85,16 @@ internal static class RegexHelper
         //Regex.CompileToAssembly(compInfo, assemblyName);
     }
 
-    internal static bool IsEmail(string email)
-    {
-        var r = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
-        return r.IsMatch(email);
-    }
 
-    internal static bool IsColor(string entry)
-    {
-        entry = entry.Trim().TrimStart('#');
-        if (entry.Length == 6)
-            return rgColor6.IsMatch(entry);
-        if (entry.Length == 8) return rgColor8.IsMatch(entry);
-        return false;
-    }
 
-    internal static bool IsYtVideoUri(string text)
-    {
-        return rYtVideoLink.IsMatch(text);
-    }
 
-    /// <summary>
-    ///     Dont use, parse uri with regex is total naive . Use DOM parser
-    ///     Not working - keep in plain text, use ReplacePlainUrlWithLinks2
-    /// </summary>
-    /// <param name="plainText"></param>
-    internal static string ReplacePlainUrlWithLinks(string plainText)
-    {
-        var html = Regex.Replace(plainText, @"^(http|https|ftp)\://[a-zA-Z0-9\-\.]+" +
-                                            @"\.[a-zA-Z]{2,3}(:[a-zA-Z0-9]*)?/?" +
-                                            @"([a-zA-Z0-9\-\._\?\,\'/\\\+&amp;%\$#\=~])*$",
-            "<a href=\"$1\">$1</a>");
-        return html;
-    }
-
+    
     internal static bool IsUri(string text)
     {
         return rUri.IsMatch(text) && (text.StartsWith("http://") || text.StartsWith("https://"));
     }
 
-    internal static List<string> AllFromGroup(MatchCollection m, int v)
-    {
-        var vr = new List<string>(m.Count);
-        foreach (Match item in m) vr.Add(item.Groups[v].Value);
-        return vr;
-    }
 
-    internal static bool IsTelephone(string innerText)
-    {
-        lastTelephone = null;
-        innerText = rWhitespace.Replace(innerText, string.Empty);
-        var wasPlus = false;
-        if (innerText[0] == '+')
-        {
-            wasPlus = true;
-            innerText = innerText.Substring(1);
-        }
-
-        if (innerText.Length != 9 && innerText.Length != 12) return false;
-        var result = long.TryParse(innerText, out var ol);
-        if (result) lastTelephone = (wasPlus ? "+" : "") + innerText;
-        if (lastTelephone != null)
-            // sanitize to common format
-            lastTelephone = SanitizePhone(lastTelephone);
-        return result;
-    }
 
     internal static string SanitizePhone(string s)
     {

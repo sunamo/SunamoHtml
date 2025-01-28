@@ -28,13 +28,4 @@ internal class XHelper
         return ns;
     }
 
-    internal static void AddXmlNamespaces(XmlNamespaceManager nsmgr)
-    {
-        foreach (string item in nsmgr)
-        {
-            // Jaký je typ item, at nemusím používat slovník
-            var v = nsmgr.LookupNamespace(item);
-            if (!ns.ContainsKey(item)) ns.Add(item, v);
-        }
-    }
 }
