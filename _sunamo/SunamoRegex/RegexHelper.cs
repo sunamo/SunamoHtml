@@ -96,11 +96,4 @@ internal static class RegexHelper
 
 
 
-    internal static string SanitizePhone(string s)
-    {
-        if (string.IsNullOrWhiteSpace(s)) return s;
-        s = s.Replace(" ", "");
-        if (!s.StartsWith("+")) s = "+420" + s;
-        return s;
-    }
 }
