@@ -94,7 +94,7 @@ bool fillAlsoFirstTwo = true)
                 notContained.Add(item);
         return notContained.Count == 0
         ? null
-        : CheckBefore(before) + originalText + " dont contains: " + string.Join(",", notContained);
+        : CheckBefore(before) + "Original text dont contains: " + string.Join(",", notContained) + ". Original text: " + originalText;
     }
     internal static string? IsEmpty(string before, IEnumerable folders, string colName,
     string additionalMessage = "")
