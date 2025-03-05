@@ -41,3 +41,8 @@ global using SunamoHtml._sunamo;
 global using System.Reflection;
 global using System.Diagnostics.CodeAnalysis;
 global using SunamoHtml;
+
+global using TextCopy;
+global using ILogger = Microsoft.Extensions.Logging.ILogger;
+global using Microsoft.Extensions.Logging;
+global using NullLogger = Microsoft.Extensions.Logging.Abstractions.NullLogger;

@@ -1,5 +1,4 @@
 namespace SunamoHtml;
-using TextCopy;
 
 /// <summary>
 ///     HtmlHelperText - for methods which NOT operate on HtmlAgiityHelper!
@@ -9,12 +8,10 @@ using TextCopy;
 public class HtmlAgilityHelper
 {
     public const string textNode = "#text";
-
     /// <summary>
     ///     Dříve bylo false ale to byla hloupost
     /// </summary>
     public static bool _trimTexts = true;
-
     public static Dictionary<string, string> PairsDdDt(HtmlNode dl, bool recursive,
         Dictionary<string, string> replaceHtmLForText)
     {
@@ -29,23 +26,17 @@ public class HtmlAgilityHelper
         {
             // zde je nutný text
             var key = JoinHtmlElementsToOneString(dt[i]);
-
 #if DEBUG
             if (key == "Plocha:")
             {
-
             }
 #endif
-
-
             var val = JoinHtmlElementsToOneString(dd[i]);
-
             foreach (var item in replaceHtmLForText)
             {
                 key = key.Replace(item.Key, item.Value);
                 val = val.Replace(item.Key, item.Value);
             }
-
             // Ve defaultu nahrazuje za " "
             // Zde dávám "" protože u rozlohy nehcci 63 m 2. Pokud bych to potřeboval jinak, přidat zde parametr
             try
@@ -54,22 +45,16 @@ public class HtmlAgilityHelper
             }
             catch (Exception ex)
             {
-
                 throw;
             }
-
         }
-
         return result;
     }
-
     private static string JoinHtmlElementsToOneString(HtmlNode htmlNode, string delimiter = ", ")
     {
         string result = "";
-
         HtmlAssistant.RemoveComments(htmlNode);
         var nodes = HtmlAgilityHelper.Nodes(htmlNode, false, "*");
-
         if (nodes.Count == 0)
         {
             result = htmlNode.InnerText;
@@ -83,7 +68,6 @@ public class HtmlAgilityHelper
             {
                 nodes = nodesNew;
             }
-
             if (nodes.Count != 0)
             {
                 StringBuilder sb = new StringBuilder();
@@ -98,56 +82,39 @@ public class HtmlAgilityHelper
                 }
             }
         }
-
         if (result == "")
         {
-
         }
-
         return result;
     }
-
     private static HtmlNode GetNodeWithoutInnerHtmlNodes(HtmlNode htmlNode)
     {
         var nodes = HtmlAgilityHelper.Nodes(htmlNode, false, "*");
-
         if (nodes.Count == 0)
         {
             // U plochy se mi to vrátí už zde
             return htmlNode;
         }
-
         // U příslušenství až zde
         return nodes[0];
-
-
     }
-
     private static void JoinHtmlElementsToOneString(string innerHtml)
     {
         throw new NotImplementedException();
     }
-
     #region 1 Node
-
     public static HtmlNode Node(HtmlNode node, bool recursive, string tag)
     {
         return Nodes(node, recursive, true, tag).FirstOrDefault();
     }
-
     #endregion
-
     #region 2 Nodes
-
     public static List<HtmlNode> Nodes(HtmlNode node, bool recursive, string tag)
     {
         return Nodes(node, recursive, false, tag);
     }
-
     #endregion
-
     #region 3 NodeWithAttr
-
     /// <summary>
     ///     Return null if not found
     /// </summary>
@@ -163,11 +130,8 @@ public class HtmlAgilityHelper
     {
         return NodesWithAttrWorker(node, recursive, tag, attr, attrValue, false, contains).FirstOrDefault();
     }
-
     #endregion
-
     #region 5 NodesWhichContainsInAttr
-
     /// <summary>
     ///     A6 - whether is sufficient only contains
     /// </summary>
@@ -182,15 +146,12 @@ public class HtmlAgilityHelper
     {
         return NodesWithAttrWorker(node, recursive, tag, attr, attrValue, false, searchAsSingleString);
     }
-
     #endregion
-
     public static string ReplacePlainUriForAnchors(string input)
     {
         var hd = CreateHtmlDocument();
         return ReplacePlainUriForAnchors(hd, input);
     }
-
     /// <summary>
     /// </summary>
     /// <param name="input"></param>
@@ -221,18 +182,15 @@ public class HtmlAgilityHelper
             //int x = 0;
             //}
         }
-
         var output = hd.DocumentNode.OuterHtml;
         return output;
     }
-
     public static string WrapIntoTagIfNot(string input, string tag = HtmlTags.div)
     {
         input = input.Trim();
         if (input[0] != '<') input = WrapIntoTag(tag, input);
         return input;
     }
-
     private static string WrapIntoTag(string div, string input)
     {
         var sb = new StringBuilder();
@@ -245,20 +203,17 @@ public class HtmlAgilityHelper
         sb.Append('>');
         return sb.ToString();
     }
-
     public static void InsertGroup(HtmlNode insertAfter, List<string> list)
     {
         foreach (var item in list) insertAfter.InnerHtml += SH.WrapWithChar(item, ' ');
         //insertAfter = insertAfter.ParentNode.InsertAfter(CreateNode(item), insertAfter);
         insertAfter.InnerHtml = SHReplace.ReplaceAllDoubleSpaceToSingle(insertAfter.InnerHtml).Trim();
     }
-
     public static HtmlNode CreateNode(string html)
     {
         if (!RegexHelper.rHtmlTag.IsMatch(html)) html = SH.WrapWithChar(html, ' ');
         return HtmlNode.CreateNode(html);
     }
-
     private static List<HtmlNode> TextNodes(HtmlNode node, params string[] dontHaveAsParentTag)
     {
         /*
@@ -280,9 +235,7 @@ public class HtmlAgilityHelper
                     vr.Add(item);
         return vr;
     }
-
     #region Helpers
-
     /// <summary>
     ///     remove #text but keep everything else
     /// </summary>
@@ -296,7 +249,6 @@ public class HtmlAgilityHelper
                 vr.Add(item);
         return vr;
     }
-
     public static HtmlNode FindAncestorParentNode(HtmlNode item, string v)
     {
         while (item != null)
@@ -304,10 +256,8 @@ public class HtmlAgilityHelper
             if (item.Name == v) return item;
             item = item.ParentNode;
         }
-
         return null;
     }
-
     public static bool HasAncestorParentNode(HtmlNode item, string v)
     {
         while (item != null)
@@ -315,10 +265,8 @@ public class HtmlAgilityHelper
             if (item.Name == v) return true;
             item = item.ParentNode;
         }
-
         return false;
     }
-
     /// <summary>
     ///     remove #text but not #comment
     /// </summary>
@@ -327,7 +275,6 @@ public class HtmlAgilityHelper
     {
         return TrimTexts(c2, true);
     }
-
     /// <summary>
     ///     A2 =remove #text
     ///     A3 = remove #comment
@@ -351,10 +298,8 @@ public class HtmlAgilityHelper
                     add = false;
             if (add) vr.Add(item);
         }
-
         return vr;
     }
-
     public static List<HtmlNode> TrimComments(List<HtmlNode> n)
     {
         var vr = new List<HtmlNode>();
@@ -397,10 +342,8 @@ public class HtmlAgilityHelper
                 vr.Add(item);
             }
         }
-
         return vr;
     }
-
     /// <summary>
     ///     Do A2 se může zadat *
     /// </summary>
@@ -416,7 +359,6 @@ public class HtmlAgilityHelper
         //}
         return result;
     }
-
     private static bool HasTagAttr(HtmlNode item, string atribut, string hodnotaAtributu, bool isWildCard,
         bool enoughIsContainsAttribute, bool searchAsSingleString)
     {
@@ -443,7 +385,6 @@ public class HtmlAgilityHelper
                         cont = false;
                         break;
                     }
-
                 contains = cont;
             }
         }
@@ -451,10 +392,8 @@ public class HtmlAgilityHelper
         {
             contains = attrValue == hodnotaAtributu;
         }
-
         return contains;
     }
-
     /// <summary>
     ///     A4 = if add one, return. Like Node vs Nodes
     ///     It's calling by others
@@ -479,7 +418,6 @@ public class HtmlAgilityHelper
                 if (recursive) RecursiveReturnTags(vr, item, recursive, single, p);
             }
     }
-
     public static List<HtmlNode> Nodes(HtmlNode node, bool recursive, bool single, string tag)
     {
         tag = tag.ToLower();
@@ -488,7 +426,6 @@ public class HtmlAgilityHelper
         if (tag != textNode) vr = TrimTexts(vr);
         return vr;
     }
-
     private static List<HtmlNode> NodesWithAttrWorker(HtmlNode node, bool recursive, string tag, string atribut,
         string hodnotaAtributu, bool isWildCard, bool enoughIsContainsAttribute, bool searchAsSingleString = true)
     {
@@ -498,7 +435,6 @@ public class HtmlAgilityHelper
         if (tag != textNode) vr = TrimTexts(vr);
         return vr;
     }
-
     public static HtmlDocument CreateHtmlDocument(CreateHtmlDocumentInitData d = null)
     {
         var hd = new HtmlDocument();
@@ -511,7 +447,6 @@ public class HtmlAgilityHelper
         //hd.OptionCheckSyntax = false;
         return hd;
     }
-
     public static void RecursiveReturnTagsWithContainsAttr(List<HtmlNode> vr, HtmlNode htmlNode, bool recursively,
         string p, string atribut, string hodnotaAtributu, bool enoughIsContainsAttribute,
         bool searchAsSingleString = true)
@@ -519,7 +454,6 @@ public class HtmlAgilityHelper
         RecursiveReturnTagsWithContainsAttr(vr, htmlNode, recursively, p, atribut, hodnotaAtributu, false,
             enoughIsContainsAttribute, searchAsSingleString);
     }
-
     /// <summary>
     ///     Do A3 se může zadat * pro vrácení všech tagů
     /// </summary>
@@ -545,7 +479,6 @@ isWildCard -
             {
                 continue;
             }
-
             sb.AppendLine(item.OuterHtml);
             sb.AppendLine();
             sb.AppendLine();
@@ -559,14 +492,9 @@ isWildCard -
             sb.AppendLine();
             sb.AppendLine();
             sb.AppendLine();
-
         }
-
         ClipboardService.SetText(sb.ToString());
 #endif
-
-
-
         var childNodeWithoutText = TrimTexts(htmlNode.ChildNodes);
         p = p.ToLower();
         //atribut = atribut.ToLower();
@@ -592,22 +520,17 @@ isWildCard -
             }
         }
     }
-
     #endregion
-
     #region 4 NodesWithAttr
-
     public static List<HtmlNode> NodesWithAttrWildCard(HtmlNode node, bool recursive, string tag, string attr,
         string attrValue, bool contains = false)
     {
         return NodesWithAttrWorker(node, recursive, tag, attr, attrValue, true, contains);
     }
-
     public static List<HtmlNode> NodesWithAttr(HtmlNode node, bool recursive, string tag, string attr, string attrValue,
         bool contains = false)
     {
         return NodesWithAttrWorker(node, recursive, tag, attr, attrValue, false, contains);
     }
-
     #endregion
 }
