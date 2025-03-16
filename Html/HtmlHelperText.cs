@@ -158,7 +158,7 @@ public class HtmlHelperText
 
     public static string RemoveAspxComments(string c)
     {
-        c = Regex.Replace(c, AspxConsts.startAspxComment + ".*?" + AspxConsts.endAspxComment, string.Empty,
+        c = Regex.Replace(c, ConstsAspx.startAspxComment + ".*?" + ConstsAspx.endAspxComment, string.Empty,
             RegexOptions.Singleline);
         return c;
     }

@@ -313,8 +313,8 @@ public class HtmlAgilityHelper
             toTranslate = true;
             var html = item.InnerHtml.Trim();
             // contains whole html comment
-            endsWith = html.Contains(AspxConsts.endHtmlComment);
-            startWith = html.Contains(AspxConsts.startHtmlComment);
+            endsWith = html.Contains(ConstsAspx.endHtmlComment);
+            startWith = html.Contains(ConstsAspx.startHtmlComment);
             if (startWith && endsWith) //item.NodeType == HtmlNodeType.Comment)
             {
                 toTranslate = false;
@@ -322,8 +322,8 @@ public class HtmlAgilityHelper
             else if (true)
             {
                 if (html == string.Empty) continue;
-                endsWith = html.Contains(AspxConsts.endAspxComment);
-                startWith = html.Contains(AspxConsts.startAspxComment);
+                endsWith = html.Contains(ConstsAspx.endAspxComment);
+                startWith = html.Contains(ConstsAspx.startAspxComment);
                 if (startWith || endsWith)
                     if (startWith && endsWith)
                         // contains whole aspx comment
