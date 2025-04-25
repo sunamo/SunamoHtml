@@ -199,7 +199,7 @@ public class HtmlHelperText
 
     public static List<string> SplitBySpaceAndLtGt(string shortDescription)
     {
-        var f = SHSplit.SplitMore(shortDescription, "<", ">", " ");
+        var f = SHSplit.Split(shortDescription, "<", ">", " ");
         return f;
     }
 

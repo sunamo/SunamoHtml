@@ -1,4 +1,4 @@
-﻿namespace SunamoHtml.Html;
+namespace SunamoHtml.Html;
 
 public class HtmlAssistant
 {
@@ -89,7 +89,7 @@ public class HtmlAssistant
     {
         var ih = input;
         ih = HtmlHelper.ReplaceHtmlNonPairTagsWithXmlValid(ih);
-        var lines = SHSplit.SplitMore(ih, HtmlTagTemplates.br);
+        var lines = SHSplit.Split(ih, HtmlTagTemplates.br);
         return lines;
     }
 

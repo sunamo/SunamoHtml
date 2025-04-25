@@ -367,7 +367,7 @@ internal class SH
     /// <param name="dash"></param>
     private static string FirstCharOfEveryWordUpper(string v, char dash)
     {
-        var p = SHSplit.SplitCharMore(v, dash);
+        var p = SHSplit.SplitChar(v, dash);
         for (var i = 0; i < p.Count; i++) p[i] = FirstCharUpper(p[i]);
         //p = CAChangeContent.ChangeContent0(null, p, FirstCharUpper);
         return string.Join(" ", p);

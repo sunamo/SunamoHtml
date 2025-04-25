@@ -1,6 +1,5 @@
 namespace SunamoHtml.Html;
 
-
 public static class HtmlHelper
 {
     private static Type type = typeof(HtmlHelper);
@@ -589,7 +588,7 @@ public static class HtmlHelper
     public static List<string> StripAllTagsList(string d)
     {
         var replaced = StripAllTags(d, " ");
-        return SHSplit.SplitMore(replaced, " ");
+        return SHSplit.Split(replaced, " ");
     }
 
     /// <summary>
@@ -627,7 +626,7 @@ public static class HtmlHelper
     public static bool HasTagAttrContains(HtmlNode htmlNode, string delimiter, string attr, string value)
     {
         var attrValue = GetValueOfAttribute(attr, htmlNode);
-        var spl = SHSplit.SplitMore(attrValue, delimiter);
+        var spl = SHSplit.Split(attrValue, delimiter);
         return spl.Contains(value);
     }
 
@@ -707,7 +706,7 @@ public static class HtmlHelper
         var at = GetValueOfAttribute("style", item);
         if (at.Contains(";"))
         {
-            var d = SHSplit.SplitMore(at, ";");
+            var d = SHSplit.Split(at, ";");
             foreach (var item2 in d)
                 if (item2.Contains(":"))
                 {

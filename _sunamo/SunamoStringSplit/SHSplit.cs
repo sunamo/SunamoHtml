@@ -1,6 +1,5 @@
 namespace SunamoHtml._sunamo.SunamoStringSplit;
 
-
 internal class SHSplit
 {
     internal static List<string> SplitBySpaceAndPunctuationCharsLeave(string veta)
@@ -65,7 +64,7 @@ internal class SHSplit
     }
 
 
-    internal static List<string> SplitCharMore(string p, params char[] newLine)
+    internal static List<string> SplitChar(string p, params char[] newLine)
     {
         return p.Split(newLine, StringSplitOptions.RemoveEmptyEntries).ToList();
     }
