@@ -48,7 +48,7 @@ internal class SHSplit
                 bold.RemoveAt(i);
     }
 
-    internal static List<string> SplitMore(string p, params string[] newLine)
+    internal static List<string> Split(string p, params string[] newLine)
     {
         return p.Split(newLine, StringSplitOptions.RemoveEmptyEntries).ToList();
     }
@@ -78,7 +78,7 @@ internal class SHSplit
 
     //    //internal static Func<string, IList, List<string>> SplitAndKeepDelimiters;
     //    //internal static Func<string, char, List<string>> SplitNoneChar;
-    //    //internal static Func<string, String[], List<string>> SplitMore;
+    //    //internal static Func<string, String[], List<string>> Split;
     //    //internal static Func<string, String, List<string>> SplitNoneString;
     //    //internal static Func<string, List<string>> SplitByWhiteSpaces;
     //    //internal static Func<string, List<string>> SplitBySpaceAndPunctuationCharsLeave;
