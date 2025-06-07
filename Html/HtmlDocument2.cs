@@ -237,14 +237,14 @@ void
         return HtmlHelper.TrimTexts(htmlNodeCollection);
     }
 
-    /// <summary>
-    ///     Used in ParseChromeAPIs.
-    /// </summary>
-    /// <param name="api_reference"></param>
-    public List<HtmlNode> ReturnTags(HtmlNode api_reference)
-    {
-        return null;
-    }
+    ///// <summary>
+    /////     Used in ParseChromeAPIs.
+    ///// </summary>
+    ///// <param name="api_reference"></param>
+    //public List<HtmlNode> ReturnTags(HtmlNode api_reference)
+    //{
+    //    return null;
+    //}
 
     public List<HtmlNode> TrimTexts(List<HtmlNode> c2)
     {
@@ -428,7 +428,7 @@ void
     /// <param name="nameTag"></param>
     /// <param name="nameAtr"></param>
     /// <param name="valueOfAtr"></param>
-    public List<HtmlNode> GetTagsOfAtribute(HtmlNode hn, string nameTag, string nameAtr, string valueOfAtr)
+    public List<HtmlNode> GetTagsOfAtribute(HtmlNode hn, /*string nameTag, */string nameAtr, string valueOfAtr)
     {
         return HtmlHelper.GetTagsOfAtribute(hn, nameAtr, nameAtr, valueOfAtr);
     }

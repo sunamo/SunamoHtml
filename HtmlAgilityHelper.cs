@@ -73,7 +73,7 @@ public class HtmlAgilityHelper
                 StringBuilder sb = new StringBuilder();
                 foreach (var item in nodes)
                 {
-                    sb.Append(item.InnerText + ", ");
+                    sb.Append(item.InnerText + delimiter);
                 }
                 result = sb.ToString().Substring(0, sb.Length - 2);
                 if (result == "")
@@ -105,14 +105,11 @@ public class HtmlAgilityHelper
     #region 1 Node
     public static HtmlNode Node(HtmlNode node, bool recursive, string tag)
     {
-        return Nodes(node, recursive, true, tag).FirstOrDefault();
+        return Nodes(node, recursive, tag).FirstOrDefault();
     }
     #endregion
     #region 2 Nodes
-    public static List<HtmlNode> Nodes(HtmlNode node, bool recursive, string tag)
-    {
-        return Nodes(node, recursive, false, tag);
-    }
+
     #endregion
     #region 3 NodeWithAttr
     /// <summary>
@@ -418,7 +415,7 @@ public class HtmlAgilityHelper
                 if (recursive) RecursiveReturnTags(vr, item, recursive, single, p);
             }
     }
-    public static List<HtmlNode> Nodes(HtmlNode node, bool recursive, bool single, string tag)
+    public static List<HtmlNode> Nodes(HtmlNode node, bool recursive/*, bool single*/, string tag)
     {
         tag = tag.ToLower();
         var vr = new List<HtmlNode>();
@@ -437,8 +434,13 @@ public class HtmlAgilityHelper
     }
     public static HtmlDocument CreateHtmlDocument(CreateHtmlDocumentInitData d = null)
     {
+        if (d == null)
+        {
+            d = new();
+        }
+
         var hd = new HtmlDocument();
-        hd.OptionOutputOriginalCase = true;
+        hd.OptionOutputOriginalCase = d.OptionOutputOriginalCase;
         // false - i přesto mi tag ukončený na / převede na </Page>. Musí se ještě tagy jež nechci ukončovat vymazat z HtmlAgilityPack.HtmlNode.ElementsFlags.Remove("form"); před načetním XML https://html-agility-pack.net/knowledge-base/7104652/htmlagilitypack-close-form-tag-automatically
         hd.OptionAutoCloseOnEnd = false;
         hd.OptionOutputAsXml = false;
