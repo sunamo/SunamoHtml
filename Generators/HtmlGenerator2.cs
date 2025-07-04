@@ -810,22 +810,22 @@ public class HtmlGenerator2 : HtmlGenerator
 
     public static string GetUlWoCheckDuplicate(string baseAnchor, List<string> to)
     {
-        return "<ul static class=\"textVlevo\">";
-        //HtmlGenerator hg = new HtmlGenerator();
+        //return "<ul static class=\"textVlevo\">";
+        HtmlGenerator hg = new HtmlGenerator();
 
-        //for (int i = 0; i < to.Count; i++)
-        //{
-        //    string s = to[i];
+        for (int i = 0; i < to.Count; i++)
+        {
+            string s = to[i];
 
-        //    hg.WriteTag("li");
-        //    hg.WriteTagWithAttr("a", "href", baseAnchor + (i + 1).ToString());
-        //    hg.WriteRaw(s);
-        //    hg.TerminateTag("a");
+            hg.WriteTag("li");
+            hg.WriteTagWithAttr("a", "href", baseAnchor + (i + 1).ToString());
+            hg.WriteRaw(s);
+            hg.TerminateTag("a");
 
-        //    hg.TerminateTag("li");
-        //}
+            hg.TerminateTag("li");
+        }
 
-        //return hg.ToString() + "//ul>";
+        return hg.ToString() + "//ul>";
     }
 
     /// <summary>

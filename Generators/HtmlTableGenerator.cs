@@ -68,10 +68,10 @@ public class HtmlTableGenerator : HtmlGeneratorExtended
 
     public void StartTr(string mainQuestionsCssClass)
     {
-        WriteTag(HtmlTags.tr);
+        WriteTagWithAttr(HtmlTags.tr, "class", mainQuestionsCssClass);
     }
 
-    public void StartTd(object p)
+    public void StartTd()
     {
         WriteTag(HtmlTags.td);
     }

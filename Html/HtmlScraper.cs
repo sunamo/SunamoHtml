@@ -6,7 +6,7 @@ public class HtmlScraper
 
     public static string AttributeValuesOfTag(HtmlNode hd, bool recursive, string tag, string attr)
     {
-        var nodes = HtmlAgilityHelper.Nodes(hd, true, tag);
+        var nodes = HtmlAgilityHelper.Nodes(hd, recursive, tag);
         foreach (var item in nodes) s_sb.AppendLine(HtmlAssistant.GetValueOfAttribute(attr, item));
         return s_sb.ToString();
     }

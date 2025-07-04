@@ -89,7 +89,7 @@ public class HtmlAssistant
     {
         var ih = input;
         ih = HtmlHelper.ReplaceHtmlNonPairTagsWithXmlValid(ih);
-        var lines = SHSplit.Split(ih, HtmlTagTemplates.br);
+        var lines = SHSplit.Split(ih, d);
         return lines;
     }
 
@@ -127,7 +127,7 @@ public class HtmlAssistant
     public static string InnerContentWithAttr(HtmlNode node, bool recursive, string tag, string attr, string attrValue,
         bool html, bool contains = false)
     {
-        var node2 = HtmlAgilityHelper.NodeWithAttr(node, true, tag, attr, attrValue, contains);
+        var node2 = HtmlAgilityHelper.NodeWithAttr(node, recursive, tag, attr, attrValue, contains);
         if (node2 != null)
         {
             var c = string.Empty;

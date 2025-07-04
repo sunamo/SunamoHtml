@@ -159,10 +159,7 @@ public static class HtmlHelper
         return html;
     }
 
-    public static List<HtmlNode> ReturnAllTagsWithAttr(HtmlNode table, string v1, string v2, string v3)
-    {
-        return null;
-    }
+
 
     /// <summary>
     ///     Před zavoláním této metody musí být v A1 převedeny bílé znaky na mezery - pouze tak budou označeny všechny výskyty
@@ -610,19 +607,6 @@ public static class HtmlHelper
         return StripAllTags(p);
     }
 
-    /// <summary>
-    ///     Used in ParseChromeAPIs. Searched everywhere, DNF
-    /// </summary>
-    /// <param name="item2"></param>
-    /// <param name="v1"></param>
-    /// <param name="v2"></param>
-    /// <param name="v3"></param>
-    public static HtmlNode ReturnTagOfAtribute(HtmlNode item2, string v1, string v2, string v3)
-    {
-        ThrowEx.NotImplementedMethod();
-        return null;
-    }
-
     public static bool HasTagAttrContains(HtmlNode htmlNode, string delimiter, string attr, string value)
     {
         var attrValue = GetValueOfAttribute(attr, htmlNode);
@@ -640,11 +624,11 @@ public static class HtmlHelper
     /// </summary>
     /// <param name="dd2"></param>
     /// <param name="v"></param>
-    public static string ReturnInnerTextOfTagsRek(HtmlNode dd2, string v)
-    {
-        ThrowEx.NotImplementedMethod();
-        return null;
-    }
+    //public static string ReturnInnerTextOfTagsRek(HtmlNode dd2, string v)
+    //{
+    //    ThrowEx.NotImplementedMethod();
+    //    return null;
+    //}
 
     /// <summary>
     ///     Nehodí se na vrácení obsahu celé stránky
@@ -726,11 +710,11 @@ public static class HtmlHelper
         return null;
     }
 
-    public static HtmlNode ReturnNextSibling(HtmlNode h4Callback, string v)
-    {
-        ThrowEx.NotImplementedMethod();
-        return null;
-    }
+    //public static HtmlNode ReturnNextSibling(HtmlNode h4Callback, string v)
+    //{
+    //    ThrowEx.NotImplementedMethod();
+    //    return null;
+    //}
 
     public static HtmlNode ReturnTagRek(HtmlNode hn, string nameOfTag)
     {
@@ -751,15 +735,15 @@ public static class HtmlHelper
         return null;
     }
 
-    /// <summary>
-    ///     Method with just single parameter are used in ParseChromeAPIs
-    /// </summary>
-    /// <param name="dlOuter"></param>
-    public static List<HtmlNode> ReturnTags(HtmlNode dlOuter)
-    {
-        ThrowEx.NotImplementedMethod();
-        return null;
-    }
+    ///// <summary>
+    /////     Method with just single parameter are used in ParseChromeAPIs
+    ///// </summary>
+    ///// <param name="dlOuter"></param>
+    //public static List<HtmlNode> ReturnTags(HtmlNode dlOuter)
+    //{
+    //    ThrowEx.NotImplementedMethod();
+    //    return null;
+    //}
 
     /// <summary>
     ///     Return 0 instead of 10
