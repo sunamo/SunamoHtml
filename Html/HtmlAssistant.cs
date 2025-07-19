@@ -1,5 +1,8 @@
 namespace SunamoHtml.Html;
 
+/// <summary>
+/// Je tu mix všeho, rozdělit to pomocí AI
+/// </summary>
 public class HtmlAssistant
 {
     private static Type type = typeof(HtmlAssistant);

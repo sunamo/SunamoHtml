@@ -1,5 +1,8 @@
 namespace SunamoHtml.Html;
 
+/// <summary>
+/// Je tu mix všeho, rozdělit to pomocí AI
+/// </summary>
 public static class HtmlHelper
 {
     private static Type type = typeof(HtmlHelper);
@@ -90,7 +93,7 @@ public static class HtmlHelper
             }
     }
 
-    public static string GetValueOfAttribute(string p, HtmlNode divMain, bool _trim = false)
+    private static string GetValueOfAttribute(string p, HtmlNode divMain, bool _trim = false)
     {
         return HtmlAssistant.GetValueOfAttribute(p, divMain, _trim);
     }
@@ -301,13 +304,7 @@ public static class HtmlHelper
         return hn2;
     }
 
-    /// <param name="node"></param>
-    /// <param name="atr"></param>
-    /// <param name="hod"></param>
-    public static void SetAttribute(HtmlNode node, string atr, string hod)
-    {
-        HtmlAssistant.SetAttribute(node, atr, hod);
-    }
+
 
     /// <summary>
     ///     Vratilo 15 namisto 10
