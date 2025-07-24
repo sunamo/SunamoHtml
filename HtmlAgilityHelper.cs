@@ -361,7 +361,7 @@ public class HtmlAgilityHelper
     {
         if (hodnotaAtributu == "*") return true;
         var contains = false;
-        var attrValue = HtmlHelper.GetValueOfAttribute(atribut, item);
+        var attrValue = HtmlAssistant.GetValueOfAttribute(atribut, item);
         if (enoughIsContainsAttribute)
         {
             if (searchAsSingleString)
@@ -504,7 +504,7 @@ isWildCard -
         if (htmlNode == null) return;
         foreach (var item in childNodeWithoutText)
         {
-            var attrValue = HtmlHelper.GetValueOfAttribute(atribut, item);
+            var attrValue = HtmlAssistant.GetValueOfAttribute(atribut, item);
             if (HasTagName(item, p))
             {
                 if (HasTagAttr(item, atribut, hodnotaAtributu, isWildCard, enoughIsContainsAttribute,
