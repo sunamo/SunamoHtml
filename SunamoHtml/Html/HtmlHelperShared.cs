@@ -930,4 +930,9 @@ public static class HtmlHelper
         RecursiveReturnTagsWithContainsAttrWithSplittedElement(vr, htmlNode, tag, "class", t, " ");
         return vr;
     }
+
+    public static HtmlNode ReturnTagRek(HtmlNode documentNode, object body)
+    {
+        throw new NotImplementedException();
+    }
 }

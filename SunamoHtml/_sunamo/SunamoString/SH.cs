@@ -17,45 +17,7 @@ internal class SH
 
 
 
-    internal static string ShortForLettersCountThreeDotsReverse(string p, int p_2)
-    {
-        p = p.Trim();
-        var pl = p.Length;
-        var jeDelsiA1 = p_2 <= pl;
 
-
-        if (jeDelsiA1)
-        {
-            if (IsInLastXCharsTheseLetters(p, p_2, ' '))
-            {
-                var dexMezery = 0;
-                var d = p; //p.Substring(p.Length - zkratitO);
-                var to = d.Length;
-
-                var napocitano = 0;
-                for (var i = to - 1; i >= 0; i--)
-                {
-                    napocitano++;
-
-                    if (d[i] == ' ')
-                    {
-                        if (napocitano >= p_2) break;
-
-                        dexMezery = i;
-                    }
-                }
-
-                d = d.Substring(dexMezery + 1);
-                if (d.Trim() != "") d = " ... " + d;
-                return d;
-                //}
-            }
-
-            return " ... " + p.Substring(p.Length - p_2);
-        }
-
-        return p;
-    }
 
     internal static bool IsInLastXCharsTheseLetters(string p, int pl, params char[] letters)
     {
@@ -203,6 +165,46 @@ internal class SH
     {
         var pridatTriTecky = false;
         return ShortForLettersCount(p, p_2, out pridatTriTecky);
+    }
+
+    internal static string ShortForLettersCountThreeDotsReverse(string p, int p_2)
+    {
+        p = p.Trim();
+        var pl = p.Length;
+        var jeDelsiA1 = p_2 <= pl;
+
+
+        if (jeDelsiA1)
+        {
+            if (IsInLastXCharsTheseLetters(p, p_2, ' '))
+            {
+                var dexMezery = 0;
+                var d = p; //p.Substring(p.Length - zkratitO);
+                var to = d.Length;
+
+                var napocitano = 0;
+                for (var i = to - 1; i >= 0; i--)
+                {
+                    napocitano++;
+
+                    if (d[i] == ' ')
+                    {
+                        if (napocitano >= p_2) break;
+
+                        dexMezery = i;
+                    }
+                }
+
+                d = d.Substring(dexMezery + 1);
+                if (d.Trim() != "") d = " ... " + d;
+                return d;
+                //}
+            }
+
+            return " ... " + p.Substring(p.Length - p_2);
+        }
+
+        return p;
     }
 
     internal static string GetToFirst(string input, string searchFor)
