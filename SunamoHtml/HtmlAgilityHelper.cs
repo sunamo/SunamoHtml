@@ -1,4 +1,4 @@
-namespace SunamoHtml;
+﻿namespace SunamoHtml;
 
 /// <summary>
 ///     HtmlHelperText - for methods which NOT operate on HtmlAgiityHelper!
@@ -472,30 +472,30 @@ public class HtmlAgilityHelper
 isWildCard -
          */
 #if DEBUG
-        StringBuilder sb = new StringBuilder();
-        sb.AppendLine("Text nodes:");
-        sb.AppendLine();
-        foreach (var item in htmlNode.ChildNodes)
-        {
-            if (item.Name != "#text")
-            {
-                continue;
-            }
-            sb.AppendLine(item.OuterHtml);
-            sb.AppendLine();
-            sb.AppendLine();
-            sb.AppendLine();
-            sb.AppendLine();
-            sb.AppendLine();
-            sb.AppendLine();
-            sb.AppendLine();
-            sb.AppendLine();
-            sb.AppendLine();
-            sb.AppendLine();
-            sb.AppendLine();
-            sb.AppendLine();
-        }
-        ClipboardService.SetText(sb.ToString());
+        //StringBuilder sb = new StringBuilder();
+        //sb.AppendLine("Text nodes:");
+        //sb.AppendLine();
+        //foreach (var item in htmlNode.ChildNodes)
+        //{
+        //    if (item.Name != "#text")
+        //    {
+        //        continue;
+        //    }
+        //    sb.AppendLine(item.OuterHtml);
+        //    sb.AppendLine();
+        //    sb.AppendLine();
+        //    sb.AppendLine();
+        //    sb.AppendLine();
+        //    sb.AppendLine();
+        //    sb.AppendLine();
+        //    sb.AppendLine();
+        //    sb.AppendLine();
+        //    sb.AppendLine();
+        //    sb.AppendLine();
+        //    sb.AppendLine();
+        //    sb.AppendLine();
+        //}
+        //ClipboardService.SetText(sb.ToString());
 #endif
         var childNodeWithoutText = TrimTexts(htmlNode.ChildNodes);
         p = p.ToLower();
