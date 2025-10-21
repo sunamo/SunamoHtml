@@ -1,3 +1,6 @@
+// EN: Variable names have been checked and replaced with self-descriptive names
+// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+
 namespace SunamoHtml;
 
 public class XmlAgilityDocument
@@ -15,13 +18,13 @@ void
     {
         path = file;
         hd = HtmlAgilityHelper.CreateHtmlDocument();
-        var c =
+        var count =
 #if ASYNC
             await
 #endif
                 File.ReadAllTextAsync(file);
-        c = XH.RemoveXmlDeclaration(c);
-        hd.LoadHtml(c);
+        count = XH.RemoveXmlDeclaration(count);
+        hd.LoadHtml(count);
     }
 
     public

@@ -1,3 +1,6 @@
+// EN: Variable names have been checked and replaced with self-descriptive names
+// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+
 namespace SunamoHtml.Generators;
 
 public class HtmlGenerator2 : HtmlGenerator
@@ -317,13 +320,13 @@ public class HtmlGenerator2 : HtmlGenerator
         var zapsane = new List<string>();
         for (var i = 0; i < to.Count; i++)
         {
-            var s = to[i];
-            if (!zapsane.Contains(s))
+            var text = to[i];
+            if (!zapsane.Contains(text))
             {
-                zapsane.Add(s);
+                zapsane.Add(text);
                 hg.WriteTag("li");
-                //hg.ZapisTagSAtributem("a", "href", "ZobrazText.aspx?sid=" + s.id.ToString());
-                hg.WriteRaw(s);
+                //hg.ZapisTagSAtributem("a", "href", "ZobrazText.aspx?sid=" + text.id.ToString());
+                hg.WriteRaw(text);
                 hg.TerminateTag("li");
             }
         }
@@ -531,8 +534,8 @@ public class HtmlGenerator2 : HtmlGenerator
     {
         var hg = new HtmlGenerator();
         d.Invoke(hg);
-        var r = hg.ToString();
-        return r;
+        var result = hg.ToString();
+        return result;
     }
 
     public static string Italic(string p)
@@ -722,14 +725,14 @@ public class HtmlGenerator2 : HtmlGenerator
 
         for (var i = 0; i < idcka.Count; i++)
         {
-            var s = idcka[i];
+            var text = idcka[i];
 
             hg.WriteTag("li");
-            hg.WriteTagWithAttr("a", "href", baseAnchor + s + pripona);
+            hg.WriteTagWithAttr("a", "href", baseAnchor + text + pripona);
             if (!string.IsNullOrEmpty(najitVTextu) && !string.IsNullOrEmpty(nahraditVTextu))
-                hg.WriteRaw(s.Replace(najitVTextu, nahraditVTextu));
+                hg.WriteRaw(text.Replace(najitVTextu, nahraditVTextu));
             else
-                hg.WriteRaw(s);
+                hg.WriteRaw(text);
 
             hg.TerminateTag("a");
 
@@ -755,7 +758,7 @@ public class HtmlGenerator2 : HtmlGenerator
 
         for (var i = 0; i < texty.Count; i++)
         {
-            var s = texty[i];
+            var text = texty[i];
             hg.WriteTag("li");
             hg.WriteTagWithAttr("a", "href", baseAnchor + idcka[i]);
 
@@ -777,7 +780,7 @@ public class HtmlGenerator2 : HtmlGenerator
 
     /// <summary>
     ///     Počet v A1 a A2 musí být stejný.
-    ///     Mohl bych udělat tu samou metodu s ABC/ABC ale tam je jako druhý parametr object a to se mi nehodí do krámu
+    ///     Mohl bych udělat tu samou metodu text ABC/ABC ale tam je jako druhý parametr object a to se mi nehodí do krámu
     /// </summary>
     /// <param name="anchors"></param>
     /// <param name="to"></param>
@@ -815,11 +818,11 @@ public class HtmlGenerator2 : HtmlGenerator
 
         for (int i = 0; i < to.Count; i++)
         {
-            string s = to[i];
+            string text = to[i];
 
             hg.WriteTag("li");
             hg.WriteTagWithAttr("a", "href", baseAnchor + (i + 1).ToString());
-            hg.WriteRaw(s);
+            hg.WriteRaw(text);
             hg.TerminateTag("a");
 
             hg.TerminateTag("li");
@@ -865,11 +868,11 @@ public class HtmlGenerator2 : HtmlGenerator
         hg.WriteTag("ol");
         for (var i = 0; i < to.Count; i++)
         {
-            var s = to[i];
+            var text = to[i];
 
             hg.WriteTag("li");
 
-            hg.WriteRaw(s);
+            hg.WriteRaw(text);
 
 
             hg.TerminateTag("li");

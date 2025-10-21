@@ -1,3 +1,6 @@
+// EN: Variable names have been checked and replaced with self-descriptive names
+// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+
 namespace SunamoHtml.Html;
 
 /// <summary>
@@ -20,12 +23,12 @@ public static class HtmlHelper
 
         foreach (Match item in mc)
         {
-            var d = item.Value.Replace(" >", ">");
+            var data = item.Value.Replace(" >", ">");
             var tag = "";
             if (item.Value.Contains(" "))
                 tag = SH.GetFirstPartByLocation(item.Value, ' ');
             else
-                tag = d.Replace("/", "").Replace(">", "");
+                tag = data.Replace("/", "").Replace(">", "");
 
             tag = tag.TrimStart('<').Trim().ToLower();
             if (col.Contains(tag))
@@ -53,23 +56,23 @@ public static class HtmlHelper
         return title.Replace('"', '\'');
     }
 
-    public static string ReplaceAllFontCase(string r)
+    public static string ReplaceAllFontCase(string result)
     {
         var za = "<br />";
-        r = r.Replace("<BR />", za);
-        r = r.Replace("<bR />", za);
-        r = r.Replace("<Br />", za);
+        result = result.Replace("<BR />", za);
+        result = result.Replace("<bR />", za);
+        result = result.Replace("<Br />", za);
 
-        r = r.Replace("<br/>", za);
-        r = r.Replace("<BR/>", za);
-        r = r.Replace("<bR/>", za);
-        r = r.Replace("<Br/>", za);
+        result = result.Replace("<br/>", za);
+        result = result.Replace("<BR/>", za);
+        result = result.Replace("<bR/>", za);
+        result = result.Replace("<Br/>", za);
 
-        r = r.Replace("<br>", za);
-        r = r.Replace("<BR>", za);
-        r = r.Replace("<bR>", za);
-        r = r.Replace("<Br>", za);
-        return r;
+        result = result.Replace("<br>", za);
+        result = result.Replace("<BR>", za);
+        result = result.Replace("<bR>", za);
+        result = result.Replace("<Br>", za);
+        return result;
     }
 
     public static string ClearSpaces(string dd)
@@ -240,7 +243,7 @@ public static class HtmlHelper
                 WhitespaceCharService whitespaceChar = new();
 
                 var veta = SH.XCharsBeforeAndAfterWholeWords(
-                    SHReplace.ReplaceAllArray(celyObsah, " ", whitespaceChar.whiteSpaceChars.ConvertAll(d => d.ToString()).ToArray()),
+                    SHReplace.ReplaceAllArray(celyObsah, " ", whitespaceChar.whiteSpaceChars.ConvertAll(data => data.ToString()).ToArray()),
                     stred, naKazdeStrane);
 
                 // Teď zvýrazním nalezené slova
@@ -335,7 +338,7 @@ public static class HtmlHelper
 
     /// <summary>
     ///     Do A2 se může zadat * pro získaní všech tagů
-    ///     Do A4 se může vložit * pro vrácení tagů s hledaným atributem s jakoukoliv hodnotou
+    ///     Do A4 se může vložit * pro vrácení tagů text hledaným atributem text jakoukoliv hodnotou
     /// </summary>
     /// <param name="htmlNode"></param>
     /// <param name="tag"></param>
@@ -454,7 +457,7 @@ public static class HtmlHelper
 
     /// <summary>
     ///     Do A3 se může zadat * pro vrácení všech tagů
-    ///     Do A5 se může vložit * pro vrácení tagů s hledaným atributem s jakoukoliv hodnotou
+    ///     Do A5 se může vložit * pro vrácení tagů text hledaným atributem text jakoukoliv hodnotou
     /// </summary>
     /// <param name="vr"></param>
     /// <param name="htmlNode"></param>
@@ -579,9 +582,9 @@ public static class HtmlHelper
     ///     Use RemoveAllNodes when need remove also with innerhtml
     /// </summary>
     /// <param name="d"></param>
-    public static List<string> StripAllTagsList(string d)
+    public static List<string> StripAllTagsList(string data)
     {
-        var replaced = StripAllTags(d, " ");
+        var replaced = StripAllTags(data, " ");
         return SHSplit.Split(replaced, " ");
     }
 
@@ -635,12 +638,12 @@ public static class HtmlHelper
     /// <param name="p"></param>
     /// <param name="ssh"></param>
     /// <param name="value"></param>
-    public static string ReturnApplyToAllTags(string s, string p, EditHtmlWidthHandler ssh, string value)
+    public static string ReturnApplyToAllTags(string text, string p, EditHtmlWidthHandler ssh, string value)
     {
         var vr = new List<HtmlNode>();
         var doc = HtmlAgilityHelper.CreateHtmlDocument();
         //hd.Encoding = Encoding.UTF8;
-        doc.LoadHtml(s);
+        doc.LoadHtml(text);
         var htmlNode = doc.DocumentNode;
         RecursiveApplyToAllTags(vr, ref htmlNode, p, ssh, value);
         return htmlNode.OuterHtml;
@@ -671,7 +674,7 @@ public static class HtmlHelper
                 if (!vr.Contains(item))
                 {
                     vr.Add(item);
-                    var d = ssh.Invoke(ref item, value);
+                    var data = ssh.Invoke(ref item, value);
                 }
             }
             else
@@ -687,12 +690,12 @@ public static class HtmlHelper
         var at = GetValueOfAttribute("style", item);
         if (at.Contains(";"))
         {
-            var d = SHSplit.Split(at, ";");
-            foreach (var item2 in d)
+            var data = SHSplit.Split(at, ";");
+            foreach (var item2 in data)
                 if (item2.Contains(":"))
                 {
-                    var r = SHSplit.SplitNone(item2, ":");
-                    vr.Add(r[0].Trim().ToLower(), r[1].Trim().ToLower());
+                    var result = SHSplit.SplitNone(item2, ":");
+                    vr.Add(result[0].Trim().ToLower(), result[1].Trim().ToLower());
                 }
         }
 

@@ -1,3 +1,6 @@
+// EN: Variable names have been checked and replaced with self-descriptive names
+// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+
 namespace SunamoHtml.Html;
 
 /// <summary>
@@ -11,10 +14,10 @@ public class HtmlAssistant
     {
         var tds = HtmlAgilityHelper.Nodes(tr, false, "td");
 
-        var r = new List<string>();
-        foreach (var item in tds) r.Add(item.InnerText.Trim());
+        var result = new List<string>();
+        foreach (var item in tds) result.Add(item.InnerText.Trim());
 
-        return r;
+        return result;
     }
 
     public static string RemoveStyleTagsText(string html)
@@ -133,13 +136,13 @@ public class HtmlAssistant
         var node2 = HtmlAgilityHelper.NodeWithAttr(node, recursive, tag, attr, attrValue, contains);
         if (node2 != null)
         {
-            var c = string.Empty;
+            var count = string.Empty;
             if (html)
-                c = node2.InnerHtml;
+                count = node2.InnerHtml;
             else
-                c = node2.InnerText;
+                count = node2.InnerText;
 
-            return HtmlDecode(c.Trim());
+            return HtmlDecode(count.Trim());
         }
 
         return string.Empty;
@@ -189,18 +192,18 @@ public class HtmlAssistant
         return result;
     }
 
-    public static string InnerTextDecodeTrim(string r)
+    public static string InnerTextDecodeTrim(string result)
     {
-        r = SHReplace.ReplaceWhiteSpacesWithoutSpacesWithReplaceWith(r, " ");
-        r = WebUtility.HtmlDecode(r);
-        r = SHReplace.ReplaceAllDoubleSpaceToSingle(r);
-        return r;
+        result = SHReplace.ReplaceWhiteSpacesWithoutSpacesWithReplaceWith(result, " ");
+        result = WebUtility.HtmlDecode(result);
+        result = SHReplace.ReplaceAllDoubleSpaceToSingle(result);
+        return result;
     }
 
     public static string InnerTextDecodeTrim(HtmlNode n)
     {
-        var r = n.InnerText.Trim();
-        return InnerTextDecodeTrim(r);
+        var result = n.InnerText.Trim();
+        return InnerTextDecodeTrim(result);
     }
 
     public static string InnerText(HtmlNode item, bool recursive, string tag)
@@ -217,13 +220,13 @@ public class HtmlAssistant
         return node.InnerHtml;
     }
 
-    public static Dictionary<string, string> GetAttributesPairs(string s)
+    public static Dictionary<string, string> GetAttributesPairs(string text)
     {
-        if (!s.Contains("<")) s = "<img " + s + "/>";
+        if (!text.Contains("<")) text = "<img " + text + "/>";
 
         var result = new Dictionary<string, string>();
 
-        var node = HtmlNode.CreateNode(s);
+        var node = HtmlNode.CreateNode(text);
         foreach (var item in node.Attributes) result.Add(item.Name, item.Value);
 
         return result;

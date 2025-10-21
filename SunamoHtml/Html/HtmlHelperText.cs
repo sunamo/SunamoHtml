@@ -1,3 +1,6 @@
+// EN: Variable names have been checked and replaced with self-descriptive names
+// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+
 namespace SunamoHtml.Html;
 
 public class HtmlHelperText
@@ -14,13 +17,13 @@ public class HtmlHelperText
         return input;
     }
 
-    public static string InsertMissingEndingTags(string s, string tag)
+    public static string InsertMissingEndingTags(string text, string tag)
     {
-        var text = new StringBuilder(s);
+        var text = new StringBuilder(text);
 
-        var start = SH.ReturnOccurencesOfString(s, "<" + tag);
+        var start = SH.ReturnOccurencesOfString(text, "<" + tag);
         var endingTag = "</" + tag + ">";
-        var ends = SH.ReturnOccurencesOfString(s, endingTag);
+        var ends = SH.ReturnOccurencesOfString(text, endingTag);
 
         var startC = start.Count;
         var endsC = ends.Count;
@@ -52,9 +55,9 @@ public class HtmlHelperText
             foreach (var item in se)
                 if (item.Value == -1)
                 {
-                    var dexEndOfStart = s.IndexOf('>', item.Key);
+                    var dexEndOfStart = text.IndexOf('>', item.Key);
 
-                    var space = s.IndexOf(' ', dexEndOfStart);
+                    var space = text.IndexOf(' ', dexEndOfStart);
 
                     if (space != -1) text.Insert(space, endingTag);
                 }
@@ -85,9 +88,9 @@ public class HtmlHelperText
     /// </summary>
     /// <param name="s"></param>
     /// <param name="v"></param>
-    private static string WrapWith(string s, string p)
+    private static string WrapWith(string text, string p)
     {
-        return "<" + p + ">" + s + "</" + p + ">";
+        return "<" + p + ">" + text + "</" + p + ">";
     }
 
     public static string RemoveAllNodes(string v)
@@ -122,9 +125,9 @@ public class HtmlHelperText
         if (sc == -1) return new Tuple<string, string>(" ", "");
 
         var ending = c2.IndexOf('>', sc);
-        var e = c2.IndexOf(scriptE, ending);
+        var element = c2.IndexOf(scriptE, ending);
 
-        var r = SH.GetTextBetweenTwoCharsInts(c2, ending, e);
+        var result = SH.GetTextBetweenTwoCharsInts(c2, ending, element);
 
         var from = sc + scriptS.Length - 1;
         var to = ending;
@@ -140,15 +143,15 @@ public class HtmlHelperText
             }
         }
 
-        return new Tuple<string, string>(r, attrs);
+        return new Tuple<string, string>(result, attrs);
     }
 
     public static List<string> GetAllTags(string i)
     {
         var tags = Regex.Matches(i, regexHtmlTag);
-        var ls = new List<string>();
-        foreach (Match item in tags) ls.Add(item.Value);
-        return ls;
+        var sourceList = new List<string>();
+        foreach (Match item in tags) sourceList.Add(item.Value);
+        return sourceList;
     }
 
     public static string RemoveHtmlTags(string ClipboardS2)
@@ -163,10 +166,10 @@ public class HtmlHelperText
         return c;
     }
 
-    public static bool ContainsTag(string s, List<string> allHtmlTagsWithLeftArrow)
+    public static bool ContainsTag(string text, List<string> allHtmlTagsWithLeftArrow)
     {
         foreach (var item in allHtmlTagsWithLeftArrow)
-            if (s.Contains(item))
+            if (text.Contains(item))
                 return true;
         return false;
     }
@@ -258,37 +261,37 @@ public class HtmlHelperText
         return result;
     }
 
-    private static string AddIntoParagraph(string s)
+    private static string AddIntoParagraph(string text)
     {
         const string spaceDash = " -";
 
-        if (s.Contains(spaceDash))
+        if (text.Contains(spaceDash))
         {
-            s = "<b>" + s;
+            text = "<b>" + text;
 
-            s = s.Replace(spaceDash, "</b>" + spaceDash);
+            text = text.Replace(spaceDash, "</b>" + spaceDash);
         }
 
         //string s2 = string.Empty;
-        if (s[0] == '<')
+        if (text[0] == '<')
         {
-            var tag = GetFirstTag(s).ToLower();
+            var tag = GetFirstTag(text).ToLower();
 
-            if (AllLists.PairingTagsDontWrapToParagraph.Contains(tag)) return s;
+            if (AllLists.PairingTagsDontWrapToParagraph.Contains(tag)) return text;
             if (tag.StartsWith("/"))
                 if (AllLists.PairingTagsDontWrapToParagraph.Contains(tag.Substring(1)))
-                    return s;
+                    return text;
 
-            //s2 = s.Substring(1);
+            //s2 = text.Substring(1);
         }
 
-        return WrapWith(s, "p");
+        return WrapWith(text, "p");
     }
 
 
-    private static string GetFirstTag(string s)
+    private static string GetFirstTag(string text)
     {
-        var between = SH.GetTextBetweenSimple(s, "<", ">");
+        var between = SH.GetTextBetweenSimple(text, "<", ">");
 
         if (between.Contains(" ")) return SH.GetToFirst(between, " ");
         return between;

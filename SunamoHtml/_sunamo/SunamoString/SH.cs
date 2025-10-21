@@ -1,14 +1,17 @@
+// EN: Variable names have been checked and replaced with self-descriptive names
+// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+
 namespace SunamoHtml._sunamo.SunamoString;
 
 internal class SH
 {
-    internal static string JoinNL(List<string> l)
+    internal static string JoinNL(List<string> list)
     {
-        StringBuilder sb = new();
-        foreach (var item in l) sb.AppendLine(item);
-        var r = string.Empty;
-        r = sb.ToString();
-        return r;
+        StringBuilder stringBuilder = new();
+        foreach (var item in list) stringBuilder.AppendLine(item);
+        var result = string.Empty;
+        result = stringBuilder.ToString();
+        return result;
     }
 
 
@@ -19,11 +22,11 @@ internal class SH
 
 
 
-    internal static bool IsInLastXCharsTheseLetters(string p, int pl, params char[] letters)
+    internal static bool IsInLastXCharsTheseLetters(string parameter, int pl, params char[] letters)
     {
-        for (var i = p.Length - 1; i >= pl; i--)
+        for (var i = parameter.Length - 1; i >= pl; i--)
             foreach (var item in letters)
-                if (p[i] == item)
+                if (parameter[i] == item)
                     return true;
         return false;
     }
@@ -33,8 +36,8 @@ internal class SH
         if (hledaneSlova == null || hledaneSlova.Length == 0) return new List<FromToWord>();
         celyObsah = celyObsah.ToLower();
         var vr = new List<FromToWord>();
-        var l = celyObsah.Length;
-        for (var i = 0; i < l; i++)
+        var list = celyObsah.Length;
+        for (var i = 0; i < list; i++)
             foreach (var item in hledaneSlova)
             {
                 var vsechnoStejne = true;
@@ -42,7 +45,7 @@ internal class SH
                 while (pridat < item.Length)
                 {
                     var dex = i + pridat;
-                    if (l > dex)
+                    if (list > dex)
                     {
                         if (celyObsah[dex] != item[pridat])
                         {
@@ -100,46 +103,46 @@ internal class SH
 
     internal static string GetFirstPartByLocation(string p1, int dx)
     {
-        string p, z;
-        p = p1;
+        string parameter, z;
+        parameter = p1;
 
-        if (dx < p1.Length) GetPartsByLocation(out p, out z, p1, dx);
+        if (dx < p1.Length) GetPartsByLocation(out parameter, out z, p1, dx);
 
-        return p;
+        return parameter;
     }
 
-    private static bool IsInFirstXCharsTheseLetters(string p, int pl, params char[] letters)
+    private static bool IsInFirstXCharsTheseLetters(string parameter, int pl, params char[] letters)
     {
         for (var i = 0; i < pl; i++)
             foreach (var item in letters)
-                if (p[i] == item)
+                if (parameter[i] == item)
                     return true;
         return false;
     }
 
-    private static string ShortForLettersCount(string p, int p_2, out bool pridatTriTecky)
+    private static string ShortForLettersCount(string parameter, int p_2, out bool pridatTriTecky)
     {
         pridatTriTecky = false;
         // Vše tu funguje výborně
-        p = p.Trim();
-        var pl = p.Length;
+        parameter = parameter.Trim();
+        var pl = parameter.Length;
         var jeDelsiA1 = p_2 <= pl;
 
 
         if (jeDelsiA1)
         {
-            if (IsInFirstXCharsTheseLetters(p, p_2, ' '))
+            if (IsInFirstXCharsTheseLetters(parameter, p_2, ' '))
             {
                 var dexMezery = 0;
-                var d = p; //p.Substring(p.Length - zkratitO);
-                var to = d.Length;
+                var data = parameter; //parameter.Substring(parameter.Length - zkratitO);
+                var to = data.Length;
 
                 var napocitano = 0;
                 for (var i = 0; i < to; i++)
                 {
                     napocitano++;
 
-                    if (d[i] == ' ')
+                    if (data[i] == ' ')
                     {
                         if (napocitano >= p_2) break;
 
@@ -147,47 +150,47 @@ internal class SH
                     }
                 }
 
-                d = d.Substring(0, dexMezery + 1);
-                if (d.Trim() != "") pridatTriTecky = true;
-                //d = d ;
-                return d;
+                data = data.Substring(0, dexMezery + 1);
+                if (data.Trim() != "") pridatTriTecky = true;
+                //d = data ;
+                return data;
                 //}
             }
 
             pridatTriTecky = true;
-            return p.Substring(0, p_2);
+            return parameter.Substring(0, p_2);
         }
 
-        return p;
+        return parameter;
     }
 
-    internal static string ShortForLettersCount(string p, int p_2)
+    internal static string ShortForLettersCount(string parameter, int p_2)
     {
         var pridatTriTecky = false;
-        return ShortForLettersCount(p, p_2, out pridatTriTecky);
+        return ShortForLettersCount(parameter, p_2, out pridatTriTecky);
     }
 
-    internal static string ShortForLettersCountThreeDotsReverse(string p, int p_2)
+    internal static string ShortForLettersCountThreeDotsReverse(string parameter, int p_2)
     {
-        p = p.Trim();
-        var pl = p.Length;
+        parameter = parameter.Trim();
+        var pl = parameter.Length;
         var jeDelsiA1 = p_2 <= pl;
 
 
         if (jeDelsiA1)
         {
-            if (IsInLastXCharsTheseLetters(p, p_2, ' '))
+            if (IsInLastXCharsTheseLetters(parameter, p_2, ' '))
             {
                 var dexMezery = 0;
-                var d = p; //p.Substring(p.Length - zkratitO);
-                var to = d.Length;
+                var data = parameter; //parameter.Substring(parameter.Length - zkratitO);
+                var to = data.Length;
 
                 var napocitano = 0;
                 for (var i = to - 1; i >= 0; i--)
                 {
                     napocitano++;
 
-                    if (d[i] == ' ')
+                    if (data[i] == ' ')
                     {
                         if (napocitano >= p_2) break;
 
@@ -195,16 +198,16 @@ internal class SH
                     }
                 }
 
-                d = d.Substring(dexMezery + 1);
-                if (d.Trim() != "") d = " ... " + d;
-                return d;
+                data = data.Substring(dexMezery + 1);
+                if (data.Trim() != "") data = " ... " + data;
+                return data;
                 //}
             }
 
-            return " ... " + p.Substring(p.Length - p_2);
+            return " ... " + parameter.Substring(parameter.Length - p_2);
         }
 
-        return p;
+        return parameter;
     }
 
     internal static string GetToFirst(string input, string searchFor)
@@ -214,20 +217,20 @@ internal class SH
         return input;
     }
 
-    internal static string GetTextBetweenSimple(string p, string after, string before,
+    internal static string GetTextBetweenSimple(string parameter, string after, string before,
         bool throwExceptionIfNotContains = true)
     {
         var dxOfFounded = int.MinValue;
-        var t = GetTextBetween(p, after, before, out dxOfFounded, 0, throwExceptionIfNotContains);
-        return t;
+        var temp = GetTextBetween(parameter, after, before, out dxOfFounded, 0, throwExceptionIfNotContains);
+        return temp;
     }
 
-    internal static string GetTextBetween(string p, string after, string before, out int dxOfFounded,
+    internal static string GetTextBetween(string parameter, string after, string before, out int dxOfFounded,
         int startSearchingAt, bool throwExceptionIfNotContains = true)
     {
         string vr = null;
-        dxOfFounded = p.IndexOf(after, startSearchingAt);
-        var p3 = p.IndexOf(before, dxOfFounded + after.Length);
+        dxOfFounded = parameter.IndexOf(after, startSearchingAt);
+        var p3 = parameter.IndexOf(before, dxOfFounded + after.Length);
         var b2 = dxOfFounded != -1;
         var b3 = p3 != -1;
         if (b2 && b3)
@@ -239,19 +242,19 @@ internal class SH
             if (length < 1)
             {
                 // Takhle to tu bylo předtím ale logicky je to nesmysl.
-                //return p;
+                //return parameter;
             }
 
-            vr = p.Substring(dxOfFounded, length).Trim();
+            vr = parameter.Substring(dxOfFounded, length).Trim();
         }
         else
         {
             if (throwExceptionIfNotContains)
-                ThrowEx.NotContains(p, after, before);
+                ThrowEx.NotContains(parameter, after, before);
             else
-                // 24-1-21 return null instead of p
+                // 24-1-21 return null instead of parameter
                 return null;
-            //vr = p;
+            //vr = parameter;
         }
 
         return vr.Trim();
@@ -283,9 +286,9 @@ internal class SH
             }
         }
 
-        var l = slovo + " " + leva.ToString().TrimEnd(' ');
-        l = l.TrimEnd(' ');
-        naKazdeStrane += naKazdeStrane - l.Length;
+        var list = slovo + " " + leva.ToString().TrimEnd(' ');
+        list = list.TrimEnd(' ');
+        naKazdeStrane += naKazdeStrane - list.Length;
         slovo.Clear();
         // Počítám po pravé straně započítám i to středové písmenko
         for (var i = stred; i < celyObsah.Length; i++)
@@ -307,24 +310,24 @@ internal class SH
             }
         }
 
-        var p = prava.ToString().TrimStart(' ') + " " + slovo;
-        p = p.TrimStart(' ');
+        var parameter = prava.ToString().TrimStart(' ') + " " + slovo;
+        parameter = parameter.TrimStart(' ');
         var vr = "";
-        if (celyObsah.Contains(l + " ") && celyObsah.Contains(" " + p))
-            vr = l + "" + p;
+        if (celyObsah.Contains(list + " ") && celyObsah.Contains(" " + parameter))
+            vr = list + "" + parameter;
         else
-            vr = l + p;
+            vr = list + parameter;
         return vr;
     }
 
-    internal static string GetTextBetweenTwoCharsInts(string p, int begin, int end)
+    internal static string GetTextBetweenTwoCharsInts(string parameter, int begin, int end)
     {
         if (end > begin)
             // a(1) - 1,3
-            return p.Substring(begin + 1, end - begin - 1);
+            return parameter.Substring(begin + 1, end - begin - 1);
         // originally
-        //return p.Substring(begin+1, end - begin - 1);
-        return p;
+        //return parameter.Substring(begin+1, end - begin - 1);
+        return parameter;
     }
 
     internal static bool IsNumbered(string v)
@@ -352,8 +355,8 @@ internal class SH
     {
         if (nazevPP.Length == 1) return nazevPP.ToUpper();
 
-        var sb = nazevPP.Substring(1);
-        return nazevPP[0].ToString().ToUpper() + sb;
+        var stringBuilder = nazevPP.Substring(1);
+        return nazevPP[0].ToString().ToUpper() + stringBuilder;
     }
 
     internal static string FirstCharOfEveryWordUpperDash(string v)
@@ -369,10 +372,10 @@ internal class SH
     /// <param name="dash"></param>
     private static string FirstCharOfEveryWordUpper(string v, char dash)
     {
-        var p = SHSplit.SplitChar(v, dash);
-        for (var i = 0; i < p.Count; i++) p[i] = FirstCharUpper(p[i]);
-        //p = CAChangeContent.ChangeContent0(null, p, FirstCharUpper);
-        return string.Join(" ", p);
+        var parameter = SHSplit.SplitChar(v, dash);
+        for (var i = 0; i < parameter.Count; i++) parameter[i] = FirstCharUpper(parameter[i]);
+        //p = CAChangeContent.ChangeContent0(null, parameter, FirstCharUpper);
+        return string.Join(" ", parameter);
     }
 
     internal static bool MatchWildcard(string name, string mask)

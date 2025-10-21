@@ -1,3 +1,6 @@
+// EN: Variable names have been checked and replaced with self-descriptive names
+// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+
 namespace SunamoHtml.Generators;
 
 public static class HtmlGeneratorList
@@ -24,15 +27,15 @@ public static class HtmlGeneratorList
         hg.WriteTag(tag);
         for (var i = 0; i < to.Count; i++)
         {
-            var s = to[i];
-            if (!zapsane.Contains(s))
+            var text = to[i];
+            if (!zapsane.Contains(text))
             {
-                if (checkDuplicates) zapsane.Add(s);
+                if (checkDuplicates) zapsane.Add(text);
 
                 hg.WriteTag("li");
 
                 hg.WriteTagWithAttr("a", "href", baseAnchor + to[i]);
-                //hg.ZapisTagSAtributem("a", "href", "ZobrazText.aspx?sid=" + s.id.ToString());
+                //hg.ZapisTagSAtributem("a", "href", "ZobrazText.aspx?sid=" + text.id.ToString());
                 hg.WriteRaw(titles[i]);
                 hg.TerminateTag("a");
                 hg.TerminateTag("li");

@@ -1,3 +1,6 @@
+// EN: Variable names have been checked and replaced with self-descriptive names
+// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+
 namespace SunamoHtml._sunamo.SunamoXml;
 
 internal class XHelper
@@ -20,9 +23,9 @@ internal class XHelper
             }
 
             // Jaký je typ item, at nemusím používat slovník
-            var v = nsmgr.LookupNamespace(item2);
+            var value = nsmgr.LookupNamespace(item2);
 
-            if (!ns.ContainsKey(item)) ns.Add(item, v);
+            if (!ns.ContainsKey(item)) ns.Add(item, value);
         }
 
         return ns;

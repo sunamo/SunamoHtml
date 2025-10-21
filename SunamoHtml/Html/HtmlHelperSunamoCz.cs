@@ -1,3 +1,6 @@
+// EN: Variable names have been checked and replaced with self-descriptive names
+// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+
 namespace SunamoHtml.Html;
 public class HtmlHelperSunamoCz
 {
@@ -11,21 +14,21 @@ public class HtmlHelperSunamoCz
         p = HtmlHelper.ConvertTextToHtml(p);
 
         p = p.Replace("<", " <");
-        var d = SHSplit.SplitAndKeepDelimiters(p, new List<char>([' ', '<', '>'])
-            .ConvertAll(d => d.ToString()));
+        var data = SHSplit.SplitAndKeepDelimiters(p, new List<char>([' ', '<', '>'])
+            .ConvertAll(data => data.ToString()));
 
-        for (var i = 0; i < d.Count; i++)
+        for (var i = 0; i < data.Count; i++)
         {
-            var item = d[i].Trim();
+            var item = data[i].Trim();
             if (item.StartsWith("https://") || item.StartsWith("https://") || item.StartsWith("www."))
             {
                 var res = item;
                 res = HtmlGenerator2.AnchorWithHttp(res);
-                d[i] = " " + res + " ";
+                data[i] = " " + res + " ";
             }
         }
 
-        p = string.Join("", d);
+        p = string.Join("", data);
 
         var bold = new List<int>();
         bold.AddRange(SH.IndexesOfChars(p, '*'));
@@ -51,12 +54,12 @@ public class HtmlHelperSunamoCz
             var i2 = Exceptions.HasOddNumberOfElements(string.Empty, "italic", italic);
             var s2 = Exceptions.HasOddNumberOfElements(string.Empty, "strike", strike);
 
-            var ls = new List<string>();
-            if (b2 != null) ls.Add("bold");
-            if (i2 != null) ls.Add("italic");
-            if (s2 != null) ls.Add("strike");
+            var sourceList = new List<string>();
+            if (b2 != null) sourceList.Add("bold");
+            if (i2 != null) sourceList.Add("italic");
+            if (s2 != null) sourceList.Add("strike");
 
-            error = StatusPrefixes.info + string.Join(",", ls) + " was odd count of elements. ";
+            error = StatusPrefixes.info + string.Join(",", sourceList) + " was odd count of elements. ";
             return p; //HtmlAgilityHelper.WrapIntoTagIfNot(t, "b") + p;
         }
 
@@ -89,11 +92,11 @@ public class HtmlHelperSunamoCz
 
     public static string ConvertTextToHtmlWithAnchors(string p)
     {
-        var d = SHSplit.SplitNoneChar(HtmlHelper.ConvertTextToHtml(p), ' ');
-        for (var i = 0; i < d.Count; i++)
-            if (d[i].StartsWith("http://") || d[i].StartsWith("https://"))
-                d[i] = HtmlGenerator2.AnchorWithHttp(d[i]);
-        return string.Join(' ', d);
+        var data = SHSplit.SplitNoneChar(HtmlHelper.ConvertTextToHtml(p), ' ');
+        for (var i = 0; i < data.Count; i++)
+            if (data[i].StartsWith("http://") || data[i].StartsWith("https://"))
+                data[i] = HtmlGenerator2.AnchorWithHttp(data[i]);
+        return string.Join(' ', data);
     }
 
 

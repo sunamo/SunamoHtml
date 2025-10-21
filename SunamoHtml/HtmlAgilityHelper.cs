@@ -1,4 +1,7 @@
-﻿namespace SunamoHtml;
+// EN: Variable names have been checked and replaced with self-descriptive names
+// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+
+namespace SunamoHtml;
 
 /// <summary>
 ///     HtmlHelperText - for methods which NOT operate on HtmlAgiityHelper!
@@ -70,12 +73,12 @@ public class HtmlAgilityHelper
             }
             if (nodes.Count != 0)
             {
-                StringBuilder sb = new StringBuilder();
+                StringBuilder stringBuilder = new StringBuilder();
                 foreach (var item in nodes)
                 {
-                    sb.Append(item.InnerText + delimiter);
+                    stringBuilder.Append(item.InnerText + delimiter);
                 }
-                result = sb.ToString().Substring(0, sb.Length - 2);
+                result = stringBuilder.ToString().Substring(0, stringBuilder.Length - 2);
                 if (result == "")
                 {
                     result = previousInnerText.Trim();
@@ -166,16 +169,16 @@ public class HtmlAgilityHelper
         {
             var item = textNodes[i];
             if (item.ParentNode.Name == "pre") continue;
-            var d = SHSplit.SplitByWhiteSpaces(item.InnerText);
-            var changed = CAChangeContent.ChangeContentWithCondition(null, d, RegexHelper.IsUri, HtmlGenerator2.Anchor);
+            var data = SHSplit.SplitByWhiteSpaces(item.InnerText);
+            var changed = CAChangeContent.ChangeContentWithCondition(null, data, RegexHelper.IsUri, HtmlGenerator2.Anchor);
             item.InnerHtml = string.Empty;
-            InsertGroup(item, d);
+            InsertGroup(item, data);
             //item.ParentNode.ReplaceChild(CreateNode(item.InnerHtml), item);
             // must be last because use ParentNode above
             //item.ParentNode.RemoveChild(item);
             //new HtmlNode(HtmlNodeType.Element, hd, 0);
             //    var ret = item.ParentNode.ReplaceChild(newNode, item);
-            //newNode.ParentNode.InsertAfter(HtmlNode.CreateNode(d[1]), newNode);
+            //newNode.ParentNode.InsertAfter(HtmlNode.CreateNode(data[1]), newNode);
             //int x = 0;
             //}
         }
@@ -190,15 +193,15 @@ public class HtmlAgilityHelper
     }
     private static string WrapIntoTag(string div, string input)
     {
-        var sb = new StringBuilder();
-        sb.Append('<');
-        sb.Append(div);
-        sb.Append('>');
-        sb.Append(input);
-        sb.Append('<' + string.Empty + '/');
-        sb.Append(div);
-        sb.Append('>');
-        return sb.ToString();
+        var stringBuilder = new StringBuilder();
+        stringBuilder.Append('<');
+        stringBuilder.Append(div);
+        stringBuilder.Append('>');
+        stringBuilder.Append(input);
+        stringBuilder.Append('<' + string.Empty + '/');
+        stringBuilder.Append(div);
+        stringBuilder.Append('>');
+        return stringBuilder.ToString();
     }
     public static void InsertGroup(HtmlNode insertAfter, List<string> list)
     {
@@ -226,8 +229,8 @@ public class HtmlAgilityHelper
         RecursiveReturnTags(allNodes, node, true, false, "*");
         foreach (var item in allNodes)
             if (item.Name == textNode)
-                if (!dontHaveAsParentTag.Any(d =>
-                        d != item.ParentNode
+                if (!dontHaveAsParentTag.Any(data =>
+                        data != item.ParentNode
                             .Name) /*!CAG.IsEqualToAnyElement<string>(item.ParentNode.Name, dontHaveAsParentTag)*/)
                     vr.Add(item);
         return vr;
@@ -375,8 +378,8 @@ public class HtmlAgilityHelper
             else
             {
                 var cont = true;
-                var p = SHSplit.Split(hodnotaAtributu, " ");
-                foreach (var item2 in p)
+                var parameter = SHSplit.Split(hodnotaAtributu, " ");
+                foreach (var item2 in parameter)
                     if (!attrValue.Contains(item2))
                     {
                         cont = false;
@@ -399,20 +402,20 @@ public class HtmlAgilityHelper
     /// <param name="vr"></param>
     /// <param name="html"></param>
     /// <param name="p"></param>
-    public static void RecursiveReturnTags(List<HtmlNode> vr, HtmlNode html, bool recursive, bool single, string p)
+    public static void RecursiveReturnTags(List<HtmlNode> vr, HtmlNode html, bool recursive, bool single, string parameter)
     {
         if (html == null) return;
         foreach (var item in html.ChildNodes)
-            if (HasTagName(item, p))
+            if (HasTagName(item, parameter))
             {
-                //RecursiveReturnTags(vr, item, p);
+                //RecursiveReturnTags(vr, item, parameter);
                 vr.Add(item);
                 if (single) return;
-                if (recursive) RecursiveReturnTags(vr, item, recursive, single, p);
+                if (recursive) RecursiveReturnTags(vr, item, recursive, single, parameter);
             }
             else
             {
-                if (recursive) RecursiveReturnTags(vr, item, recursive, single, p);
+                if (recursive) RecursiveReturnTags(vr, item, recursive, single, parameter);
             }
     }
     public static List<HtmlNode> Nodes(HtmlNode node, bool recursive/*, bool single*/, string tag)
@@ -432,15 +435,15 @@ public class HtmlAgilityHelper
         if (tag != textNode) vr = TrimTexts(vr);
         return vr;
     }
-    public static HtmlDocument CreateHtmlDocument(CreateHtmlDocumentInitData d = null)
+    public static HtmlDocument CreateHtmlDocument(CreateHtmlDocumentInitData data = null)
     {
-        if (d == null)
+        if (data == null)
         {
-            d = new();
+            data = new();
         }
 
         var hd = new HtmlDocument();
-        hd.OptionOutputOriginalCase = d.OptionOutputOriginalCase;
+        hd.OptionOutputOriginalCase = data.OptionOutputOriginalCase;
         // false - i přesto mi tag ukončený na / převede na </Page>. Musí se ještě tagy jež nechci ukončovat vymazat z HtmlAgilityPack.HtmlNode.ElementsFlags.Remove("form"); před načetním XML https://html-agility-pack.net/knowledge-base/7104652/htmlagilitypack-close-form-tag-automatically
         hd.OptionAutoCloseOnEnd = false;
         hd.OptionOutputAsXml = false;
@@ -450,10 +453,10 @@ public class HtmlAgilityHelper
         return hd;
     }
     public static void RecursiveReturnTagsWithContainsAttr(List<HtmlNode> vr, HtmlNode htmlNode, bool recursively,
-        string p, string atribut, string hodnotaAtributu, bool enoughIsContainsAttribute,
+        string parameter, string atribut, string hodnotaAtributu, bool enoughIsContainsAttribute,
         bool searchAsSingleString = true)
     {
-        RecursiveReturnTagsWithContainsAttr(vr, htmlNode, recursively, p, atribut, hodnotaAtributu, false,
+        RecursiveReturnTagsWithContainsAttr(vr, htmlNode, recursively, parameter, atribut, hodnotaAtributu, false,
             enoughIsContainsAttribute, searchAsSingleString);
     }
     /// <summary>
@@ -465,59 +468,59 @@ public class HtmlAgilityHelper
     /// <param name="atribut"></param>
     /// <param name="hodnotaAtributu"></param>
     public static void RecursiveReturnTagsWithContainsAttr(List<HtmlNode> vr, HtmlNode htmlNode, bool recursively,
-        string p, string atribut, string hodnotaAtributu, bool isWildCard, bool enoughIsContainsAttribute,
+        string parameter, string atribut, string hodnotaAtributu, bool isWildCard, bool enoughIsContainsAttribute,
         bool searchAsSingleString = true)
     {
         /*
 isWildCard -
          */
 #if DEBUG
-        //StringBuilder sb = new StringBuilder();
-        //sb.AppendLine("Text nodes:");
-        //sb.AppendLine();
+        //StringBuilder stringBuilder = new StringBuilder();
+        //stringBuilder.AppendLine("Text nodes:");
+        //stringBuilder.AppendLine();
         //foreach (var item in htmlNode.ChildNodes)
         //{
         //    if (item.Name != "#text")
         //    {
         //        continue;
         //    }
-        //    sb.AppendLine(item.OuterHtml);
-        //    sb.AppendLine();
-        //    sb.AppendLine();
-        //    sb.AppendLine();
-        //    sb.AppendLine();
-        //    sb.AppendLine();
-        //    sb.AppendLine();
-        //    sb.AppendLine();
-        //    sb.AppendLine();
-        //    sb.AppendLine();
-        //    sb.AppendLine();
-        //    sb.AppendLine();
-        //    sb.AppendLine();
+        //    stringBuilder.AppendLine(item.OuterHtml);
+        //    stringBuilder.AppendLine();
+        //    stringBuilder.AppendLine();
+        //    stringBuilder.AppendLine();
+        //    stringBuilder.AppendLine();
+        //    stringBuilder.AppendLine();
+        //    stringBuilder.AppendLine();
+        //    stringBuilder.AppendLine();
+        //    stringBuilder.AppendLine();
+        //    stringBuilder.AppendLine();
+        //    stringBuilder.AppendLine();
+        //    stringBuilder.AppendLine();
+        //    stringBuilder.AppendLine();
         //}
-        //ClipboardService.SetText(sb.ToString());
+        //ClipboardService.SetText(stringBuilder.ToString());
 #endif
         var childNodeWithoutText = TrimTexts(htmlNode.ChildNodes);
-        p = p.ToLower();
+        parameter = parameter.ToLower();
         //atribut = atribut.ToLower();
         //hodnotaAtributu = atribut.ToLower();
         if (htmlNode == null) return;
         foreach (var item in childNodeWithoutText)
         {
             var attrValue = HtmlAssistant.GetValueOfAttribute(atribut, item);
-            if (HasTagName(item, p))
+            if (HasTagName(item, parameter))
             {
                 if (HasTagAttr(item, atribut, hodnotaAtributu, isWildCard, enoughIsContainsAttribute,
                         searchAsSingleString))
                     vr.Add(item);
                 if (recursively)
-                    RecursiveReturnTagsWithContainsAttr(vr, item, recursively, p, atribut, hodnotaAtributu, isWildCard,
+                    RecursiveReturnTagsWithContainsAttr(vr, item, recursively, parameter, atribut, hodnotaAtributu, isWildCard,
                         enoughIsContainsAttribute, searchAsSingleString);
             }
             else
             {
                 if (recursively)
-                    RecursiveReturnTagsWithContainsAttr(vr, item, recursively, p, atribut, hodnotaAtributu, isWildCard,
+                    RecursiveReturnTagsWithContainsAttr(vr, item, recursively, parameter, atribut, hodnotaAtributu, isWildCard,
                         enoughIsContainsAttribute, searchAsSingleString);
             }
         }

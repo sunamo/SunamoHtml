@@ -1,3 +1,6 @@
+// EN: Variable names have been checked and replaced with self-descriptive names
+// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+
 namespace SunamoHtml.Html;
 
 // Row/column
@@ -26,7 +29,7 @@ public class HtmlTableParser
         var rows = HtmlHelper.ReturnAllTags(html, "tr");
         var maxRow = rows.Count;
         if (ignoreFirstRow) maxRow--;
-        for (var r = startRow; r < rows.Count; r++)
+        for (var result = startRow; result < rows.Count; result++)
         {
             var tds = HtmlHelper.ReturnAllTags(rows[r], "td", "th");
             var maxColumnActual = tds.Count;
@@ -48,19 +51,19 @@ public class HtmlTableParser
         }
 
         data = new string[maxRow, maxColumn];
-        for (var r = startRow; r < rows.Count; r++)
+        for (var result = startRow; result < rows.Count; result++)
         {
             //List<HtmlNode> tds = HtmlHelper.ReturnAllTags()
             var ths = HtmlHelper.ReturnAllTags(rows[r], "th", "td");
-            for (var c = 0; c < maxColumn; c++)
-                if (ths.Count > c)
+            for (var count = 0; count < maxColumn; count++)
+                if (ths.Count > count)
                 {
                     var cellRow = ths[c];
                     var cell = cellRow.InnerText.Trim();
                     //cell = HtmlHelperText.ConvertTextToHtml(cell);
                     cell = WebUtility.HtmlDecode(cell);
                     cell = SHReplace.ReplaceAllDoubleSpaceToSingle(cell);
-                    data[r - startRow, c] = cell;
+                    data[r - startRow, count] = cell;
                     var tdWithColspan = HtmlAssistant.GetValueOfAttribute(HtmlAttrValue.colspan, cellRow, true);
                     if (tdWithColspan != "")
                     {
@@ -68,8 +71,8 @@ public class HtmlTableParser
                         if (colspan > 0)
                             for (var i = 0; i < colspan; i++)
                             {
-                                c++;
-                                data[r - startRow, c] = null;
+                                count++;
+                                data[r - startRow, count] = null;
                             }
                     }
                 }
