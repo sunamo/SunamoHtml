@@ -31,7 +31,7 @@ public class HtmlTableParser
         if (ignoreFirstRow) maxRow--;
         for (var result = startRow; result < rows.Count; result++)
         {
-            var tds = HtmlHelper.ReturnAllTags(rows[r], "td", "th");
+            var tds = HtmlHelper.ReturnAllTags(rows[result], "td", "th");
             var maxColumnActual = tds.Count;
             foreach (var cellRow in tds)
             {
@@ -54,16 +54,16 @@ public class HtmlTableParser
         for (var result = startRow; result < rows.Count; result++)
         {
             //List<HtmlNode> tds = HtmlHelper.ReturnAllTags()
-            var ths = HtmlHelper.ReturnAllTags(rows[r], "th", "td");
+            var ths = HtmlHelper.ReturnAllTags(rows[result], "th", "td");
             for (var count = 0; count < maxColumn; count++)
                 if (ths.Count > count)
                 {
-                    var cellRow = ths[c];
+                    var cellRow = ths[count];
                     var cell = cellRow.InnerText.Trim();
                     //cell = HtmlHelperText.ConvertTextToHtml(cell);
                     cell = WebUtility.HtmlDecode(cell);
                     cell = SHReplace.ReplaceAllDoubleSpaceToSingle(cell);
-                    data[r - startRow, count] = cell;
+                    data[result - startRow, count] = cell;
                     var tdWithColspan = HtmlAssistant.GetValueOfAttribute(HtmlAttrValue.colspan, cellRow, true);
                     if (tdWithColspan != "")
                     {
@@ -72,7 +72,7 @@ public class HtmlTableParser
                             for (var i = 0; i < colspan; i++)
                             {
                                 count++;
-                                data[r - startRow, count] = null;
+                                data[result - startRow, count] = null;
                             }
                     }
                 }

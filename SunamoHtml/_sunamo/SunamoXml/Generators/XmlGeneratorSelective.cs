@@ -7,6 +7,6 @@ internal class XmlGeneratorSelective : XmlGeneratorHtml
     
     public override string ToString()
     {
-        return sb.ToString();
+        return stringBuilder.ToString();
     }
 }

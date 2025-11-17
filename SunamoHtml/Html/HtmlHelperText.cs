@@ -19,7 +19,7 @@ public class HtmlHelperText
 
     public static string InsertMissingEndingTags(string text, string tag)
     {
-        var text = new StringBuilder(text);
+        var textBuilder = new StringBuilder(text);
 
         var start = SH.ReturnOccurencesOfString(text, "<" + tag);
         var endingTag = "</" + tag + ">";
@@ -55,15 +55,15 @@ public class HtmlHelperText
             foreach (var item in se)
                 if (item.Value == -1)
                 {
-                    var dexEndOfStart = text.IndexOf('>', item.Key);
+                    var dexEndOfStart = textBuilder.ToString().IndexOf('>', item.Key);
 
-                    var space = text.IndexOf(' ', dexEndOfStart);
+                    var space = textBuilder.ToString().IndexOf(' ', dexEndOfStart);
 
-                    if (space != -1) text.Insert(space, endingTag);
+                    if (space != -1) textBuilder.Insert(space, endingTag);
                 }
         }
 
-        return text.ToString();
+        return textBuilder.ToString();
     }
 
     public static List<string> CreateH2FromNumberedList(List<string> lines)
