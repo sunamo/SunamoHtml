@@ -1,26 +1,24 @@
 // EN: Variable names have been checked and replaced with self-descriptive names
 // CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
-
 namespace SunamoHtml;
-
 /// <summary>
 ///     HtmlHelperText - for methods which NOT operate on HtmlAgiityHelper!
 ///     HtmlAgilityHelper - getting new nodes
 ///     HtmlAssistant - Only for methods which operate on HtmlAgiityHelper!
 /// </summary>
-public class HtmlAgilityHelper
+public partial class HtmlAgilityHelper
 {
     public const string textNode = "#text";
     /// <summary>
     ///     Dříve bylo false ale to byla hloupost
     /// </summary>
     public static bool _trimTexts = true;
-    public static Dictionary<string, string> PairsDdDt(HtmlNode dl, bool recursive,
-        Dictionary<string, string> replaceHtmLForText)
+    public static Dictionary<string, string> PairsDdDt(HtmlNode dl, bool recursive, Dictionary<string, string> replaceHtmLForText)
     {
         var dd = Nodes(dl, recursive, "dd");
         var dt = Nodes(dl, recursive, "dt");
-        if (dd.Count == 0 && dt.Count == 0) throw new Exception("dd && dt is zero");
+        if (dd.Count == 0 && dt.Count == 0)
+            throw new Exception("dd && dt is zero");
         ThrowEx.IsEmpty(dt, "dd");
         ThrowEx.IsEmpty(dt, "dt");
         ThrowEx.DifferentCountInLists("dd", dd, "dt", dt);
@@ -40,6 +38,7 @@ public class HtmlAgilityHelper
                 key = key.Replace(item.Key, item.Value);
                 val = val.Replace(item.Key, item.Value);
             }
+
             // Ve defaultu nahrazuje za " "
             // Zde dávám "" protože u rozlohy nehcci 63 m 2. Pokud bych to potřeboval jinak, přidat zde parametr
             try
@@ -51,8 +50,10 @@ public class HtmlAgilityHelper
                 throw;
             }
         }
+
         return result;
     }
+
     private static string JoinHtmlElementsToOneString(HtmlNode htmlNode, string delimiter = ", ")
     {
         string result = "";
@@ -71,6 +72,7 @@ public class HtmlAgilityHelper
             {
                 nodes = nodesNew;
             }
+
             if (nodes.Count != 0)
             {
                 StringBuilder stringBuilder = new StringBuilder();
@@ -78,6 +80,7 @@ public class HtmlAgilityHelper
                 {
                     stringBuilder.Append(item.InnerText + delimiter);
                 }
+
                 result = stringBuilder.ToString().Substring(0, stringBuilder.Length - 2);
                 if (result == "")
                 {
@@ -85,11 +88,14 @@ public class HtmlAgilityHelper
                 }
             }
         }
+
         if (result == "")
         {
         }
+
         return result;
     }
+
     private static HtmlNode GetNodeWithoutInnerHtmlNodes(HtmlNode htmlNode)
     {
         var nodes = HtmlAgilityHelper.Nodes(htmlNode, false, "*");
@@ -98,63 +104,59 @@ public class HtmlAgilityHelper
             // U plochy se mi to vrátí už zde
             return htmlNode;
         }
+
         // U příslušenství až zde
         return nodes[0];
     }
+
     private static void JoinHtmlElementsToOneString(string innerHtml)
     {
         throw new NotImplementedException();
     }
-    #region 1 Node
+
     public static HtmlNode Node(HtmlNode node, bool recursive, string tag)
     {
         return Nodes(node, recursive, tag).FirstOrDefault();
     }
-    #endregion
-    #region 2 Nodes
 
-    #endregion
-    #region 3 NodeWithAttr
     /// <summary>
     ///     Return null if not found
     /// </summary>
-    /// <param name="node"></param>
-    /// <param name="recursive"></param>
-    /// <param name="tag"></param>
-    /// <param name="attr"></param>
-    /// <param name="attrValue"></param>
-    /// <param name="contains"></param>
+    /// <param name = "node"></param>
+    /// <param name = "recursive"></param>
+    /// <param name = "tag"></param>
+    /// <param name = "attr"></param>
+    /// <param name = "attrValue"></param>
+    /// <param name = "contains"></param>
     /// <returns></returns>
-    public static HtmlNode NodeWithAttr(HtmlNode node, bool recursive, string tag, string attr, string attrValue,
-        bool contains = false)
+    public static HtmlNode NodeWithAttr(HtmlNode node, bool recursive, string tag, string attr, string attrValue, bool contains = false)
     {
         return NodesWithAttrWorker(node, recursive, tag, attr, attrValue, false, contains).FirstOrDefault();
     }
-    #endregion
-    #region 5 NodesWhichContainsInAttr
+
     /// <summary>
     ///     A6 - whether is sufficient only contains
     /// </summary>
-    /// <param name="node"></param>
-    /// <param name="recursive"></param>
-    /// <param name="tag"></param>
-    /// <param name="attr"></param>
-    /// <param name="attrValue"></param>
-    /// <param name="contains"></param>
-    public static List<HtmlNode> NodesWhichContainsInAttr(HtmlNode node, bool recursive, string tag, string attr,
-        string attrValue, bool searchAsSingleString = true)
+    /// <param name = "node"></param>
+    /// <param name = "recursive"></param>
+    /// <param name = "tag"></param>
+    /// <param name = "attr"></param>
+    /// <param name = "attrValue"></param>
+    /// <param name = "contains"></param>
+    public static List<HtmlNode> NodesWhichContainsInAttr(HtmlNode node, bool recursive, string tag, string attr, string attrValue, bool searchAsSingleString = true)
     {
         return NodesWithAttrWorker(node, recursive, tag, attr, attrValue, false, searchAsSingleString);
     }
-    #endregion
+
     public static string ReplacePlainUriForAnchors(string input)
     {
         var hd = CreateHtmlDocument();
         return ReplacePlainUriForAnchors(hd, input);
     }
+
     /// <summary>
     /// </summary>
-    /// <param name="input"></param>
+    /// <param name = "input"></param>
     public static string ReplacePlainUriForAnchors(HtmlDocument hd, string input)
     {
         /*
@@ -168,29 +170,34 @@ public class HtmlAgilityHelper
         for (var i = textNodes.Count - 1; i >= 0; i--)
         {
             var item = textNodes[i];
-            if (item.ParentNode.Name == "pre") continue;
+            if (item.ParentNode.Name == "pre")
+                continue;
             var data = SHSplit.SplitByWhiteSpaces(item.InnerText);
             var changed = CAChangeContent.ChangeContentWithCondition(null, data, RegexHelper.IsUri, HtmlGenerator2.Anchor);
             item.InnerHtml = string.Empty;
             InsertGroup(item, data);
-            //item.ParentNode.ReplaceChild(CreateNode(item.InnerHtml), item);
-            // must be last because use ParentNode above
-            //item.ParentNode.RemoveChild(item);
-            //new HtmlNode(HtmlNodeType.Element, hd, 0);
-            //    var ret = item.ParentNode.ReplaceChild(newNode, item);
-            //newNode.ParentNode.InsertAfter(HtmlNode.CreateNode(data[1]), newNode);
-            //int x = 0;
-            //}
+        //item.ParentNode.ReplaceChild(CreateNode(item.InnerHtml), item);
+        // must be last because use ParentNode above
+        //item.ParentNode.RemoveChild(item);
+        //new HtmlNode(HtmlNodeType.Element, hd, 0);
+        //    var ret = item.ParentNode.ReplaceChild(newNode, item);
+        //newNode.ParentNode.InsertAfter(HtmlNode.CreateNode(data[1]), newNode);
+        //int x = 0;
+        //}
         }
+
         var output = hd.DocumentNode.OuterHtml;
         return output;
     }
+
     public static string WrapIntoTagIfNot(string input, string tag = HtmlTags.div)
     {
         input = input.Trim();
-        if (input[0] != '<') input = WrapIntoTag(tag, input);
+        if (input[0] != '<')
+            input = WrapIntoTag(tag, input);
         return input;
     }
+
     private static string WrapIntoTag(string div, string input)
     {
         var stringBuilder = new StringBuilder();
@@ -203,17 +210,22 @@ public class HtmlAgilityHelper
         stringBuilder.Append('>');
         return stringBuilder.ToString();
     }
+
     public static void InsertGroup(HtmlNode insertAfter, List<string> list)
     {
-        foreach (var item in list) insertAfter.InnerHtml += SH.WrapWithChar(item, ' ');
+        foreach (var item in list)
+            insertAfter.InnerHtml += SH.WrapWithChar(item, ' ');
         //insertAfter = insertAfter.ParentNode.InsertAfter(CreateNode(item), insertAfter);
         insertAfter.InnerHtml = SHReplace.ReplaceAllDoubleSpaceToSingle(insertAfter.InnerHtml).Trim();
     }
+
     public static HtmlNode CreateNode(string html)
     {
-        if (!RegexHelper.rHtmlTag.IsMatch(html)) html = SH.WrapWithChar(html, ' ');
+        if (!RegexHelper.rHtmlTag.IsMatch(html))
+            html = SH.WrapWithChar(html, ' ');
         return HtmlNode.CreateNode(html);
     }
+
     private static List<HtmlNode> TextNodes(HtmlNode node, params string[] dontHaveAsParentTag)
     {
         /*
@@ -229,313 +241,56 @@ public class HtmlAgilityHelper
         RecursiveReturnTags(allNodes, node, true, false, "*");
         foreach (var item in allNodes)
             if (item.Name == textNode)
-                if (!dontHaveAsParentTag.Any(data =>
-                        data != item.ParentNode
-                            .Name) /*!CAG.IsEqualToAnyElement<string>(item.ParentNode.Name, dontHaveAsParentTag)*/)
+                if (!dontHaveAsParentTag.Any(data => data != item.ParentNode.Name) /*!CAG.IsEqualToAnyElement<string>(item.ParentNode.Name, dontHaveAsParentTag)*/)
                     vr.Add(item);
         return vr;
     }
-    #region Helpers
+
     /// <summary>
     ///     remove #text but keep everything else
     /// </summary>
-    /// <param name="htmlNodeCollection"></param>
+    /// <param name = "htmlNodeCollection"></param>
     public static List<HtmlNode> TrimTexts(HtmlNodeCollection htmlNodeCollection)
     {
-        if (!_trimTexts) return htmlNodeCollection.ToList();
+        if (!_trimTexts)
+            return htmlNodeCollection.ToList();
         var vr = new List<HtmlNode>();
         foreach (var item in htmlNodeCollection)
             if (item.Name != textNode)
                 vr.Add(item);
         return vr;
     }
+
     public static HtmlNode FindAncestorParentNode(HtmlNode item, string v)
     {
         while (item != null)
         {
-            if (item.Name == v) return item;
+            if (item.Name == v)
+                return item;
             item = item.ParentNode;
         }
+
         return null;
     }
+
     public static bool HasAncestorParentNode(HtmlNode item, string v)
     {
         while (item != null)
         {
-            if (item.Name == v) return true;
+            if (item.Name == v)
+                return true;
             item = item.ParentNode;
         }
+
         return false;
     }
+
     /// <summary>
     ///     remove #text but not #comment
     /// </summary>
-    /// <param name="c2"></param>
+    /// <param name = "c2"></param>
     public static List<HtmlNode> TrimTexts(List<HtmlNode> c2)
     {
         return TrimTexts(c2, true);
     }
-    /// <summary>
-    ///     A2 =remove #text
-    ///     A3 = remove #comment
-    /// </summary>
-    /// <param name="c2"></param>
-    /// <param name="texts"></param>
-    /// <param name="comments"></param>
-    public static List<HtmlNode> TrimTexts(List<HtmlNode> c2, bool texts, bool comments = false)
-    {
-        if (!_trimTexts) return c2;
-        var vr = new List<HtmlNode>();
-        var add = true;
-        foreach (var item in c2)
-        {
-            add = true;
-            if (texts)
-                if (item.Name == textNode)
-                    add = false;
-            if (comments)
-                if (item.Name == "#comment")
-                    add = false;
-            if (add) vr.Add(item);
-        }
-        return vr;
-    }
-    public static List<HtmlNode> TrimComments(List<HtmlNode> n)
-    {
-        var vr = new List<HtmlNode>();
-        var startWith = false;
-        var endsWith = false;
-        var toTranslate = true;
-        foreach (var item in n)
-        {
-            startWith = false;
-            endsWith = false;
-            toTranslate = true;
-            var html = item.InnerHtml.Trim();
-            // contains whole html comment
-            endsWith = html.Contains(ConstsAspx.endHtmlComment);
-            startWith = html.Contains(ConstsAspx.startHtmlComment);
-            if (startWith && endsWith) //item.NodeType == HtmlNodeType.Comment)
-            {
-                toTranslate = false;
-            }
-            else if (true)
-            {
-                if (html == string.Empty) continue;
-                endsWith = html.Contains(ConstsAspx.endAspxComment);
-                startWith = html.Contains(ConstsAspx.startAspxComment);
-                if (startWith || endsWith)
-                    if (startWith && endsWith)
-                        // contains whole aspx comment
-                        toTranslate = false;
-                if (!toTranslate) continue;
-                if (html.StartsWith("<%")) continue;
-                //var hd = HtmlAgilityHelper.CreateHtmlDocument();
-                //hd.LoadHtml(html);
-                var count = item.ChildNodes.Count;
-                var textCount = TrimTexts(item.ChildNodes).Count;
-                if (textCount == count && html == string.Empty) continue;
-                //if (textCount != 0)
-                //{
-                //    continue;
-                //}
-                vr.Add(item);
-            }
-        }
-        return vr;
-    }
-    /// <summary>
-    ///     Do A2 se může zadat *
-    /// </summary>
-    /// <param name="hn"></param>
-    /// <param name="tag"></param>
-    private static bool HasTagName(HtmlNode hn, string tag)
-    {
-        if (tag == "*") return true;
-        var result = hn.Name == tag;
-        //if (!result && hn.Name != "a")
-        //{
-        //    Debugger.Break();
-        //}
-        return result;
-    }
-    private static bool HasTagAttr(HtmlNode item, string atribut, string hodnotaAtributu, bool isWildCard,
-        bool enoughIsContainsAttribute, bool searchAsSingleString)
-    {
-        if (hodnotaAtributu == "*") return true;
-        var contains = false;
-        var attrValue = HtmlAssistant.GetValueOfAttribute(atribut, item);
-        if (enoughIsContainsAttribute)
-        {
-            if (searchAsSingleString)
-            {
-                if (isWildCard)
-                    contains = SH.MatchWildcard(attrValue, hodnotaAtributu);
-                else
-                    contains = attrValue.Contains(hodnotaAtributu);
-                //
-            }
-            else
-            {
-                var cont = true;
-                var parameter = SHSplit.Split(hodnotaAtributu, " ");
-                foreach (var item2 in parameter)
-                    if (!attrValue.Contains(item2))
-                    {
-                        cont = false;
-                        break;
-                    }
-                contains = cont;
-            }
-        }
-        else
-        {
-            contains = attrValue == hodnotaAtributu;
-        }
-        return contains;
-    }
-    /// <summary>
-    ///     A4 = if add one, return. Like Node vs Nodes
-    ///     It's calling by others
-    ///     Do A5 se může vložit *
-    /// </summary>
-    /// <param name="vr"></param>
-    /// <param name="html"></param>
-    /// <param name="p"></param>
-    public static void RecursiveReturnTags(List<HtmlNode> vr, HtmlNode html, bool recursive, bool single, string parameter)
-    {
-        if (html == null) return;
-        foreach (var item in html.ChildNodes)
-            if (HasTagName(item, parameter))
-            {
-                //RecursiveReturnTags(vr, item, parameter);
-                vr.Add(item);
-                if (single) return;
-                if (recursive) RecursiveReturnTags(vr, item, recursive, single, parameter);
-            }
-            else
-            {
-                if (recursive) RecursiveReturnTags(vr, item, recursive, single, parameter);
-            }
-    }
-    public static List<HtmlNode> Nodes(HtmlNode node, bool recursive/*, bool single*/, string tag)
-    {
-        tag = tag.ToLower();
-        var vr = new List<HtmlNode>();
-        RecursiveReturnTags(vr, node, recursive, false, tag);
-        if (tag != textNode) vr = TrimTexts(vr);
-        return vr;
-    }
-    private static List<HtmlNode> NodesWithAttrWorker(HtmlNode node, bool recursive, string tag, string atribut,
-        string hodnotaAtributu, bool isWildCard, bool enoughIsContainsAttribute, bool searchAsSingleString = true)
-    {
-        var vr = new List<HtmlNode>();
-        RecursiveReturnTagsWithContainsAttr(vr, node, recursive, tag, atribut, hodnotaAtributu, isWildCard,
-            enoughIsContainsAttribute, searchAsSingleString);
-        if (tag != textNode) vr = TrimTexts(vr);
-        return vr;
-    }
-    public static HtmlDocument CreateHtmlDocument(CreateHtmlDocumentInitData data = null)
-    {
-        if (data == null)
-        {
-            data = new();
-        }
-
-        var hd = new HtmlDocument();
-        hd.OptionOutputOriginalCase = data.OptionOutputOriginalCase;
-        // false - i přesto mi tag ukončený na / převede na </Page>. Musí se ještě tagy jež nechci ukončovat vymazat z HtmlAgilityPack.HtmlNode.ElementsFlags.Remove("form"); před načetním XML https://html-agility-pack.net/knowledge-base/7104652/htmlagilitypack-close-form-tag-automatically
-        hd.OptionAutoCloseOnEnd = false;
-        hd.OptionOutputAsXml = false;
-        hd.OptionFixNestedTags = false;
-        //when OptionCheckSyntax = false, raise NullReferenceException in Load/LoadHtml
-        //hd.OptionCheckSyntax = false;
-        return hd;
-    }
-    public static void RecursiveReturnTagsWithContainsAttr(List<HtmlNode> vr, HtmlNode htmlNode, bool recursively,
-        string parameter, string atribut, string hodnotaAtributu, bool enoughIsContainsAttribute,
-        bool searchAsSingleString = true)
-    {
-        RecursiveReturnTagsWithContainsAttr(vr, htmlNode, recursively, parameter, atribut, hodnotaAtributu, false,
-            enoughIsContainsAttribute, searchAsSingleString);
-    }
-    /// <summary>
-    ///     Do A3 se může zadat * pro vrácení všech tagů
-    /// </summary>
-    /// <param name="vr"></param>
-    /// <param name="htmlNode"></param>
-    /// <param name="p"></param>
-    /// <param name="atribut"></param>
-    /// <param name="hodnotaAtributu"></param>
-    public static void RecursiveReturnTagsWithContainsAttr(List<HtmlNode> vr, HtmlNode htmlNode, bool recursively,
-        string parameter, string atribut, string hodnotaAtributu, bool isWildCard, bool enoughIsContainsAttribute,
-        bool searchAsSingleString = true)
-    {
-        /*
-isWildCard -
-         */
-#if DEBUG
-        //StringBuilder stringBuilder = new StringBuilder();
-        //stringBuilder.AppendLine("Text nodes:");
-        //stringBuilder.AppendLine();
-        //foreach (var item in htmlNode.ChildNodes)
-        //{
-        //    if (item.Name != "#text")
-        //    {
-        //        continue;
-        //    }
-        //    stringBuilder.AppendLine(item.OuterHtml);
-        //    stringBuilder.AppendLine();
-        //    stringBuilder.AppendLine();
-        //    stringBuilder.AppendLine();
-        //    stringBuilder.AppendLine();
-        //    stringBuilder.AppendLine();
-        //    stringBuilder.AppendLine();
-        //    stringBuilder.AppendLine();
-        //    stringBuilder.AppendLine();
-        //    stringBuilder.AppendLine();
-        //    stringBuilder.AppendLine();
-        //    stringBuilder.AppendLine();
-        //    stringBuilder.AppendLine();
-        //}
-        //ClipboardService.SetText(stringBuilder.ToString());
-#endif
-        var childNodeWithoutText = TrimTexts(htmlNode.ChildNodes);
-        parameter = parameter.ToLower();
-        //atribut = atribut.ToLower();
-        //hodnotaAtributu = atribut.ToLower();
-        if (htmlNode == null) return;
-        foreach (var item in childNodeWithoutText)
-        {
-            var attrValue = HtmlAssistant.GetValueOfAttribute(atribut, item);
-            if (HasTagName(item, parameter))
-            {
-                if (HasTagAttr(item, atribut, hodnotaAtributu, isWildCard, enoughIsContainsAttribute,
-                        searchAsSingleString))
-                    vr.Add(item);
-                if (recursively)
-                    RecursiveReturnTagsWithContainsAttr(vr, item, recursively, parameter, atribut, hodnotaAtributu, isWildCard,
-                        enoughIsContainsAttribute, searchAsSingleString);
-            }
-            else
-            {
-                if (recursively)
-                    RecursiveReturnTagsWithContainsAttr(vr, item, recursively, parameter, atribut, hodnotaAtributu, isWildCard,
-                        enoughIsContainsAttribute, searchAsSingleString);
-            }
-        }
-    }
-    #endregion
-    #region 4 NodesWithAttr
-    public static List<HtmlNode> NodesWithAttrWildCard(HtmlNode node, bool recursive, string tag, string attr,
-        string attrValue, bool contains = false)
-    {
-        return NodesWithAttrWorker(node, recursive, tag, attr, attrValue, true, contains);
-    }
-    public static List<HtmlNode> NodesWithAttr(HtmlNode node, bool recursive, string tag, string attr, string attrValue,
-        bool contains = false)
-    {
-        return NodesWithAttrWorker(node, recursive, tag, attr, attrValue, false, contains);
-    }
-    #endregion
 }
