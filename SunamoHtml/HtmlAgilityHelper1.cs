@@ -1,6 +1,7 @@
+namespace SunamoHtml;
+
 // EN: Variable names have been checked and replaced with self-descriptive names
 // CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
-namespace SunamoHtml;
 /// <summary>
 ///     HtmlHelperText - for methods which NOT operate on HtmlAgiityHelper!
 ///     HtmlAgilityHelper - getting new nodes

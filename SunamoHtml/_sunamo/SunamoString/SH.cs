@@ -1,6 +1,7 @@
+namespace SunamoHtml._sunamo.SunamoString;
+
 // EN: Variable names have been checked and replaced with self-descriptive names
 // CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
-namespace SunamoHtml._sunamo.SunamoString;
 internal partial class SH
 {
     internal static string JoinNL(List<string> list)

@@ -1,6 +1,7 @@
+namespace SunamoHtml.Html;
+
 // EN: Variable names have been checked and replaced with self-descriptive names
 // CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
-namespace SunamoHtml.Html;
 /// <summary>
 /// Je tu mix všeho, rozdělit to pomocí AI
 /// </summary>

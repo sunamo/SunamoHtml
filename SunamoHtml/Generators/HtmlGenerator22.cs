@@ -1,6 +1,7 @@
+namespace SunamoHtml.Generators;
+
 // EN: Variable names have been checked and replaced with self-descriptive names
 // CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
-namespace SunamoHtml.Generators;
 public partial class HtmlGenerator2 : HtmlGenerator
 {
     public static string GetForCheckBoxListWoCheckDuplicate(string idClassCheckbox, string idClassSpan, List<string> idCheckBoxes, List<string> list)
