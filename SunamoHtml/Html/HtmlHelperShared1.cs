@@ -113,9 +113,9 @@ public static partial class HtmlHelper
         return HtmlAgilityHelper.TrimTexts(c2, true);
     }
 
-    public static List<HtmlNode> TrimTexts(List<HtmlNode> c2, bool text, bool comments = false)
+    public static List<HtmlNode> TrimTexts(List<HtmlNode> c2, bool removeTextNodes, bool removeComments = false)
     {
-        return HtmlAgilityHelper.TrimTexts(c2, text, comments);
+        return HtmlAgilityHelper.TrimTexts(c2, removeTextNodes, removeComments);
     }
 
     /// <summary>

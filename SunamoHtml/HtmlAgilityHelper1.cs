@@ -14,9 +14,9 @@ public partial class HtmlAgilityHelper
     ///     A3 = remove #comment
     /// </summary>
     /// <param name = "c2"></param>
-    /// <param name = "texts"></param>
-    /// <param name = "comments"></param>
-    public static List<HtmlNode> TrimTexts(List<HtmlNode> c2, bool texts, bool comments = false)
+    /// <param name = "removeTextNodes"></param>
+    /// <param name = "removeComments"></param>
+    public static List<HtmlNode> TrimTexts(List<HtmlNode> c2, bool removeTextNodes, bool removeComments = false)
     {
         if (!_trimTexts)
             return c2;
@@ -25,10 +25,10 @@ public partial class HtmlAgilityHelper
         foreach (var item in c2)
         {
             add = true;
-            if (texts)
+            if (removeTextNodes)
                 if (item.Name == textNode)
                     add = false;
-            if (comments)
+            if (removeComments)
                 if (item.Name == "#comment")
                     add = false;
             if (add)
