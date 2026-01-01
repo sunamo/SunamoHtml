@@ -1,21 +1,21 @@
 namespace SunamoHtml.Html;
 
-// EN: Variable names have been checked and replaced with self-descriptive names
-// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
 /// <summary>
-/// Je tu mix všeho, rozdělit to pomocí AI
+/// EN: Shared HTML helper methods (mix of various utilities - consider splitting into more specific classes).
+/// CZ: Sdílené HTML pomocné metody (mix různých utilit - zvažte rozdělení do specifičtějších tříd).
 /// </summary>
 public static partial class HtmlHelper
 {
-    private static Type type = typeof(HtmlHelper);
     /// <summary>
-    ///     Problematic with auto translate
+    /// Replaces non-pair HTML tags with XML-valid equivalents (adds self-closing slash).
+    /// Problematic with auto translate.
     /// </summary>
-    /// <param name = "vstup"></param>
-    public static string ReplaceHtmlNonPairTagsWithXmlValid(string vstup)
+    /// <param name="input">The HTML input string.</param>
+    /// <returns>HTML with XML-valid non-pair tags.</returns>
+    public static string ReplaceHtmlNonPairTagsWithXmlValid(string input)
     {
-        var jizNahrazeno = new List<string>();
-        var mc = Regex.Matches(vstup, RegexHelper.rNonPairXmlTagsUnvalid.ToString());
+        var alreadyReplaced = new List<string>();
+        var mc = Regex.Matches(input, RegexHelper.rNonPairXmlTagsUnvalid.ToString());
         var col = new List<string>(AllLists.HtmlNonPairTags);
         foreach (Match item in mc)
         {
@@ -28,107 +28,155 @@ public static partial class HtmlHelper
             tag = tag.TrimStart('<').Trim().ToLower();
             if (col.Contains(tag))
                 if (!item.Value.Contains("/>"))
-                    if (!jizNahrazeno.Contains(item.Value))
+                    if (!alreadyReplaced.Contains(item.Value))
                     {
-                        jizNahrazeno.Add(item.Value);
+                        alreadyReplaced.Add(item.Value);
                         var nc = item.Value.Substring(0, item.Value.Length - 1) + " />";
-                        vstup = vstup.Replace(item.Value, nc);
+                        input = input.Replace(item.Value, nc);
                     }
         }
 
-        return vstup;
+        return input;
     }
 
-    public static string ConvertTextToHtml(string p)
+    /// <summary>
+    /// Converts plain text to HTML by replacing newlines with BR tags.
+    /// </summary>
+    /// <param name="text">The text to convert.</param>
+    /// <returns>HTML with BR tags instead of newlines.</returns>
+    public static string ConvertTextToHtml(string text)
     {
-        p = p.Replace(Environment.NewLine, "<br />");
-        p = p.Replace("\n", "<br />");
-        return p;
+        text = text.Replace(Environment.NewLine, "<br />");
+        text = text.Replace("\n", "<br />");
+        return text;
     }
 
+    /// <summary>
+    /// Prepares text for use in HTML attribute by replacing double quotes with single quotes.
+    /// </summary>
+    /// <param name="title">The text to prepare.</param>
+    /// <returns>Text with double quotes replaced by single quotes.</returns>
     public static string PrepareToAttribute(string title)
     {
         return title.Replace('"', '\'');
     }
 
+    /// <summary>
+    /// Replaces all case variations of BR tag with standard lowercased BR tag.
+    /// </summary>
+    /// <param name="result">The HTML string to process.</param>
+    /// <returns>HTML with standardized BR tags.</returns>
     public static string ReplaceAllFontCase(string result)
     {
-        var za = "<br />";
-        result = result.Replace("<BR />", za);
-        result = result.Replace("<bR />", za);
-        result = result.Replace("<Br />", za);
-        result = result.Replace("<br/>", za);
-        result = result.Replace("<BR/>", za);
-        result = result.Replace("<bR/>", za);
-        result = result.Replace("<Br/>", za);
-        result = result.Replace("<br>", za);
-        result = result.Replace("<BR>", za);
-        result = result.Replace("<bR>", za);
-        result = result.Replace("<Br>", za);
+        var replacement = "<br />";
+        result = result.Replace("<BR />", replacement);
+        result = result.Replace("<bR />", replacement);
+        result = result.Replace("<Br />", replacement);
+        result = result.Replace("<br/>", replacement);
+        result = result.Replace("<BR/>", replacement);
+        result = result.Replace("<bR/>", replacement);
+        result = result.Replace("<Br/>", replacement);
+        result = result.Replace("<br>", replacement);
+        result = result.Replace("<BR>", replacement);
+        result = result.Replace("<bR>", replacement);
+        result = result.Replace("<Br>", replacement);
         return result;
     }
 
-    public static string ClearSpaces(string dd)
+    /// <summary>
+    /// Clears all space characters (nbsp and regular spaces) from text.
+    /// </summary>
+    /// <param name="text">The text to clear spaces from.</param>
+    /// <returns>Text without spaces.</returns>
+    public static string ClearSpaces(string text)
     {
-        return dd.Replace("&nbsp;", "").Replace(" ", "");
+        return text.Replace("&nbsp;", "").Replace(" ", "");
     }
 
-    private static void RecursiveReturnTagWithAttr(List<HtmlNode> vr, HtmlNode htmlNode, string tag, string attr, string value)
+    /// <summary>
+    /// Recursively finds HTML nodes matching tag and attribute criteria.
+    /// </summary>
+    /// <param name="result">The result list to add found nodes to.</param>
+    /// <param name="htmlNode">The HTML node to search in.</param>
+    /// <param name="tag">The tag name to search for.</param>
+    /// <param name="attributeName">The attribute name to match.</param>
+    /// <param name="value">The attribute value to match.</param>
+    private static void RecursiveReturnTagWithAttr(List<HtmlNode> result, HtmlNode htmlNode, string tag, string attributeName, string value)
     {
         foreach (var item in htmlNode.ChildNodes)
-            if (item.Name == tag && GetValueOfAttribute(attr, item) == value)
+            if (item.Name == tag && GetValueOfAttribute(attributeName, item) == value)
             {
-                //RecursiveReturnTagWithAttr(vr, item, tag, attr, value);
-                vr.Add(item);
+                result.Add(item);
                 return;
             }
             else
             {
-                RecursiveReturnTagWithAttr(vr, item, tag, attr, value);
+                RecursiveReturnTagWithAttr(result, item, tag, attributeName, value);
             }
     }
 
-    private static string GetValueOfAttribute(string p, HtmlNode divMain, bool _trim = false)
+    /// <summary>
+    /// Gets the value of an HTML attribute from a node.
+    /// </summary>
+    /// <param name="attributeName">The attribute name.</param>
+    /// <param name="divMain">The HTML node.</param>
+    /// <param name="isTrim">Whether to trim the value.</param>
+    /// <returns>Attribute value or empty string if not found.</returns>
+    private static string GetValueOfAttribute(string attributeName, HtmlNode divMain, bool isTrim = false)
     {
-        return HtmlAssistant.GetValueOfAttribute(p, divMain, _trim);
+        return HtmlAssistant.GetValueOfAttribute(attributeName, divMain, isTrim);
     }
 
     /// <summary>
-    ///     Pokud bude nalezen alespoň jeden tag, vrátí ho, pokud žádný, GN
+    /// EN: Returns the first tag with specified attribute name and value. Returns null if not found.
+    /// CZ: Vrátí první tag se zadaným názvem atributu a hodnotou. Vrátí null pokud není nalezen.
     /// </summary>
-    /// <param name = "htmlNode"></param>
-    /// <param name = "tag"></param>
-    /// <param name = "attr"></param>
-    /// <param name = "value"></param>
-    public static HtmlNode ReturnTagWithAttr(HtmlNode htmlNode, string tag, string attr, string value)
+    /// <param name="htmlNode">The HTML node to search in.</param>
+    /// <param name="tag">The tag name to search for.</param>
+    /// <param name="attributeName">The attribute name to match.</param>
+    /// <param name="value">The attribute value to match.</param>
+    /// <returns>First matching HTML node or null.</returns>
+    public static HtmlNode ReturnTagWithAttr(HtmlNode htmlNode, string tag, string attributeName, string value)
     {
-        var vr = new List<HtmlNode>();
-        RecursiveReturnTagWithAttr(vr, htmlNode, tag, attr, value);
-        if (vr.Count > 0)
-            return vr[0];
+        var result = new List<HtmlNode>();
+        RecursiveReturnTagWithAttr(result, htmlNode, tag, attributeName, value);
+        if (result.Count > 0)
+            return result[0];
         return null;
     }
 
+    /// <summary>
+    /// Gets all child nodes excluding text nodes.
+    /// </summary>
+    /// <param name="htmlNode">The HTML node to get children from.</param>
+    /// <returns>List of non-text child nodes.</returns>
     public static List<HtmlNode> GetWithoutTextNodes(HtmlNode htmlNode)
     {
-        var vr = new List<HtmlNode>();
+        var result = new List<HtmlNode>();
         foreach (var item in htmlNode.ChildNodes)
         {
             var dd = item.ToString();
             if (dd != "HtmlAgilityPack.HtmlTextNode")
-                vr.Add(item);
+                result.Add(item);
         }
 
-        return vr;
+        return result;
     }
 
+    /// <summary>
+    /// Recursively searches for a tag with specified attribute name and value.
+    /// </summary>
+    /// <param name="hn">The HTML node to search in.</param>
+    /// <param name="nameOfTag">The tag name to search for.</param>
+    /// <param name="nameOfAtr">The attribute name to match.</param>
+    /// <param name="valueOfAtr">The attribute value to match.</param>
+    /// <returns>Found HTML node or null.</returns>
     public static HtmlNode? GetTagOfAtributeRek(HtmlNode hn, string nameOfTag, string nameOfAtr, string valueOfAtr)
     {
         hn = TrimNode(hn);
         foreach (var var in hn.ChildNodes)
         {
-            //var.InnerHtml = var.InnerHtml.Trim();
-            var hn2 = var; //.FirstChild;
+            var hn2 = var;
             foreach (var item2 in var.ChildNodes)
             {
                 if (GetValueOfAttribute(nameOfAtr, item2) == valueOfAtr)
@@ -145,15 +193,18 @@ public static partial class HtmlHelper
                 foreach (var var2 in hn2.ChildNodes)
                     if (GetValueOfAttribute(nameOfAtr, var2) == valueOfAtr)
                         return var2;
-            //}
             }
         }
 
         return null;
     }
 
-    /// <param name = "html"></param>
-    /// <param name = "nameOfTag"></param>
+    /// <summary>
+    /// Removes opening and closing tags from HTML string.
+    /// </summary>
+    /// <param name="html">The HTML string.</param>
+    /// <param name="nameOfTag">The tag name to remove.</param>
+    /// <returns>HTML without specified opening and closing tags.</returns>
     public static string TrimOpenAndEndTags(string html, string nameOfTag)
     {
         html = html.Replace("<" + nameOfTag + ">", "");
@@ -162,100 +213,104 @@ public static partial class HtmlHelper
     }
 
     /// <summary>
-    ///     Před zavoláním této metody musí být v A1 převedeny bílé znaky na mezery - pouze tak budou označeny všechny výskyty
-    ///     daných slov
+    /// EN: Highlights searched words in text content with bold tags, returning sentence snippets.
+    /// CZ: Zvýrazní hledaná slova v textovém obsahu tučnými tagy, vrátí úryvky vět.
+    /// Before calling, white space characters must be converted to spaces in the content.
     /// </summary>
-    /// <param name = "celyObsah"></param>
-    /// <param name = "maxPocetPismenNaVetu"></param>
-    /// <param name = "pocetVet"></param>
-    /// <param name = "hledaneSlova"></param>
-    public static string HighlightingWords(string celyObsah, int maxPocetPismenNaVetu, int pocetVet, List<string> hledaneSlova)
+    /// <param name="entireContent">The entire content to search in.</param>
+    /// <param name="maxLettersPerSentence">Maximum letters per sentence snippet.</param>
+    /// <param name="sentenceCount">Number of sentence snippets to return.</param>
+    /// <param name="searchedWords">List of words to search for and highlight.</param>
+    /// <returns>HTML string with highlighted words in sentence snippets.</returns>
+    public static string HighlightingWords(string entireContent, int maxLettersPerSentence, int sentenceCount, List<string> searchedWords)
     {
-        //hledaneSlova = CA.ToLower(hledaneSlova);
-        for (var i = 0; i < hledaneSlova.Count; i++)
-            hledaneSlova[i] = hledaneSlova[i].ToLower();
-        celyObsah = celyObsah.Trim();
-        var ftw = SH.ReturnOccurencesOfStringFromToWord(celyObsah, hledaneSlova.ToArray());
+        for (var i = 0; i < searchedWords.Count; i++)
+            searchedWords[i] = searchedWords[i].ToLower();
+        entireContent = entireContent.Trim();
+        var ftw = SH.ReturnOccurencesOfStringFromToWord(entireContent, searchedWords.ToArray());
         if (ftw.Count > 0)
         {
             var dd = new List<List<FromToWord>>();
             var fromtw = new List<FromToWord>();
             fromtw.Add(ftw[0]);
-            var indexDDNaKteryVkladat = 0;
-            var indexFromNaposledyVlozeneho = ftw[0].from;
+            var currentGroupIndex = 0;
+            var lastInsertedFromIndex = ftw[0].from;
             dd.Add(fromtw);
             for (var i = 1; i < ftw.Count; i++)
             {
                 var item = ftw[i];
-                if (item.to - indexFromNaposledyVlozeneho < maxPocetPismenNaVetu)
+                if (item.to - lastInsertedFromIndex < maxLettersPerSentence)
                 {
-                    dd[indexDDNaKteryVkladat].Add(item);
+                    dd[currentGroupIndex].Add(item);
                 }
                 else
                 {
                     var ftw2 = new List<FromToWord>();
                     ftw2.Add(item);
                     dd.Add(ftw2);
-                    if (dd.Count == pocetVet)
+                    if (dd.Count == sentenceCount)
                         break;
-                    indexDDNaKteryVkladat++;
+                    currentGroupIndex++;
                 }
 
-                indexFromNaposledyVlozeneho = item.from;
+                lastInsertedFromIndex = item.from;
             }
 
-            // Teď vypočtu pro každou kolekci v DD prostřední prvek a od toho vezmu vždy znaky nalevo i napravo
+            // EN: Now calculate the middle element for each collection in DD and take chars left and right from it
+            // CZ: Teď vypočtu pro každou kolekci v DD prostřední prvek a od toho vezmu vždy znaky nalevo i napravo
             var final = new StringBuilder();
             foreach (var item in dd)
             {
-                var stred = 0;
+                var middle = 0;
                 if (item.Count % 2 == 0)
                 {
-                    // Zjistím 2 prostřední slova
+                    // EN: Find 2 middle words
+                    // CZ: Zjistím 2 prostřední slova
                     var from = item[item.Count / 2].from;
                     var to = 0;
                     if (item.Count != 2)
                         to = item[item.Count / 2 + 1].to;
                     else
                         to = item[item.Count / 2].to;
-                    stred = from + (to - from) / 2;
+                    middle = from + (to - from) / 2;
                 }
                 else if (item.Count == 1)
                 {
-                    stred = item[0].from + (item[0].to - item[0].from) / 2;
+                    middle = item[0].from + (item[0].to - item[0].from) / 2;
                 }
                 else
                 {
-                    stred = item.Count / 2;
-                    stred++;
-                    stred = item[stred].from + (item[stred].to - item[stred].from) / 2;
+                    middle = item.Count / 2;
+                    middle++;
+                    middle = item[middle].from + (item[middle].to - item[middle].from) / 2;
                 }
 
-                var naKazdeStrane = maxPocetPismenNaVetu / 2;
+                var charsPerSide = maxLettersPerSentence / 2;
                 WhitespaceCharService whitespaceChar = new();
-                var veta = SH.XCharsBeforeAndAfterWholeWords(SHReplace.ReplaceAllArray(celyObsah, " ", whitespaceChar.whiteSpaceChars.ConvertAll(data => data.ToString()).ToArray()), stred, naKazdeStrane);
-                // Teď zvýrazním nalezené slova
-                var slova = SHSplit.SplitBySpaceAndPunctuationCharsLeave(veta);
-                var vetaSeZvyraznenimiCastmi = new StringBuilder();
-                foreach (var item2 in slova)
+                var sentence = SH.XCharsBeforeAndAfterWholeWords(SHReplace.ReplaceAllArray(entireContent, " ", whitespaceChar.whiteSpaceChars.ConvertAll(data => data.ToString()).ToArray()), middle, charsPerSide);
+                // EN: Now highlight found words
+                // CZ: Teď zvýrazním nalezené slova
+                var words = SHSplit.SplitBySpaceAndPunctuationCharsLeave(sentence);
+                var sentenceWithHighlightedParts = new StringBuilder();
+                foreach (var item2 in words)
                 {
-                    var jeToHledaneSlovo = false;
+                    var isSearchedWord = false;
                     var i2l = item2.ToLower();
-                    foreach (var item3 in hledaneSlova)
+                    foreach (var item3 in searchedWords)
                         if (i2l == item3)
-                            jeToHledaneSlovo = true;
-                    if (jeToHledaneSlovo)
-                        vetaSeZvyraznenimiCastmi.Append("<b>" + item2 + "</b>");
+                            isSearchedWord = true;
+                    if (isSearchedWord)
+                        sentenceWithHighlightedParts.Append("<b>" + item2 + "</b>");
                     else
-                        vetaSeZvyraznenimiCastmi.Append(item2);
+                        sentenceWithHighlightedParts.Append(item2);
                 }
 
-                final.Append(vetaSeZvyraznenimiCastmi + " ... ");
+                final.Append(sentenceWithHighlightedParts + " ... ");
             }
 
             return final.ToString();
         }
 
-        return SH.ShortForLettersCountThreeDotsReverse(celyObsah, pocetVet * maxPocetPismenNaVetu);
+        return SH.ShortForLettersCountThreeDotsReverse(entireContent, sentenceCount * maxLettersPerSentence);
     }
 }

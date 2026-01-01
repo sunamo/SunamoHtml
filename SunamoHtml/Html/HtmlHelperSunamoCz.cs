@@ -1,18 +1,26 @@
 namespace SunamoHtml.Html;
 
+/// <summary>
+/// EN: Helper class for converting plain text to HTML with automatic anchor detection and markdown-like formatting.
+/// CZ: Pomocná třída pro konverzi prostého textu do HTML s automatickou detekcí odkazů a markdown-like formátováním.
+/// </summary>
 public class HtmlHelperSunamoCz
 {
-    private static Type type = typeof(HtmlHelperSunamoCz);
-
-    public static string ConvertTextToHtmlWithAnchors(string p, ref string error)
+    /// <summary>
+    /// Converts text to HTML with automatic anchor links and markdown-like formatting (*bold*, _italic_, -strike-).
+    /// </summary>
+    /// <param name="text">The text to convert.</param>
+    /// <param name="error">Output error message if conversion fails.</param>
+    /// <returns>Converted HTML string.</returns>
+    public static string ConvertTextToHtmlWithAnchors(string text, ref string error)
     {
         const string li = "li";
-        p = p.Replace("-" + li, "" + li);
+        text = text.Replace("-" + li, "" + li);
 
-        p = HtmlHelper.ConvertTextToHtml(p);
+        text = HtmlHelper.ConvertTextToHtml(text);
 
-        p = p.Replace("<", " <");
-        var data = SHSplit.SplitAndKeepDelimiters(p, new List<char>([' ', '<', '>'])
+        text = text.Replace("<", " <");
+        var data = SHSplit.SplitAndKeepDelimiters(text, new List<char>([' ', '<', '>'])
             .ConvertAll(data => data.ToString()));
 
         for (var i = 0; i < data.Count; i++)
@@ -26,23 +34,24 @@ public class HtmlHelperSunamoCz
             }
         }
 
-        p = string.Join("", data);
+        text = string.Join("", data);
 
         var bold = new List<int>();
-        bold.AddRange(SH.IndexesOfChars(p, '*'));
+        bold.AddRange(SH.IndexesOfChars(text, '*'));
 
-        var italic = SH.IndexesOfChars(p, '_');
-        var strike = SH.IndexesOfChars(p, '-');
+        var italic = SH.IndexesOfChars(text, '_');
+        var strike = SH.IndexesOfChars(text, '-');
 
-        SHSplit.RemoveWhichHaveWhitespaceAtBothSides(p, bold);
-        SHSplit.RemoveWhichHaveWhitespaceAtBothSides(p, italic);
-        SHSplit.RemoveWhichHaveWhitespaceAtBothSides(p, strike);
+        SHSplit.RemoveWhichHaveWhitespaceAtBothSides(text, bold);
+        SHSplit.RemoveWhichHaveWhitespaceAtBothSides(text, italic);
+        SHSplit.RemoveWhichHaveWhitespaceAtBothSides(text, strike);
 
         var isOdd = false;
 
         foreach (var item in new List<List<int>>([bold, italic, strike]))
         {
-            if (item.Count % 2 == 1) isOdd = true;
+            if (item.Count % 2 == 1)
+                isOdd = true;
         }
 
         if (isOdd)
@@ -53,17 +62,18 @@ public class HtmlHelperSunamoCz
             var s2 = Exceptions.HasOddNumberOfElements(string.Empty, "strike", strike);
 
             var sourceList = new List<string>();
-            if (b2 != null) sourceList.Add("bold");
-            if (i2 != null) sourceList.Add("italic");
-            if (s2 != null) sourceList.Add("strike");
+            if (b2 != null)
+                sourceList.Add("bold");
+            if (i2 != null)
+                sourceList.Add("italic");
+            if (s2 != null)
+                sourceList.Add("strike");
 
             error = StatusPrefixes.info + string.Join(",", sourceList) + " was odd count of elements. ";
-            return p; //HtmlAgilityHelper.WrapIntoTagIfNot(t, "b") + p;
+            return text;
         }
 
         var bold2 = new Dictionary<int, string>();
-        //Dictionary<int, int> italic2 = new Dictionary<int, int>();
-        //Dictionary<int, int> strike2 = new Dictionary<int, int>();
 
         AddToDict(bold2, bold, "b");
         AddToDict(bold2, italic, "i");
@@ -75,31 +85,41 @@ public class HtmlHelperSunamoCz
         var end = true;
         foreach (var item in id)
         {
-            p = p.Remove(item.Key, 1);
+            text = text.Remove(item.Key, 1);
             if (end)
-                p = p.Insert(item.Key, HtmlEndingTags.Get(item.Value));
+                text = text.Insert(item.Key, HtmlEndingTags.Get(item.Value));
             else
-                p = p.Insert(item.Key, HtmlStartingTags.Get(item.Value));
+                text = text.Insert(item.Key, HtmlStartingTags.Get(item.Value));
 
             end = !end;
         }
 
-
-        return p;
+        return text;
     }
 
-    public static string ConvertTextToHtmlWithAnchors(string p)
+    /// <summary>
+    /// Converts text to HTML with automatic anchor links for URLs.
+    /// </summary>
+    /// <param name="text">The text to convert.</param>
+    /// <returns>Converted HTML string with anchor links.</returns>
+    public static string ConvertTextToHtmlWithAnchors(string text)
     {
-        var data = SHSplit.SplitNoneChar(HtmlHelper.ConvertTextToHtml(p), ' ');
+        var data = SHSplit.SplitNoneChar(HtmlHelper.ConvertTextToHtml(text), ' ');
         for (var i = 0; i < data.Count; i++)
             if (data[i].StartsWith("http://") || data[i].StartsWith("https://"))
                 data[i] = HtmlGenerator2.AnchorWithHttp(data[i]);
         return string.Join(' ', data);
     }
 
-
-    private static void AddToDict(Dictionary<int, string> italic2, List<int> italic, string v)
+    /// <summary>
+    /// Adds all integer positions to the dictionary with the specified tag value.
+    /// </summary>
+    /// <param name="tagsDict">The dictionary to add to.</param>
+    /// <param name="positions">List of positions to add.</param>
+    /// <param name="tagName">The tag name value to associate with each position.</param>
+    private static void AddToDict(Dictionary<int, string> tagsDict, List<int> positions, string tagName)
     {
-        foreach (var item in italic) italic2.Add(item, v);
+        foreach (var item in positions)
+            tagsDict.Add(item, tagName);
     }
 }

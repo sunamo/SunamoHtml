@@ -1,96 +1,130 @@
 namespace SunamoHtml.Generators;
 
-// EN: Variable names have been checked and replaced with self-descriptive names
-// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+/// <summary>
+/// Extended HTML generator with list generation methods (part 4).
+/// </summary>
 public partial class HtmlGenerator2 : HtmlGenerator
 {
-    public static string GetForUlWoCheckDuplicate(string baseAnchor, List<string> idcka, List<string> texty)
+    /// <summary>
+    /// Generates list items for UL without duplicate checking.
+    /// </summary>
+    /// <param name="baseAnchor">Base anchor URL.</param>
+    /// <param name="ids">List of IDs for anchors.</param>
+    /// <param name="texts">List of display texts.</param>
+    /// <returns>HTML string with list items.</returns>
+    public static string GetForUlWoCheckDuplicate(string baseAnchor, List<string> ids, List<string> texts)
     {
-        return GetForUl(baseAnchor, idcka, texty, false);
+        return GetForUl(baseAnchor, ids, texts, false);
     }
 
     /// <summary>
-    ///     Počet v A1 a A2 musí být stejný.
-    ///     Mohl bych udělat tu samou metodu text ABC/ABC ale tam je jako druhý parametr object a to se mi nehodí do krámu
+    /// Generates list items for UL without duplicate checking.
+    /// Counts in both parameters must be equal.
     /// </summary>
-    /// <param name = "anchors"></param>
-    /// <param name = "to"></param>
-    public static string GetForUlWoCheckDuplicate(List<string> anchors, List<string> to)
+    /// <param name="anchors">List of anchor URLs.</param>
+    /// <param name="items">List of display texts.</param>
+    /// <returns>HTML string with list items.</returns>
+    public static string GetForUlWoCheckDuplicate(List<string> anchors, List<string> items)
     {
-        return GetForUl("", anchors, to, false);
+        return GetForUl("", anchors, items, false);
     }
 
     /// <summary>
-    ///     Tato metoda se používá pokud v Ul nepoužíváš žádné odkazy
+    /// Generates list items for UL without anchors.
+    /// This method is used when you don't use any links in UL.
     /// </summary>
-    /// <param name = "to"></param>
-    public static string GetForUlWoCheckDuplicate(List<string> to)
+    /// <param name="items">List of items to display.</param>
+    /// <returns>HTML string with list items.</returns>
+    public static string GetForUlWoCheckDuplicate(List<string> items)
     {
-        var hg = new HtmlGenerator();
-        for (var i = 0; i < to.Count; i++)
+        var generator = new HtmlGenerator();
+        for (var i = 0; i < items.Count; i++)
         {
-            hg.WriteTag("li");
-            hg.WriteRaw(to[i]);
-            hg.TerminateTag("li");
+            generator.WriteTag("li");
+            generator.WriteRaw(items[i]);
+            generator.TerminateTag("li");
         }
 
-        return hg.ToString();
-    }
-
-    public static string GetUlWoCheckDuplicate(string baseAnchor, List<string> to)
-    {
-        //return "<ul static class=\"textVlevo\">";
-        HtmlGenerator hg = new HtmlGenerator();
-        for (int i = 0; i < to.Count; i++)
-        {
-            string text = to[i];
-            hg.WriteTag("li");
-            hg.WriteTagWithAttr("a", "href", baseAnchor + (i + 1).ToString());
-            hg.WriteRaw(text);
-            hg.TerminateTag("a");
-            hg.TerminateTag("li");
-        }
-
-        return hg.ToString() + "//ul>";
+        return generator.ToString();
     }
 
     /// <summary>
-    ///     Bere si pouze jeden parametr, tedy je bez odkazů
+    /// Generates complete UL element with list items.
     /// </summary>
-    /// <param name = "list"></param>
+    /// <param name="baseAnchor">Base anchor URL.</param>
+    /// <param name="items">List of items.</param>
+    /// <returns>HTML string with UL element.</returns>
+    public static string GetUlWoCheckDuplicate(string baseAnchor, List<string> items)
+    {
+        HtmlGenerator generator = new HtmlGenerator();
+        for (int i = 0; i < items.Count; i++)
+        {
+            string text = items[i];
+            generator.WriteTag("li");
+            generator.WriteTagWithAttrs("a", "href", baseAnchor + (i + 1).ToString());
+            generator.WriteRaw(text);
+            generator.TerminateTag("a");
+            generator.TerminateTag("li");
+        }
+
+        return generator.ToString() + "</ul>";
+    }
+
+    /// <summary>
+    /// Generates complete UL element with list items and custom class.
+    /// Takes only one parameter, so it's without links.
+    /// </summary>
+    /// <param name="list">List of items.</param>
+    /// <param name="appendClass">Additional CSS class to append.</param>
+    /// <returns>HTML string with UL element.</returns>
     public static string GetUlWoCheckDuplicate(List<string> list, string appendClass)
     {
-        return "<ul static class=\"textVlevo " + appendClass + ">" + GetForUlWoCheckDuplicate(list) + "//ul>";
+        return "<ul class=\"textVlevo " + appendClass + "\">" + GetForUlWoCheckDuplicate(list) + "</ul>";
     }
 
-    /// <param name = "anchors"></param>
-    /// <param name = "texts"></param>
+    /// <summary>
+    /// Generates complete UL element with anchors and texts.
+    /// </summary>
+    /// <param name="anchors">List of anchor URLs.</param>
+    /// <param name="texts">List of display texts.</param>
+    /// <returns>HTML string with UL element.</returns>
     public static string GetUlWoCheckDuplicate(List<string> anchors, List<string> texts)
     {
-        return "<ul static class=\"textVlevo\">" + GetForUlWoCheckDuplicate(anchors, texts) + "//ul>";
+        return "<ul class=\"textVlevo\">" + GetForUlWoCheckDuplicate(anchors, texts) + "</ul>";
     }
 
-    public static string GetOl(List<string> possibleAnswers, bool checkDuplicates = false)
+    /// <summary>
+    /// Generates an OL (ordered list) element.
+    /// </summary>
+    /// <param name="possibleAnswers">List of possible answers.</param>
+    /// <param name="isCheckDuplicates">Whether to check for duplicates.</param>
+    /// <returns>HTML string with OL element.</returns>
+    public static string GetOl(List<string> possibleAnswers, bool isCheckDuplicates = false)
     {
-        return HtmlGeneratorList.GetFor("", possibleAnswers, possibleAnswers, checkDuplicates, HtmlTags.ol);
+        return HtmlGeneratorList.GetFor("", possibleAnswers, possibleAnswers, isCheckDuplicates, HtmlTags.ol);
     }
 
-    private static Type type = typeof(HtmlGenerator2);
-    public static string GetOlWoCheckDuplicate(List<string> anchors, List<string> to)
+    /// <summary>
+    /// Generates OL element without duplicate checking.
+    /// </summary>
+    /// <param name="anchors">List of anchor URLs.</param>
+    /// <param name="items">List of items to display.</param>
+    /// <returns>HTML string with OL element.</returns>
+    public static string GetOlWoCheckDuplicate(List<string> anchors, List<string> items)
     {
-        if (anchors.Count != to.Count)
-            throw new Exception("Po\u010Dty odr\u00E1\u017Eek a odkaz\u016F se li\u0161\u00ED");
-        var hg = new HtmlGenerator();
-        hg.WriteTag("ol");
-        for (var i = 0; i < to.Count; i++)
+        if (anchors.Count != items.Count)
+            throw new Exception("Bullet points and links count differs");
+        var generator = new HtmlGenerator();
+        generator.WriteTag("ol");
+        for (var i = 0; i < items.Count; i++)
         {
-            var text = to[i];
-            hg.WriteTag("li");
-            hg.WriteRaw(text);
-            hg.TerminateTag("li");
+            var text = items[i];
+            generator.WriteTag("li");
+            generator.WriteRaw(text);
+            generator.TerminateTag("li");
         }
 
-        hg.TerminateTag("ol");
-        return hg.ToString();
+        generator.TerminateTag("ol");
+        return generator.ToString();
     }
 }

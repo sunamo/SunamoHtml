@@ -1,233 +1,281 @@
 namespace SunamoHtml.Generators;
 
-// EN: Variable names have been checked and replaced with self-descriptive names
-// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+/// <summary>
+/// Extended HTML generator with calendar, gallery, and form generation methods.
+/// </summary>
 public partial class HtmlGenerator2 : HtmlGenerator
 {
-    public static string Calendar(List<string> htmlBoxesEveryDay, int year, int mesic)
+    /// <summary>
+    /// Generates a calendar for the specified year and month with HTML boxes for each day.
+    /// </summary>
+    /// <param name="htmlBoxesEveryDay">List of HTML content for each day.</param>
+    /// <param name="year">The year.</param>
+    /// <param name="month">The month (1-12).</param>
+    /// <returns>HTML string representing the calendar.</returns>
+    public static string Calendar(List<string> htmlBoxesEveryDay, int year, int month)
     {
         var colors = new List<string>(htmlBoxesEveryDay.Count);
         foreach (var item in htmlBoxesEveryDay)
-            colors.Add(null);
-        return Calendar(htmlBoxesEveryDay, colors, year, mesic);
+            colors.Add(null!);
+        return Calendar(htmlBoxesEveryDay, colors, year, month);
     }
 
-    public static string GenerateHtmlCheckBoxesFromFiles(string path, string masc, SearchOption so)
+    /// <summary>
+    /// Generates HTML checkboxes from files in the specified directory.
+    /// </summary>
+    /// <param name="path">The directory path.</param>
+    /// <param name="searchPattern">The search pattern for files.</param>
+    /// <param name="searchOption">The search option.</param>
+    /// <returns>HTML string with checkboxes.</returns>
+    public static string GenerateHtmlCheckBoxesFromFiles(string path, string searchPattern, SearchOption searchOption)
     {
-        var hg = new HtmlGenerator();
-        var files = Directory.GetFiles(path, masc, so);
+        var generator = new HtmlGenerator();
+        var files = Directory.GetFiles(path, searchPattern, searchOption);
         foreach (var item in files)
         {
-            hg.WriteTagWithAttrs("input", "type", "checkbox");
-            hg.WriteRaw(Path.GetFileName(item));
-            hg.WriteBr();
+            generator.WriteTagWithAttrs("input", "type", "checkbox");
+            generator.WriteRaw(Path.GetFileName(item));
+            generator.WriteBr();
         }
 
-        return hg.ToString();
+        return generator.ToString();
     }
 
-    public static string Calendar(List<string> htmlBoxesEveryDay, List<string> colors, int year, int mesic)
+    /// <summary>
+    /// Generates a calendar with colored boxes for each day.
+    /// </summary>
+    /// <param name="htmlBoxesEveryDay">List of HTML content for each day.</param>
+    /// <param name="colors">List of background colors for each day.</param>
+    /// <param name="year">The year.</param>
+    /// <param name="month">The month (1-12).</param>
+    /// <returns>HTML string representing the calendar.</returns>
+    public static string Calendar(List<string> htmlBoxesEveryDay, List<string> colors, int year, int month)
     {
-        var hg = new HtmlGenerator();
-        hg.WriteTagWith2Attrs("table", "class", "tabulkaNaStredAutoSirka", "style", "width: 600px");
-        hg.WriteTag("tr");
-#region Zapíšu vrchní řádky - názvy dnů
-        var ppp = DTConstants.daysInWeekEN;
-        hg.WriteTagWithAttr("td", "class", "bunkaTabulkyKalendare bunkaTabulkyKalendareLeft bunkaTabulkyKalendareTop");
-        hg.WriteElement("b", ppp[0]);
-        hg.TerminateTag("td");
-        for (var i = 1; i < ppp.Count - 1; i++)
+        var generator = new HtmlGenerator();
+        generator.WriteTagWithAttrs("table", "class", "tabulkaNaStredAutoSirka", "style", "width: 600px");
+        generator.WriteTag("tr");
+
+        // Write header row - day names
+        var daysOfWeek = DTConstants.DaysInWeekEN;
+        generator.WriteTagWithAttrs("td", "class", "bunkaTabulkyKalendare bunkaTabulkyKalendareLeft bunkaTabulkyKalendareTop");
+        generator.WriteElement("b", daysOfWeek[0]);
+        generator.TerminateTag("td");
+        for (var i = 1; i < daysOfWeek.Count - 1; i++)
         {
-            hg.WriteTagWithAttr("td", "class", "bunkaTabulkyKalendare bunkaTabulkyKalendareTop");
-            hg.WriteElement("b", ppp[i]);
-            hg.TerminateTag("td");
+            generator.WriteTagWithAttrs("td", "class", "bunkaTabulkyKalendare bunkaTabulkyKalendareTop");
+            generator.WriteElement("b", daysOfWeek[i]);
+            generator.TerminateTag("td");
         }
 
-        hg.WriteTagWithAttr("td", "class", "bunkaTabulkyKalendare bunkaTabulkyKalendareRight bunkaTabulkyKalendareTop");
-        hg.WriteElement("b", ppp[ppp.Count - 1]);
-        hg.TerminateTag("td");
-#endregion
-        hg.TerminateTag("tr");
-        hg.WriteTag("tr");
-        var dt = new DateTime(year, mesic, 1);
-        var prazdneNaZacatku = 0;
-        var dow = dt.DayOfWeek;
-        switch (dow)
+        generator.WriteTagWithAttrs("td", "class", "bunkaTabulkyKalendare bunkaTabulkyKalendareRight bunkaTabulkyKalendareTop");
+        generator.WriteElement("b", daysOfWeek[daysOfWeek.Count - 1]);
+        generator.TerminateTag("td");
+
+        generator.TerminateTag("tr");
+        generator.WriteTag("tr");
+
+        var dateTime = new DateTime(year, month, 1);
+        var emptyAtStart = 0;
+        var dayOfWeek = dateTime.DayOfWeek;
+        switch (dayOfWeek)
         {
             case DayOfWeek.Friday:
-                prazdneNaZacatku = 4;
+                emptyAtStart = 4;
                 break;
             case DayOfWeek.Monday:
                 break;
             case DayOfWeek.Saturday:
-                prazdneNaZacatku = 5;
+                emptyAtStart = 5;
                 break;
             case DayOfWeek.Sunday:
-                prazdneNaZacatku = 6;
+                emptyAtStart = 6;
                 break;
             case DayOfWeek.Thursday:
-                prazdneNaZacatku = 3;
+                emptyAtStart = 3;
                 break;
             case DayOfWeek.Tuesday:
-                prazdneNaZacatku = 1;
+                emptyAtStart = 1;
                 break;
             case DayOfWeek.Wednesday:
-                prazdneNaZacatku = 2;
+                emptyAtStart = 2;
                 break;
         }
 
-        for (var i2 = 0; i2 < prazdneNaZacatku; i2++)
+        for (var emptyIndex = 0; emptyIndex < emptyAtStart; emptyIndex++)
         {
-            var pt2 = "";
-            if (i2 == 0)
-                pt2 = "bunkaTabulkyKalendareLeft";
-            hg.WriteTagWithAttr("td", "class", "bunkaTabulkyKalendare " + pt2);
-            hg.WriteRaw("&nbsp;");
-            hg.TerminateTag("td");
+            var cellClass = "";
+            if (emptyIndex == 0)
+                cellClass = "bunkaTabulkyKalendareLeft";
+            generator.WriteTagWithAttrs("td", "class", "bunkaTabulkyKalendare " + cellClass);
+            generator.WriteRaw("&nbsp;");
+            generator.TerminateTag("td");
         }
 
-        var radku2 = prazdneNaZacatku + htmlBoxesEveryDay.Count / 7;
-        if (prazdneNaZacatku != 0)
-            radku2++;
-        var prazdneNaZacatku2 = prazdneNaZacatku;
-        var radku = 1;
-        for (var i = 1; i < htmlBoxesEveryDay.Count + 1; i++, prazdneNaZacatku++)
+        var rowCount2 = emptyAtStart + htmlBoxesEveryDay.Count / 7;
+        if (emptyAtStart != 0)
+            rowCount2++;
+        var initialEmptyCount = emptyAtStart;
+        var currentRow = 1;
+        for (var i = 1; i < htmlBoxesEveryDay.Count + 1; i++, emptyAtStart++)
         {
-            var pridatTridu = "";
-            if (prazdneNaZacatku % 7 == 0)
+            var additionalClass = "";
+            if (emptyAtStart % 7 == 0)
             {
-                pridatTridu = "bunkaTabulkyKalendareLeft";
-                radku++;
-                hg.TerminateTag("tr");
-                hg.WriteTag("tr");
+                additionalClass = "bunkaTabulkyKalendareLeft";
+                currentRow++;
+                generator.TerminateTag("tr");
+                generator.WriteTag("tr");
             }
-            else if (prazdneNaZacatku % 7 == 6)
+            else if (emptyAtStart % 7 == 6)
             {
-                pridatTridu = "bunkaTabulkyKalendareRight";
+                additionalClass = "bunkaTabulkyKalendareRight";
             }
 
             var color = colors[i - 1];
             var appendStyle = "";
             if (color == "#030")
                 appendStyle = "color:white;";
-            var datum = i + "." + mesic + ".";
-            hg.WriteTagWith2Attrs("td", "class", "tableCenter bunkaTabulkyKalendare " + pridatTridu, "style", appendStyle + "background-color:" + colors[i - 1]);
-            //hg.WriteTag("td");
-            hg.WriteRaw("<b>" + datum + "</b>");
-            hg.WriteBr();
-            hg.WriteRaw(htmlBoxesEveryDay[i - 1]);
-            hg.TerminateTag("td");
+            var dateText = i + "." + month + ".";
+            generator.WriteTagWithAttrs("td", "class", "tableCenter bunkaTabulkyKalendare " + additionalClass, "style", appendStyle + "background-color:" + colors[i - 1]);
+            generator.WriteRaw("<b>" + dateText + "</b>");
+            generator.WriteBr();
+            generator.WriteRaw(htmlBoxesEveryDay[i - 1]);
+            generator.TerminateTag("td");
         }
 
-        if (prazdneNaZacatku2 == 0)
-            radku--;
-        var bunekZbyva = radku * 7 - prazdneNaZacatku2 - htmlBoxesEveryDay.Count;
-        for (var i2 = 0; i2 < bunekZbyva; i2++)
+        if (initialEmptyCount == 0)
+            currentRow--;
+        var remainingCells = currentRow * 7 - initialEmptyCount - htmlBoxesEveryDay.Count;
+        for (var emptyIndex = 0; emptyIndex < remainingCells; emptyIndex++)
         {
-            var pt = "";
-            if (bunekZbyva - 1 == i2)
-                pt = "bunkaTabulkyKalendareRight";
-            hg.WriteTagWithAttr("td", "class", /*bunkaTabulkyKalendareBottom */ "bunkaTabulkyKalendare " + pt);
-            hg.WriteRaw("&nbsp;");
-            hg.TerminateTag("td");
+            var cellClass = "";
+            if (remainingCells - 1 == emptyIndex)
+                cellClass = "bunkaTabulkyKalendareRight";
+            generator.WriteTagWithAttrs("td", "class", "bunkaTabulkyKalendare " + cellClass);
+            generator.WriteRaw("&nbsp;");
+            generator.TerminateTag("td");
         }
 
-        hg.TerminateTag("tr");
-        hg.TerminateTag("table");
-        return hg.ToString();
-    }
-
-    public static string GalleryZoomInProfilePhoto(List<string> membersName, List<string> memberProfilePicture, List<string> memberAnchors)
-    {
-        var hg = new HtmlGenerator();
-        hg.WriteTag("ul");
-        for (var i = 0; i < membersName.Count; i++)
-        {
-            hg.WriteTag("li");
-            hg.WriteTagWithAttr("a", "href", memberAnchors[i]);
-            hg.WriteTag("p");
-            hg.WriteRaw(membersName[i]);
-            hg.TerminateTag("p");
-            hg.WriteTagWithAttr("div", "style", "background-image: url(" + memberProfilePicture[i] + ");");
-            hg.TerminateTag("div");
-            hg.TerminateTag("a");
-            hg.TerminateTag("li");
-        }
-
-        hg.TerminateTag("ul");
-        return hg.ToString();
-    }
-
-    public static string GetSelect(string id, object def, IList list)
-    {
-        var gh = new HtmlGenerator();
-        gh.WriteTagWithAttr("select", "name", "select" + id);
-        foreach (var item2 in list)
-        {
-            var item = item2.ToString();
-            if (item != def.ToString())
-            {
-                gh.WriteElement("option", item);
-            }
-            else
-            {
-                gh.WriteTagWithAttr("option", "selected", "selected");
-                gh.WriteRaw(item);
-                gh.TerminateTag("option");
-            }
-        }
-
-        gh.TerminateTag("select");
-        return gh.ToString();
-    }
-
-    public static string GetInputText(string id, string value)
-    {
-        var gh = new HtmlGenerator();
-        gh.WriteTagWithAttrs("input", "type", "text", "name", "inputText" + id, "value", value);
-        return gh.ToString();
+        generator.TerminateTag("tr");
+        generator.TerminateTag("table");
+        return generator.ToString();
     }
 
     /// <summary>
-    ///     Jedná se o divy pod sebou, nikoliv o ol/ul>li
+    /// Generates a photo gallery with zoom functionality.
     /// </summary>
-    /// <param name = "hg"></param>
-    /// <param name = "odkazyPhoto"></param>
-    /// <param name = "odkazyText"></param>
-    /// <param name = "innerHtmlText"></param>
-    /// <param name = "srcPhoto"></param>
-    public static string TopListWithImages(HtmlGenerator hg, int widthImage, int heightImage, string initialImageUri, List<string> odkazyPhoto, List<string> odkazyText, List<string> innerHtmlText, List<string> srcPhoto, string nameJsArray)
+    /// <param name="membersName">List of member names.</param>
+    /// <param name="memberProfilePicture">List of profile picture URLs.</param>
+    /// <param name="memberAnchors">List of anchor URLs.</param>
+    /// <returns>HTML string representing the gallery.</returns>
+    public static string GalleryZoomInProfilePhoto(List<string> membersName, List<string> memberProfilePicture, List<string> memberAnchors)
     {
-        var count = odkazyPhoto.Count;
-        if (count == 0)
-            //throw new Exception("Metoda HtmlGenerator2.TopListWithImages - odkazyPhoto nemá žádný prvek");
-            return "";
-        if (count != odkazyText.Count)
-            throw new Exception("Metoda HtmlGenerator2.TopListWithImages - odkazyPhoto se nerovn\u00E1 po\u010Dtem odkazyText");
-        if (count != innerHtmlText.Count)
-            throw new Exception("Metoda HtmlGenerator2.TopListWithImages - odkazyPhoto se nerovn\u00E1 po\u010Dtem innerHtmlText");
-        if (count != srcPhoto.Count)
-            throw new Exception("Metoda HtmlGenerator2.TopListWithImages - odkazyPhoto se nerovn\u00E1 po\u010Dtem srcPhoto");
-        //HtmlGenerator hg = new HtmlGenerator();
-        var nt = 0;
-        var animated = int.TryParse(srcPhoto[0], out nt);
-        for (var i = 0; i < count; i++)
+        var generator = new HtmlGenerator();
+        generator.WriteTag("ul");
+        for (var i = 0; i < membersName.Count; i++)
         {
-            hg.WriteTagWithAttr("div", "style", "padding: 5px;");
-            hg.WriteTagWithAttr("a", "href", odkazyPhoto[i]);
-            hg.WriteTagWithAttr("div", "style", "display: inline-block;");
-            if (animated)
-                hg.WriteNonPairTagWithAttrs("img", "style", "margin-left: auto; margin-right: auto; vertical-align-middle; width: " + widthImage + "px;height:" + heightImage + "px", "id", nameJsArray + srcPhoto[i], "class", "alternatingImage", "src", initialImageUri, "alt", odkazyText[i]);
-            else
-                hg.WriteNonPairTagWithAttrs("img", "src", srcPhoto[i], "alt", odkazyText[i]);
-            hg.TerminateTag("div");
-            hg.TerminateTag("a");
-            hg.WriteTagWithAttr("a", "href", odkazyText[i]);
-            hg.WriteRaw(innerHtmlText[i]);
-            hg.TerminateTag("a");
-            hg.TerminateTag("div");
+            generator.WriteTag("li");
+            generator.WriteTagWithAttrs("a", "href", memberAnchors[i]);
+            generator.WriteTag("p");
+            generator.WriteRaw(membersName[i]);
+            generator.TerminateTag("p");
+            generator.WriteTagWithAttrs("div", "style", "background-image: url(" + memberProfilePicture[i] + ");");
+            generator.TerminateTag("div");
+            generator.TerminateTag("a");
+            generator.TerminateTag("li");
         }
 
-        return hg.ToString();
+        generator.TerminateTag("ul");
+        return generator.ToString();
+    }
+
+    /// <summary>
+    /// Generates an HTML select element with options.
+    /// </summary>
+    /// <param name="id">The ID for the select element.</param>
+    /// <param name="defaultValue">The default selected value.</param>
+    /// <param name="list">The list of options.</param>
+    /// <returns>HTML string representing the select element.</returns>
+    public static string GetSelect(string id, object defaultValue, IList list)
+    {
+        var generator = new HtmlGenerator();
+        generator.WriteTagWithAttrs("select", "name", "select" + id);
+        foreach (var item2 in list)
+        {
+            var item = item2?.ToString() ?? string.Empty;
+            if (item != defaultValue.ToString())
+            {
+                generator.WriteElement("option", item);
+            }
+            else
+            {
+                generator.WriteTagWithAttrs("option", "selected", "selected");
+                generator.WriteRaw(item);
+                generator.TerminateTag("option");
+            }
+        }
+
+        generator.TerminateTag("select");
+        return generator.ToString();
+    }
+
+    /// <summary>
+    /// Generates an HTML text input element.
+    /// </summary>
+    /// <param name="id">The ID for the input element.</param>
+    /// <param name="value">The initial value.</param>
+    /// <returns>HTML string representing the input element.</returns>
+    public static string GetInputText(string id, string value)
+    {
+        var generator = new HtmlGenerator();
+        generator.WriteTagWithAttrs("input", "type", "text", "name", "inputText" + id, "value", value);
+        return generator.ToString();
+    }
+
+    /// <summary>
+    /// Generates a top list with images (divs stacked vertically, not ol/ul>li).
+    /// </summary>
+    /// <param name="htmlGenerator">The HTML generator to use.</param>
+    /// <param name="widthImage">Image width in pixels.</param>
+    /// <param name="heightImage">Image height in pixels.</param>
+    /// <param name="initialImageUri">Initial image URI.</param>
+    /// <param name="photoLinks">List of photo link URLs.</param>
+    /// <param name="textLinks">List of text link URLs.</param>
+    /// <param name="innerHtmlText">List of inner HTML text.</param>
+    /// <param name="srcPhoto">List of photo source paths.</param>
+    /// <param name="nameJsArray">JavaScript array name.</param>
+    /// <returns>HTML string representing the list with images.</returns>
+    public static string TopListWithImages(HtmlGenerator htmlGenerator, int widthImage, int heightImage, string initialImageUri, List<string> photoLinks, List<string> textLinks, List<string> innerHtmlText, List<string> srcPhoto, string nameJsArray)
+    {
+        var count = photoLinks.Count;
+        if (count == 0)
+            return "";
+        if (count != textLinks.Count)
+            throw new Exception("Method HtmlGenerator2.TopListWithImages - photoLinks count does not match textLinks count");
+        if (count != innerHtmlText.Count)
+            throw new Exception("Method HtmlGenerator2.TopListWithImages - photoLinks count does not match innerHtmlText count");
+        if (count != srcPhoto.Count)
+            throw new Exception("Method HtmlGenerator2.TopListWithImages - photoLinks count does not match srcPhoto count");
+
+        var parsedValue = 0;
+        var isAnimated = int.TryParse(srcPhoto[0], out parsedValue);
+        for (var i = 0; i < count; i++)
+        {
+            htmlGenerator.WriteTagWithAttrs("div", "style", "padding: 5px;");
+            htmlGenerator.WriteTagWithAttrs("a", "href", photoLinks[i]);
+            htmlGenerator.WriteTagWithAttrs("div", "style", "display: inline-block;");
+            if (isAnimated)
+                htmlGenerator.WriteNonPairTagWithAttrs("img", "style", "margin-left: auto; margin-right: auto; vertical-align-middle; width: " + widthImage + "px;height:" + heightImage + "px", "id", nameJsArray + srcPhoto[i], "class", "alternatingImage", "src", initialImageUri, "alt", textLinks[i]);
+            else
+                htmlGenerator.WriteNonPairTagWithAttrs("img", "src", srcPhoto[i], "alt", textLinks[i]);
+            htmlGenerator.TerminateTag("div");
+            htmlGenerator.TerminateTag("a");
+            htmlGenerator.WriteTagWithAttrs("a", "href", textLinks[i]);
+            htmlGenerator.WriteRaw(innerHtmlText[i]);
+            htmlGenerator.TerminateTag("a");
+            htmlGenerator.TerminateTag("div");
+        }
+
+        return htmlGenerator.ToString();
     }
 }

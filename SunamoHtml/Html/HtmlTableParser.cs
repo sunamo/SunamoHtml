@@ -1,31 +1,41 @@
 namespace SunamoHtml.Html;
 
-// Row/column
+/// <summary>
+/// EN: Parser for HTML tables into 2D string array with colspan support.
+/// CZ: Parser HTML tabulek do 2D string pole s podporou colspan.
+/// Row/column indexing.
+/// </summary>
 public class HtmlTableParser
 {
     /// <summary>
-    ///     Pokud se bude v prvku vyskytovat null, jednalo se o colspan
+    /// EN: The parsed table data. If an element contains null, it was a colspan cell.
+    /// CZ: Naparsovaná tabulková data. Pokud prvek obsahuje null, jednalo se o colspan buňku.
     /// </summary>
-    public string[,] data { get; set; }
+    public string[,] Data { get; set; }
 
     /// <summary>
+    /// Initializes a new instance by parsing an HTML table node.
     /// </summary>
-    /// <param name="html"></param>
-    public HtmlTableParser(HtmlNode html, bool ignoreFirstRow)
+    /// <param name="html">The HTML table node to parse.</param>
+    /// <param name="isIgnoreFirstRow">Whether to ignore the first row (typically headers).</param>
+    public HtmlTableParser(HtmlNode html, bool isIgnoreFirstRow)
     {
         var startRow = 0;
-        if (ignoreFirstRow) startRow++;
+        if (isIgnoreFirstRow)
+            startRow++;
         if (html.Name != "table")
         {
             var htmlFirst = html.FirstChild;
-            if (htmlFirst.Name != "table") return;
+            if (htmlFirst.Name != "table")
+                return;
             html = htmlFirst;
         }
 
         var maxColumn = 0;
         var rows = HtmlHelper.ReturnAllTags(html, "tr");
         var maxRow = rows.Count;
-        if (ignoreFirstRow) maxRow--;
+        if (isIgnoreFirstRow)
+            maxRow--;
         for (var result = startRow; result < rows.Count; result++)
         {
             var tds = HtmlHelper.ReturnAllTags(rows[result], "td", "th");
@@ -44,23 +54,22 @@ public class HtmlTableParser
                 }
             }
 
-            if (maxColumnActual > maxColumn) maxColumn = maxColumnActual;
+            if (maxColumnActual > maxColumn)
+                maxColumn = maxColumnActual;
         }
 
-        data = new string[maxRow, maxColumn];
+        Data = new string[maxRow, maxColumn];
         for (var result = startRow; result < rows.Count; result++)
         {
-            //List<HtmlNode> tds = HtmlHelper.ReturnAllTags()
             var ths = HtmlHelper.ReturnAllTags(rows[result], "th", "td");
             for (var count = 0; count < maxColumn; count++)
                 if (ths.Count > count)
                 {
                     var cellRow = ths[count];
                     var cell = cellRow.InnerText.Trim();
-                    //cell = HtmlHelperText.ConvertTextToHtml(cell);
                     cell = WebUtility.HtmlDecode(cell);
                     cell = SHReplace.ReplaceAllDoubleSpaceToSingle(cell);
-                    data[result - startRow, count] = cell;
+                    Data[result - startRow, count] = cell;
                     var tdWithColspan = HtmlAssistant.GetValueOfAttribute(HtmlAttrValue.colspan, cellRow, true);
                     if (tdWithColspan != "")
                     {
@@ -69,21 +78,33 @@ public class HtmlTableParser
                             for (var i = 0; i < colspan; i++)
                             {
                                 count++;
-                                data[result - startRow, count] = null;
+                                Data[result - startRow, count] = null;
                             }
                     }
                 }
         }
     }
 
-    public int RowCount => data.GetLength(0);
-    public int ColumnCount => data.GetLength(1);
+    /// <summary>
+    /// Gets the number of rows in the parsed table.
+    /// </summary>
+    public int RowCount => Data.GetLength(0);
 
-    public static void NormalizeValuesInColumn(List<string> chars, bool removeAlsoInnerHtmlOfSubNodes)
+    /// <summary>
+    /// Gets the number of columns in the parsed table.
+    /// </summary>
+    public int ColumnCount => Data.GetLength(1);
+
+    /// <summary>
+    /// Normalizes values in a column by removing HTML tags and decoding HTML entities.
+    /// </summary>
+    /// <param name="chars">List of column values to normalize.</param>
+    /// <param name="isRemoveAlsoInnerHtmlOfSubNodes">Whether to remove inner HTML of sub nodes.</param>
+    public static void NormalizeValuesInColumn(List<string> chars, bool isRemoveAlsoInnerHtmlOfSubNodes)
     {
         for (var i = 0; i < chars.Count; i++)
         {
-            if (removeAlsoInnerHtmlOfSubNodes)
+            if (isRemoveAlsoInnerHtmlOfSubNodes)
                 chars[i] = HtmlHelperText.RemoveAllNodes(chars[i]);
             else
                 chars[i] = HtmlHelper.StripAllTags(chars[i]);
@@ -91,41 +112,65 @@ public class HtmlTableParser
         }
     }
 
-    public List<string> ColumnValues(int dxColumn, bool normalizeValuesInColumn, bool removeAlsoInnerHtmlOfSubNodes,
-        bool skipFirstRow)
+    /// <summary>
+    /// Gets all values from a specific column by index.
+    /// </summary>
+    /// <param name="columnIndex">The zero-based column index.</param>
+    /// <param name="isNormalizeValuesInColumn">Whether to normalize values by removing HTML.</param>
+    /// <param name="isRemoveAlsoInnerHtmlOfSubNodes">Whether to remove inner HTML of sub nodes.</param>
+    /// <param name="isSkipFirstRow">Whether to skip the first row.</param>
+    /// <returns>List of column values.</returns>
+    public List<string> ColumnValues(int columnIndex, bool isNormalizeValuesInColumn, bool isRemoveAlsoInnerHtmlOfSubNodes,
+        bool isSkipFirstRow)
     {
-        var d0 = data.GetLength(0);
-        var vr = new List<string>();
+        var d0 = Data.GetLength(0);
+        var result = new List<string>();
         var i = 0;
-        if (skipFirstRow) i = 1;
-        for (; i < d0; i++) vr.Add(data[i, dxColumn]);
-        FinalizeColumnValues(normalizeValuesInColumn, removeAlsoInnerHtmlOfSubNodes, vr);
-        return vr;
+        if (isSkipFirstRow)
+            i = 1;
+        for (; i < d0; i++)
+            result.Add(Data[i, columnIndex]);
+        FinalizeColumnValues(isNormalizeValuesInColumn, isRemoveAlsoInnerHtmlOfSubNodes, result);
+        return result;
     }
 
-    public List<string> ColumnValues(string v, bool normalizeValuesInColumn, bool removeAlsoInnerHtmlOfSubNodes)
+    /// <summary>
+    /// Gets all values from a column by column name (found in first row).
+    /// </summary>
+    /// <param name="columnName">The column name to search for in the first row.</param>
+    /// <param name="isNormalizeValuesInColumn">Whether to normalize values by removing HTML.</param>
+    /// <param name="isRemoveAlsoInnerHtmlOfSubNodes">Whether to remove inner HTML of sub nodes.</param>
+    /// <returns>List of column values.</returns>
+    public List<string> ColumnValues(string columnName, bool isNormalizeValuesInColumn, bool isRemoveAlsoInnerHtmlOfSubNodes)
     {
-        var d0 = data.GetLength(0);
-        var d1 = data.GetLength(1);
-        var vr = new List<string>();
+        var d0 = Data.GetLength(0);
+        var d1 = Data.GetLength(1);
+        var result = new List<string>();
         for (var i = 0; i < d1; i++)
         {
-            var nameColumn = data[0, i];
-            var dxColumn = i;
-            if (nameColumn == v)
+            var nameColumn = Data[0, i];
+            var columnIndex = i;
+            if (nameColumn == columnName)
                 for (i = 1; i < d0; i++)
-                    vr.Add(data[i, dxColumn]);
-            if (vr.Count != 0) break;
+                    result.Add(Data[i, columnIndex]);
+            if (result.Count != 0)
+                break;
         }
 
-        FinalizeColumnValues(normalizeValuesInColumn, removeAlsoInnerHtmlOfSubNodes, vr);
-        return vr;
+        FinalizeColumnValues(isNormalizeValuesInColumn, isRemoveAlsoInnerHtmlOfSubNodes, result);
+        return result;
     }
 
-    private static void FinalizeColumnValues(bool normalizeValuesInColumn, bool removeAlsoInnerHtmlOfSubNodes,
-        List<string> vr)
+    /// <summary>
+    /// Finalizes column values by normalizing if requested.
+    /// </summary>
+    /// <param name="isNormalizeValuesInColumn">Whether to normalize values.</param>
+    /// <param name="isRemoveAlsoInnerHtmlOfSubNodes">Whether to remove inner HTML.</param>
+    /// <param name="result">The result list to finalize.</param>
+    private static void FinalizeColumnValues(bool isNormalizeValuesInColumn, bool isRemoveAlsoInnerHtmlOfSubNodes,
+        List<string> result)
     {
-        if (normalizeValuesInColumn || removeAlsoInnerHtmlOfSubNodes)
-            NormalizeValuesInColumn(vr, removeAlsoInnerHtmlOfSubNodes);
+        if (isNormalizeValuesInColumn || isRemoveAlsoInnerHtmlOfSubNodes)
+            NormalizeValuesInColumn(result, isRemoveAlsoInnerHtmlOfSubNodes);
     }
 }

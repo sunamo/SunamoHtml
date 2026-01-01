@@ -1,27 +1,33 @@
 namespace SunamoHtml.Html;
 
-// EN: Variable names have been checked and replaced with self-descriptive names
-// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
 /// <summary>
-/// Je tu mix všeho, rozdělit to pomocí AI
+/// EN: Shared HTML helper methods (partial class - part 3).
+/// CZ: Sdílené HTML pomocné metody (partial class - část 3).
 /// </summary>
 public static partial class HtmlHelper
 {
-    public static HtmlNode GetTagOfAtribute(HtmlNode hn, string nameOfTag, string nameOfAtr, string valueOfAtr)
+    /// <summary>
+    /// EN: Returns the first tag with specified name and attribute value.
+    /// CZ: Vrátí první tag se zadaným názvem a hodnotou atributu.
+    /// </summary>
+    /// <param name="htmlNode">The HTML node to search in.</param>
+    /// <param name="tagName">The tag name to search for.</param>
+    /// <param name="attributeName">The attribute name to match.</param>
+    /// <param name="attributeValue">The attribute value to match.</param>
+    /// <returns>First matching HTML node or null.</returns>
+    public static HtmlNode GetTagOfAtribute(HtmlNode htmlNode, string tagName, string attributeName, string attributeValue)
     {
-        hn = TrimNode(hn);
-        foreach (var var in hn.ChildNodes)
+        htmlNode = TrimNode(htmlNode);
+        foreach (var childNode in htmlNode.ChildNodes)
         {
-            //var.InnerHtml = var.InnerHtml.Trim();
-            var hn2 = var; //.FirstChild;
-            if (hn2.Name == nameOfTag)
+            var currentNode = childNode;
+            if (currentNode.Name == tagName)
             {
-                if (GetValueOfAttribute(nameOfAtr, hn2) == valueOfAtr)
-                    return hn2;
-                foreach (var var2 in hn2.ChildNodes)
-                    if (GetValueOfAttribute(nameOfAtr, var2) == valueOfAtr)
-                        return var2;
-            //}
+                if (GetValueOfAttribute(attributeName, currentNode) == attributeValue)
+                    return currentNode;
+                foreach (var grandChild in currentNode.ChildNodes)
+                    if (GetValueOfAttribute(attributeName, grandChild) == attributeValue)
+                        return grandChild;
             }
         }
 
@@ -29,132 +35,175 @@ public static partial class HtmlHelper
     }
 
     /// <summary>
-    ///     Return 0 instead of 10
-    ///     Originally from HtmlDocument
+    /// EN: Returns all tags with specified name and attribute value, recursively searching the node tree.
+    /// CZ: Vrátí všechny tagy se zadaným názvem a hodnotou atributu, rekurzivně prohledá strom uzlů.
+    /// Originally from HtmlDocument.
     /// </summary>
-    /// <param name = "htmlNode"></param>
-    /// <param name = "tagName"></param>
-    /// <param name = "attrName"></param>
-    /// <param name = "attrValue"></param>
-    public static List<HtmlNode> ReturnTagsWithAttrRek2(HtmlNode htmlNode, string tagName, string attrName, string attrValue)
+    /// <param name="htmlNode">The HTML node to search in.</param>
+    /// <param name="tagName">The tag name to search for.</param>
+    /// <param name="attributeName">The attribute name to match.</param>
+    /// <param name="attributeValue">The attribute value to match.</param>
+    /// <returns>List of matching HTML nodes.</returns>
+    public static List<HtmlNode> ReturnTagsWithAttrRek2(HtmlNode htmlNode, string tagName, string attributeName, string attributeValue)
     {
-        var node = new List<HtmlNode>();
-        RecursiveReturnAllTags(node, htmlNode, tagName);
-        for (var i = node.Count - 1; i >= 0; i--)
-            if (GetValueOfAttribute(attrName, node[i]) != attrValue)
-                node.RemoveAt(i);
-        return node;
-    }
-
-    /// <param name = "hn"></param>
-    /// <param name = "nameOfTag"></param>
-    /// <param name = "nameOfAtr"></param>
-    /// <param name = "valueOfAtr"></param>
-    public static List<HtmlNode> GetTagsOfAtribute(HtmlNode hn, string nameOfTag, string nameOfAtr, string valueOfAtr)
-    {
-        var vr = new List<HtmlNode>();
-        foreach (var var in hn.ChildNodes)
-            if (var.Name == nameOfTag)
-                if (GetValueOfAttribute(nameOfAtr, var) == valueOfAtr)
-                    vr.Add(var);
-        return vr;
-    }
-
-    private static void RecursiveReturnTagsWithContainsAttr(List<HtmlNode> vr, HtmlNode node, string p, string atribut, string hodnotaAtributu)
-    {
-        RecursiveReturnTagsWithContainsAttr(vr, node, p, atribut, hodnotaAtributu, true, true);
+        var result = new List<HtmlNode>();
+        RecursiveReturnAllTags(result, htmlNode, tagName);
+        for (var i = result.Count - 1; i >= 0; i--)
+            if (GetValueOfAttribute(attributeName, result[i]) != attributeValue)
+                result.RemoveAt(i);
+        return result;
     }
 
     /// <summary>
-    ///     Do A3 se může zadat * pro vrácení všech tagů
+    /// EN: Returns all immediate child tags with specified name and attribute value.
+    /// CZ: Vrátí všechny přímé podřízené tagy se zadaným názvem a hodnotou atributu.
     /// </summary>
-    /// <param name = "vr"></param>
-    /// <param name = "htmlNode"></param>
-    /// <param name = "p"></param>
-    /// <param name = "atribut"></param>
-    /// <param name = "hodnotaAtributu"></param>
-    public static void RecursiveReturnTagsWithContainsAttr(List<HtmlNode> vr, HtmlNode htmlNode, string p, string atribut, string hodnotaAtributu, bool contains, bool recursively)
+    /// <param name="htmlNode">The HTML node to search in.</param>
+    /// <param name="tagName">The tag name to search for.</param>
+    /// <param name="attributeName">The attribute name to match.</param>
+    /// <param name="attributeValue">The attribute value to match.</param>
+    /// <returns>List of matching child HTML nodes.</returns>
+    public static List<HtmlNode> GetTagsOfAtribute(HtmlNode htmlNode, string tagName, string attributeName, string attributeValue)
+    {
+        var result = new List<HtmlNode>();
+        foreach (var childNode in htmlNode.ChildNodes)
+            if (childNode.Name == tagName)
+                if (GetValueOfAttribute(attributeName, childNode) == attributeValue)
+                    result.Add(childNode);
+        return result;
+    }
+
+    /// <summary>
+    /// EN: Recursively searches for tags with attribute value containing specified text.
+    /// CZ: Rekurzivně vyhledává tagy s hodnotou atributu obsahující zadaný text.
+    /// </summary>
+    /// <param name="result">The result list to add found nodes to.</param>
+    /// <param name="htmlNode">The HTML node to search in.</param>
+    /// <param name="tagName">The tag name to search for.</param>
+    /// <param name="attributeName">The attribute name to check.</param>
+    /// <param name="attributeValue">The attribute value to search for.</param>
+    private static void RecursiveReturnTagsWithContainsAttr(List<HtmlNode> result, HtmlNode htmlNode, string tagName, string attributeName, string attributeValue)
+    {
+        RecursiveReturnTagsWithContainsAttr(result, htmlNode, tagName, attributeName, attributeValue, true, true);
+    }
+
+    /// <summary>
+    /// EN: Recursively searches for tags with attribute value matching specified criteria.
+    /// CZ: Rekurzivně vyhledává tagy s hodnotou atributu odpovídající zadaným kritériím.
+    /// Supports wildcard "*" for tag name to match all tags.
+    /// </summary>
+    /// <param name="result">The result list to add found nodes to.</param>
+    /// <param name="htmlNode">The HTML node to search in.</param>
+    /// <param name="tagName">The tag name to search for, or "*" for all tags.</param>
+    /// <param name="attributeName">The attribute name to check.</param>
+    /// <param name="attributeValue">The attribute value to search for.</param>
+    /// <param name="isContains">Whether to use Contains instead of exact match.</param>
+    /// <param name="isRecursively">Whether to search recursively.</param>
+    public static void RecursiveReturnTagsWithContainsAttr(List<HtmlNode> result, HtmlNode htmlNode, string tagName, string attributeName, string attributeValue, bool isContains, bool isRecursively)
     {
         foreach (var item in htmlNode.ChildNodes)
         {
-            var attrValue = GetValueOfAttribute(atribut, item);
-            if (contains)
-                contains = attrValue.Contains(hodnotaAtributu);
+            var attrValue = GetValueOfAttribute(attributeName, item);
+            if (isContains)
+                isContains = attrValue.Contains(attributeValue);
             else
-                contains = attrValue == hodnotaAtributu;
-            if (HasTagName(item, p) && contains)
+                isContains = attrValue == attributeValue;
+            if (HasTagName(item, tagName) && isContains)
             {
-                //RecursiveReturnTagsWithContainsAttr(vr, item, p);
-                if (!vr.Contains(item))
-                    vr.Add(item);
+                if (!result.Contains(item))
+                    result.Add(item);
             }
             else
             {
-                if (recursively)
-                    RecursiveReturnTagsWithContainsAttr(vr, item, p, atribut, hodnotaAtributu, contains, recursively);
+                if (isRecursively)
+                    RecursiveReturnTagsWithContainsAttr(result, item, tagName, attributeName, attributeValue, isContains, isRecursively);
             }
         }
     }
 
     /// <summary>
-    ///     Do A3 se může zadat * pro vrácení všech tagů
+    /// EN: Recursively searches for tags with attribute value containing specified text after splitting by delimiter.
+    /// CZ: Rekurzivně vyhledává tagy s hodnotou atributu obsahující zadaný text po rozdělení pomocí oddělovače.
+    /// Supports wildcard "*" for tag name to match all tags.
     /// </summary>
-    /// <param name = "vr"></param>
-    /// <param name = "htmlNode"></param>
-    /// <param name = "p"></param>
-    /// <param name = "atribut"></param>
-    /// <param name = "hodnotaAtributu"></param>
-    private static void RecursiveReturnTagsWithContainsAttrWithSplittedElement(List<HtmlNode> vr, HtmlNode htmlNode, string p, string atribut, string hodnotaAtributu, string delimiter)
+    /// <param name="result">The result list to add found nodes to.</param>
+    /// <param name="htmlNode">The HTML node to search in.</param>
+    /// <param name="tagName">The tag name to search for, or "*" for all tags.</param>
+    /// <param name="attributeName">The attribute name to check.</param>
+    /// <param name="attributeValue">The attribute value to search for.</param>
+    /// <param name="delimiter">The delimiter to split the attribute value by.</param>
+    private static void RecursiveReturnTagsWithContainsAttrWithSplittedElement(List<HtmlNode> result, HtmlNode htmlNode, string tagName, string attributeName, string attributeValue, string delimiter)
     {
         foreach (var item in htmlNode.ChildNodes)
-            if (HasTagName(item, p) && HasTagAttrContains(item, delimiter, atribut, hodnotaAtributu))
+            if (HasTagName(item, tagName) && HasTagAttrContains(item, delimiter, attributeName, attributeValue))
             {
-                //RecursiveReturnTagsWithContainsAttrWithSplittedElement(vr, item, p, atribut, hodnotaAtributu, delimiter);
-                if (!vr.Contains(item))
-                    vr.Add(item);
+                if (!result.Contains(item))
+                    result.Add(item);
             }
             else
             {
-                RecursiveReturnTagsWithContainsAttrWithSplittedElement(vr, item, p, atribut, hodnotaAtributu, delimiter);
+                RecursiveReturnTagsWithContainsAttrWithSplittedElement(result, item, tagName, attributeName, attributeValue, delimiter);
             }
     }
 
     /// <summary>
-    ///     Do A2 se může zadat * pro získaní všech tagů
+    /// EN: Returns all tags with attribute value containing specified text, recursively searching the node tree.
+    /// CZ: Vrátí všechny tagy s hodnotou atributu obsahující zadaný text, rekurzivně prohledá strom uzlů.
+    /// Supports wildcard "*" for tag name to match all tags.
     /// </summary>
-    /// <param name = "htmlNode"></param>
-    /// <param name = "tag"></param>
-    /// <param name = "atribut"></param>
-    /// <param name = "hodnotaAtributu"></param>
-    public static List<HtmlNode> ReturnTagsWithContainsAttrRek(HtmlNode htmlNode, string tag, string atribut, string hodnotaAtributu)
+    /// <param name="htmlNode">The HTML node to search in.</param>
+    /// <param name="tagName">The tag name to search for, or "*" for all tags.</param>
+    /// <param name="attributeName">The attribute name to check.</param>
+    /// <param name="attributeValue">The attribute value to search for.</param>
+    /// <returns>List of matching HTML nodes.</returns>
+    public static List<HtmlNode> ReturnTagsWithContainsAttrRek(HtmlNode htmlNode, string tagName, string attributeName, string attributeValue)
     {
-        var vr = new List<HtmlNode>();
-        RecursiveReturnTagsWithContainsAttr(vr, htmlNode, tag, atribut, hodnotaAtributu);
-        return vr;
-    }
-
-    public static List<HtmlNode> ReturnTagsWithContainsAttrRek(HtmlNode htmlNode, string tag, string atribut, string hodnotaAtributu, bool contains, bool recursively)
-    {
-        var vr = new List<HtmlNode>();
-        RecursiveReturnTagsWithContainsAttr(vr, htmlNode, tag, atribut, hodnotaAtributu, contains, recursively);
-        return vr;
+        var result = new List<HtmlNode>();
+        RecursiveReturnTagsWithContainsAttr(result, htmlNode, tagName, attributeName, attributeValue);
+        return result;
     }
 
     /// <summary>
-    ///     Do A2 se může zadat * pro získaní všech tagů
+    /// EN: Returns all tags with attribute value matching specified criteria, recursively searching the node tree.
+    /// CZ: Vrátí všechny tagy s hodnotou atributu odpovídající zadaným kritériím, rekurzivně prohledá strom uzlů.
     /// </summary>
-    /// <param name = "htmlNode"></param>
-    /// <param name = "tag"></param>
-    /// <param name = "atribut"></param>
-    /// <param name = "hodnotaAtributu"></param>
-    public static List<HtmlNode> ReturnTagsWithContainsClassRek(HtmlNode htmlNode, string tag, string t)
+    /// <param name="htmlNode">The HTML node to search in.</param>
+    /// <param name="tagName">The tag name to search for.</param>
+    /// <param name="attributeName">The attribute name to check.</param>
+    /// <param name="attributeValue">The attribute value to search for.</param>
+    /// <param name="isContains">Whether to use Contains instead of exact match.</param>
+    /// <param name="isRecursively">Whether to search recursively.</param>
+    /// <returns>List of matching HTML nodes.</returns>
+    public static List<HtmlNode> ReturnTagsWithContainsAttrRek(HtmlNode htmlNode, string tagName, string attributeName, string attributeValue, bool isContains, bool isRecursively)
     {
-        var vr = new List<HtmlNode>();
-        RecursiveReturnTagsWithContainsAttrWithSplittedElement(vr, htmlNode, tag, "class", t, " ");
-        return vr;
+        var result = new List<HtmlNode>();
+        RecursiveReturnTagsWithContainsAttr(result, htmlNode, tagName, attributeName, attributeValue, isContains, isRecursively);
+        return result;
     }
 
-    public static HtmlNode ReturnTagRek(HtmlNode documentNode, object body)
+    /// <summary>
+    /// EN: Returns all tags with class attribute containing specified class name, recursively searching the node tree.
+    /// CZ: Vrátí všechny tagy s atributem class obsahujícím zadaný název třídy, rekurzivně prohledá strom uzlů.
+    /// Supports wildcard "*" for tag name to match all tags.
+    /// </summary>
+    /// <param name="htmlNode">The HTML node to search in.</param>
+    /// <param name="tagName">The tag name to search for, or "*" for all tags.</param>
+    /// <param name="className">The class name to search for.</param>
+    /// <returns>List of matching HTML nodes.</returns>
+    public static List<HtmlNode> ReturnTagsWithContainsClassRek(HtmlNode htmlNode, string tagName, string className)
+    {
+        var result = new List<HtmlNode>();
+        RecursiveReturnTagsWithContainsAttrWithSplittedElement(result, htmlNode, tagName, "class", className, " ");
+        return result;
+    }
+
+    /// <summary>
+    /// Recursively returns the first tag matching specified tag name.
+    /// </summary>
+    /// <param name="htmlNode">The HTML node to search in.</param>
+    /// <param name="tagName">The tag name to search for.</param>
+    /// <returns>First matching tag or null.</returns>
+    public static HtmlNode ReturnTagRek(HtmlNode htmlNode, object tagName)
     {
         throw new NotImplementedException();
     }

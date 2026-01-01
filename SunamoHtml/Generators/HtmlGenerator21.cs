@@ -1,199 +1,282 @@
 namespace SunamoHtml.Generators;
 
-// EN: Variable names have been checked and replaced with self-descriptive names
-// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+/// <summary>
+/// Extended HTML generator with list, anchor, and tag cloud generation methods (part 2).
+/// </summary>
 public partial class HtmlGenerator2 : HtmlGenerator
 {
     /// <summary>
-    ///     Jedná se o divy pod sebou, nikoliv o ol/ul>li
+    /// Generates a top list with images and badges (divs stacked vertically, not ol/ul>li).
     /// </summary>
-    /// <param name = "hg"></param>
-    /// <param name = "odkazyPhoto"></param>
-    /// <param name = "odkazyText"></param>
-    /// <param name = "innerHtmlText"></param>
-    /// <param name = "srcPhoto"></param>
-    public static string TopListWithImages(HtmlGenerator hg, int widthImage, int heightImage, string initialImageUri, List<string> odkazyPhoto, List<string> odkazyText, List<string> innerHtmlText, List<string> srcPhoto, List<string> idBadges, string nameJsArray)
+    /// <param name="htmlGenerator">The HTML generator to use.</param>
+    /// <param name="widthImage">Image width in pixels.</param>
+    /// <param name="heightImage">Image height in pixels.</param>
+    /// <param name="initialImageUri">Initial image URI.</param>
+    /// <param name="photoLinks">List of photo link URLs.</param>
+    /// <param name="textLinks">List of text link URLs.</param>
+    /// <param name="innerHtmlText">List of inner HTML text.</param>
+    /// <param name="srcPhoto">List of photo source paths.</param>
+    /// <param name="idBadges">List of badge IDs.</param>
+    /// <param name="nameJsArray">JavaScript array name.</param>
+    /// <returns>HTML string representing the list with images and badges.</returns>
+    public static string TopListWithImages(HtmlGenerator htmlGenerator, int widthImage, int heightImage, string initialImageUri, List<string> photoLinks, List<string> textLinks, List<string> innerHtmlText, List<string> srcPhoto, List<string> idBadges, string nameJsArray)
     {
-        var count = odkazyPhoto.Count;
+        var count = photoLinks.Count;
         if (count == 0)
-            //throw new Exception("Metoda HtmlGenerator2.TopListWithImages - odkazyPhoto nemá žádný prvek");
             return "";
-        if (count != odkazyText.Count)
-            throw new Exception("Metoda HtmlGenerator2.TopListWithImages - odkazyPhoto se nerovn\u00E1 po\u010Dtem odkazyText");
+        if (count != textLinks.Count)
+            throw new Exception("Method HtmlGenerator2.TopListWithImages - photoLinks count does not match textLinks count");
         if (count != innerHtmlText.Count)
-            throw new Exception("Metoda HtmlGenerator2.TopListWithImages - odkazyPhoto se nerovn\u00E1 po\u010Dtem innerHtmlText");
+            throw new Exception("Method HtmlGenerator2.TopListWithImages - photoLinks count does not match innerHtmlText count");
         if (count != srcPhoto.Count)
-            throw new Exception("Metoda HtmlGenerator2.TopListWithImages - odkazyPhoto se nerovn\u00E1 po\u010Dtem srcPhoto");
+            throw new Exception("Method HtmlGenerator2.TopListWithImages - photoLinks count does not match srcPhoto count");
         if (count != idBadges.Count)
-            throw new Exception(Translate.FromKey(XlfKeys.MetodaHtmlGenerator2TopListWithImagesOdkazyPhoto) + " " + count + " se nerovn\u00E1 po\u010Dtem idBadges " + idBadges.Count);
-        //HtmlGenerator hg = new HtmlGenerator();
-        var nt = 0;
-        var animated = int.TryParse(srcPhoto[0], out nt);
+            throw new Exception(Translate.FromKey(XlfKeys.MetodaHtmlGenerator2TopListWithImagesOdkazyPhoto) + " " + count + " does not match idBadges count " + idBadges.Count);
+
+        var parsedValue = 0;
+        var isAnimated = int.TryParse(srcPhoto[0], out parsedValue);
         for (var i = 0; i < count; i++)
         {
-            hg.WriteTagWith2Attrs("div", "style", "padding: 5px;", "class", "hoverable");
-            hg.WriteTagWithAttr("a", "href", odkazyPhoto[i]);
-            hg.WriteTagWithAttrs("div", "style", "display: inline-block;", "id", "iosBadge" + idBadges[i], "class", "iosbRepair");
-            if (animated)
-                hg.WriteNonPairTagWithAttrs("img", "style", "margin-left: auto; margin-right: auto; vertical-align-middle; width: " + widthImage + "px;height:" + heightImage + "px", "id", nameJsArray + srcPhoto[i], "class", "alternatingImage", "src", initialImageUri, HtmlAttrs.alt, odkazyText[i]);
+            htmlGenerator.WriteTagWithAttrs("div", "style", "padding: 5px;", "class", "hoverable");
+            htmlGenerator.WriteTagWithAttrs("a", "href", photoLinks[i]);
+            htmlGenerator.WriteTagWithAttrs("div", "style", "display: inline-block;", "id", "iosBadge" + idBadges[i], "class", "iosbRepair");
+            if (isAnimated)
+                htmlGenerator.WriteNonPairTagWithAttrs("img", "style", "margin-left: auto; margin-right: auto; vertical-align-middle; width: " + widthImage + "px;height:" + heightImage + "px", "id", nameJsArray + srcPhoto[i], "class", "alternatingImage", "src", initialImageUri, HtmlAttrs.alt, textLinks[i]);
             else
-                hg.WriteNonPairTagWithAttrs("img", "src", srcPhoto[i], HtmlAttrs.alt, odkazyText[i]);
-            hg.TerminateTag("div");
-            hg.TerminateTag("a");
-            hg.WriteTagWithAttr("a", "href", odkazyText[i]);
-            hg.WriteRaw(innerHtmlText[i]);
-            hg.TerminateTag("a");
-            hg.TerminateTag("div");
+                htmlGenerator.WriteNonPairTagWithAttrs("img", "src", srcPhoto[i], HtmlAttrs.alt, textLinks[i]);
+            htmlGenerator.TerminateTag("div");
+            htmlGenerator.TerminateTag("a");
+            htmlGenerator.WriteTagWithAttrs("a", "href", textLinks[i]);
+            htmlGenerator.WriteRaw(innerHtmlText[i]);
+            htmlGenerator.TerminateTag("a");
+            htmlGenerator.TerminateTag("div");
         }
 
-        return hg.ToString();
+        return htmlGenerator.ToString();
     }
 
-    public static string GetForUlWCheckDuplicate(List<string> to)
+    /// <summary>
+    /// Generates list items for UL with duplicate checking.
+    /// </summary>
+    /// <param name="items">List of items to generate.</param>
+    /// <returns>HTML string with list items.</returns>
+    public static string GetForUlWCheckDuplicate(List<string> items)
     {
-        var hg = new HtmlGenerator();
-        var zapsane = new List<string>();
-        for (var i = 0; i < to.Count; i++)
+        var generator = new HtmlGenerator();
+        var alreadyWritten = new List<string>();
+        for (var i = 0; i < items.Count; i++)
         {
-            var text = to[i];
-            if (!zapsane.Contains(text))
+            var text = items[i];
+            if (!alreadyWritten.Contains(text))
             {
-                zapsane.Add(text);
-                hg.WriteTag("li");
-                //hg.ZapisTagSAtributem("a", "href", "ZobrazText.aspx?sid=" + text.id.ToString());
-                hg.WriteRaw(text);
-                hg.TerminateTag("li");
+                alreadyWritten.Add(text);
+                generator.WriteTag("li");
+                generator.WriteRaw(text);
+                generator.TerminateTag("li");
             }
         }
 
-        return hg.ToString();
-    }
-
-    public static string Success(string p)
-    {
-        var hg = new HtmlGenerator();
-        hg.WriteTagWithAttr("div", "class", "success");
-        hg.WriteRaw(p);
-        hg.TerminateTag("div");
-        return hg.ToString();
+        return generator.ToString();
     }
 
     /// <summary>
-    ///     Zadávej A1 bez https://, do odkazu se doplní samo, do textu nikoliv
+    /// Generates a success message div.
     /// </summary>
-    /// <param name = "www"></param>
-    public static string Anchor(string www)
+    /// <param name="message">The success message.</param>
+    /// <returns>HTML string with success div.</returns>
+    public static string Success(string message)
     {
-        if (www.Contains("=\""))
-            return www;
-        var http = UH.AppendHttpIfNotExists(www);
-        return "<a href=\"" + http + "\"" + ">" + www + "</a>";
-    }
-
-    public static string AnchorMailto(string t)
-    {
-        return "<a href=\"mailto:" + t + ">" + t + "</a>";
+        var generator = new HtmlGenerator();
+        generator.WriteTagWithAttrs("div", "class", "success");
+        generator.WriteRaw(message);
+        generator.TerminateTag("div");
+        return generator.ToString();
     }
 
     /// <summary>
-    ///     A1 je text bez https:// / https://, který se doplní do odkazu sám pokud tam nebude.
-    ///     V textu se ale vždy nahradí pokud tam bude.
+    /// Creates an anchor link, automatically adding http:// if not present.
+    /// Provide URL without https://, it will be added to the link automatically, but not to the text.
     /// </summary>
-    /// <param name = "www"></param>
-    public static string AnchorWithHttp(string www)
+    /// <param name="url">The URL (without http://).</param>
+    /// <returns>HTML anchor string.</returns>
+    public static string Anchor(string url)
     {
-        // Prvně ho přidám pokud tam není
-        if (!www.StartsWith("http"))
-            www = "http://" + www;
-        var http = www; // UH.AppendHttpIfNotExists(www);
-        // pak ho odstraním aby tam nebyl 2x
-        var sh = new Regex("https://").Replace(www, "", 1); //SHReplace.ReplaceOnce(www, , "");
-        return "<a href=\"" + http + "\"" + ">" + sh + "</a>";
+        if (url.Contains("=\""))
+            return url;
+        var httpUrl = UH.AppendHttpIfNotExists(url);
+        return "<a href=\"" + httpUrl + "\"" + ">" + url + "</a>";
     }
 
-    public static string AnchorWithHttp(string www, string text)
+    /// <summary>
+    /// Creates a mailto anchor link.
+    /// </summary>
+    /// <param name="email">The email address.</param>
+    /// <returns>HTML mailto anchor string.</returns>
+    public static string AnchorMailto(string email)
     {
-        var http = UH.AppendHttpIfNotExists(www);
-        return "<a href=\"" + http + "\"" + ">" + text + "</a>";
+        return "<a href=\"mailto:" + email + ">" + email + "</a>";
     }
 
-    public static string AnchorWithHttp(bool targetBlank, string www, string text)
+    /// <summary>
+    /// Creates an anchor with HTTP protocol.
+    /// URL without http:// / https:// will have it added to the link.
+    /// The text will always have http:// removed if present.
+    /// </summary>
+    /// <param name="url">The URL.</param>
+    /// <returns>HTML anchor string.</returns>
+    public static string AnchorWithHttp(string url)
     {
-        string http = null;
-        http = UH.AppendHttpIfNotExists(www);
-        return AnchorWithHttpCore(targetBlank, text, http);
+        // First add if not present
+        if (!url.StartsWith("http"))
+            url = "http://" + url;
+        var httpUrl = url;
+        // Then remove to avoid duplication in display text
+        var displayText = new Regex("https://").Replace(url, "", 1);
+        return "<a href=\"" + httpUrl + "\"" + ">" + displayText + "</a>";
     }
 
-    public static string AnchorWithHttpCore(bool targetBlank, string text, string http)
+    /// <summary>
+    /// Creates an anchor with HTTP protocol and custom text.
+    /// </summary>
+    /// <param name="url">The URL.</param>
+    /// <param name="text">The link text.</param>
+    /// <returns>HTML anchor string.</returns>
+    public static string AnchorWithHttp(string url, string text)
     {
-        if (targetBlank)
-            return "<a href=\"" + http + "\" target=\"_blank\">" + text + "</a>";
-        return "<a href=\"" + http + ">" + text + "</a>";
+        var httpUrl = UH.AppendHttpIfNotExists(url);
+        return "<a href=\"" + httpUrl + "\"" + ">" + text + "</a>";
     }
 
-    public static string GetRadioButtonsWoCheckDuplicate(string nameOfRBs, List<string> idcka, List<string> nazvy)
+    /// <summary>
+    /// Creates an anchor with HTTP protocol and optional target blank.
+    /// </summary>
+    /// <param name="isTargetBlank">Whether to open in new tab.</param>
+    /// <param name="url">The URL.</param>
+    /// <param name="text">The link text.</param>
+    /// <returns>HTML anchor string.</returns>
+    public static string AnchorWithHttp(bool isTargetBlank, string url, string text)
     {
-        var hg = new HtmlGenerator();
-        for (var i = 0; i < idcka.Count; i++)
+        string httpUrl = UH.AppendHttpIfNotExists(url);
+        return AnchorWithHttpCore(isTargetBlank, text, httpUrl);
+    }
+
+    /// <summary>
+    /// Core method for creating anchors with HTTP protocol.
+    /// </summary>
+    /// <param name="isTargetBlank">Whether to open in new tab.</param>
+    /// <param name="text">The link text.</param>
+    /// <param name="httpUrl">The HTTP URL.</param>
+    /// <returns>HTML anchor string.</returns>
+    public static string AnchorWithHttpCore(bool isTargetBlank, string text, string httpUrl)
+    {
+        if (isTargetBlank)
+            return "<a href=\"" + httpUrl + "\" target=\"_blank\">" + text + "</a>";
+        return "<a href=\"" + httpUrl + ">" + text + "</a>";
+    }
+
+    /// <summary>
+    /// Generates radio buttons without duplicate checking.
+    /// </summary>
+    /// <param name="nameOfRBs">The name attribute for radio buttons.</param>
+    /// <param name="ids">List of radio button IDs/values.</param>
+    /// <param name="labels">List of radio button labels.</param>
+    /// <returns>HTML string with radio buttons.</returns>
+    public static string GetRadioButtonsWoCheckDuplicate(string nameOfRBs, List<string> ids, List<string> labels)
+    {
+        var generator = new HtmlGenerator();
+        for (var i = 0; i < ids.Count; i++)
         {
-            hg.WriteNonPairTagWithAttrs("input", "type", "radio", "name", nameOfRBs, "value", idcka[i]);
-            hg.WriteRaw(nazvy[i]);
-            hg.WriteBr();
+            generator.WriteNonPairTagWithAttrs("input", "type", "radio", "name", nameOfRBs, "value", ids[i]);
+            generator.WriteRaw(labels[i]);
+            generator.WriteBr();
         }
 
-        return hg.ToString();
-    }
-
-    public static string GetRadioButtonsWoCheckDuplicate(string nameOfRBs, List<string> idcka, List<string> nazvy, string eventHandlerSelected)
-    {
-        var hg = new HtmlGenerator();
-        for (var i = 0; i < idcka.Count; i++)
-        {
-            hg.WriteTagWithAttrs("input", "type", "radio", "name", nameOfRBs, "value", idcka[i], "onclick", eventHandlerSelected);
-            hg.WriteRaw(nazvy[i]);
-            hg.WriteBr();
-        }
-
-        return hg.ToString();
+        return generator.ToString();
     }
 
     /// <summary>
-    ///     Generátor pro třídu jquery.tagcloud.js
+    /// Generates radio buttons with click event handler.
     /// </summary>
-    /// <param name = "dWordCount"></param>
-    public static string GetWordsForTagCloud(Dictionary<string, short> dWordCount, string prefixWithDot)
+    /// <param name="nameOfRBs">The name attribute for radio buttons.</param>
+    /// <param name="ids">List of radio button IDs/values.</param>
+    /// <param name="labels">List of radio button labels.</param>
+    /// <param name="eventHandlerSelected">The onclick event handler.</param>
+    /// <returns>HTML string with radio buttons.</returns>
+    public static string GetRadioButtonsWoCheckDuplicate(string nameOfRBs, List<string> ids, List<string> labels, string eventHandlerSelected)
+    {
+        var generator = new HtmlGenerator();
+        for (var i = 0; i < ids.Count; i++)
+        {
+            generator.WriteTagWithAttrs("input", "type", "radio", "name", nameOfRBs, "value", ids[i], "onclick", eventHandlerSelected);
+            generator.WriteRaw(labels[i]);
+            generator.WriteBr();
+        }
+
+        return generator.ToString();
+    }
+
+    /// <summary>
+    /// Generates tag cloud HTML for jquery.tagcloud.js.
+    /// </summary>
+    /// <param name="wordCount">Dictionary of words and their counts.</param>
+    /// <param name="prefixWithDot">Prefix with dot for JavaScript method.</param>
+    /// <returns>HTML string for tag cloud.</returns>
+    public static string GetWordsForTagCloud(Dictionary<string, short> wordCount, string prefixWithDot)
     {
         var nameJavascriptMethod = "AfterWordCloudClick";
-        return GetWordsForTagCloud(dWordCount, nameJavascriptMethod, prefixWithDot);
+        return GetWordsForTagCloud(wordCount, nameJavascriptMethod, prefixWithDot);
     }
 
-    public static string GetWordsForTagCloudManageTags(Dictionary<string, short> dWordCount, string prefixWithDot)
+    /// <summary>
+    /// Generates tag cloud HTML for manage tags page.
+    /// </summary>
+    /// <param name="wordCount">Dictionary of words and their counts.</param>
+    /// <param name="prefixWithDot">Prefix with dot for JavaScript method.</param>
+    /// <returns>HTML string for tag cloud.</returns>
+    public static string GetWordsForTagCloudManageTags(Dictionary<string, short> wordCount, string prefixWithDot)
     {
         var nameJavascriptMethod = "AfterWordCloudClick2";
-        return GetWordsForTagCloud(dWordCount, nameJavascriptMethod, prefixWithDot);
+        return GetWordsForTagCloud(wordCount, nameJavascriptMethod, prefixWithDot);
     }
 
-    private static string GetWordsForTagCloud(Dictionary<string, short> dWordCount, string nameJavascriptMethod, string prefixWithDot)
+    /// <summary>
+    /// Core method for generating tag cloud HTML.
+    /// </summary>
+    /// <param name="wordCount">Dictionary of words and their counts.</param>
+    /// <param name="nameJavascriptMethod">JavaScript method name.</param>
+    /// <param name="prefixWithDot">Prefix with dot for JavaScript method.</param>
+    /// <returns>HTML string for tag cloud.</returns>
+    private static string GetWordsForTagCloud(Dictionary<string, short> wordCount, string nameJavascriptMethod, string prefixWithDot)
     {
-        var hg = new HtmlGenerator();
-        foreach (var item in dWordCount)
+        var generator = new HtmlGenerator();
+        foreach (var item in wordCount)
         {
-            var bezmezer = item.Key.Replace(" ", "");
-            hg.WriteTagWithAttrs("a", "id", "tag" + bezmezer, "href", "javascript:" + prefixWithDot + nameJavascriptMethod + "($('#tag" + bezmezer + "'), '" + item.Key + "');", "rel", item.Value.ToString());
-            hg.WriteRaw(SH.FirstCharOfEveryWordUpperDash(item.Key));
-            hg.TerminateTag("a");
-            hg.WriteRaw(" &nbsp; ");
+            var withoutSpaces = item.Key.Replace(" ", "");
+            generator.WriteTagWithAttrs("a", "id", "tag" + withoutSpaces, "href", "javascript:" + prefixWithDot + nameJavascriptMethod + "($('#tag" + withoutSpaces + "'), '" + item.Key + "');", "rel", item.Value.ToString());
+            generator.WriteRaw(SH.FirstCharOfEveryWordUpperDash(item.Key));
+            generator.TerminateTag("a");
+            generator.WriteRaw(" &nbsp; ");
         }
 
-        return hg.ToString();
+        return generator.ToString();
     }
 
+    /// <summary>
+    /// Writes a detail line with name and value.
+    /// </summary>
+    /// <param name="name">The detail name.</param>
+    /// <param name="value">The detail value.</param>
     public void Detail(string name, object value)
     {
         WriteRaw("<b>" + name + ":</b> " + value);
         WriteBr();
     }
 
+    /// <summary>
+    /// Writes a detail line with name and value if value is not empty.
+    /// </summary>
+    /// <param name="name">The detail name.</param>
+    /// <param name="value">The detail value.</param>
     public void DetailIfNotEmpty(string name, string value)
     {
         if (value != "")
@@ -203,32 +286,55 @@ public partial class HtmlGenerator2 : HtmlGenerator
         }
     }
 
+    /// <summary>
+    /// Returns a static detail line with name and value.
+    /// </summary>
+    /// <param name="name">The detail name.</param>
+    /// <param name="value">The detail value.</param>
+    /// <returns>HTML string with detail.</returns>
     public static string DetailStatic(string name, object value)
     {
         return "<b>" + name + ":</b> " + value + "<br />";
     }
 
-    public static string DetailStatic(string green, string name, object value)
+    /// <summary>
+    /// Returns a static detail line with custom color.
+    /// </summary>
+    /// <param name="color">The text color.</param>
+    /// <param name="name">The detail name.</param>
+    /// <param name="value">The detail value.</param>
+    /// <returns>HTML string with colored detail.</returns>
+    public static string DetailStatic(string color, string name, object value)
     {
-        return "<div style='color:" + green + "'><b>" + name + ":</b> " + value + "//div>";
+        return "<div style='color:" + color + "'><b>" + name + ":</b> " + value + "</div>";
     }
 
-    public static string ShortForLettersCount(string p1, int p2)
+    /// <summary>
+    /// Shortens text to specified letter count with ellipsis tooltip.
+    /// </summary>
+    /// <param name="text">The text to shorten.</param>
+    /// <param name="maxLength">Maximum length in characters.</param>
+    /// <returns>HTML string with shortened text and tooltip.</returns>
+    public static string ShortForLettersCount(string text, int maxLength)
     {
-        p1 = p1.Replace(" ", "");
-        if (p1.Length > p2)
+        text = text.Replace(" ", "");
+        if (text.Length > maxLength)
         {
-            var whatLeave = SH.ShortForLettersCount(p1, p2);
-            //"<span static class='tooltip'>" +
-            whatLeave += "<span static class='showonhover'><a href='#'> ... </a><span static class='hovertext'>" + new Regex(whatLeave).Replace(p1, "", 1) + "</span></span>";
-            return whatLeave;
+            var shortened = SH.ShortForLettersCount(text, maxLength);
+            shortened += "<span static class='showonhover'><a href='#'> ... </a><span static class='hovertext'>" + new Regex(shortened).Replace(text, "", 1) + "</span></span>";
+            return shortened;
         }
 
-        return p1;
+        return text;
     }
 
-    public static string LiI(string p)
+    /// <summary>
+    /// Wraps text in li and i tags.
+    /// </summary>
+    /// <param name="text">The text to wrap.</param>
+    /// <returns>HTML string with li>i tags.</returns>
+    public static string LiI(string text)
     {
-        return "<li><i>" + p + "//i></li>";
+        return "<li><i>" + text + "</i></li>";
     }
 }

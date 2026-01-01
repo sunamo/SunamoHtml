@@ -1,6 +1,12 @@
 namespace SunamoHtml.Generators;
 
+/// <summary>
+/// HTML tag templates as constants.
+/// </summary>
 public class HtmlTagTemplates
 {
-    public const string br = "<br />";
+    /// <summary>
+    /// HTML break tag.
+    /// </summary>
+    public const string Br = "<br />";
 }

@@ -1,12 +1,17 @@
 namespace SunamoHtml.Html;
 
-// EN: Variable names have been checked and replaced with self-descriptive names
-// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
 /// <summary>
-/// Je tu mix všeho, rozdělit to pomocí AI
+/// EN: Shared HTML helper methods (partial class - part 2).
+/// CZ: Sdílené HTML pomocné metody (partial class - část 2).
 /// </summary>
 public static partial class HtmlHelper
 {
+    /// <summary>
+    /// EN: Converts HTML to final XML format by replacing non-pair tags with XML-valid versions and removing XML declarations.
+    /// CZ: Převede HTML do finálního XML formátu nahrazením nepárových tagů XML-validními verzemi a odstraněním XML deklarací.
+    /// </summary>
+    /// <param name="xml">The HTML/XML content to convert.</param>
+    /// <returns>XML with UTF-8 declaration and valid non-pair tags.</returns>
     public static string ToXmlFinal(string xml)
     {
         xml = ReplaceHtmlNonPairTagsWithXmlValid(xml);
@@ -14,6 +19,10 @@ public static partial class HtmlHelper
         return "<?xml version=\"1.0\" encoding=\"utf-8\" ?>" + ReplaceHtmlNonPairTagsWithXmlValid(XH.RemoveXmlDeclaration(xml.Replace("<?xml version=\"1.0\" encoding=\"iso-8859-2\" />", "").Replace("<?xml version=\"1.0\" encoding=\"utf-8\" />", "").Replace("<?xml version=\"1.0\" encoding=\"UTF-8\" />", "")));
     }
 
+    /// <summary>
+    /// Deletes all attributes from all HTML nodes in a list.
+    /// </summary>
+    /// <param name="nodes">The list of HTML nodes to remove attributes from.</param>
     public static void DeleteAttributesFromAllNodes(List<HtmlNode> nodes)
     {
         foreach (var node in nodes)
@@ -22,239 +31,261 @@ public static partial class HtmlHelper
     }
 
     /// <summary>
-    ///     Již volá ReplaceHtmlNonPairTagsWithXmlValid
+    /// EN: Converts HTML to XML format, optionally removing XML declaration.
+    /// CZ: Převede HTML do XML formátu, volitelně odstraní XML deklaraci.
+    /// Already calls ReplaceHtmlNonPairTagsWithXmlValid.
     /// </summary>
-    /// <param name = "xml"></param>
-    /// <param name = "odstranitXmlDeklaraci"></param>
-    public static string ToXml(string xml, bool odstranitXmlDeklaraci)
+    /// <param name="xml">The HTML content to convert.</param>
+    /// <param name="isRemoveXmlDeclaration">Whether to remove the XML declaration.</param>
+    /// <returns>XML-formatted content.</returns>
+    public static string ToXml(string xml, bool isRemoveXmlDeclaration)
     {
         var doc = HtmlAgilityHelper.CreateHtmlDocument();
-        //doc.Encoding = Encoding.UTF8;
         doc.LoadHtml(xml);
         var sw = new StringWriter();
         var tw = XmlWriter.Create(sw);
         doc.DocumentNode.WriteTo(tw);
         tw.Flush();
         sw.Flush();
-        var vr = sw.ToString();
-        if (odstranitXmlDeklaraci)
-            vr = XH.RemoveXmlDeclaration(vr);
-        vr = ReplaceHtmlNonPairTagsWithXmlValid(vr);
-        return vr;
+        var result = sw.ToString();
+        if (isRemoveXmlDeclaration)
+            result = XH.RemoveXmlDeclaration(result);
+        result = ReplaceHtmlNonPairTagsWithXmlValid(result);
+        return result;
     }
 
     /// <summary>
-    ///     Již volá RemoveXmlDeclaration i ReplaceHtmlNonPairTagsWithXmlValid
+    /// EN: Converts HTML to XML format, removing XML declaration.
+    /// CZ: Převede HTML do XML formátu, odstraní XML deklaraci.
+    /// Already calls RemoveXmlDeclaration and ReplaceHtmlNonPairTagsWithXmlValid.
     /// </summary>
-    /// <param name = "xml"></param>
+    /// <param name="xml">The HTML content to convert.</param>
+    /// <returns>XML-formatted content without declaration.</returns>
     public static string ToXml(string xml)
     {
         return ToXml(xml, true);
     }
 
     /// <summary>
-    ///     Strip all tags and return only
-    ///     Use RemoveAllNodes when need remove also with innerhtml
+    /// EN: Strips all HTML tags from text and returns individual words as a list.
+    /// CZ: Odstraní všechny HTML tagy z textu a vrátí jednotlivá slova jako seznam.
+    /// Use RemoveAllNodes when need to remove also inner HTML.
     /// </summary>
-    /// <param name = "d"></param>
-    public static List<string> StripAllTagsList(string data)
+    /// <param name="text">The HTML text to process.</param>
+    /// <returns>List of words without HTML tags.</returns>
+    public static List<string> StripAllTagsList(string text)
     {
-        var replaced = StripAllTags(data, " ");
+        var replaced = StripAllTags(text, " ");
         return SHSplit.Split(replaced, " ");
     }
 
     /// <summary>
-    ///     Nahradí každý text < *> za mezeru. Vnitřní ne-xml obsah nechá být.
+    /// EN: Strips all HTML tags from text, replacing them with a space.
+    /// CZ: Odstraní všechny HTML tagy z textu, nahradí je mezerou.
+    /// Replaces every tag &lt;*&gt; with a space. Inner non-XML content is left as is.
     /// </summary>
-    /// <param name = "p"></param>
-    public static string StripAllTagsSpace(string p)
+    /// <param name="text">The text to strip tags from.</param>
+    /// <returns>Text without HTML tags.</returns>
+    public static string StripAllTagsSpace(string text)
     {
-        return Regex.Replace(p, @"<[^>]*>", " ");
+        return Regex.Replace(text, @"<[^>]*>", " ");
     }
 
     /// <summary>
-    ///     Jen volá metodu StripAllTags
-    ///     Nahradí každý text < *> za . Vnitřní ne-xml obsah nechá být.
+    /// EN: Removes all HTML tags from text. Just calls StripAllTags method.
+    /// CZ: Odstraní všechny HTML tagy z textu. Pouze volá metodu StripAllTags.
+    /// Replaces every tag &lt;*&gt; with a period. Inner non-XML content is left as is.
     /// </summary>
-    /// <param name = "p"></param>
-    public static string RemoveAllTags(string p)
+    /// <param name="text">The text to remove tags from.</param>
+    /// <returns>Text without HTML tags.</returns>
+    public static string RemoveAllTags(string text)
     {
-        return StripAllTags(p);
+        return StripAllTags(text);
     }
 
-    public static bool HasTagAttrContains(HtmlNode htmlNode, string delimiter, string attr, string value)
+    /// <summary>
+    /// Checks if an HTML node has an attribute whose value, when split by delimiter, contains the specified value.
+    /// </summary>
+    /// <param name="htmlNode">The HTML node to check.</param>
+    /// <param name="delimiter">The delimiter to split the attribute value by.</param>
+    /// <param name="attributeName">The attribute name to check.</param>
+    /// <param name="value">The value to search for in the split parts.</param>
+    /// <returns>True if the attribute value contains the value after splitting, false otherwise.</returns>
+    public static bool HasTagAttrContains(HtmlNode htmlNode, string delimiter, string attributeName, string value)
     {
-        var attrValue = GetValueOfAttribute(attr, htmlNode);
+        var attrValue = GetValueOfAttribute(attributeName, htmlNode);
         var spl = SHSplit.Split(attrValue, delimiter);
         return spl.Contains(value);
     }
 
-    public static bool HasChildTag(HtmlNode spanInHeader, string v)
+    /// <summary>
+    /// Checks if an HTML node has a child tag with the specified tag name.
+    /// </summary>
+    /// <param name="htmlNode">The HTML node to check.</param>
+    /// <param name="tagName">The tag name to search for in children.</param>
+    /// <returns>True if the node has a child tag with the specified name, false otherwise.</returns>
+    public static bool HasChildTag(HtmlNode htmlNode, string tagName)
     {
-        return ReturnTags(spanInHeader, v).Count != 0;
+        return ReturnTags(htmlNode, tagName).Count != 0;
     }
 
     /// <summary>
-    ///     Used in ParseChromeAPIs. Nowhere is executed
+    /// EN: Returns HTML with all tags of specified type modified by the handler.
+    /// CZ: Vrátí HTML se všemi tagy zadaného typu upravenými handlerem.
+    /// Not suitable for returning content of entire page.
     /// </summary>
-    /// <param name = "dd2"></param>
-    /// <param name = "v"></param>
-     //public static string ReturnInnerTextOfTagsRek(HtmlNode dd2, string v)
-    //{
-    //    ThrowEx.NotImplementedMethod();
-    //    return null;
-    //}
-    /// <summary>
-    ///     Nehodí se na vrácení obsahu celé stránky
-    ///     A1 je zdrojový kód celé stránky
-    /// </summary>
-    /// <param name = "s"></param>
-    /// <param name = "p"></param>
-    /// <param name = "ssh"></param>
-    /// <param name = "value"></param>
-    public static string ReturnApplyToAllTags(string text, string p, EditHtmlWidthHandler ssh, string value)
+    /// <param name="text">The source code of the entire page.</param>
+    /// <param name="tagName">The tag name to search for (div, a, etc.).</param>
+    /// <param name="handler">The handler method to apply to each tag.</param>
+    /// <param name="value">Optional parameter passed to the handler.</param>
+    /// <returns>Modified HTML content.</returns>
+    public static string ReturnApplyToAllTags(string text, string tagName, EditHtmlWidthHandler handler, string value)
     {
-        var vr = new List<HtmlNode>();
+        var result = new List<HtmlNode>();
         var doc = HtmlAgilityHelper.CreateHtmlDocument();
-        //hd.Encoding = Encoding.UTF8;
         doc.LoadHtml(text);
         var htmlNode = doc.DocumentNode;
-        RecursiveApplyToAllTags(vr, ref htmlNode, p, ssh, value);
+        RecursiveApplyToAllTags(result, ref htmlNode, tagName, handler, value);
         return htmlNode.OuterHtml;
-        ;
     }
 
     /// <summary>
-    ///     A1 je kolekce uzlů na které jsem zavolal A4
-    ///     A2 je referencovaný uzel, do kterého se změny přímo projevují
-    ///     A3 je název tagu který se hledá(div, a, atd.)
-    ///     A4 je samotná metoda která bude provádět změny
-    ///     A5 je volitelný parametr do A4
+    /// EN: Recursively applies a handler to all tags matching specified tag name.
+    /// CZ: Rekurzivně aplikuje handler na všechny tagy odpovídající zadanému názvu.
     /// </summary>
-    /// <param name = "vr"></param>
-    /// <param name = "html"></param>
-    /// <param name = "p"></param>
-    /// <param name = "ssh"></param>
-    /// <param name = "value"></param>
-    private static void RecursiveApplyToAllTags(List<HtmlNode> vr, ref HtmlNode html, string p, EditHtmlWidthHandler ssh, string value)
+    /// <param name="result">The collection of nodes to which the handler was applied.</param>
+    /// <param name="htmlNode">The referenced node into which changes are directly reflected.</param>
+    /// <param name="tagName">The tag name to search for (div, a, etc.).</param>
+    /// <param name="handler">The method that performs the changes.</param>
+    /// <param name="value">Optional parameter passed to the handler.</param>
+    private static void RecursiveApplyToAllTags(List<HtmlNode> result, ref HtmlNode htmlNode, string tagName, EditHtmlWidthHandler handler, string value)
     {
-        for (var i = 0; i < html.ChildNodes.Count; i++)
+        for (var i = 0; i < htmlNode.ChildNodes.Count; i++)
         {
-            var item = html.ChildNodes[i];
-            if (item.Name == p)
+            var item = htmlNode.ChildNodes[i];
+            if (item.Name == tagName)
             {
-                RecursiveApplyToAllTags(vr, ref item, p, ssh, value);
-                if (!vr.Contains(item))
+                RecursiveApplyToAllTags(result, ref item, tagName, handler, value);
+                if (!result.Contains(item))
                 {
-                    vr.Add(item);
-                    var data = ssh.Invoke(ref item, value);
+                    result.Add(item);
+                    var data = handler.Invoke(ref item, value);
                 }
             }
             else
             {
-                RecursiveApplyToAllTags(vr, ref item, p, ssh, value);
+                RecursiveApplyToAllTags(result, ref item, tagName, handler, value);
             }
         }
     }
 
-    public static Dictionary<string, string> GetValuesOfStyle(HtmlNode item)
+    /// <summary>
+    /// EN: Parses the style attribute of an HTML node and returns it as a dictionary.
+    /// CZ: Naparsuje style atribut HTML uzlu a vrátí ho jako slovník.
+    /// </summary>
+    /// <param name="htmlNode">The HTML node to get style values from.</param>
+    /// <returns>Dictionary with style property names as keys and values as values.</returns>
+    public static Dictionary<string, string> GetValuesOfStyle(HtmlNode htmlNode)
     {
-        var vr = new Dictionary<string, string>();
-        var at = GetValueOfAttribute("style", item);
-        if (at.Contains(";"))
+        var result = new Dictionary<string, string>();
+        var styleAttribute = GetValueOfAttribute("style", htmlNode);
+        if (styleAttribute.Contains(";"))
         {
-            var data = SHSplit.Split(at, ";");
-            foreach (var item2 in data)
-                if (item2.Contains(":"))
+            var data = SHSplit.Split(styleAttribute, ";");
+            foreach (var item in data)
+                if (item.Contains(":"))
                 {
-                    var result = SHSplit.SplitNone(item2, ":");
-                    vr.Add(result[0].Trim().ToLower(), result[1].Trim().ToLower());
+                    var keyValue = SHSplit.SplitNone(item, ":");
+                    result.Add(keyValue[0].Trim().ToLower(), keyValue[1].Trim().ToLower());
                 }
         }
 
-        return vr;
+        return result;
     }
 
-    public static HtmlNode GetTag(HtmlNode cacheAuthorNode, string p)
+    /// <summary>
+    /// Returns the first child tag with the specified original name.
+    /// </summary>
+    /// <param name="htmlNode">The HTML node to search in.</param>
+    /// <param name="tagName">The original tag name to search for.</param>
+    /// <returns>First matching child tag or null.</returns>
+    public static HtmlNode GetTag(HtmlNode htmlNode, string tagName)
     {
-        foreach (var item in cacheAuthorNode.ChildNodes)
-            if (item.OriginalName == p)
+        foreach (var item in htmlNode.ChildNodes)
+            if (item.OriginalName == tagName)
                 return item;
         return null;
     }
 
-    //public static HtmlNode ReturnNextSibling(HtmlNode h4Callback, string v)
-    //{
-    //    ThrowEx.NotImplementedMethod();
-    //    return null;
-    //}
-    public static HtmlNode ReturnTagRek(HtmlNode hn, string nameOfTag)
+    /// <summary>
+    /// EN: Recursively returns the first tag matching specified tag name.
+    /// CZ: Rekurzivně vrátí první tag odpovídající zadanému názvu tagu.
+    /// </summary>
+    /// <param name="htmlNode">The HTML node to search in.</param>
+    /// <param name="tagName">The tag name to search for.</param>
+    /// <returns>First matching tag or null.</returns>
+    public static HtmlNode ReturnTagRek(HtmlNode htmlNode, string tagName)
     {
-        hn = TrimNode(hn);
-        foreach (var var in hn.ChildNodes)
+        htmlNode = TrimNode(htmlNode);
+        foreach (var childNode in htmlNode.ChildNodes)
         {
-            var hn2 = var; //.FirstChild;
-            foreach (var item2 in var.ChildNodes)
+            var currentNode = childNode;
+            foreach (var item in childNode.ChildNodes)
             {
-                if (item2.Name == nameOfTag)
-                    return item2;
-                var hn3 = ReturnTagRek(item2, nameOfTag);
-                if (hn3 != null)
-                    return hn3;
+                if (item.Name == tagName)
+                    return item;
+                var foundNode = ReturnTagRek(item, tagName);
+                if (foundNode != null)
+                    return foundNode;
             }
 
-            if (hn2.Name == nameOfTag)
-                return hn2;
+            if (currentNode.Name == tagName)
+                return currentNode;
         }
 
         return null;
     }
 
-    ///// <summary>
-    /////     Method with just single parameter are used in ParseChromeAPIs
-    ///// </summary>
-    ///// <param name="dlOuter"></param>
-    //public static List<HtmlNode> ReturnTags(HtmlNode dlOuter)
-    //{
-    //    ThrowEx.NotImplementedMethod();
-    //    return null;
-    //}
     /// <summary>
-    ///     Return 0 instead of 10
-    ///     If tag is A2, don't apply recursive on that
-    ///     A2 je název tagu, napříkald img
+    /// EN: Returns all immediate child tags matching the specified tag name (non-recursive).
+    /// CZ: Vrátí všechny přímé podřízené tagy odpovídající zadanému názvu (nerekurzivně).
+    /// If tag is the specified name, doesn't apply recursion on that.
     /// </summary>
-    /// <param name = "html"></param>
-    /// <param name = "p"></param>
-    public static List<HtmlNode> ReturnAllTagsImg(HtmlNode html, string p)
+    /// <param name="htmlNode">The HTML node to search in.</param>
+    /// <param name="tagName">The tag name to search for (e.g., img).</param>
+    /// <returns>List of matching child tags.</returns>
+    public static List<HtmlNode> ReturnAllTagsImg(HtmlNode htmlNode, string tagName)
     {
-        var vr = new List<HtmlNode>();
-        foreach (var item in html.ChildNodes)
-            if (item.Name == p)
+        var result = new List<HtmlNode>();
+        foreach (var item in htmlNode.ChildNodes)
+            if (item.Name == tagName)
             {
                 var node = item.ParentNode;
                 if (node != null)
-                    vr.Add(item);
+                    result.Add(item);
             }
             else
             {
-                vr.AddRange(ReturnAllTags(item, p));
+                result.AddRange(ReturnAllTags(item, tagName));
             }
 
-        return vr;
+        return result;
     }
 
     /// <summary>
-    ///     Do A2 se může vložit * ale nemělo by to moc smysl
+    /// EN: Returns all immediate child tags matching the specified tag name (non-recursive).
+    /// CZ: Vrátí všechny přímé podřízené tagy odpovídající zadanému názvu (nerekurzivně).
+    /// Wildcard "*" can be passed but wouldn't make much sense.
     /// </summary>
-    /// <param name = "parent"></param>
-    /// <param name = "tag"></param>
-    public static List<HtmlNode> ReturnTags(HtmlNode parent, string tag)
+    /// <param name="parentNode">The parent HTML node to search in.</param>
+    /// <param name="tagName">The tag name to search for.</param>
+    /// <returns>List of matching child tags.</returns>
+    public static List<HtmlNode> ReturnTags(HtmlNode parentNode, string tagName)
     {
-        var vr = new List<HtmlNode>();
-        foreach (var item in parent.ChildNodes)
-            if (HasTagName(item, tag))
-                vr.Add(item);
-        return vr;
+        var result = new List<HtmlNode>();
+        foreach (var item in parentNode.ChildNodes)
+            if (HasTagName(item, tagName))
+                result.Add(item);
+        return result;
     }
 }

@@ -1,80 +1,152 @@
 namespace SunamoHtml._public.SunamoXml.Generators;
 
+/// <summary>
+/// EN: XML/HTML generator that builds XML/HTML content using a StringBuilder.
+/// CZ: XML/HTML generátor který sestavuje XML/HTML obsah pomocí StringBuilder.
+/// </summary>
 public class XmlGeneratorHtml
 {
-    private static Type type = typeof(XmlGeneratorHtml);
     private readonly Stack<string> _stack;
-    private readonly bool _useStack;
-    public StringBuilder stringBuilder = new();
+    private readonly bool _isUseStack;
 
+    /// <summary>
+    /// EN: Gets or sets the StringBuilder used to build the XML/HTML content.
+    /// CZ: Získá nebo nastaví StringBuilder používaný pro sestavení XML/HTML obsahu.
+    /// </summary>
+    public StringBuilder StringBuilder { get; set; } = new();
+
+    /// <summary>
+    /// Initializes a new instance of the XmlGeneratorHtml class without stack usage.
+    /// </summary>
     public XmlGeneratorHtml() : this(false)
     {
     }
 
-    public XmlGeneratorHtml(bool useStack)
+    /// <summary>
+    /// Initializes a new instance of the XmlGeneratorHtml class.
+    /// </summary>
+    /// <param name="isUseStack">Whether to use a stack to track opened tags.</param>
+    public XmlGeneratorHtml(bool isUseStack)
     {
-        _useStack = useStack;
-        if (useStack) _stack = new Stack<string>();
+        _isUseStack = isUseStack;
+        if (isUseStack) _stack = new Stack<string>();
     }
 
+    /// <summary>
+    /// Returns the current length of the generated content.
+    /// </summary>
+    /// <returns>The length of the StringBuilder content.</returns>
     public int Length()
     {
-        return stringBuilder.Length;
+        return StringBuilder.Length;
     }
 
-    public void WriteNonPairTagWith2Attrs(string p1, string p2, string p3, string p4, string p5)
+    /// <summary>
+    /// EN: Writes a non-pairing tag with two attributes.
+    /// CZ: Zapíše nepárový tag se dvěma atributy.
+    /// </summary>
+    /// <param name="tagName">The tag name.</param>
+    /// <param name="attribute1Name">The first attribute name.</param>
+    /// <param name="attribute1Value">The first attribute value.</param>
+    /// <param name="attribute2Name">The second attribute name.</param>
+    /// <param name="attribute2Value">The second attribute value.</param>
+    public void WriteNonPairTagWith2Attrs(string tagName, string attribute1Name, string attribute1Value, string attribute2Name, string attribute2Value)
     {
-        stringBuilder.AppendFormat("<{0} {1}=\"{2}\" {3}=\"{4}\" />", p1, p2, p3, p4, p5);
+        StringBuilder.AppendFormat("<{0} {1}=\"{2}\" {3}=\"{4}\" />", tagName, attribute1Name, attribute1Value, attribute2Name, attribute2Value);
     }
 
-    public void WriteNonPairTagWithAttr(string p1, string p2, string p3)
+    /// <summary>
+    /// EN: Writes a non-pairing tag with one attribute.
+    /// CZ: Zapíše nepárový tag s jedním atributem.
+    /// </summary>
+    /// <param name="tagName">The tag name.</param>
+    /// <param name="attributeName">The attribute name.</param>
+    /// <param name="attributeValue">The attribute value.</param>
+    public void WriteNonPairTagWithAttr(string tagName, string attributeName, string attributeValue)
     {
-        stringBuilder.AppendFormat("<{0} {1}=\"{2}\" />", p1, p2, p3);
+        StringBuilder.AppendFormat("<{0} {1}=\"{2}\" />", tagName, attributeName, attributeValue);
     }
 
+    /// <summary>
+    /// Inserts text at the specified index in the StringBuilder.
+    /// </summary>
+    /// <param name="index">The index to insert at.</param>
+    /// <param name="text">The text to insert.</param>
     public void Insert(int index, string text)
     {
-        stringBuilder.Insert(index, text);
+        StringBuilder.Insert(index, text);
     }
 
+    /// <summary>
+    /// Appends a line terminator to the StringBuilder.
+    /// </summary>
     public void AppendLine()
     {
-        stringBuilder.AppendLine();
+        StringBuilder.AppendLine();
     }
 
+    /// <summary>
+    /// Starts an HTML comment.
+    /// </summary>
     public void StartComment()
     {
-        stringBuilder.Append("<!--");
+        StringBuilder.Append("<!--");
     }
 
+    /// <summary>
+    /// Ends an HTML comment.
+    /// </summary>
     public void EndComment()
     {
-        stringBuilder.Append("-->");
+        StringBuilder.Append("-->");
     }
 
-    public void WriteNonPairTagWithAttrs(string tag, List<string> args)
+    /// <summary>
+    /// EN: Writes a non-pairing tag with multiple attributes.
+    /// CZ: Zapíše nepárový tag s více atributy.
+    /// </summary>
+    /// <param name="tagName">The tag name.</param>
+    /// <param name="attributes">List of attribute name-value pairs (alternating name, value).</param>
+    public void WriteNonPairTagWithAttrs(string tagName, List<string> attributes)
     {
-        WriteNonPairTagWithAttrs(tag, args.ToArray());
+        WriteNonPairTagWithAttrs(tagName, attributes.ToArray());
     }
 
-    public void WriteNonPairTagWithAttrs(string tag, params string[] args)
+    /// <summary>
+    /// EN: Writes a non-pairing tag with multiple attributes.
+    /// CZ: Zapíše nepárový tag s více atributy.
+    /// </summary>
+    /// <param name="tagName">The tag name.</param>
+    /// <param name="attributes">Attribute name-value pairs (alternating name, value).</param>
+    public void WriteNonPairTagWithAttrs(string tagName, params string[] attributes)
     {
-        stringBuilder.AppendFormat("<{0} ", tag);
-        for (var i = 0; i < args.Length; i++)
+        StringBuilder.AppendFormat("<{0} ", tagName);
+        for (var i = 0; i < attributes.Length; i++)
         {
-            var text = args[i];
-            object hodnota = args[++i];
-            stringBuilder.AppendFormat("{0}=\"{1}\" ", text, hodnota);
+            var attributeName = attributes[i];
+            object attributeValue = attributes[++i];
+            StringBuilder.AppendFormat("{0}=\"{1}\" ", attributeName, attributeValue);
         }
 
-        stringBuilder.Append(" />");
+        StringBuilder.Append(" />");
     }
 
+    /// <summary>
+    /// EN: Writes a CDATA section with specified content.
+    /// CZ: Zapíše CDATA sekci se zadaným obsahem.
+    /// </summary>
+    /// <param name="innerCData">The content inside the CDATA section.</param>
     public void WriteCData(string innerCData)
     {
         WriteRaw(string.Format("<![CDATA[{0}]]>", innerCData));
     }
 
+    /// <summary>
+    /// EN: Writes an anchor link element.
+    /// CZ: Zapíše odkaz (anchor element).
+    /// </summary>
+    /// <param name="link">The href URL.</param>
+    /// <param name="innerText">The link text.</param>
     public void WriteLink(string link, string innerText)
     {
         WriteTagWithAttrs("a", "href", link);
@@ -82,136 +154,230 @@ public class XmlGeneratorHtml
         TerminateTag("a");
     }
 
+    /// <summary>
+    /// EN: Writes an opening tag with one attribute. OBSOLETE: Use WriteTagWithAttrs instead.
+    /// CZ: Zapíše otevírací tag s jedním atributem. ZASTARALÉ: Použijte WriteTagWithAttrs.
+    /// </summary>
+    /// <param name="tagName">The tag name.</param>
+    /// <param name="attributeName">The attribute name.</param>
+    /// <param name="attributeValue">The attribute value.</param>
+    /// <param name="isSkipEmptyOrNull">Whether to skip writing if value is empty or null.</param>
     [Obsolete("only WriteTagWithAttrs should be used anymore")]
-    public void WriteTagWithAttr(string tag, string atribut, string hodnota, bool skipEmptyOrNull = false)
+    public void WriteTagWithAttr(string tagName, string attributeName, string attributeValue, bool isSkipEmptyOrNull = false)
     {
-        if (skipEmptyOrNull)
-            if (string.IsNullOrWhiteSpace(hodnota))
+        if (isSkipEmptyOrNull)
+            if (string.IsNullOrWhiteSpace(attributeValue))
                 return;
-        var result = string.Format("<{0} {1}=\"{2}\">", tag, atribut, hodnota);
-        if (_useStack) _stack.Push(result);
-        stringBuilder.Append(result);
+        var result = string.Format("<{0} {1}=\"{2}\">", tagName, attributeName, attributeValue);
+        if (_isUseStack) _stack.Push(result);
+        StringBuilder.Append(result);
     }
 
-    public void WriteRaw(string parameter)
+    /// <summary>
+    /// Writes raw text to the StringBuilder without any formatting.
+    /// </summary>
+    /// <param name="text">The text to write.</param>
+    public void WriteRaw(string text)
     {
-        stringBuilder.Append(parameter);
+        StringBuilder.Append(text);
     }
 
-    public void TerminateTag(string parameter)
+    /// <summary>
+    /// EN: Writes a closing tag.
+    /// CZ: Zapíše zavírací tag.
+    /// </summary>
+    /// <param name="tagName">The tag name to close.</param>
+    public void TerminateTag(string tagName)
     {
-        stringBuilder.AppendFormat("</{0}>", parameter);
+        StringBuilder.AppendFormat("</{0}>", tagName);
     }
 
-    public void WriteTag(string parameter)
+    /// <summary>
+    /// EN: Writes an opening tag without attributes.
+    /// CZ: Zapíše otevírací tag bez atributů.
+    /// </summary>
+    /// <param name="tagName">The tag name.</param>
+    public void WriteTag(string tagName)
     {
-        var result = $"<{parameter}>";
-        if (_useStack) _stack.Push(result);
-        stringBuilder.Append(result);
+        var result = $"<{tagName}>";
+        if (_isUseStack) _stack.Push(result);
+        StringBuilder.Append(result);
     }
 
+    /// <summary>
+    /// Returns the generated XML/HTML content as a string.
+    /// </summary>
+    /// <returns>The complete XML/HTML content.</returns>
     public override string ToString()
     {
-        return stringBuilder.ToString();
+        return StringBuilder.ToString();
     }
 
-    public void WriteTagWithAttrs(string parameter, List<string> p_2)
+    /// <summary>
+    /// EN: Writes an opening tag with multiple attributes.
+    /// CZ: Zapíše otevírací tag s více atributy.
+    /// </summary>
+    /// <param name="tagName">The tag name.</param>
+    /// <param name="attributes">List of attribute name-value pairs (alternating name, value).</param>
+    public void WriteTagWithAttrs(string tagName, List<string> attributes)
     {
-        WriteTagWithAttrs(parameter, p_2.ToArray());
+        WriteTagWithAttrs(tagName, attributes.ToArray());
     }
 
-
-    public void WriteTagWithAttrs(string parameter, params string[] p_2)
+    /// <summary>
+    /// EN: Writes an opening tag with multiple attributes.
+    /// CZ: Zapíše otevírací tag s více atributy.
+    /// </summary>
+    /// <param name="tagName">The tag name.</param>
+    /// <param name="attributes">Attribute name-value pairs (alternating name, value).</param>
+    public void WriteTagWithAttrs(string tagName, params string[] attributes)
     {
-        WriteTagWithAttrs(true, parameter, p_2);
+        WriteTagWithAttrs(true, tagName, attributes);
     }
 
-
-    private void WriteTagWithAttrs(string nameTag, Dictionary<string, string> parameter)
+    /// <summary>
+    /// EN: Writes an opening tag with attributes from a dictionary.
+    /// CZ: Zapíše otevírací tag s atributy ze slovníku.
+    /// </summary>
+    /// <param name="tagName">The tag name.</param>
+    /// <param name="attributes">Dictionary of attribute name-value pairs.</param>
+    private void WriteTagWithAttrs(string tagName, Dictionary<string, string> attributes)
     {
-        WriteTagWithAttrs(true, nameTag, DictionaryHelper.GetListStringFromDictionary(parameter).ToArray());
+        WriteTagWithAttrs(true, tagName, DictionaryHelper.GetListStringFromDictionary(attributes).ToArray());
     }
 
-
-    public void WriteTagWithAttrsCheckNull(string parameter, params string[] p_2)
+    /// <summary>
+    /// EN: Writes an opening tag with attributes, checking for null values.
+    /// CZ: Zapíše otevírací tag s atributy, kontroluje null hodnoty.
+    /// </summary>
+    /// <param name="tagName">The tag name.</param>
+    /// <param name="attributes">Attribute name-value pairs (alternating name, value).</param>
+    public void WriteTagWithAttrsCheckNull(string tagName, params string[] attributes)
     {
-        WriteTagWithAttrs(false, parameter, p_2);
+        WriteTagWithAttrs(false, tagName, attributes);
     }
 
-
+    /// <summary>
+    /// Checks if a text is null, empty, or equals "(null)".
+    /// </summary>
+    /// <param name="text">The text to check.</param>
+    /// <returns>True if the text is null, empty, or "(null)", false otherwise.</returns>
     private bool IsNulledOrEmpty(string text)
     {
         if (string.IsNullOrEmpty(text) || text == "(null)") return true;
         return false;
     }
 
-    public void WriteTagNamespaceManager(string nameTag, XmlNamespaceManager nsmgr, params string[] args)
+    /// <summary>
+    /// EN: Writes an opening tag with XML namespace manager and additional attributes.
+    /// CZ: Zapíše otevírací tag s XML namespace managerem a dalšími atributy.
+    /// </summary>
+    /// <param name="tagName">The tag name.</param>
+    /// <param name="namespaceManager">The XML namespace manager.</param>
+    /// <param name="attributes">Additional attribute name-value pairs (alternating name, value).</param>
+    public void WriteTagNamespaceManager(string tagName, XmlNamespaceManager namespaceManager, params string[] attributes)
     {
-        var parameter = XHelper.XmlNamespaces(nsmgr, true);
-        for (var i = 0; i < args.Count(); i++) parameter.Add(args[i], args[++i]);
-        WriteTagWithAttrs(nameTag, parameter);
+        var allAttributes = XHelper.XmlNamespaces(namespaceManager, true);
+        for (var i = 0; i < attributes.Count(); i++) allAttributes.Add(attributes[i], attributes[++i]);
+        WriteTagWithAttrs(tagName, allAttributes);
     }
 
-    public void WriteNonPairTagWithAttrs(bool appendNull, string parameter, params string[] p_2)
+    /// <summary>
+    /// EN: Writes a non-pairing tag with multiple attributes, optionally appending null values.
+    /// CZ: Zapíše nepárový tag s více atributy, volitelně připojí null hodnoty.
+    /// </summary>
+    /// <param name="isAppendNull">Whether to append null values.</param>
+    /// <param name="tagName">The tag name.</param>
+    /// <param name="attributes">Attribute name-value pairs (alternating name, value).</param>
+    public void WriteNonPairTagWithAttrs(bool isAppendNull, string tagName, params string[] attributes)
     {
         var stringBuilder = new StringBuilder();
-        stringBuilder.AppendFormat("<{0} ", parameter);
-        for (var i = 0; i < p_2.Length; i++)
+        stringBuilder.AppendFormat("<{0} ", tagName);
+        for (var i = 0; i < attributes.Length; i++)
         {
-            var attr = p_2[i];
-            var val = p_2[++i];
-            if ((string.IsNullOrEmpty(val) && appendNull) || !string.IsNullOrEmpty(val))
-                if ((!IsNulledOrEmpty(attr) && appendNull) || !IsNulledOrEmpty(val))
-                    stringBuilder.AppendFormat("{0}=\"{1}\" ", attr, val);
+            var attributeName = attributes[i];
+            var attributeValue = attributes[++i];
+            if ((string.IsNullOrEmpty(attributeValue) && isAppendNull) || !string.IsNullOrEmpty(attributeValue))
+                if ((!IsNulledOrEmpty(attributeName) && isAppendNull) || !IsNulledOrEmpty(attributeValue))
+                    stringBuilder.AppendFormat("{0}=\"{1}\" ", attributeName, attributeValue);
         }
 
         stringBuilder.Append(" /");
         stringBuilder.Append(">");
         var result = stringBuilder.ToString();
-        if (_useStack) _stack.Push(result);
-        this.stringBuilder.Append(result);
+        if (_isUseStack) _stack.Push(result);
+        StringBuilder.Append(result);
     }
 
-
-    private void WriteTagWithAttrs(bool appendNull, string parameter, params string[] p_2)
+    /// <summary>
+    /// EN: Writes an opening tag with multiple attributes, optionally appending null values.
+    /// CZ: Zapíše otevírací tag s více atributy, volitelně připojí null hodnoty.
+    /// </summary>
+    /// <param name="isAppendNull">Whether to append null values.</param>
+    /// <param name="tagName">The tag name.</param>
+    /// <param name="attributes">Attribute name-value pairs (alternating name, value).</param>
+    private void WriteTagWithAttrs(bool isAppendNull, string tagName, params string[] attributes)
     {
         var stringBuilder = new StringBuilder();
-        stringBuilder.AppendFormat("<{0} ", parameter);
-        for (var i = 0; i < p_2.Length; i++)
+        stringBuilder.AppendFormat("<{0} ", tagName);
+        for (var i = 0; i < attributes.Length; i++)
         {
-            var attr = p_2[i];
-            var val = p_2[++i];
-            if ((string.IsNullOrEmpty(val) && appendNull) || !string.IsNullOrEmpty(val))
-                if ((!IsNulledOrEmpty(attr) && appendNull) || !IsNulledOrEmpty(val))
-                    stringBuilder.AppendFormat("{0}=\"{1}\" ", attr, val);
+            var attributeName = attributes[i];
+            var attributeValue = attributes[++i];
+            if ((string.IsNullOrEmpty(attributeValue) && isAppendNull) || !string.IsNullOrEmpty(attributeValue))
+                if ((!IsNulledOrEmpty(attributeName) && isAppendNull) || !IsNulledOrEmpty(attributeValue))
+                    stringBuilder.AppendFormat("{0}=\"{1}\" ", attributeName, attributeValue);
         }
 
         stringBuilder.Append(">");
         var result = stringBuilder.ToString();
-        if (_useStack) _stack.Push(result);
-        this.stringBuilder.Append(result);
+        if (_isUseStack) _stack.Push(result);
+        StringBuilder.Append(result);
     }
 
-    public void WriteElement(string nazev, string inner)
+    /// <summary>
+    /// EN: Writes a complete element with opening tag, inner content, and closing tag.
+    /// CZ: Zapíše kompletní element s otevíracím tagem, vnitřním obsahem a zavíracím tagem.
+    /// </summary>
+    /// <param name="tagName">The tag name.</param>
+    /// <param name="innerContent">The inner content.</param>
+    public void WriteElement(string tagName, string innerContent)
     {
-        stringBuilder.AppendFormat("<{0}>{1}</{0}>", nazev, inner);
+        StringBuilder.AppendFormat("<{0}>{1}</{0}>", tagName, innerContent);
     }
 
+    /// <summary>
+    /// Writes the XML declaration.
+    /// </summary>
     public void WriteXmlDeclaration()
     {
-        stringBuilder.Append(XmlTemplates.xml);
+        StringBuilder.Append(XmlTemplates.xml);
     }
 
+    /// <summary>
+    /// EN: Writes an opening tag with two attributes. OBSOLETE: Use WriteTagWithAttrs instead.
+    /// CZ: Zapíše otevírací tag se dvěma atributy. ZASTARALÉ: Použijte WriteTagWithAttrs.
+    /// </summary>
+    /// <param name="tagName">The tag name.</param>
+    /// <param name="attribute1Name">The first attribute name.</param>
+    /// <param name="attribute1Value">The first attribute value.</param>
+    /// <param name="attribute2Name">The second attribute name.</param>
+    /// <param name="attribute2Value">The second attribute value.</param>
     [Obsolete("only WriteTagWithAttrs should be used anymore")]
-    public void WriteTagWith2Attrs(string parameter, string p_2, string p_3, string p_4, string p_5)
+    public void WriteTagWith2Attrs(string tagName, string attribute1Name, string attribute1Value, string attribute2Name, string attribute2Value)
     {
-        var result = string.Format("<{0} {1}=\"{2}\" {3}=\"{4}\">", parameter, p_2, p_3, p_4, p_5);
-        if (_useStack) _stack.Push(result);
-        stringBuilder.Append(result);
+        var result = string.Format("<{0} {1}=\"{2}\" {3}=\"{4}\">", tagName, attribute1Name, attribute1Value, attribute2Name, attribute2Value);
+        if (_isUseStack) _stack.Push(result);
+        StringBuilder.Append(result);
     }
 
-    public void WriteNonPairTag(string parameter)
+    /// <summary>
+    /// EN: Writes a non-pairing tag without attributes.
+    /// CZ: Zapíše nepárový tag bez atributů.
+    /// </summary>
+    /// <param name="tagName">The tag name.</param>
+    public void WriteNonPairTag(string tagName)
     {
-        stringBuilder.AppendFormat("<{0} />", parameter);
+        StringBuilder.AppendFormat("<{0} />", tagName);
     }
 }

@@ -1,23 +1,32 @@
 namespace SunamoHtml.Generators;
 
+/// <summary>
+/// EN: Extended HTML generator with detail display methods for labels, anchors, and mailto links.
+/// CZ: Rozšířený HTML generátor s metodami pro zobrazení detailů s labely, odkazy a mailto linky.
+/// </summary>
 public class HtmlGeneratorExtended : HtmlGenerator
 {
-    private static Type type = typeof(HtmlGeneratorExtended);
-
-    public void DetailAnchor(string label, string oUriYouthProfile, string oNameYouthProfile)
+    /// <summary>
+    /// Writes a detail line with label and anchor link.
+    /// Only outputs if the name parameter is not empty.
+    /// </summary>
+    /// <param name="label">The label text to display before the value.</param>
+    /// <param name="uri">The URI for the anchor link. If empty, displays plain text.</param>
+    /// <param name="name">The name/text to display or link to.</param>
+    public void DetailAnchor(string label, string uri, string name)
     {
-        if (!string.IsNullOrEmpty(oNameYouthProfile))
+        if (!string.IsNullOrEmpty(name))
         {
             WriteElement("b", label + ":");
             WriteRaw(" ");
-            if (string.IsNullOrEmpty(oUriYouthProfile))
+            if (string.IsNullOrEmpty(uri))
             {
-                WriteRaw(oNameYouthProfile);
+                WriteRaw(name);
             }
             else
             {
-                WriteTagWithAttr("a", "href", oUriYouthProfile);
-                WriteRaw(oNameYouthProfile);
+                WriteTagWithAttr("a", "href", uri);
+                WriteRaw(name);
                 TerminateTag("a");
             }
 
@@ -25,111 +34,90 @@ public class HtmlGeneratorExtended : HtmlGenerator
         }
     }
 
-    public void Detail(string label, string timeInterval)
+    /// <summary>
+    /// Writes a detail line with label and value.
+    /// Only outputs if the value parameter is not empty.
+    /// </summary>
+    /// <param name="label">The label text to display before the value.</param>
+    /// <param name="value">The value to display.</param>
+    public void Detail(string label, string value)
     {
-        if (!string.IsNullOrEmpty(timeInterval))
+        if (!string.IsNullOrEmpty(value))
         {
             WriteElement("b", label + ":");
-            WriteRaw("");
-            WriteRaw(timeInterval);
+            WriteRaw(value);
             WriteBr();
         }
     }
 
-    public void DetailNewLine(string label, string oDescriptionHtml)
+    /// <summary>
+    /// Writes a detail line with label on separate line from value.
+    /// Only outputs if the HTML content is not empty.
+    /// </summary>
+    /// <param name="label">The label text to display.</param>
+    /// <param name="htmlContent">The HTML content to display on the next line.</param>
+    public void DetailNewLine(string label, string htmlContent)
     {
-        if (!string.IsNullOrEmpty(oDescriptionHtml))
+        if (!string.IsNullOrEmpty(htmlContent))
         {
             WriteElement("b", label);
             WriteBr();
-            WriteRaw(oDescriptionHtml);
+            WriteRaw(htmlContent);
             WriteBr();
         }
     }
 
-    public void DetailMailto(string label, string oMail)
+    /// <summary>
+    /// Writes a detail line with label and mailto link.
+    /// Only outputs if the email parameter is not empty.
+    /// </summary>
+    /// <param name="label">The label text to display before the email.</param>
+    /// <param name="email">The email address to create a mailto link for.</param>
+    public void DetailMailto(string label, string email)
     {
-        if (!string.IsNullOrEmpty(oMail))
+        if (!string.IsNullOrEmpty(email))
         {
             WriteElement("b", label + ":");
             WriteRaw(" ");
-            WriteTagWithAttr("a", "href", "mailto:" + oMail);
-            WriteRaw(oMail);
+            WriteTagWithAttr("a", "href", "mailto:" + email);
+            WriteRaw(email);
             TerminateTag("a");
             WriteBr();
         }
     }
 
+    /// <summary>
+    /// Generates HTML5 boilerplate start section with CSS and JavaScript.
+    /// Currently throws NotImplementedException - needs implementation.
+    /// </summary>
+    /// <param name="args">Arguments containing CSS and JS paths/content.</param>
     public
 #if ASYNC
         async Task
 #else
 void
 #endif
-        BoilerplateStart(BoilerplateStartArgs a)
+        BoilerplateStart(BoilerplateStartArgs args)
     {
         throw new Exception();
-
-        //        WriteRaw(ResourcesDuo.Html5BoilerplateStart);
-        //        string css = a.css;
-        //        if (a.directInject)
-        //        {
-        //            if (!string.IsNullOrEmpty(css))
-        //            {
-        //                WriteTagWithAttr(HtmlTags.style, HtmlAttrs.type, HtmlAttrValue.textCss);
-        //                if (File.Exists(css))
-        //                {
-        //                    WriteRaw(
-        //#if ASYNC
-        //    await
-        //#endif
-        // File.ReadAllTextAsync(css));
-        //                }
-        //                else
-        //                {
-        //                    WriteRaw(css);
-        //                }
-        //                TerminateTag(HtmlTags.style);
-        //            }
-        //        }
-        //        else
-        //        {
-        //            WriteTagWith2Attrs(HtmlTags.link, HtmlAttrs.rel, HtmlAttrValue.stylesheet, HtmlAttrs.href, css);
-        //        }
-
-        //        if (!string.IsNullOrEmpty(a.js))
-        //        {
-        //            WriteTagWithAttr(HtmlTags.script, HtmlAttrs.type, HtmlAttrValue.textJavascript);
-        //            WriteRaw(a.js);
-        //            TerminateTag(HtmlTags.script);
-        //        }
     }
 
-    public void BoilerplateMiddle(BoilerplateMiddleArgs a = null)
+    /// <summary>
+    /// Generates HTML5 boilerplate middle section (body tag with onload).
+    /// Currently throws NotImplementedException - needs implementation.
+    /// </summary>
+    /// <param name="args">Optional arguments containing onload handler.</param>
+    public void BoilerplateMiddle(BoilerplateMiddleArgs args = null)
     {
         throw new Exception();
-
-        //string gt = "<body";
-
-        //var html = Resources.ResourcesDuo.Html5BoilerplateMiddle;
-        //if (a != null)
-        //{
-        //    if (!string.IsNullOrEmpty(a.onload))
-        //    {
-        //        html = html.Replace(gt, gt + " onload=\"" + a.onload + "\"");
-        //    }
-        //}
-        //WriteRaw(html);
-
-
-        //ThrowEx.NotImplementedMethod();
     }
 
+    /// <summary>
+    /// Generates HTML5 boilerplate end section (closing body and html tags).
+    /// Currently throws NotImplementedException - needs implementation.
+    /// </summary>
     public void BoilerplateEnd()
     {
         throw new Exception();
-
-        //WriteRaw(Resources.ResourcesDuo.Html5BoilerplateEnd);
-        //ThrowEx.NotImplementedMethod();
     }
 }

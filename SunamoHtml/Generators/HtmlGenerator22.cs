@@ -1,174 +1,235 @@
 namespace SunamoHtml.Generators;
 
-// EN: Variable names have been checked and replaced with self-descriptive names
-// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+/// <summary>
+/// Extended HTML generator with checkbox lists, tables, and tree generation methods (part 3).
+/// </summary>
 public partial class HtmlGenerator2 : HtmlGenerator
 {
+    /// <summary>
+    /// Generates checkbox list without duplicate checking.
+    /// </summary>
+    /// <param name="idClassCheckbox">ID class for checkboxes.</param>
+    /// <param name="idClassSpan">ID class for spans.</param>
+    /// <param name="idCheckBoxes">List of checkbox IDs.</param>
+    /// <param name="list">List of checkbox labels.</param>
+    /// <returns>HTML string with checkbox list.</returns>
     public static string GetForCheckBoxListWoCheckDuplicate(string idClassCheckbox, string idClassSpan, List<string> idCheckBoxes, List<string> list)
     {
-        var hg = new HtmlGenerator();
+        var generator = new HtmlGenerator();
         if (idCheckBoxes.Count != list.Count)
-            throw new Exception("Nestejn\u00FD po\u010Det parametr\u016F v metod\u011B GetForCheckBoxListWoCheckDuplicate " + idCheckBoxes.Count + ":" + list.Count);
+            throw new Exception("Unequal parameter count in method GetForCheckBoxListWoCheckDuplicate " + idCheckBoxes.Count + ":" + list.Count);
         for (var i = 0; i < idCheckBoxes.Count; i++)
         {
-            var f = idCheckBoxes[i];
-            hg.WriteNonPairTagWithAttrs("input", "type", "checkbox", "id", idClassCheckbox + f, "class", idClassCheckbox);
-            hg.WriteTagWith2Attrs("span", "id", idClassSpan + f, "class", idClassSpan);
-            hg.WriteRaw(list[i]);
-            hg.TerminateTag("span");
-            hg.WriteBr();
+            var checkboxId = idCheckBoxes[i];
+            generator.WriteNonPairTagWithAttrs("input", "type", "checkbox", "id", idClassCheckbox + checkboxId, "class", idClassCheckbox);
+            generator.WriteTagWithAttrs("span", "id", idClassSpan + checkboxId, "class", idClassSpan);
+            generator.WriteRaw(list[i]);
+            generator.TerminateTag("span");
+            generator.WriteBr();
         }
 
-        return hg.ToString();
+        return generator.ToString();
     }
 
-    public static string HtmlGeneratorToString(Action<HtmlGenerator> d)
+    /// <summary>
+    /// Executes HTML generator action and returns the generated string.
+    /// </summary>
+    /// <param name="action">The action to execute with the generator.</param>
+    /// <returns>Generated HTML string.</returns>
+    public static string HtmlGeneratorToString(Action<HtmlGenerator> action)
     {
-        var hg = new HtmlGenerator();
-        d.Invoke(hg);
-        var result = hg.ToString();
+        var generator = new HtmlGenerator();
+        action.Invoke(generator);
+        var result = generator.ToString();
         return result;
     }
 
-    public static string Italic(string p)
+    /// <summary>
+    /// Wraps text in italic tags.
+    /// </summary>
+    /// <param name="text">The text to wrap.</param>
+    /// <returns>HTML string with italic tags.</returns>
+    public static string Italic(string text)
     {
-        return "<i>" + p + "</i>";
+        return "<i>" + text + "</i>";
     }
 
-    public static void ButtonDelete(HtmlGenerator hg, string text, string a1, string v1)
+    /// <summary>
+    /// Generates a delete button with icon.
+    /// </summary>
+    /// <param name="htmlGenerator">The HTML generator.</param>
+    /// <param name="text">Button text.</param>
+    /// <param name="attributeName">Attribute name.</param>
+    /// <param name="attributeValue">Attribute value.</param>
+    public static void ButtonDelete(HtmlGenerator htmlGenerator, string text, string attributeName, string attributeValue)
     {
-        hg.WriteTagWithAttr("button", a1, v1);
-        hg.WriteTagWithAttr("i", "class", "icon-remove");
-        hg.TerminateTag("i");
-        hg.WriteRaw(text);
-        hg.TerminateTag("button");
+        htmlGenerator.WriteTagWithAttrs("button", attributeName, attributeValue);
+        htmlGenerator.WriteTagWithAttrs("i", "class", "icon-remove");
+        htmlGenerator.TerminateTag("i");
+        htmlGenerator.WriteRaw(text);
+        htmlGenerator.TerminateTag("button");
     }
 
-    public static string Bold(string p)
+    /// <summary>
+    /// Wraps text in bold tags.
+    /// </summary>
+    /// <param name="text">The text to wrap.</param>
+    /// <returns>HTML string with bold tags.</returns>
+    public static string Bold(string text)
     {
-        return "<b>" + p + "</b>";
+        return "<b>" + text + "</b>";
     }
 
+    /// <summary>
+    /// Creates an anchor with custom label.
+    /// </summary>
+    /// <param name="uri">The URI.</param>
+    /// <param name="text">The link text.</param>
+    /// <returns>HTML anchor string.</returns>
     public static string AnchorWithCustomLabel(string uri, string text)
     {
         return "<a href=\"" + uri + ">" + text + "</a>";
     }
 
-    public static string AllMonthsTable(List<string> AllYearsHtmlBoxes, List<string> AllMonthsBoxColors)
+    /// <summary>
+    /// Generates a table for all months of the year with colored boxes.
+    /// </summary>
+    /// <param name="allYearsHtmlBoxes">List of HTML boxes for each month (must have 12 items).</param>
+    /// <param name="allMonthsBoxColors">List of colors for each month box (must have 12 items).</param>
+    /// <returns>HTML string with months table.</returns>
+    public static string AllMonthsTable(List<string> allYearsHtmlBoxes, List<string> allMonthsBoxColors)
     {
-        if (AllYearsHtmlBoxes.Count != 12)
-            throw new Exception("D\u00E9lka AllMonthsHtmlBoxes nen\u00ED 12.");
-        if (AllMonthsBoxColors.Count != 12)
-            throw new Exception("D\u00E9lka AllMonthsBoxColors nen\u00ED 12.");
-        var hg = new HtmlGenerator();
-        hg.WriteTagWith2Attrs("table", "class", "tabulkaNaStredAutoSirka", "style", "width: 100%");
-        hg.WriteTag("tr");
-#region Zapíšu vrchní řádky - názvy dnů
-        var ppp = DTConstants.monthsInYearEN;
-        hg.WriteTagWithAttr("td", "class", "bunkaTabulkyKalendare bunkaTabulkyKalendareLeft bunkaTabulkyKalendareTop");
-        hg.WriteElement("b", ppp[0]);
-        hg.TerminateTag("td");
-        for (var i = 1; i < ppp.Count - 1; i++)
+        if (allYearsHtmlBoxes.Count != 12)
+            throw new Exception("AllMonthsHtmlBoxes length is not 12.");
+        if (allMonthsBoxColors.Count != 12)
+            throw new Exception("AllMonthsBoxColors length is not 12.");
+        var generator = new HtmlGenerator();
+        generator.WriteTagWithAttrs("table", "class", "tabulkaNaStredAutoSirka", "style", "width: 100%");
+        generator.WriteTag("tr");
+
+        // Write header row - month names
+        var monthNames = DTConstants.MonthsInYearEN;
+        generator.WriteTagWithAttrs("td", "class", "bunkaTabulkyKalendare bunkaTabulkyKalendareLeft bunkaTabulkyKalendareTop");
+        generator.WriteElement("b", monthNames[0]);
+        generator.TerminateTag("td");
+        for (var i = 1; i < monthNames.Count - 1; i++)
         {
-            hg.WriteTagWithAttr("td", "class", "bunkaTabulkyKalendare bunkaTabulkyKalendareTop");
-            hg.WriteElement("b", ppp[i]);
-            hg.TerminateTag("td");
+            generator.WriteTagWithAttrs("td", "class", "bunkaTabulkyKalendare bunkaTabulkyKalendareTop");
+            generator.WriteElement("b", monthNames[i]);
+            generator.TerminateTag("td");
         }
 
-        hg.WriteTagWithAttr("td", "class", "bunkaTabulkyKalendare bunkaTabulkyKalendareRight bunkaTabulkyKalendareTop");
-        hg.WriteElement("b", ppp[ppp.Count - 1]);
-        hg.TerminateTag("td");
-#endregion
-        hg.TerminateTag("tr");
-        hg.WriteTag("tr");
-        for (var i = 0; i < AllYearsHtmlBoxes.Count; i++)
+        generator.WriteTagWithAttrs("td", "class", "bunkaTabulkyKalendare bunkaTabulkyKalendareRight bunkaTabulkyKalendareTop");
+        generator.WriteElement("b", monthNames[monthNames.Count - 1]);
+        generator.TerminateTag("td");
+
+        generator.TerminateTag("tr");
+        generator.WriteTag("tr");
+        for (var i = 0; i < allYearsHtmlBoxes.Count; i++)
         {
-            var pridatTridu = "";
+            var additionalClass = "";
             if (i == 0)
-                pridatTridu = "bunkaTabulkyKalendareLeft";
+                additionalClass = "bunkaTabulkyKalendareLeft";
             else if (i == 11)
-                pridatTridu = "bunkaTabulkyKalendareRight";
-            var color = AllMonthsBoxColors[i];
+                additionalClass = "bunkaTabulkyKalendareRight";
+            var color = allMonthsBoxColors[i];
             var appendStyle = "";
             if (color == "#030")
                 appendStyle = "color:white;";
-            hg.WriteTagWith2Attrs("td", "class", "tableCenter bunkaTabulkyKalendare " + pridatTridu, "style", appendStyle + "background-color:" + color);
-            hg.WriteRaw("<b>" + AllYearsHtmlBoxes[i] + "</b>");
-            hg.TerminateTag("td");
+            generator.WriteTagWithAttrs("td", "class", "tableCenter bunkaTabulkyKalendare " + additionalClass, "style", appendStyle + "background-color:" + color);
+            generator.WriteRaw("<b>" + allYearsHtmlBoxes[i] + "</b>");
+            generator.TerminateTag("td");
         }
 
-        hg.TerminateTag("tr");
-        hg.TerminateTag("table");
-        return hg.ToString();
+        generator.TerminateTag("tr");
+        generator.TerminateTag("table");
+        return generator.ToString();
     }
 
-    public static string AllYearsTable(List<string> years, List<string> AllYearsHtmlBoxes, List<string> AllYearsBoxColors)
+    /// <summary>
+    /// Generates a table for all years with colored boxes.
+    /// </summary>
+    /// <param name="years">List of year labels.</param>
+    /// <param name="allYearsHtmlBoxes">List of HTML boxes for each year.</param>
+    /// <param name="allYearsBoxColors">List of colors for each year box.</param>
+    /// <returns>HTML string with years table.</returns>
+    public static string AllYearsTable(List<string> years, List<string> allYearsHtmlBoxes, List<string> allYearsBoxColors)
     {
         var yearsCount = years.Count;
-        if (AllYearsHtmlBoxes.Count != yearsCount)
-            throw new Exception("Po\u010Det prvk\u016F v AllYearsHtmlBoxes nen\u00ED stejn\u00FD jako v kolekci years");
-        if (AllYearsBoxColors.Count != yearsCount)
-            throw new Exception("Po\u010Det prvk\u016F v AllYearsBoxColors nen\u00ED stejn\u00FD jako v kolekci years");
-        var hg = new HtmlGenerator();
-        hg.WriteTagWith2Attrs("table", "class", "tabulkaNaStredAutoSirka", "style", "width: 200px");
-#region Zapíšu vrchní řádky - názvy dnů
-#endregion
+        if (allYearsHtmlBoxes.Count != yearsCount)
+            throw new Exception("Element count in AllYearsHtmlBoxes is not the same as in years collection");
+        if (allYearsBoxColors.Count != yearsCount)
+            throw new Exception("Element count in AllYearsBoxColors is not the same as in years collection");
+        var generator = new HtmlGenerator();
+        generator.WriteTagWithAttrs("table", "class", "tabulkaNaStredAutoSirka", "style", "width: 200px");
+
         for (var i = 0; i < yearsCount; i++)
         {
-            var pridatTridu = "";
-            hg.WriteTag("tr");
-            var pridatTriduTop = "";
+            var additionalClass = "";
+            generator.WriteTag("tr");
+            var topClass = "";
             if (i == 0)
-                pridatTriduTop = "bunkaTabulkyKalendareTop ";
-            pridatTridu = "bunkaTabulkyKalendareLeft";
-            hg.WriteTagWithAttr("td", "class", "tableCenter bunkaTabulkyKalendare " + pridatTriduTop + pridatTridu);
-            hg.WriteRaw("<b>" + years[i] + "</b>");
-            hg.TerminateTag("td");
-            pridatTridu = "bunkaTabulkyKalendareRight";
-            var color = AllYearsBoxColors[i];
+                topClass = "bunkaTabulkyKalendareTop ";
+            additionalClass = "bunkaTabulkyKalendareLeft";
+            generator.WriteTagWithAttrs("td", "class", "tableCenter bunkaTabulkyKalendare " + topClass + additionalClass);
+            generator.WriteRaw("<b>" + years[i] + "</b>");
+            generator.TerminateTag("td");
+            additionalClass = "bunkaTabulkyKalendareRight";
+            var color = allYearsBoxColors[i];
             var appendStyle = "";
             if (color == "#030")
                 appendStyle = "color:white;";
-            hg.WriteTagWith2Attrs("td", "class", "tableCenter bunkaTabulkyKalendare " + pridatTriduTop + pridatTridu, "style", appendStyle + "background-color:" + color);
-            //hg.WriteRaw("<b>" + AllMonthsHtmlBoxes[i] + "</b>");
-            hg.WriteRaw(AllYearsHtmlBoxes[i]);
-            hg.TerminateTag("td");
+            generator.WriteTagWithAttrs("td", "class", "tableCenter bunkaTabulkyKalendare " + topClass + additionalClass, "style", appendStyle + "background-color:" + color);
+            generator.WriteRaw(allYearsHtmlBoxes[i]);
+            generator.TerminateTag("td");
         }
 
-        hg.TerminateTag("tr");
-        hg.TerminateTag("table");
-        return hg.ToString();
+        generator.TerminateTag("tr");
+        generator.TerminateTag("table");
+        return generator.ToString();
     }
 
+    /// <summary>
+    /// Generates a tree structure with checkboxes.
+    /// </summary>
+    /// <param name="tree">The tree structure to generate.</param>
+    /// <returns>HTML string with tree and checkboxes.</returns>
     public static string GenerateTreeWithCheckBoxes(NTreeHtml<string> tree)
     {
-        var hg = new HtmlGenerator();
-        //hg.WriteTag(HtmlTags.ol);
-        var inner = 0;
-        AddTree(ref inner, hg, tree);
-        //hg.TerminateTag(HtmlTags.ol);
-        return hg.ToString();
+        var generator = new HtmlGenerator();
+        var depth = 0;
+        AddTree(ref depth, generator, tree);
+        return generator.ToString();
     }
 
-    private static void AddTree(ref int inner, HtmlGenerator hg, NTreeHtml<string> tree)
+    /// <summary>
+    /// Recursively adds tree nodes with checkboxes.
+    /// </summary>
+    /// <param name="depth">Current tree depth.</param>
+    /// <param name="htmlGenerator">The HTML generator.</param>
+    /// <param name="tree">The tree node.</param>
+    private static void AddTree(ref int depth, HtmlGenerator htmlGenerator, NTreeHtml<string> tree)
     {
-        inner++;
-        //hg.WriteTag(HtmlTags.li);
-        hg.WriteTag(HtmlTags.ol);
-        hg.WriteRaw(CheckBox(tree.data));
+        depth++;
+        htmlGenerator.WriteTag(HtmlTags.ol);
+        htmlGenerator.WriteRaw(CheckBox(tree.data));
         foreach (var item in tree.children)
         {
-            hg.WriteTag(HtmlTags.li);
-            hg.WriteRaw(CheckBox(item.data));
+            htmlGenerator.WriteTag(HtmlTags.li);
+            htmlGenerator.WriteRaw(CheckBox(item.data));
             foreach (var item2 in item.children)
-                AddTree(ref inner, hg, item2);
-            hg.TerminateTag(HtmlTags.li);
+                AddTree(ref depth, htmlGenerator, item2);
+            htmlGenerator.TerminateTag(HtmlTags.li);
         }
 
-        hg.TerminateTag(HtmlTags.ol);
-    //hg.TerminateTag(HtmlTags.li);
+        htmlGenerator.TerminateTag(HtmlTags.ol);
     }
 
+    /// <summary>
+    /// Generates a checkbox with label.
+    /// </summary>
+    /// <param name="data">The checkbox label.</param>
+    /// <returns>HTML string with checkbox.</returns>
     public static string CheckBox(string data)
     {
         if (!string.IsNullOrEmpty(data))
@@ -177,66 +238,83 @@ public partial class HtmlGenerator2 : HtmlGenerator
     }
 
     /// <summary>
-    ///     Do A1 doplň třeba EditMister.aspx?mid= - co za toto si automaticky doplní a A2 jsou texty do inner textu a
-    ///     Nehodí se tedy proto vždy, například, když máš přehozené IDčka v DB
-    ///     When uri args and titles are the same
+    /// Generates list items for UL without duplicate checking.
+    /// When URI args and titles are the same.
     /// </summary>
-    /// <param name = "baseAnchor"></param>
-    /// <param name = "to"></param>
-    public static string GetForUlWoCheckDuplicate(string baseAnchor, List<string> to)
+    /// <param name="baseAnchor">Base anchor URL (e.g. "EditMister.aspx?mid=").</param>
+    /// <param name="items">List of items (used as both IDs and display text).</param>
+    /// <returns>HTML string with list items.</returns>
+    public static string GetForUlWoCheckDuplicate(string baseAnchor, List<string> items)
     {
-        return GetForUlWoCheckDuplicate(baseAnchor, to, to);
+        return GetForUlWoCheckDuplicate(baseAnchor, items, items);
     }
 
     /// <summary>
-    ///     Automatically replace A3 for A4
+    /// Generates list items for UL with text replacement.
     /// </summary>
-    /// <param name = "baseAnchor"></param>
-    /// <param name = "idcka"></param>
-    /// <param name = "najitVTextu"></param>
-    /// <param name = "nahraditVTextu"></param>
-    /// <param name = "pripona"></param>
-    public static string GetForUlWoCheckDuplicate(string baseAnchor, List<string> idcka, string najitVTextu, string nahraditVTextu, string pripona = "")
+    /// <param name="baseAnchor">Base anchor URL.</param>
+    /// <param name="ids">List of IDs for anchors.</param>
+    /// <param name="findInText">Text to find in display text.</param>
+    /// <param name="replaceInText">Text to replace with.</param>
+    /// <param name="suffix">Optional suffix to append to anchors.</param>
+    /// <returns>HTML string with list items.</returns>
+    public static string GetForUlWoCheckDuplicate(string baseAnchor, List<string> ids, string findInText, string replaceInText, string suffix = "")
     {
-        var hg = new HtmlGenerator();
-        for (var i = 0; i < idcka.Count; i++)
+        var generator = new HtmlGenerator();
+        for (var i = 0; i < ids.Count; i++)
         {
-            var text = idcka[i];
-            hg.WriteTag("li");
-            hg.WriteTagWithAttr("a", "href", baseAnchor + text + pripona);
-            if (!string.IsNullOrEmpty(najitVTextu) && !string.IsNullOrEmpty(nahraditVTextu))
-                hg.WriteRaw(text.Replace(najitVTextu, nahraditVTextu));
+            var text = ids[i];
+            generator.WriteTag("li");
+            generator.WriteTagWithAttrs("a", "href", baseAnchor + text + suffix);
+            if (!string.IsNullOrEmpty(findInText) && !string.IsNullOrEmpty(replaceInText))
+                generator.WriteRaw(text.Replace(findInText, replaceInText));
             else
-                hg.WriteRaw(text);
-            hg.TerminateTag("a");
-            hg.TerminateTag("li");
+                generator.WriteRaw(text);
+            generator.TerminateTag("a");
+            generator.TerminateTag("li");
         }
 
-        return hg.ToString();
+        return generator.ToString();
     }
 
-    public static string GetForUl(string baseAnchor, string[] idcka, string[] texty, bool skipDuplicates)
+    /// <summary>
+    /// Generates list items for UL (array version).
+    /// </summary>
+    /// <param name="baseAnchor">Base anchor URL.</param>
+    /// <param name="ids">Array of IDs.</param>
+    /// <param name="texts">Array of display texts.</param>
+    /// <param name="isSkipDuplicates">Whether to skip duplicate texts.</param>
+    /// <returns>HTML string with list items.</returns>
+    public static string GetForUl(string baseAnchor, string[] ids, string[] texts, bool isSkipDuplicates)
     {
-        return GetForUl(baseAnchor, idcka.ToList(), texty.ToList(), skipDuplicates);
+        return GetForUl(baseAnchor, ids.ToList(), texts.ToList(), isSkipDuplicates);
     }
 
-    public static string GetForUl(string baseAnchor, List<string> idcka, List<string> texty, bool skipDuplicates)
+    /// <summary>
+    /// Generates list items for UL (list version).
+    /// </summary>
+    /// <param name="baseAnchor">Base anchor URL.</param>
+    /// <param name="ids">List of IDs.</param>
+    /// <param name="texts">List of display texts.</param>
+    /// <param name="isSkipDuplicates">Whether to skip duplicate texts.</param>
+    /// <returns>HTML string with list items.</returns>
+    public static string GetForUl(string baseAnchor, List<string> ids, List<string> texts, bool isSkipDuplicates)
     {
-        if (idcka.Count != texty.Count)
-            return "Nastala chyba, program poslal na render nejm\u00E9n\u011B v jednom poli m\u00E9n\u011B prvk\u016F ne\u017E se o\u010Dek\u00E1valo";
-        var hg = new HtmlGenerator();
-        if (skipDuplicates)
-            texty = texty.Distinct().ToList(); //CAG.RemoveDuplicitiesList(texty);
-        for (var i = 0; i < texty.Count; i++)
+        if (ids.Count != texts.Count)
+            return "Error occurred, program sent fewer elements in one array than expected for rendering";
+        var generator = new HtmlGenerator();
+        if (isSkipDuplicates)
+            texts = texts.Distinct().ToList();
+        for (var i = 0; i < texts.Count; i++)
         {
-            var text = texty[i];
-            hg.WriteTag("li");
-            hg.WriteTagWithAttr("a", "href", baseAnchor + idcka[i]);
-            hg.WriteRaw(texty[i]);
-            hg.TerminateTag("a");
-            hg.TerminateTag("li");
+            var text = texts[i];
+            generator.WriteTag("li");
+            generator.WriteTagWithAttrs("a", "href", baseAnchor + ids[i]);
+            generator.WriteRaw(texts[i]);
+            generator.TerminateTag("a");
+            generator.TerminateTag("li");
         }
 
-        return hg.ToString();
+        return generator.ToString();
     }
 }

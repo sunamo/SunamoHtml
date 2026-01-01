@@ -1,33 +1,37 @@
 namespace SunamoHtml._sunamo.SunamoValues.Constants;
 
+/// <summary>
+/// EN: Constants for date and time operations.
+/// CZ: Konstanty pro operace s datem a časem.
+/// </summary>
 internal class DTConstants
 {
-    internal const long secondsInMinute = 60;
-    internal const long secondsInHour = secondsInMinute * 60;
-    internal const long secondsInDay = secondsInHour * 24;
-    internal const int yearStartUnixDate = 1970;
+    internal const long SecondsInMinute = 60;
+    internal const long SecondsInHour = SecondsInMinute * 60;
+    internal const long SecondsInDay = SecondsInHour * 24;
+    internal const int YearStartUnixDate = 1970;
 
-    internal static readonly List<string> daysInWeekENShortcut =
+    internal static readonly List<string> DaysInWeekENShortcut =
         new List<string>(["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]);
 
-    internal static readonly List<string> daysInWeekEN = new()
+    internal static readonly List<string> DaysInWeekEN = new()
         { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
 
-    internal static readonly List<string> monthsInYearEN = new()
+    internal static readonly List<string> MonthsInYearEN = new()
     {
         "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November",
         "December"
     };
 
-    internal static readonly DateTime UnixFsStart = new(yearStartUnixDate, 1, 1);
+    internal static readonly DateTime UnixFsStart = new(YearStartUnixDate, 1, 1);
 
-    internal static readonly List<string> daysInWeekCS = new()
+    internal static readonly List<string> DaysInWeekCS = new()
         { Pondeli, Utery, Streda, Ctvrtek, Patek, Sobota, Nedele };
 
-    internal static DateTime unixTimeStartEpoch = new(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-    internal static DateTime winTimeStartEpoch = new(1601, 1, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+    internal static DateTime UnixTimeStartEpoch = new(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+    internal static DateTime WinTimeStartEpoch = new(1601, 1, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-    internal static readonly List<string> monthsInYearCZ = new()
+    internal static readonly List<string> MonthsInYearCZ = new()
         { Leden, Unor, Brezen, Duben, Kveten, Cerven, Cervenec, Srpen, Zari, Rijen, Listopad, Prosinec };
 
     #region Dny v týdny CS
