@@ -1,85 +1,133 @@
 namespace SunamoHtml._sunamo.SunamoStringSplit;
 
+/// <summary>
+/// EN: String splitting utility methods.
+/// CZ: Utility metody pro rozdělování stringů.
+/// </summary>
 internal class SHSplit
 {
-    internal static List<string> SplitBySpaceAndPunctuationCharsLeave(string veta)
+    /// <summary>
+    /// EN: Splits text by space and punctuation characters, keeping the delimiters in the result.
+    /// CZ: Rozdělí text podle mezer a interpunkčních znaků, zachová oddělovače ve výsledku.
+    /// </summary>
+    /// <param name="text">The text to split.</param>
+    /// <returns>List of words and delimiters.</returns>
+    internal static List<string> SplitBySpaceAndPunctuationCharsLeave(string text)
     {
-        var vr = new List<string>();
-        vr.Add("");
-        foreach (var item in veta)
+        var result = new List<string>();
+        result.Add("");
+        foreach (var character in text)
         {
-            var jeMezeraOrPunkce = false;
-            foreach (var item2 in SHData.spaceAndPuntactionChars)
-                if (item == item2)
+            var isSpaceOrPunctuation = false;
+            foreach (var delimiter in SHData.spaceAndPuntactionChars)
+                if (character == delimiter)
                 {
-                    jeMezeraOrPunkce = true;
+                    isSpaceOrPunctuation = true;
                     break;
                 }
 
-            if (jeMezeraOrPunkce)
+            if (isSpaceOrPunctuation)
             {
-                if (vr[vr.Count - 1] == "")
-                    vr[vr.Count - 1] += item.ToString();
+                if (result[result.Count - 1] == "")
+                    result[result.Count - 1] += character.ToString();
                 else
-                    vr.Add(item.ToString());
+                    result.Add(character.ToString());
 
-                vr.Add("");
+                result.Add("");
             }
             else
             {
-                vr[vr.Count - 1] += item.ToString();
+                result[result.Count - 1] += character.ToString();
             }
         }
 
-        return vr;
+        return result;
     }
 
-    internal static List<string> SplitAndKeepDelimiters(string originalString, List<string> ienu)
+    /// <summary>
+    /// EN: Splits string and keeps delimiters in the result.
+    /// CZ: Rozdělí string a zachová oddělovače ve výsledku.
+    /// </summary>
+    /// <param name="originalString">The string to split.</param>
+    /// <param name="delimiters">List of delimiter characters.</param>
+    /// <returns>List of split parts with delimiters.</returns>
+    internal static List<string> SplitAndKeepDelimiters(string originalString, List<string> delimiters)
     {
-        //var ienu = (IList)deli;
-        var vr = Regex.Split(originalString, @"(?<=[" + string.Join("", ienu) + "])");
-        return vr.ToList();
+        var result = Regex.Split(originalString, @"(?<=[" + string.Join("", delimiters) + "])");
+        return result.ToList();
     }
 
-    internal static void RemoveWhichHaveWhitespaceAtBothSides(string s, List<int> bold)
+    /// <summary>
+    /// EN: Removes indexes from list where the character at that index has whitespace on both sides.
+    /// CZ: Odstraní indexy ze seznamu kde znak na tom indexu má mezery na obou stranách.
+    /// </summary>
+    /// <param name="text">The text to check.</param>
+    /// <param name="indexes">List of indexes to filter.</param>
+    internal static void RemoveWhichHaveWhitespaceAtBothSides(string text, List<int> indexes)
     {
-        for (var i = bold.Count - 1; i >= 0; i--)
-            if (char.IsWhiteSpace(s[bold[i] - 1]) && char.IsWhiteSpace(s[bold[i] + 1]))
-                bold.RemoveAt(i);
+        for (var i = indexes.Count - 1; i >= 0; i--)
+            if (char.IsWhiteSpace(text[indexes[i] - 1]) && char.IsWhiteSpace(text[indexes[i] + 1]))
+                indexes.RemoveAt(i);
     }
 
-    internal static List<string> Split(string p, params string[] newLine)
+    /// <summary>
+    /// EN: Splits string by delimiters, removing empty entries.
+    /// CZ: Rozdělí string podle oddělovačů, odstraní prázdné záznamy.
+    /// </summary>
+    /// <param name="text">The text to split.</param>
+    /// <param name="delimiters">Delimiter strings.</param>
+    /// <returns>List of non-empty split parts.</returns>
+    internal static List<string> Split(string text, params string[] delimiters)
     {
-        return p.Split(newLine, StringSplitOptions.RemoveEmptyEntries).ToList();
+        return text.Split(delimiters, StringSplitOptions.RemoveEmptyEntries).ToList();
     }
 
-    internal static List<string> SplitNone(string p, params string[] newLine)
+    /// <summary>
+    /// EN: Splits string by delimiters, keeping empty entries.
+    /// CZ: Rozdělí string podle oddělovačů, zachová prázdné záznamy.
+    /// </summary>
+    /// <param name="text">The text to split.</param>
+    /// <param name="delimiters">Delimiter strings.</param>
+    /// <returns>List of all split parts including empty.</returns>
+    internal static List<string> SplitNone(string text, params string[] delimiters)
     {
-        return p.Split(newLine, StringSplitOptions.None).ToList();
+        return text.Split(delimiters, StringSplitOptions.None).ToList();
     }
 
-    internal static List<string> SplitNoneChar(string p, params char[] newLine)
+    /// <summary>
+    /// EN: Splits string by character delimiters, keeping empty entries.
+    /// CZ: Rozdělí string podle znakových oddělovačů, zachová prázdné záznamy.
+    /// </summary>
+    /// <param name="text">The text to split.</param>
+    /// <param name="delimiters">Delimiter characters.</param>
+    /// <returns>List of all split parts including empty.</returns>
+    internal static List<string> SplitNoneChar(string text, params char[] delimiters)
     {
-        return p.Split(newLine, StringSplitOptions.None).ToList();
+        return text.Split(delimiters, StringSplitOptions.None).ToList();
     }
 
-
-    internal static List<string> SplitChar(string p, params char[] newLine)
+    /// <summary>
+    /// EN: Splits string by character delimiters, removing empty entries.
+    /// CZ: Rozdělí string podle znakových oddělovačů, odstraní prázdné záznamy.
+    /// </summary>
+    /// <param name="text">The text to split.</param>
+    /// <param name="delimiters">Delimiter characters.</param>
+    /// <returns>List of non-empty split parts.</returns>
+    internal static List<string> SplitChar(string text, params char[] delimiters)
     {
-        return p.Split(newLine, StringSplitOptions.RemoveEmptyEntries).ToList();
+        return text.Split(delimiters, StringSplitOptions.RemoveEmptyEntries).ToList();
     }
 
+    /// <summary>
+    /// EN: Splits text by whitespace characters, removing empty entries.
+    /// CZ: Rozdělí text podle bílých znaků, odstraní prázdné záznamy.
+    /// </summary>
+    /// <param name="innerText">The text to split.</param>
+    /// <returns>List of non-empty parts.</returns>
     internal static List<string> SplitByWhiteSpaces(string innerText)
     {
         WhitespaceCharService whitespaceChar = new WhitespaceCharService();
 
         return innerText.Split(whitespaceChar.whiteSpaceChars.ToArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
     }
-
-    //    //internal static Func<string, IList, List<string>> SplitAndKeepDelimiters;
-    //    //internal static Func<string, char, List<string>> SplitNoneChar;
-    //    //internal static Func<string, String[], List<string>> Split;
-    //    //internal static Func<string, String, List<string>> SplitNoneString;
-    //    //internal static Func<string, List<string>> SplitByWhiteSpaces;
-    //    //internal static Func<string, List<string>> SplitBySpaceAndPunctuationCharsLeave;
 }

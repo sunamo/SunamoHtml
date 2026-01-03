@@ -10,7 +10,7 @@ namespace sunamo.Tests.Helpers.Html;
 public class HtmlHelperManipulationWithoutMockGoogleFormTests
 {
     const string testFile = @"E:\vs\Projects\PlatformIndependentNuGetPackages.Tests\sunamo.Tests\HtmlHelperGoogleFormTestPage.html";
-    HtmlNode hd;
+    HtmlNode hd = null!;
     const string mainQuestionTitle = "ss-q-title";
     const string additionalQuestionTitle = "ss-q-help ss-secondary-text";
     const string possibleAnswerTitle = "ss-choice-label";

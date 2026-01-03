@@ -1,91 +1,114 @@
 namespace SunamoHtml._sunamo.SunamoString;
 
-// EN: Variable names have been checked and replaced with self-descriptive names
-// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+/// <summary>
+/// EN: String helper methods (partial class - part 2).
+/// CZ: Pomocné metody pro stringy (partial class - část 2).
+/// </summary>
 internal partial class SH
 {
-    internal static string XCharsBeforeAndAfterWholeWords(string celyObsah, int stred, int naKazdeStrane)
+    /// <summary>
+    /// EN: Returns X characters before and after a center position, ensuring whole words are included.
+    /// CZ: Vrátí X znaků před a po středové pozici, zajistí že jsou zahrnutá celá slova.
+    /// </summary>
+    /// <param name="entireContent">The entire content to extract from.</param>
+    /// <param name="centerPosition">The center position.</param>
+    /// <param name="charsPerSide">Number of characters per side.</param>
+    /// <returns>Text with whole words around the center position.</returns>
+    internal static string XCharsBeforeAndAfterWholeWords(string entireContent, int centerPosition, int charsPerSide)
     {
-        var prava = new StringBuilder();
-        var slovo = new StringBuilder();
-        // Teď to samé udělám i pro levou stranu
-        var leva = new StringBuilder();
-        for (var i = stred - 1; i >= 0; i--)
+        var rightSide = new StringBuilder();
+        var currentWord = new StringBuilder();
+        var leftSide = new StringBuilder();
+
+        // Process left side from center backwards
+        for (var i = centerPosition - 1; i >= 0; i--)
         {
-            var ch = celyObsah[i];
+            var ch = entireContent[i];
             if (ch == ' ')
             {
-                var ts = slovo.ToString();
-                slovo.Clear();
-                if (ts != "")
+                var word = currentWord.ToString();
+                currentWord.Clear();
+                if (word != "")
                 {
-                    leva.Insert(0, ts + " ");
-                    if (leva.Length + " ".Length + ts.Length > naKazdeStrane)
+                    leftSide.Insert(0, word + " ");
+                    if (leftSide.Length + " ".Length + word.Length > charsPerSide)
                         break;
                 }
             }
             else
             {
-                slovo.Insert(0, ch);
+                currentWord.Insert(0, ch);
             }
         }
 
-        var list = slovo + " " + leva.ToString().TrimEnd(' ');
-        list = list.TrimEnd(' ');
-        naKazdeStrane += naKazdeStrane - list.Length;
-        slovo.Clear();
-        // Počítám po pravé straně započítám i to středové písmenko
-        for (var i = stred; i < celyObsah.Length; i++)
+        var leftResult = currentWord + " " + leftSide.ToString().TrimEnd(' ');
+        leftResult = leftResult.TrimEnd(' ');
+        charsPerSide += charsPerSide - leftResult.Length;
+        currentWord.Clear();
+
+        // Process right side from center forwards
+        for (var i = centerPosition; i < entireContent.Length; i++)
         {
-            var ch = celyObsah[i];
+            var ch = entireContent[i];
             if (ch == ' ')
             {
-                var ts = slovo.ToString();
-                slovo.Clear();
-                if (ts != "")
+                var word = currentWord.ToString();
+                currentWord.Clear();
+                if (word != "")
                 {
-                    prava.Append(" " + ts);
-                    if (prava.Length + " ".Length + ts.Length > naKazdeStrane)
+                    rightSide.Append(" " + word);
+                    if (rightSide.Length + " ".Length + word.Length > charsPerSide)
                         break;
                 }
             }
             else
             {
-                slovo.Append(ch);
+                currentWord.Append(ch);
             }
         }
 
-        var parameter = prava.ToString().TrimStart(' ') + " " + slovo;
-        parameter = parameter.TrimStart(' ');
-        var vr = "";
-        if (celyObsah.Contains(list + " ") && celyObsah.Contains(" " + parameter))
-            vr = list + "" + parameter;
+        var rightResult = rightSide.ToString().TrimStart(' ') + " " + currentWord;
+        rightResult = rightResult.TrimStart(' ');
+        var result = "";
+        if (entireContent.Contains(leftResult + " ") && entireContent.Contains(" " + rightResult))
+            result = leftResult + "" + rightResult;
         else
-            vr = list + parameter;
-        return vr;
+            result = leftResult + rightResult;
+        return result;
     }
 
-    internal static string GetTextBetweenTwoCharsInts(string parameter, int begin, int end)
+    /// <summary>
+    /// EN: Gets text between two character positions (by integer indexes).
+    /// CZ: Získá text mezi dvěma znakovými pozicemi (podle celočíselných indexů).
+    /// </summary>
+    /// <param name="text">The text to extract from.</param>
+    /// <param name="beginIndex">The begin index.</param>
+    /// <param name="endIndex">The end index.</param>
+    /// <returns>Text between the two positions.</returns>
+    internal static string GetTextBetweenTwoCharsInts(string text, int beginIndex, int endIndex)
     {
-        if (end > begin)
-            // a(1) - 1,3
-            return parameter.Substring(begin + 1, end - begin - 1);
-        // originally
-        //return parameter.Substring(begin+1, end - begin - 1);
-        return parameter;
+        if (endIndex > beginIndex)
+            return text.Substring(beginIndex + 1, endIndex - beginIndex - 1);
+        return text;
     }
 
-    internal static bool IsNumbered(string v)
+    /// <summary>
+    /// EN: Checks if a string represents a numbered list item (digits followed by dot).
+    /// CZ: Zkontroluje zda string reprezentuje položku číslovaného seznamu (číslice následované tečkou).
+    /// </summary>
+    /// <param name="text">The text to check.</param>
+    /// <returns>True if the text is a numbered item, false otherwise.</returns>
+    internal static bool IsNumbered(string text)
     {
-        var i = 0;
-        foreach (var item in v)
-            if (char.IsNumber(item))
+        var digitCount = 0;
+        foreach (var character in text)
+            if (char.IsNumber(character))
             {
-                i++;
+                digitCount++;
             }
-            else if (item == '.')
+            else if (character == '.')
             {
-                if (i > 0)
+                if (digitCount > 0)
                     return true;
             }
             else
@@ -96,127 +119,159 @@ internal partial class SH
         return false;
     }
 
-    internal static string FirstCharUpper(string nazevPP)
+    /// <summary>
+    /// EN: Converts the first character of a string to uppercase.
+    /// CZ: Převede první znak stringu na velké písmeno.
+    /// </summary>
+    /// <param name="text">The text to convert.</param>
+    /// <returns>Text with first character uppercase.</returns>
+    internal static string FirstCharUpper(string text)
     {
-        if (nazevPP.Length == 1)
-            return nazevPP.ToUpper();
-        var stringBuilder = nazevPP.Substring(1);
-        return nazevPP[0].ToString().ToUpper() + stringBuilder;
-    }
-
-    internal static string FirstCharOfEveryWordUpperDash(string v)
-    {
-        return FirstCharOfEveryWordUpper(v, '-');
+        if (text.Length == 1)
+            return text.ToUpper();
+        var restOfString = text.Substring(1);
+        return text[0].ToString().ToUpper() + restOfString;
     }
 
     /// <summary>
-    ///     Return joined with space
+    /// EN: Converts first character of every dash-separated word to uppercase.
+    /// CZ: Převede první znak každého pomlčkou odděleného slova na velké písmeno.
     /// </summary>
-    /// <param name = "v"></param>
-    /// <param name = "dash"></param>
-    private static string FirstCharOfEveryWordUpper(string v, char dash)
+    /// <param name="text">The text to convert.</param>
+    /// <returns>Text with first character of each dash-separated word uppercase, joined with spaces.</returns>
+    internal static string FirstCharOfEveryWordUpperDash(string text)
     {
-        var parameter = SHSplit.SplitChar(v, dash);
-        for (var i = 0; i < parameter.Count; i++)
-            parameter[i] = FirstCharUpper(parameter[i]);
-        //p = CAChangeContent.ChangeContent0(null, parameter, FirstCharUpper);
-        return string.Join(" ", parameter);
+        return FirstCharOfEveryWordUpper(text, '-');
     }
 
+    /// <summary>
+    /// EN: Converts first character of every word (separated by delimiter) to uppercase.
+    /// CZ: Převede první znak každého slova (odděleného oddělovačem) na velké písmeno.
+    /// Returns words joined with space.
+    /// </summary>
+    /// <param name="text">The text to convert.</param>
+    /// <param name="delimiter">The delimiter character.</param>
+    /// <returns>Text with first character of each word uppercase, joined with spaces.</returns>
+    private static string FirstCharOfEveryWordUpper(string text, char delimiter)
+    {
+        var words = SHSplit.SplitChar(text, delimiter);
+        for (var i = 0; i < words.Count; i++)
+            words[i] = FirstCharUpper(words[i]);
+        return string.Join(" ", words);
+    }
+
+    /// <summary>
+    /// EN: Matches a string against a wildcard pattern.
+    /// CZ: Porovná string s wildcard vzorem.
+    /// </summary>
+    /// <param name="name">The string to match.</param>
+    /// <param name="mask">The wildcard mask pattern.</param>
+    /// <returns>True if the string matches the pattern, false otherwise.</returns>
     internal static bool MatchWildcard(string name, string mask)
     {
         return IsMatchRegex(name, mask, '?', '*');
     }
 
-    private static bool IsMatchRegex(string str, string pat, char singleWildcard, char multipleWildcard)
+    /// <summary>
+    /// EN: Checks if a string matches a pattern with wildcard characters.
+    /// CZ: Zkontroluje zda string odpovídá vzoru s wildcard znaky.
+    /// </summary>
+    /// <param name="text">The text to match.</param>
+    /// <param name="pattern">The pattern to match against.</param>
+    /// <param name="singleWildcard">Single character wildcard.</param>
+    /// <param name="multipleWildcard">Multiple character wildcard.</param>
+    /// <returns>True if the text matches the pattern, false otherwise.</returns>
+    private static bool IsMatchRegex(string text, string pattern, char singleWildcard, char multipleWildcard)
     {
-        // If I compared .vs with .vs, return false before
-        if (str == pat)
+        if (text == pattern)
             return true;
-        var escapedSingle = Regex.Escape(new string (singleWildcard, 1));
-        var escapedMultiple = Regex.Escape(new string (multipleWildcard, 1));
-        pat = Regex.Escape(pat);
-        pat = pat.Replace(escapedSingle, ".");
-        pat = "^" + pat.Replace(escapedMultiple, ".*") + "$";
-        var reg = new Regex(pat);
-        return reg.IsMatch(str);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static string WrapWithChar(string value, char v, bool _trimWrapping = false, bool alsoIfIsWhitespaceOrEmpty = true)
-    {
-        if (string.IsNullOrWhiteSpace(value) && !alsoIfIsWhitespaceOrEmpty)
-            return string.Empty;
-        // TODO: Make with StringBuilder, because of WordAfter and so
-        return WrapWith(_trimWrapping ? value.Trim() : value, v.ToString());
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static string WrapWith(string value, string h)
-    {
-        return h + value + h;
-    }
-
-    //    internal static Func<string, string, string> ReplaceWhiteSpacesWithoutSpacesWithReplaceWith;
-    //    internal static Func<string, string, string, string> ReplaceAll2;
-    //    internal static Func<string, List<string>> GetLines;
-    //    internal static Func<List<string>, string> JoinNL;
-    //    internal static Func<string, int, int, string> GetTextBetweenTwoCharsInts;
-    //    internal static Func<string, char, List<int>> IndexesOfChars;
-    //    internal static Action<string, List<int>> RemoveWhichHaveWhitespaceAtBothSides;
-    //    internal static Func<string, string, List<int>> ReturnOccurencesOfString;
-    //    internal static Func<string, bool> IsNumbered;
-    //    internal static Func<string, string, string> GetToFirst;
-    //    internal static Func<string, string> FirstCharOfEveryWordUpperDash;
-    //    internal static Func<string, int, string> ShortForLettersCount;
-    //    internal static Func<string, string, string, string> ReplaceOnce;
-    //    internal static Func<string, string, string, string> ReplaceAll;
-    //    internal static Func<string, string, string[], string> ReplaceAllArray;
-    //    internal static Func<string, char, bool, bool, string> WrapWithChar;
-    //    internal static Func<string, string> ReplaceAllDoubleSpaceToSingle;
-    //    internal static Func<string, int, int, string> XCharsBeforeAndAfterWholeWords;
-    //    internal static Func<string, int, string> ShortForLettersCountThreeDotsReverse;
-    //    internal static Func<string, string, bool> MatchWildcard;
-    //    internal static Func<string, string, List<string>> Split;
-    //    internal static Func<string, string[], List<FromToWord>> ReturnOccurencesOfStringFromToWord;
-    //    internal static Func<string, char, string> GetFirstPartByLocation;
-    //    internal static Func<string, string, string, bool, string> GetTextBetweenSimple;
-    internal static List<int> IndexesOfChars(string input, char ch)
-    {
-        return IndexesOfCharsList(input, new List<char>(ch));
+        var escapedSingle = Regex.Escape(new string(singleWildcard, 1));
+        var escapedMultiple = Regex.Escape(new string(multipleWildcard, 1));
+        pattern = Regex.Escape(pattern);
+        pattern = pattern.Replace(escapedSingle, ".");
+        pattern = "^" + pattern.Replace(escapedMultiple, ".*") + "$";
+        var regex = new Regex(pattern);
+        return regex.IsMatch(text);
     }
 
     /// <summary>
-    ///     IndexesOfChars - char
-    ///     ReturnOccurencesOfString - string
+    /// EN: Wraps a value with a character on both sides.
+    /// CZ: Obalí hodnotu znakem z obou stran.
     /// </summary>
-    /// <param name = "input"></param>
-    /// <param name = "whiteSpaceChars"></param>
-    /// <returns></returns>
-    internal static List<int> IndexesOfCharsList(string input, List<char> whiteSpaceChars)
+    /// <param name="value">The value to wrap.</param>
+    /// <param name="wrapChar">The character to wrap with.</param>
+    /// <param name="isTrimWrapping">Whether to trim the value before wrapping.</param>
+    /// <param name="isAlsoIfWhitespaceOrEmpty">Whether to wrap even if value is whitespace or empty.</param>
+    /// <returns>Wrapped value.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static string WrapWithChar(string value, char wrapChar, bool isTrimWrapping = false, bool isAlsoIfWhitespaceOrEmpty = true)
     {
-        var dx = new List<int>();
-        foreach (var item in whiteSpaceChars)
-            dx.AddRange(ReturnOccurencesOfString(input, item.ToString()));
-        dx.Sort();
-        return dx;
+        if (string.IsNullOrWhiteSpace(value) && !isAlsoIfWhitespaceOrEmpty)
+            return string.Empty;
+        return WrapWith(isTrimWrapping ? value.Trim() : value, wrapChar.ToString());
     }
 
-    internal static List<int> ReturnOccurencesOfString(string vcem, string co)
+    /// <summary>
+    /// EN: Wraps a value with a string on both sides.
+    /// CZ: Obalí hodnotu stringem z obou stran.
+    /// </summary>
+    /// <param name="value">The value to wrap.</param>
+    /// <param name="wrapper">The string to wrap with.</param>
+    /// <returns>Wrapped value.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static string WrapWith(string value, string wrapper)
     {
-        var Results = new List<int>();
-        for (var Index = 0; Index < vcem.Length - co.Length + 1; Index++)
+        return wrapper + value + wrapper;
+    }
+
+    /// <summary>
+    /// EN: Returns indexes of all occurrences of a character in a string.
+    /// CZ: Vrátí indexy všech výskytů znaku ve stringu.
+    /// </summary>
+    /// <param name="input">The input string.</param>
+    /// <param name="character">The character to find.</param>
+    /// <returns>List of indexes where the character appears.</returns>
+    internal static List<int> IndexesOfChars(string input, char character)
+    {
+        return IndexesOfCharsList(input, new List<char>(character));
+    }
+
+    /// <summary>
+    /// EN: Returns indexes of all occurrences of any character from a list in a string.
+    /// CZ: Vrátí indexy všech výskytů jakéhokoliv znaku ze seznamu ve stringu.
+    /// IndexesOfChars - for single char, ReturnOccurencesOfString - for string.
+    /// </summary>
+    /// <param name="input">The input string.</param>
+    /// <param name="characters">List of characters to find.</param>
+    /// <returns>Sorted list of indexes where any of the characters appear.</returns>
+    internal static List<int> IndexesOfCharsList(string input, List<char> characters)
+    {
+        var indexes = new List<int>();
+        foreach (var character in characters)
+            indexes.AddRange(ReturnOccurencesOfString(input, character.ToString()));
+        indexes.Sort();
+        return indexes;
+    }
+
+    /// <summary>
+    /// EN: Returns indexes of all occurrences of a substring in a string.
+    /// CZ: Vrátí indexy všech výskytů podřetězce ve stringu.
+    /// </summary>
+    /// <param name="entireText">The text to search in.</param>
+    /// <param name="searchFor">The substring to search for.</param>
+    /// <returns>List of indexes where the substring appears.</returns>
+    internal static List<int> ReturnOccurencesOfString(string entireText, string searchFor)
+    {
+        var results = new List<int>();
+        for (var index = 0; index < entireText.Length - searchFor.Length + 1; index++)
         {
-            var subs = vcem.Substring(Index, co.Length);
-            ////////DebugLogger.Instance.WriteLine(subs);
-            // non-breaking space. &nbsp; code 160
-            // 32 space
-            var ch = subs[0];
-            var ch2 = co[0];
-            if (subs == co)
-                Results.Add(Index);
+            var substring = entireText.Substring(index, searchFor.Length);
+            var firstChar = substring[0];
+            var searchFirstChar = searchFor[0];
+            if (substring == searchFor)
+                results.Add(index);
         }
 
-        return Results;
+        return results;
     }
 }

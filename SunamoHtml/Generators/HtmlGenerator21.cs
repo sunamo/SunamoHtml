@@ -41,9 +41,9 @@ public partial class HtmlGenerator2 : HtmlGenerator
             htmlGenerator.WriteTagWithAttrs("a", "href", photoLinks[i]);
             htmlGenerator.WriteTagWithAttrs("div", "style", "display: inline-block;", "id", "iosBadge" + idBadges[i], "class", "iosbRepair");
             if (isAnimated)
-                htmlGenerator.WriteNonPairTagWithAttrs("img", "style", "margin-left: auto; margin-right: auto; vertical-align-middle; width: " + widthImage + "px;height:" + heightImage + "px", "id", nameJsArray + srcPhoto[i], "class", "alternatingImage", "src", initialImageUri, HtmlAttrs.alt, textLinks[i]);
+                htmlGenerator.WriteNonPairTagWithAttrs("img", "style", "margin-left: auto; margin-right: auto; vertical-align-middle; width: " + widthImage + "px;height:" + heightImage + "px", "id", nameJsArray + srcPhoto[i], "class", "alternatingImage", "src", initialImageUri, HtmlAttrs.Alt, textLinks[i]);
             else
-                htmlGenerator.WriteNonPairTagWithAttrs("img", "src", srcPhoto[i], HtmlAttrs.alt, textLinks[i]);
+                htmlGenerator.WriteNonPairTagWithAttrs("img", "src", srcPhoto[i], HtmlAttrs.Alt, textLinks[i]);
             htmlGenerator.TerminateTag("div");
             htmlGenerator.TerminateTag("a");
             htmlGenerator.WriteTagWithAttrs("a", "href", textLinks[i]);

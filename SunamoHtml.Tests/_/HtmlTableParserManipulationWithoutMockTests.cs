@@ -25,6 +25,5 @@ public class HtmlTableParserTests
         var table = HtmlAgilityHelper.Node(hd.DocumentNode, true, "table");
         HtmlTableParser p = new HtmlTableParser(table, false);
         var value = p.ColumnValues("1", false, false);
-        int i = 0;
     }
 }

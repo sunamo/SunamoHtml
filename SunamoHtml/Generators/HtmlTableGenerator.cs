@@ -59,7 +59,7 @@ public class HtmlTableGenerator : HtmlGeneratorExtended
     public void WriteRowWorker(Action<string> cellWriter, string additionalQuestionCssClass,
         List<string> possibleAnswersAll)
     {
-        WriteTagWithAttr(HtmlTags.tr, HtmlAttrs.c, additionalQuestionCssClass);
+        WriteTagWithAttr(HtmlTags.tr, HtmlAttrs.C, additionalQuestionCssClass);
         foreach (var item in possibleAnswersAll)
             cellWriter(item);
         TerminateTag(HtmlTags.tr);

@@ -212,12 +212,12 @@ public partial class HtmlGenerator2 : HtmlGenerator
     {
         depth++;
         htmlGenerator.WriteTag(HtmlTags.ol);
-        htmlGenerator.WriteRaw(CheckBox(tree.data));
-        foreach (var item in tree.children)
+        htmlGenerator.WriteRaw(CheckBox(tree.Data));
+        foreach (var item in tree.Children)
         {
             htmlGenerator.WriteTag(HtmlTags.li);
-            htmlGenerator.WriteRaw(CheckBox(item.data));
-            foreach (var item2 in item.children)
+            htmlGenerator.WriteRaw(CheckBox(item.Data));
+            foreach (var item2 in item.Children)
                 AddTree(ref depth, htmlGenerator, item2);
             htmlGenerator.TerminateTag(HtmlTags.li);
         }

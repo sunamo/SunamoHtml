@@ -6,8 +6,8 @@ namespace sunamo.Tests.Html;
 
 public class HtmlHelperBaseTests
 {
-    protected HtmlNode documentNode;
-    protected HtmlNode bodyNode;
+    protected HtmlNode documentNode = null!;
+    protected HtmlNode bodyNode = null!;
     public const string testFile = @"E:\vs\Projects\PlatformIndependentNuGetPackages.Tests\sunamo.Tests\HtmlHelperTestPage.html";
     public readonly string cssClassC = "c";
     public readonly string cssClassA = "a";

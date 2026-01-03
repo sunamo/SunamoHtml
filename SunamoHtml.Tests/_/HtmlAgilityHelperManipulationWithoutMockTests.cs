@@ -14,7 +14,7 @@ public class HtmlAgilityHelperManipulationWithoutMockTests : HtmlHelperBaseTests
     //[Fact]
     public void NodesTest()
     {
-        List<HtmlNode> nodes = null;
+        List<HtmlNode> nodes = null!;
 
         noRecursive = true;
 
@@ -46,45 +46,45 @@ public class HtmlAgilityHelperManipulationWithoutMockTests : HtmlHelperBaseTests
     //[Fact]
     public void NodesWithAttrTest()
     {
-        List<HtmlNode> nodes = null;
+        List<HtmlNode> nodes = null!;
 
         // Recursively
-        nodes = HtmlAgilityHelper.NodesWithAttr(documentNode, true, HtmlTags.span, HtmlAttrs.c, cssClassC);
+        nodes = HtmlAgilityHelper.NodesWithAttr(documentNode, true, HtmlTags.span, HtmlAttrs.C, cssClassC);
         Assert.Equal(3, nodes.Count);
-        // Non-recursively 
+        // Non-recursively
         if (noRecursive)
         {
-            nodes = HtmlAgilityHelper.NodesWithAttr(bodyNode, false, HtmlTags.span, HtmlAttrs.c, cssClassC);
-            Assert.Equal(1, nodes.Count);
+            nodes = HtmlAgilityHelper.NodesWithAttr(bodyNode, false, HtmlTags.span, HtmlAttrs.C, cssClassC);
+            Assert.Single(nodes);
         }
 
         // Recursively
-        nodes = HtmlAgilityHelper.NodesWithAttr(bodyNode, true, "*", HtmlAttrs.c, cssClassC);
+        nodes = HtmlAgilityHelper.NodesWithAttr(bodyNode, true, "*", HtmlAttrs.C, cssClassC);
         Assert.Equal(4, nodes.Count);
-        // Non-recursively 
+        // Non-recursively
         if (noRecursive)
         {
-            nodes = HtmlAgilityHelper.NodesWithAttr(bodyNode, false, "*", HtmlAttrs.c, cssClassC);
+            nodes = HtmlAgilityHelper.NodesWithAttr(bodyNode, false, "*", HtmlAttrs.C, cssClassC);
             Assert.Equal(2, nodes.Count);
         }
 
         // Recursively
-        nodes = HtmlAgilityHelper.NodesWithAttr(bodyNode, true, "*", HtmlAttrs.c, cssClassA, true);
+        nodes = HtmlAgilityHelper.NodesWithAttr(bodyNode, true, "*", HtmlAttrs.C, cssClassA, true);
         Assert.Equal(3, nodes.Count);
-        // Non-recursively 
+        // Non-recursively
         if (noRecursive)
         {
-            nodes = HtmlAgilityHelper.NodesWithAttr(bodyNode, false, "*", HtmlAttrs.c, cssClassC, true);
+            nodes = HtmlAgilityHelper.NodesWithAttr(bodyNode, false, "*", HtmlAttrs.C, cssClassC, true);
             Assert.Equal(2, nodes.Count);
         }
 
         // Recursively
-        nodes = HtmlAgilityHelper.NodesWithAttr(bodyNode, true, "*", HtmlAttrs.c, "*", true);
+        nodes = HtmlAgilityHelper.NodesWithAttr(bodyNode, true, "*", HtmlAttrs.C, "*", true);
         Assert.Equal(10, nodes.Count);
-        // Non-recursively 
+        // Non-recursively
         if (noRecursive)
         {
-            nodes = HtmlAgilityHelper.NodesWithAttr(bodyNode, false, "*", HtmlAttrs.c, "*", true);
+            nodes = HtmlAgilityHelper.NodesWithAttr(bodyNode, false, "*", HtmlAttrs.C, "*", true);
             Assert.Equal(7, nodes.Count);
         }
     }
@@ -92,25 +92,25 @@ public class HtmlAgilityHelperManipulationWithoutMockTests : HtmlHelperBaseTests
     //[Fact]
     public void NodesWhichContainsInAttrTest()
     {
-        List<HtmlNode> nodes = null;
+        List<HtmlNode> nodes = null!;
 
         // Recursively
-        nodes = HtmlAgilityHelper.NodesWhichContainsInAttr(documentNode, true, HtmlTags.span, HtmlAttrs.c, cssClassA);
+        nodes = HtmlAgilityHelper.NodesWhichContainsInAttr(documentNode, true, HtmlTags.span, HtmlAttrs.C, cssClassA);
         Assert.Equal(2, nodes.Count);
-        // Non-recursively 
+        // Non-recursively
         if (noRecursive)
         {
-            nodes = HtmlAgilityHelper.NodesWhichContainsInAttr(bodyNode, false, HtmlTags.span, HtmlAttrs.c, cssClassA);
+            nodes = HtmlAgilityHelper.NodesWhichContainsInAttr(bodyNode, false, HtmlTags.span, HtmlAttrs.C, cssClassA);
             Assert.Single(nodes);
         }
 
         // Recursively
-        nodes = HtmlAgilityHelper.NodesWhichContainsInAttr(documentNode, true, "*", HtmlAttrs.c, cssClassA);
+        nodes = HtmlAgilityHelper.NodesWhichContainsInAttr(documentNode, true, "*", HtmlAttrs.C, cssClassA);
         Assert.Equal(3, nodes.Count);
-        // Non-recursively 
+        // Non-recursively
         if (noRecursive)
         {
-            nodes = HtmlAgilityHelper.NodesWhichContainsInAttr(bodyNode, false, "*", HtmlAttrs.c, cssClassA);
+            nodes = HtmlAgilityHelper.NodesWhichContainsInAttr(bodyNode, false, "*", HtmlAttrs.C, cssClassA);
             Assert.Equal(2, nodes.Count);
         }
     }
@@ -118,7 +118,7 @@ public class HtmlAgilityHelperManipulationWithoutMockTests : HtmlHelperBaseTests
     //[Fact]
     public void NodeTest()
     {
-        HtmlNode node = null;
+        HtmlNode node = null!;
 
         // Recursively
         node = HtmlAgilityHelper.Node(documentNode, true, HtmlTags.span);
@@ -147,33 +147,33 @@ public class HtmlAgilityHelperManipulationWithoutMockTests : HtmlHelperBaseTests
     //[Fact]
     public void NodeWithAttrTest()
     {
-        HtmlNode node = null;
+        HtmlNode node = null!;
 
         // Recursively
-        node = HtmlAgilityHelper.NodeWithAttr(documentNode, true, HtmlTags.span, HtmlAttrs.c, cssClassC);
+        node = HtmlAgilityHelper.NodeWithAttr(documentNode, true, HtmlTags.span, HtmlAttrs.C, cssClassC);
         Assert.NotNull(node);
 
         // exists but "a b"
-        node = HtmlAgilityHelper.NodeWithAttr(documentNode, true, HtmlTags.span, HtmlAttrs.c, cssClassA);
+        node = HtmlAgilityHelper.NodeWithAttr(documentNode, true, HtmlTags.span, HtmlAttrs.C, cssClassA);
         Assert.Null(node);
 
-        node = HtmlAgilityHelper.NodeWithAttr(documentNode, true, "*", HtmlAttrs.cAttr, cssClassA);
+        node = HtmlAgilityHelper.NodeWithAttr(documentNode, true, "*", HtmlAttrs.CAttr, cssClassA);
         Assert.Null(node);
 
-        node = HtmlAgilityHelper.NodeWithAttr(documentNode, true, HtmlTags.img, HtmlAttrs.cAttr, cssClassA);
+        node = HtmlAgilityHelper.NodeWithAttr(documentNode, true, HtmlTags.img, HtmlAttrs.CAttr, cssClassA);
         Assert.Null(node);
 
-        // Non-recursively 
+        // Non-recursively
         if (noRecursive)
         {
-            node = HtmlAgilityHelper.NodeWithAttr(bodyNode, false, HtmlTags.span, HtmlAttrs.c, cssClassC);
+            node = HtmlAgilityHelper.NodeWithAttr(bodyNode, false, HtmlTags.span, HtmlAttrs.C, cssClassC);
             Assert.NotNull(node);
 
             // exists but "a b"
-            node = HtmlAgilityHelper.NodeWithAttr(bodyNode, false, HtmlTags.span, HtmlAttrs.c, cssClassA);
+            node = HtmlAgilityHelper.NodeWithAttr(bodyNode, false, HtmlTags.span, HtmlAttrs.C, cssClassA);
             Assert.Null(node);
 
-            node = HtmlAgilityHelper.NodeWithAttr(bodyNode, false, "*", HtmlAttrs.c, cssClassC);
+            node = HtmlAgilityHelper.NodeWithAttr(bodyNode, false, "*", HtmlAttrs.C, cssClassC);
             Assert.NotNull(node);
         }
     }

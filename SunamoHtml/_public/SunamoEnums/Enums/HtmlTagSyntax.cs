@@ -1,4 +1,3 @@
-// variables names: ok
 namespace SunamoHtml._public.SunamoEnums.Enums;
 
 /// <summary>
