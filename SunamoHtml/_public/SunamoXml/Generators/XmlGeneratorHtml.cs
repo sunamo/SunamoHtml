@@ -1,8 +1,7 @@
 namespace SunamoHtml._public.SunamoXml.Generators;
 
 /// <summary>
-/// EN: XML/HTML generator that builds XML/HTML content using a StringBuilder.
-/// CZ: XML/HTML generátor který sestavuje XML/HTML obsah pomocí StringBuilder.
+/// XML/HTML generator that builds XML/HTML content using a StringBuilder.
 /// </summary>
 public class XmlGeneratorHtml
 {
@@ -10,8 +9,7 @@ public class XmlGeneratorHtml
     private readonly bool _isUseStack;
 
     /// <summary>
-    /// EN: Gets or sets the StringBuilder used to build the XML/HTML content.
-    /// CZ: Získá nebo nastaví StringBuilder používaný pro sestavení XML/HTML obsahu.
+    /// Gets or sets the StringBuilder used to build the XML/HTML content.
     /// </summary>
     public StringBuilder StringBuilder { get; set; } = new();
 
@@ -42,7 +40,7 @@ public class XmlGeneratorHtml
     }
 
     /// <summary>
-    /// EN: Writes a non-pairing tag with two attributes.
+    /// 
     /// CZ: Zapíše nepárový tag se dvěma atributy.
     /// </summary>
     /// <param name="tagName">The tag name.</param>
@@ -56,7 +54,7 @@ public class XmlGeneratorHtml
     }
 
     /// <summary>
-    /// EN: Writes a non-pairing tag with one attribute.
+    /// 
     /// CZ: Zapíše nepárový tag s jedním atributem.
     /// </summary>
     /// <param name="tagName">The tag name.</param>
@@ -102,7 +100,7 @@ public class XmlGeneratorHtml
     }
 
     /// <summary>
-    /// EN: Writes a non-pairing tag with multiple attributes.
+    /// 
     /// CZ: Zapíše nepárový tag s více atributy.
     /// </summary>
     /// <param name="tagName">The tag name.</param>
@@ -113,7 +111,7 @@ public class XmlGeneratorHtml
     }
 
     /// <summary>
-    /// EN: Writes a non-pairing tag with multiple attributes.
+    /// 
     /// CZ: Zapíše nepárový tag s více atributy.
     /// </summary>
     /// <param name="tagName">The tag name.</param>
@@ -132,7 +130,7 @@ public class XmlGeneratorHtml
     }
 
     /// <summary>
-    /// EN: Writes a CDATA section with specified content.
+    /// 
     /// CZ: Zapíše CDATA sekci se zadaným obsahem.
     /// </summary>
     /// <param name="innerCData">The content inside the CDATA section.</param>
@@ -142,7 +140,7 @@ public class XmlGeneratorHtml
     }
 
     /// <summary>
-    /// EN: Writes an anchor link element.
+    /// 
     /// CZ: Zapíše odkaz (anchor element).
     /// </summary>
     /// <param name="link">The href URL.</param>
@@ -155,7 +153,7 @@ public class XmlGeneratorHtml
     }
 
     /// <summary>
-    /// EN: Writes an opening tag with one attribute. OBSOLETE: Use WriteTagWithAttrs instead.
+    /// 
     /// CZ: Zapíše otevírací tag s jedním atributem. ZASTARALÉ: Použijte WriteTagWithAttrs.
     /// </summary>
     /// <param name="tagName">The tag name.</param>
@@ -183,7 +181,7 @@ public class XmlGeneratorHtml
     }
 
     /// <summary>
-    /// EN: Writes a closing tag.
+    /// 
     /// CZ: Zapíše zavírací tag.
     /// </summary>
     /// <param name="tagName">The tag name to close.</param>
@@ -193,7 +191,7 @@ public class XmlGeneratorHtml
     }
 
     /// <summary>
-    /// EN: Writes an opening tag without attributes.
+    /// 
     /// CZ: Zapíše otevírací tag bez atributů.
     /// </summary>
     /// <param name="tagName">The tag name.</param>
@@ -214,7 +212,7 @@ public class XmlGeneratorHtml
     }
 
     /// <summary>
-    /// EN: Writes an opening tag with multiple attributes.
+    /// 
     /// CZ: Zapíše otevírací tag s více atributy.
     /// </summary>
     /// <param name="tagName">The tag name.</param>
@@ -225,7 +223,7 @@ public class XmlGeneratorHtml
     }
 
     /// <summary>
-    /// EN: Writes an opening tag with multiple attributes.
+    /// 
     /// CZ: Zapíše otevírací tag s více atributy.
     /// </summary>
     /// <param name="tagName">The tag name.</param>
@@ -236,7 +234,7 @@ public class XmlGeneratorHtml
     }
 
     /// <summary>
-    /// EN: Writes an opening tag with attributes from a dictionary.
+    /// 
     /// CZ: Zapíše otevírací tag s atributy ze slovníku.
     /// </summary>
     /// <param name="tagName">The tag name.</param>
@@ -247,7 +245,7 @@ public class XmlGeneratorHtml
     }
 
     /// <summary>
-    /// EN: Writes an opening tag with attributes, checking for null values.
+    /// 
     /// CZ: Zapíše otevírací tag s atributy, kontroluje null hodnoty.
     /// </summary>
     /// <param name="tagName">The tag name.</param>
@@ -269,7 +267,7 @@ public class XmlGeneratorHtml
     }
 
     /// <summary>
-    /// EN: Writes an opening tag with XML namespace manager and additional attributes.
+    /// 
     /// CZ: Zapíše otevírací tag s XML namespace managerem a dalšími atributy.
     /// </summary>
     /// <param name="tagName">The tag name.</param>
@@ -283,7 +281,7 @@ public class XmlGeneratorHtml
     }
 
     /// <summary>
-    /// EN: Writes a non-pairing tag with multiple attributes, optionally appending null values.
+    /// 
     /// CZ: Zapíše nepárový tag s více atributy, volitelně připojí null hodnoty.
     /// </summary>
     /// <param name="isAppendNull">Whether to append null values.</param>
@@ -310,7 +308,7 @@ public class XmlGeneratorHtml
     }
 
     /// <summary>
-    /// EN: Writes an opening tag with multiple attributes, optionally appending null values.
+    /// 
     /// CZ: Zapíše otevírací tag s více atributy, volitelně připojí null hodnoty.
     /// </summary>
     /// <param name="isAppendNull">Whether to append null values.</param>
@@ -336,7 +334,7 @@ public class XmlGeneratorHtml
     }
 
     /// <summary>
-    /// EN: Writes a complete element with opening tag, inner content, and closing tag.
+    /// 
     /// CZ: Zapíše kompletní element s otevíracím tagem, vnitřním obsahem a zavíracím tagem.
     /// </summary>
     /// <param name="tagName">The tag name.</param>
@@ -355,7 +353,7 @@ public class XmlGeneratorHtml
     }
 
     /// <summary>
-    /// EN: Writes an opening tag with two attributes. OBSOLETE: Use WriteTagWithAttrs instead.
+    /// 
     /// CZ: Zapíše otevírací tag se dvěma atributy. ZASTARALÉ: Použijte WriteTagWithAttrs.
     /// </summary>
     /// <param name="tagName">The tag name.</param>
@@ -372,7 +370,7 @@ public class XmlGeneratorHtml
     }
 
     /// <summary>
-    /// EN: Writes a non-pairing tag without attributes.
+    /// 
     /// CZ: Zapíše nepárový tag bez atributů.
     /// </summary>
     /// <param name="tagName">The tag name.</param>
