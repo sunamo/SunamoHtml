@@ -6,13 +6,9 @@ namespace SunamoHtml._sunamo.SunamoXml.Generators;
 internal static class XmlTemplates
 {
     /// <summary>
-    ///     "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
-    ///     VS apos instead of qm nevermind
+    ///     XML declaration string with version 1.0 and UTF-8 encoding.
+    ///     Uses apostrophes instead of quotes.
     /// </summary>
-    internal const string xml = "<?xml version='1.0' encoding='utf-8'?>";
-
-
-
-
+    internal const string Xml = "<?xml version='1.0' encoding='utf-8'?>";
 
 }

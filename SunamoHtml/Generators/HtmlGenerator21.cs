@@ -17,9 +17,9 @@ public partial class HtmlGenerator2 : HtmlGenerator
     /// <param name="innerHtmlText">List of inner HTML text.</param>
     /// <param name="srcPhoto">List of photo source paths.</param>
     /// <param name="idBadges">List of badge IDs.</param>
-    /// <param name="nameJsArray">JavaScript array name.</param>
+    /// <param name="arrayName">JavaScript array name.</param>
     /// <returns>HTML string representing the list with images and badges.</returns>
-    public static string TopListWithImages(HtmlGenerator htmlGenerator, int widthImage, int heightImage, string initialImageUri, List<string> photoLinks, List<string> textLinks, List<string> innerHtmlText, List<string> srcPhoto, List<string> idBadges, string nameJsArray)
+    public static string TopListWithImages(HtmlGenerator htmlGenerator, int widthImage, int heightImage, string initialImageUri, List<string> photoLinks, List<string> textLinks, List<string> innerHtmlText, List<string> srcPhoto, List<string> idBadges, string arrayName)
     {
         var count = photoLinks.Count;
         if (count == 0)
@@ -41,7 +41,7 @@ public partial class HtmlGenerator2 : HtmlGenerator
             htmlGenerator.WriteTagWithAttrs("a", "href", photoLinks[i]);
             htmlGenerator.WriteTagWithAttrs("div", "style", "display: inline-block;", "id", "iosBadge" + idBadges[i], "class", "iosbRepair");
             if (isAnimated)
-                htmlGenerator.WriteNonPairTagWithAttrs("img", "style", "margin-left: auto; margin-right: auto; vertical-align-middle; width: " + widthImage + "px;height:" + heightImage + "px", "id", nameJsArray + srcPhoto[i], "class", "alternatingImage", "src", initialImageUri, HtmlAttrs.Alt, textLinks[i]);
+                htmlGenerator.WriteNonPairTagWithAttrs("img", "style", "margin-left: auto; margin-right: auto; vertical-align-middle; width: " + widthImage + "px;height:" + heightImage + "px", "id", arrayName + srcPhoto[i], "class", "alternatingImage", "src", initialImageUri, HtmlAttrs.Alt, textLinks[i]);
             else
                 htmlGenerator.WriteNonPairTagWithAttrs("img", "src", srcPhoto[i], HtmlAttrs.Alt, textLinks[i]);
             htmlGenerator.TerminateTag("div");
@@ -177,16 +177,16 @@ public partial class HtmlGenerator2 : HtmlGenerator
     /// <summary>
     /// Generates radio buttons without duplicate checking.
     /// </summary>
-    /// <param name="nameOfRBs">The name attribute for radio buttons.</param>
+    /// <param name="name">The name attribute for radio buttons.</param>
     /// <param name="ids">List of radio button IDs/values.</param>
     /// <param name="labels">List of radio button labels.</param>
     /// <returns>HTML string with radio buttons.</returns>
-    public static string GetRadioButtonsWoCheckDuplicate(string nameOfRBs, List<string> ids, List<string> labels)
+    public static string GetRadioButtonsWoCheckDuplicate(string name, List<string> ids, List<string> labels)
     {
         var generator = new HtmlGenerator();
         for (var i = 0; i < ids.Count; i++)
         {
-            generator.WriteNonPairTagWithAttrs("input", "type", "radio", "name", nameOfRBs, "value", ids[i]);
+            generator.WriteNonPairTagWithAttrs("input", "type", "radio", "name", name, "value", ids[i]);
             generator.WriteRaw(labels[i]);
             generator.WriteBr();
         }
@@ -197,17 +197,17 @@ public partial class HtmlGenerator2 : HtmlGenerator
     /// <summary>
     /// Generates radio buttons with click event handler.
     /// </summary>
-    /// <param name="nameOfRBs">The name attribute for radio buttons.</param>
+    /// <param name="name">The name attribute for radio buttons.</param>
     /// <param name="ids">List of radio button IDs/values.</param>
     /// <param name="labels">List of radio button labels.</param>
     /// <param name="eventHandlerSelected">The onclick event handler.</param>
     /// <returns>HTML string with radio buttons.</returns>
-    public static string GetRadioButtonsWoCheckDuplicate(string nameOfRBs, List<string> ids, List<string> labels, string eventHandlerSelected)
+    public static string GetRadioButtonsWoCheckDuplicate(string name, List<string> ids, List<string> labels, string eventHandlerSelected)
     {
         var generator = new HtmlGenerator();
         for (var i = 0; i < ids.Count; i++)
         {
-            generator.WriteTagWithAttrs("input", "type", "radio", "name", nameOfRBs, "value", ids[i], "onclick", eventHandlerSelected);
+            generator.WriteTagWithAttrs("input", "type", "radio", "name", name, "value", ids[i], "onclick", eventHandlerSelected);
             generator.WriteRaw(labels[i]);
             generator.WriteBr();
         }
@@ -219,40 +219,40 @@ public partial class HtmlGenerator2 : HtmlGenerator
     /// Generates tag cloud HTML for jquery.tagcloud.js.
     /// </summary>
     /// <param name="wordCount">Dictionary of words and their counts.</param>
-    /// <param name="prefixWithDot">Prefix with dot for JavaScript method.</param>
+    /// <param name="cssSelector">CSS selector prefix for JavaScript method.</param>
     /// <returns>HTML string for tag cloud.</returns>
-    public static string GetWordsForTagCloud(Dictionary<string, short> wordCount, string prefixWithDot)
+    public static string GetWordsForTagCloud(Dictionary<string, short> wordCount, string cssSelector)
     {
-        var nameJavascriptMethod = "AfterWordCloudClick";
-        return GetWordsForTagCloud(wordCount, nameJavascriptMethod, prefixWithDot);
+        var onClickHandler = "AfterWordCloudClick";
+        return GetWordsForTagCloud(wordCount, onClickHandler, cssSelector);
     }
 
     /// <summary>
     /// Generates tag cloud HTML for manage tags page.
     /// </summary>
     /// <param name="wordCount">Dictionary of words and their counts.</param>
-    /// <param name="prefixWithDot">Prefix with dot for JavaScript method.</param>
+    /// <param name="cssSelector">CSS selector prefix for JavaScript method.</param>
     /// <returns>HTML string for tag cloud.</returns>
-    public static string GetWordsForTagCloudManageTags(Dictionary<string, short> wordCount, string prefixWithDot)
+    public static string GetWordsForTagCloudManageTags(Dictionary<string, short> wordCount, string cssSelector)
     {
-        var nameJavascriptMethod = "AfterWordCloudClick2";
-        return GetWordsForTagCloud(wordCount, nameJavascriptMethod, prefixWithDot);
+        var onClickHandler = "AfterWordCloudClick2";
+        return GetWordsForTagCloud(wordCount, onClickHandler, cssSelector);
     }
 
     /// <summary>
     /// Core method for generating tag cloud HTML.
     /// </summary>
     /// <param name="wordCount">Dictionary of words and their counts.</param>
-    /// <param name="nameJavascriptMethod">JavaScript method name.</param>
-    /// <param name="prefixWithDot">Prefix with dot for JavaScript method.</param>
+    /// <param name="onClickHandler">JavaScript onclick handler method name.</param>
+    /// <param name="cssSelector">CSS selector prefix for JavaScript method.</param>
     /// <returns>HTML string for tag cloud.</returns>
-    private static string GetWordsForTagCloud(Dictionary<string, short> wordCount, string nameJavascriptMethod, string prefixWithDot)
+    private static string GetWordsForTagCloud(Dictionary<string, short> wordCount, string onClickHandler, string cssSelector)
     {
         var generator = new HtmlGenerator();
         foreach (var item in wordCount)
         {
             var withoutSpaces = item.Key.Replace(" ", "");
-            generator.WriteTagWithAttrs("a", "id", "tag" + withoutSpaces, "href", "javascript:" + prefixWithDot + nameJavascriptMethod + "($('#tag" + withoutSpaces + "'), '" + item.Key + "');", "rel", item.Value.ToString());
+            generator.WriteTagWithAttrs("a", "id", "tag" + withoutSpaces, "href", "javascript:" + cssSelector + onClickHandler + "($('#tag" + withoutSpaces + "'), '" + item.Key + "');", "rel", item.Value.ToString());
             generator.WriteRaw(SH.FirstCharOfEveryWordUpperDash(item.Key));
             generator.TerminateTag("a");
             generator.WriteRaw(" &nbsp; ");

@@ -69,7 +69,7 @@ public class HtmlHelperSunamoCz
             if (s2 != null)
                 sourceList.Add("strike");
 
-            error = StatusPrefixes.info + string.Join(",", sourceList) + " was odd count of elements. ";
+            error = StatusPrefixes.Info + string.Join(",", sourceList) + " was odd count of elements. ";
             return text;
         }
 

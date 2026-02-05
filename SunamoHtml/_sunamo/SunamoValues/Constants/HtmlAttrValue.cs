@@ -1,20 +1,21 @@
 namespace SunamoHtml._sunamo.SunamoValues.Constants;
 
 /// <summary>
-///     Everything must be consts to use in AllHtmlAttrsValues
+/// HTML attribute value constants.
+/// Everything must be consts to use in AllHtmlAttrsValues.
 /// </summary>
 internal class HtmlAttrValue
 {
-    internal const string textCss = "text/css";
-    internal const string stylesheet = "stylesheet";
-    internal const string server = "server";
-    internal const string text = "text";
-    internal const string radio = "radio";
-    internal const string hoverable = "hoverable";
-    internal const string textarea = "textarea";
-    internal const string cells = "cells";
-    internal const string colspan = "colspan";
-    internal static string checkbox = "checkbox";
+    internal const string TextCss = "text/css";
+    internal const string Stylesheet = "stylesheet";
+    internal const string Server = "server";
+    internal const string Text = "text";
+    internal const string Radio = "radio";
+    internal const string Hoverable = "hoverable";
+    internal const string Textarea = "textarea";
+    internal const string Cells = "cells";
+    internal const string Colspan = "colspan";
+    internal static string Checkbox = "checkbox";
     internal static string Switch = "switch";
-    internal static string textJavascript = "text/javascript";
+    internal static string TextJavascript = "text/javascript";
 }

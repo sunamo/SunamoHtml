@@ -1,39 +1,38 @@
-
-
+// variables names: ok
 
 /// <summary>
-/// plural - as string
+/// HTML tag names as string constants.
 /// </summary>
 internal class HtmlTags
 {
-    internal const string img = "img";
-    internal const string span = "span";
-    internal const string title = "title";
-    internal const string div = "div";
-    internal const string style = "style";
-    internal const string link = "link";
-    internal const string table = "table";
-    internal const string td = "td";
-    internal const string tr = "tr";
-    internal const string body = "body";
-    internal const string ul = "ul";
-    internal const string ol = "ol";
-    internal const string input = "input";
-    internal const string button = "button";
-    internal const string pre = "pre";
-    internal const string label = "label";
-    internal const string a = "a";
-    internal const string hr = "hr";
-    internal const string tbody = "tbody";
-    internal static string li = "li";
-    internal static string b = "b";
-    internal static string p = "p";
-    internal static string h4 = "h4";
-    internal static string h2 = "h2";
-    internal static string article = "article";
-    internal static string svg = "svg";
-    internal static string h3 = "h3";
-    internal static string script = "script";
-    internal static string th = "th";
-    internal static string option = "option";
+    internal const string Img = "img";
+    internal const string Span = "span";
+    internal const string Title = "title";
+    internal const string Div = "div";
+    internal const string Style = "style";
+    internal const string Link = "link";
+    internal const string Table = "table";
+    internal const string Td = "td";
+    internal const string Tr = "tr";
+    internal const string Body = "body";
+    internal const string Ul = "ul";
+    internal const string Ol = "ol";
+    internal const string Input = "input";
+    internal const string Button = "button";
+    internal const string Pre = "pre";
+    internal const string Label = "label";
+    internal const string A = "a";
+    internal const string Hr = "hr";
+    internal const string Tbody = "tbody";
+    internal static string Li = "li";
+    internal static string B = "b";
+    internal static string P = "p";
+    internal static string H4 = "h4";
+    internal static string H2 = "h2";
+    internal static string Article = "article";
+    internal static string Svg = "svg";
+    internal static string H3 = "h3";
+    internal static string Script = "script";
+    internal static string Th = "th";
+    internal static string Option = "option";
 }

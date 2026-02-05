@@ -25,7 +25,7 @@ public class HtmlGeneratorExtended : HtmlGenerator
             }
             else
             {
-                WriteTagWithAttr("a", "href", uri);
+                WriteTagWithAttrs("a", "href", uri);
                 WriteRaw(name);
                 TerminateTag("a");
             }
@@ -39,13 +39,13 @@ public class HtmlGeneratorExtended : HtmlGenerator
     /// Only outputs if the value parameter is not empty.
     /// </summary>
     /// <param name="label">The label text to display before the value.</param>
-    /// <param name="value">The value to display.</param>
-    public void Detail(string label, string value)
+    /// <param name="htmlContent">The value to display.</param>
+    public void Detail(string label, string htmlContent)
     {
-        if (!string.IsNullOrEmpty(value))
+        if (!string.IsNullOrEmpty(htmlContent))
         {
             WriteElement("b", label + ":");
-            WriteRaw(value);
+            WriteRaw(htmlContent);
             WriteBr();
         }
     }
@@ -79,7 +79,7 @@ public class HtmlGeneratorExtended : HtmlGenerator
         {
             WriteElement("b", label + ":");
             WriteRaw(" ");
-            WriteTagWithAttr("a", "href", "mailto:" + email);
+            WriteTagWithAttrs("a", "href", "mailto:" + email);
             WriteRaw(email);
             TerminateTag("a");
             WriteBr();
@@ -107,7 +107,7 @@ void
     /// Currently throws NotImplementedException - needs implementation.
     /// </summary>
     /// <param name="args">Optional arguments containing onload handler.</param>
-    public void BoilerplateMiddle(BoilerplateMiddleArgs args = null)
+    public void BoilerplateMiddle(BoilerplateMiddleArgs? args = null)
     {
         throw new Exception();
     }

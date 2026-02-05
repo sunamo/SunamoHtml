@@ -141,7 +141,7 @@ public static partial class HtmlHelper
     /// <returns>List of trimmed HTML nodes without text nodes.</returns>
     public static List<HtmlNode> TrimTexts(List<HtmlNode> nodes)
     {
-        return HtmlAgilityHelper.TrimTexts(nodes, true);
+        return HtmlAgilityHelper.TrimTexts(nodes);
     }
 
     /// <summary>
@@ -153,7 +153,7 @@ public static partial class HtmlHelper
     /// <returns>List of trimmed HTML nodes.</returns>
     public static List<HtmlNode> TrimTexts(List<HtmlNode> nodes, bool isRemoveTextNodes, bool isRemoveComments = false)
     {
-        return HtmlAgilityHelper.TrimTexts(nodes, isRemoveTextNodes, isRemoveComments);
+        return HtmlAgilityHelper.TrimTextsInternal(nodes, isRemoveTextNodes, isRemoveComments);
     }
 
     /// <summary>
@@ -284,12 +284,12 @@ public static partial class HtmlHelper
     /// CZ: Vrátí první podřízený tag odpovídající zadanému názvu tagu.
     /// Returns null if tag is not found.
     /// </summary>
-    /// <param name="parentNode">The parent HTML node to search in.</param>
+    /// <param name="htmlNode">The parent HTML node to search in.</param>
     /// <param name="tagName">The tag name to search for.</param>
     /// <returns>First matching HTML node or null.</returns>
-    public static HtmlNode ReturnTag(HtmlNode parentNode, string tagName)
+    public static HtmlNode ReturnTag(HtmlNode htmlNode, string tagName)
     {
-        foreach (var item in parentNode.ChildNodes)
+        foreach (var item in htmlNode.ChildNodes)
             if (item.Name == tagName)
                 return item;
         return null;
@@ -299,18 +299,18 @@ public static partial class HtmlHelper
     /// EN: Replaces a child node by matching its OuterHtml with a new node.
     /// CZ: Nahradí podřízený uzel porovnáním jeho OuterHtml s novým uzlem.
     /// </summary>
-    /// <param name="parentNode">The parent node containing the child to replace.</param>
+    /// <param name="htmlNode">The parent node containing the child to replace.</param>
     /// <param name="oldOuterHtml">The OuterHtml of the child node to replace.</param>
     /// <param name="newNode">The new node to replace with.</param>
-    public static void ReplaceChildNodeByOuterHtml(HtmlNode parentNode, string oldOuterHtml, HtmlNode newNode)
+    public static void ReplaceChildNodeByOuterHtml(HtmlNode htmlNode, string oldOuterHtml, HtmlNode newNode)
     {
-        for (var i = 0; i < parentNode.ChildNodes.Count; i++)
+        for (var i = 0; i < htmlNode.ChildNodes.Count; i++)
         {
-            var item = parentNode.ChildNodes[i];
+            var item = htmlNode.ChildNodes[i];
             if (item.OuterHtml == oldOuterHtml)
             {
                 // First is new, Second is old!!!
-                parentNode.ReplaceChild(newNode, item);
+                htmlNode.ReplaceChild(newNode, item);
                 break;
             }
         }

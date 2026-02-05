@@ -19,7 +19,7 @@ internal class SHSplit
         foreach (var character in text)
         {
             var isSpaceOrPunctuation = false;
-            foreach (var delimiter in SHData.spaceAndPuntactionChars)
+            foreach (var delimiter in SHData.SpaceAndPuntactionChars)
                 if (character == delimiter)
                 {
                     isSpaceOrPunctuation = true;
@@ -122,12 +122,12 @@ internal class SHSplit
     /// EN: Splits text by whitespace characters, removing empty entries.
     /// CZ: Rozdělí text podle bílých znaků, odstraní prázdné záznamy.
     /// </summary>
-    /// <param name="innerText">The text to split.</param>
+    /// <param name="text">The text to split.</param>
     /// <returns>List of non-empty parts.</returns>
-    internal static List<string> SplitByWhiteSpaces(string innerText)
+    internal static List<string> SplitByWhiteSpaces(string text)
     {
         WhitespaceCharService whitespaceChar = new WhitespaceCharService();
 
-        return innerText.Split(whitespaceChar.whiteSpaceChars.ToArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+        return text.Split(whitespaceChar.WhiteSpaceChars.ToArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
     }
 }

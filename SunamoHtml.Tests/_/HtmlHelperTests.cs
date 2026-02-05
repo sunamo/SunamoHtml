@@ -1,3 +1,4 @@
+// variables names: ok
 
 
 ///// <summary>
@@ -25,10 +26,10 @@
 //    //[Fact]
 //    public void GetTagOfAtributeTest()
 //    {
-//        var node = HtmlHelper.GetTagOfAtribute(documentNode, HtmlTags.div, HtmlAttrs.cAttr, cssClassHello);
+//        var node = HtmlHelper.GetTagOfAtribute(DocumentNode, HtmlTags.div, HtmlAttrs.cAttr, CssClassHello);
 //        Assert.Null(node);
 
-//        var node2 = HtmlHelper.GetTagOfAtribute(bodyNode, HtmlTags.div, HtmlAttrs.cAttr, cssClassHello);
+//        var node2 = HtmlHelper.GetTagOfAtribute(BodyNode, HtmlTags.div, HtmlAttrs.cAttr, CssClassHello);
 //        Assert.NotNull(node2);
 //    }
 
@@ -36,7 +37,7 @@
 //    //[Fact]
 //    public void ReturnTagsWithAttrRekTest()
 //    {
-//        var nodes = HtmlHelper.ReturnTagsWithAttrRek(documentNode, HtmlTags.span, HtmlAttrs.cAttr, cssClassC);
+//        var nodes = HtmlHelper.ReturnTagsWithAttrRek(DocumentNode, HtmlTags.span, HtmlAttrs.cAttr, CssClassC);
 //        Assert.Equal(3, nodes.Count);
 //    }
 
@@ -44,14 +45,14 @@
 //    //[Fact]
 //    public void GetTagOfAtributeRekTest()
 //    {
-//        var divFirst = HtmlHelper.GetTagOfAtributeRek(documentNode, HtmlTags.div, HtmlAttrs.id, divFirstId);
-//        var nodes = HtmlHelper.ReturnTagsWithAttrRek(divFirst, HtmlTags.span, HtmlAttrs.cAttr, cssClassC);
+//        var divFirst = HtmlHelper.GetTagOfAtributeRek(DocumentNode, HtmlTags.div, HtmlAttrs.id, DivFirstId);
+//        var nodes = HtmlHelper.ReturnTagsWithAttrRek(divFirst, HtmlTags.span, HtmlAttrs.cAttr, CssClassC);
 //        Assert.Equal(2, nodes.Count);
 
-//        var node = HtmlHelper.GetTagOfAtributeRek(documentNode, HtmlTags.div, HtmlAttrs.cAttr, cssClassHello);
+//        var node = HtmlHelper.GetTagOfAtributeRek(DocumentNode, HtmlTags.div, HtmlAttrs.cAttr, CssClassHello);
 //        Assert.Null(node);
 
-//        var node2 = HtmlHelper.GetTagOfAtributeRek(bodyNode, HtmlTags.div, HtmlAttrs.cAttr, cssClassHello);
+//        var node2 = HtmlHelper.GetTagOfAtributeRek(BodyNode, HtmlTags.div, HtmlAttrs.cAttr, CssClassHello);
 //        Assert.NotNull(node2);
 //    }
 //}

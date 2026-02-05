@@ -1,12 +1,11 @@
 namespace SunamoHtml.Html;
 
 /// <summary>
-/// EN: Static helper class for loading and working with HTML documents using HtmlAgilityPack.
-/// CZ: Statická pomocná třída pro načítání a práci s HTML dokumenty pomocí HtmlAgilityPack.
+/// Static helper class for loading and working with HTML documents using HtmlAgilityPack.
 /// </summary>
 public static class HtmlDocumentS
 {
-    private static string s_htmlContent;
+    private static string s_htmlContent = string.Empty;
 
     /// <summary>
     /// Loads HTML from string and returns the document node.
@@ -16,12 +15,12 @@ public static class HtmlDocumentS
     /// <returns>The document node of the loaded HTML.</returns>
     public static HtmlNode LoadHtml(string html)
     {
-        var hd = HtmlAgilityHelper.CreateHtmlDocument();
+        var htmlDocument = HtmlAgilityHelper.CreateHtmlDocument();
 
         html = WebUtility.HtmlDecode(html);
         s_htmlContent = html;
-        hd.LoadHtml(html);
-        return hd.DocumentNode;
+        htmlDocument.LoadHtml(html);
+        return htmlDocument.DocumentNode;
     }
 
     /// <summary>
@@ -38,25 +37,25 @@ HtmlNode
 #endif
         Load(string path)
     {
-        var hd = HtmlAgilityHelper.CreateHtmlDocument();
+        var htmlDocument = HtmlAgilityHelper.CreateHtmlDocument();
         s_htmlContent =
 #if ASYNC
             await
 #endif
                 File.ReadAllTextAsync(path);
         s_htmlContent = WebUtility.HtmlDecode(s_htmlContent);
-        hd.LoadHtml(s_htmlContent);
-        return hd.DocumentNode;
+        htmlDocument.LoadHtml(s_htmlContent);
+        return htmlDocument.DocumentNode;
     }
 
     /// <summary>
     /// Extracts the title from an HTML document.
     /// </summary>
-    /// <param name="hd">The HTML document node.</param>
+    /// <param name="htmlNode">The HTML document node.</param>
     /// <returns>The title text, or empty string if not found.</returns>
-    public static string Title(HtmlNode hd)
+    public static string Title(HtmlNode htmlNode)
     {
-        return InnerHtmlToStringEmpty(HtmlAgilityHelper.Node(hd, true, HtmlTags.title));
+        return InnerHtmlToStringEmpty(HtmlAgilityHelper.Node(htmlNode, true, HtmlTags.Title));
     }
 
     /// <summary>

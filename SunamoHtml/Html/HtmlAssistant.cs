@@ -1,8 +1,7 @@
 namespace SunamoHtml.Html;
 
 /// <summary>
-/// EN: Helper class with various HTML manipulation methods (parsing, attribute handling, HTML decoding, etc.).
-/// CZ: Pomocná třída s různými metodami pro manipulaci s HTML (parsování, práce s atributy, dekódování HTML atd.).
+/// Helper class with various HTML manipulation methods (parsing, attribute handling, HTML decoding, etc.).
 /// Note: This is a mix of various HTML utilities - consider splitting into more specific classes.
 /// </summary>
 public class HtmlAssistant
@@ -25,8 +24,6 @@ public class HtmlAssistant
 
     /// <summary>
     /// Removes all style tags from HTML text.
-    /// EN: Removes all style tags from the HTML document.
-    /// CZ: Odebere všechny style tagy z HTML dokumentu.
     /// </summary>
     /// <param name="html">The HTML text to process.</param>
     /// <returns>HTML with all style tags removed.</returns>
@@ -81,22 +78,22 @@ public class HtmlAssistant
     /// <returns>HTML with trimmed inner HTML for all elements.</returns>
     public static string TrimInnerHtml(string value)
     {
-        var hd = HtmlAgilityHelper.CreateHtmlDocument();
-        hd.LoadHtml(value);
-        foreach (var item in hd.DocumentNode.DescendantsAndSelf())
+        var htmlDocument = HtmlAgilityHelper.CreateHtmlDocument();
+        htmlDocument.LoadHtml(value);
+        foreach (var item in htmlDocument.DocumentNode.DescendantsAndSelf())
             if (item.NodeType == HtmlNodeType.Element)
                 item.InnerHtml = item.InnerHtml.Trim();
-        return hd.DocumentNode.OuterHtml;
+        return htmlDocument.DocumentNode.OuterHtml;
     }
 
     /// <summary>
     /// Splits HTML input by BR tags.
     /// </summary>
-    /// <param name="input">The HTML input to split.</param>
+    /// <param name="html">The HTML input to split.</param>
     /// <returns>List of HTML segments split by BR tags.</returns>
-    public static List<string> SplitByBr(string input)
+    public static List<string> SplitByBr(string html)
     {
-        return SplitByTag(input, "br");
+        return SplitByTag(html, "br");
     }
 
     /// <summary>
@@ -123,14 +120,14 @@ public class HtmlAssistant
     /// Splits HTML input by specified tag.
     /// Converts non-pair tags to XML-valid format before splitting.
     /// </summary>
-    /// <param name="input">The HTML input to split.</param>
+    /// <param name="html">The HTML input to split.</param>
     /// <param name="tagName">The tag name to split by.</param>
     /// <returns>List of HTML segments split by the specified tag.</returns>
-    public static List<string> SplitByTag(string input, string tagName)
+    public static List<string> SplitByTag(string html, string tagName)
     {
-        var ih = input;
-        ih = HtmlHelper.ReplaceHtmlNonPairTagsWithXmlValid(ih);
-        var lines = SHSplit.Split(ih, tagName);
+        var validatedHtml = html;
+        validatedHtml = HtmlHelper.ReplaceHtmlNonPairTagsWithXmlValid(validatedHtml);
+        var lines = SHSplit.Split(validatedHtml, tagName);
         return lines;
     }
 
@@ -230,36 +227,36 @@ public class HtmlAssistant
     /// <summary>
     /// Gets any header element (H1-H6) from the document.
     /// </summary>
-    /// <param name="docs">The HTML node to search in.</param>
+    /// <param name="node">The HTML node to search in.</param>
     /// <param name="isRecursive">Whether to search recursively.</param>
     /// <param name="isStopAfterFirst">Whether to stop after finding the first header.</param>
     /// <returns>List of found header nodes.</returns>
-    public static List<HtmlNode> GetAnyHeader(HtmlNode docs, bool isRecursive, bool isStopAfterFirst)
+    public static List<HtmlNode> GetAnyHeader(HtmlNode node, bool isRecursive, bool isStopAfterFirst)
     {
-        var hd2 = new List<HtmlNode>();
+        var headers = new List<HtmlNode>();
         for (var i = 1; i < 7; i++)
         {
-            var hd = HtmlAgilityHelper.Node(docs, isRecursive, "h" + i);
+            var headerNode = HtmlAgilityHelper.Node(node, isRecursive, "h" + i);
 
-            if (hd != null)
+            if (headerNode != null)
             {
-                hd2.Add(hd);
+                headers.Add(headerNode);
                 if (isStopAfterFirst)
                     break;
             }
         }
 
-        return hd2;
+        return headers;
     }
 
     /// <summary>
     /// Removes all attributes from an HTML node and replaces it with a clean version.
     /// </summary>
-    /// <param name="img">The HTML node to remove attributes from.</param>
+    /// <param name="node">The HTML node to remove attributes from.</param>
     /// <returns>The new clean node that replaced the original.</returns>
-    public static HtmlNode RemoveAllAttrs(HtmlNode img)
+    public static HtmlNode RemoveAllAttrs(HtmlNode node)
     {
-        var tagL = img.Name.ToLower();
+        var tagL = node.Name.ToLower();
         var html = "";
         if (AllLists.HtmlNonPairTags.Contains(tagL))
             html = "<" + tagL + " />";
@@ -267,7 +264,7 @@ public class HtmlAssistant
             html = "<" + tagL + "></" + tagL + ">";
 
         var hn = HtmlNode.CreateNode(html);
-        return img.ParentNode.ReplaceChild(hn, img);
+        return node.ParentNode.ReplaceChild(hn, node);
     }
 
     /// <summary>
@@ -302,42 +299,42 @@ public class HtmlAssistant
     /// <summary>
     /// Gets the decoded and trimmed inner text from an HTML node.
     /// </summary>
-    /// <param name="n">The HTML node.</param>
+    /// <param name="node">The HTML node.</param>
     /// <returns>Cleaned and decoded inner text.</returns>
-    public static string InnerTextDecodeTrim(HtmlNode n)
+    public static string InnerTextDecodeTrim(HtmlNode node)
     {
-        var result = n.InnerText.Trim();
+        var result = node.InnerText.Trim();
         return InnerTextDecodeTrim(result);
     }
 
     /// <summary>
     /// Gets the inner text of a child node with specified tag.
     /// </summary>
-    /// <param name="item">The parent HTML node to search in.</param>
+    /// <param name="node">The parent HTML node to search in.</param>
     /// <param name="isRecursive">Whether to search recursively.</param>
     /// <param name="tag">The tag name to search for.</param>
     /// <returns>Inner text of found node, or empty string if not found.</returns>
-    public static string InnerText(HtmlNode item, bool isRecursive, string tag)
+    public static string InnerText(HtmlNode node, bool isRecursive, string tag)
     {
-        var node = HtmlAgilityHelper.Node(item, isRecursive, tag);
-        if (node == null)
+        var foundNode = HtmlAgilityHelper.Node(node, isRecursive, tag);
+        if (foundNode == null)
             return string.Empty;
-        return node.InnerText;
+        return foundNode.InnerText;
     }
 
     /// <summary>
     /// Gets the inner HTML of a child node with specified tag.
     /// </summary>
-    /// <param name="item">The parent HTML node to search in.</param>
+    /// <param name="node">The parent HTML node to search in.</param>
     /// <param name="isRecursive">Whether to search recursively.</param>
     /// <param name="tag">The tag name to search for.</param>
     /// <returns>Inner HTML of found node, or empty string if not found.</returns>
-    public static string InnerHtml(HtmlNode item, bool isRecursive, string tag)
+    public static string InnerHtml(HtmlNode node, bool isRecursive, string tag)
     {
-        var node = HtmlAgilityHelper.Node(item, isRecursive, tag);
-        if (node == null)
+        var foundNode = HtmlAgilityHelper.Node(node, isRecursive, tag);
+        if (foundNode == null)
             return string.Empty;
-        return node.InnerHtml;
+        return foundNode.InnerHtml;
     }
 
     /// <summary>

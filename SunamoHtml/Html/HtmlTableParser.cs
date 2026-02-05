@@ -42,7 +42,7 @@ public class HtmlTableParser
             var maxColumnActual = tds.Count;
             foreach (var cellRow in tds)
             {
-                var tdWithColspan = HtmlAssistant.GetValueOfAttribute(HtmlAttrValue.colspan, cellRow, true);
+                var tdWithColspan = HtmlAssistant.GetValueOfAttribute(HtmlAttrValue.Colspan, cellRow, true);
                 if (tdWithColspan != "")
                 {
                     var colspan = BTS.TryParseInt(tdWithColspan, 0);
@@ -70,7 +70,7 @@ public class HtmlTableParser
                     cell = WebUtility.HtmlDecode(cell);
                     cell = SHReplace.ReplaceAllDoubleSpaceToSingle(cell);
                     Data[result - startRow, count] = cell;
-                    var tdWithColspan = HtmlAssistant.GetValueOfAttribute(HtmlAttrValue.colspan, cellRow, true);
+                    var tdWithColspan = HtmlAssistant.GetValueOfAttribute(HtmlAttrValue.Colspan, cellRow, true);
                     if (tdWithColspan != "")
                     {
                         var colspan = BTS.TryParseInt(tdWithColspan, 0);

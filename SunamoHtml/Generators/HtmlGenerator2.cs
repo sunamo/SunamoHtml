@@ -164,22 +164,22 @@ public partial class HtmlGenerator2 : HtmlGenerator
     /// <summary>
     /// Generates a photo gallery with zoom functionality.
     /// </summary>
-    /// <param name="membersName">List of member names.</param>
-    /// <param name="memberProfilePicture">List of profile picture URLs.</param>
+    /// <param name="memberNames">List of member names.</param>
+    /// <param name="memberProfilePictures">List of profile picture URLs.</param>
     /// <param name="memberAnchors">List of anchor URLs.</param>
     /// <returns>HTML string representing the gallery.</returns>
-    public static string GalleryZoomInProfilePhoto(List<string> membersName, List<string> memberProfilePicture, List<string> memberAnchors)
+    public static string GalleryZoomInProfilePhoto(List<string> memberNames, List<string> memberProfilePictures, List<string> memberAnchors)
     {
         var generator = new HtmlGenerator();
         generator.WriteTag("ul");
-        for (var i = 0; i < membersName.Count; i++)
+        for (var i = 0; i < memberNames.Count; i++)
         {
             generator.WriteTag("li");
             generator.WriteTagWithAttrs("a", "href", memberAnchors[i]);
             generator.WriteTag("p");
-            generator.WriteRaw(membersName[i]);
+            generator.WriteRaw(memberNames[i]);
             generator.TerminateTag("p");
-            generator.WriteTagWithAttrs("div", "style", "background-image: url(" + memberProfilePicture[i] + ");");
+            generator.WriteTagWithAttrs("div", "style", "background-image: url(" + memberProfilePictures[i] + ");");
             generator.TerminateTag("div");
             generator.TerminateTag("a");
             generator.TerminateTag("li");
@@ -243,9 +243,9 @@ public partial class HtmlGenerator2 : HtmlGenerator
     /// <param name="textLinks">List of text link URLs.</param>
     /// <param name="innerHtmlText">List of inner HTML text.</param>
     /// <param name="srcPhoto">List of photo source paths.</param>
-    /// <param name="nameJsArray">JavaScript array name.</param>
+    /// <param name="arrayName">JavaScript array name.</param>
     /// <returns>HTML string representing the list with images.</returns>
-    public static string TopListWithImages(HtmlGenerator htmlGenerator, int widthImage, int heightImage, string initialImageUri, List<string> photoLinks, List<string> textLinks, List<string> innerHtmlText, List<string> srcPhoto, string nameJsArray)
+    public static string TopListWithImages(HtmlGenerator htmlGenerator, int widthImage, int heightImage, string initialImageUri, List<string> photoLinks, List<string> textLinks, List<string> innerHtmlText, List<string> srcPhoto, string arrayName)
     {
         var count = photoLinks.Count;
         if (count == 0)
@@ -265,7 +265,7 @@ public partial class HtmlGenerator2 : HtmlGenerator
             htmlGenerator.WriteTagWithAttrs("a", "href", photoLinks[i]);
             htmlGenerator.WriteTagWithAttrs("div", "style", "display: inline-block;");
             if (isAnimated)
-                htmlGenerator.WriteNonPairTagWithAttrs("img", "style", "margin-left: auto; margin-right: auto; vertical-align-middle; width: " + widthImage + "px;height:" + heightImage + "px", "id", nameJsArray + srcPhoto[i], "class", "alternatingImage", "src", initialImageUri, "alt", textLinks[i]);
+                htmlGenerator.WriteNonPairTagWithAttrs("img", "style", "margin-left: auto; margin-right: auto; vertical-align-middle; width: " + widthImage + "px;height:" + heightImage + "px", "id", arrayName + srcPhoto[i], "class", "alternatingImage", "src", initialImageUri, "alt", textLinks[i]);
             else
                 htmlGenerator.WriteNonPairTagWithAttrs("img", "src", srcPhoto[i], "alt", textLinks[i]);
             htmlGenerator.TerminateTag("div");

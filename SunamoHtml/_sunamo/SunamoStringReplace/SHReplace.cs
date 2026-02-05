@@ -2,26 +2,26 @@ namespace SunamoHtml._sunamo.SunamoStringReplace;
 
 internal class SHReplace
 {
-    internal static string ReplaceWhiteSpacesWithoutSpacesWithReplaceWith(string p, string replaceWith)
+    internal static string ReplaceWhiteSpacesWithoutSpacesWithReplaceWith(string text, string replaceWith)
     {
-        return p.Replace("\r", replaceWith).Replace("\n", replaceWith).Replace("\t", replaceWith);
+        return text.Replace("\r", replaceWith).Replace("\n", replaceWith).Replace("\t", replaceWith);
     }
 
-    internal static string ReplaceAllArray(string vstup, string zaCo, params string[] co)
+    internal static string ReplaceAllArray(string text, string replacement, params string[] searchPatterns)
     {
-        //Stupid, zaCo can be null
+        //Stupid, replacement can be null
 
-        //if (string.IsNullOrEmpty(zaCo))
+        //if (string.IsNullOrEmpty(replacement))
         //{
-        //    return vstup;
+        //    return text;
         //}
 
-        foreach (var item in co)
+        foreach (var item in searchPatterns)
             if (string.IsNullOrEmpty(item))
-                return vstup;
+                return text;
 
-        foreach (var item in co) vstup = vstup.Replace(item, zaCo);
-        return vstup;
+        foreach (var item in searchPatterns) text = text.Replace(item, replacement);
+        return text;
     }
 
     internal static string ReplaceAllDoubleSpaceToSingle(string text, bool alsoHtml = false)
@@ -53,13 +53,13 @@ internal class SHReplace
         return text;
     }
 
-    internal static string ReplaceAll(string vstup, string zaCo, params string[] co)
+    internal static string ReplaceAll(string text, string replacement, params string[] searchPatterns)
     {
-        foreach (var item in co)
+        foreach (var item in searchPatterns)
             if (string.IsNullOrEmpty(item))
-                return vstup;
+                return text;
 
-        foreach (var item in co) vstup = vstup.Replace(item, zaCo);
-        return vstup;
+        foreach (var item in searchPatterns) text = text.Replace(item, replacement);
+        return text;
     }
 }

@@ -2,11 +2,11 @@ namespace SunamoHtml._sunamo.SunamoXml;
 
 internal class XH
 {
-    internal static string RemoveXmlDeclaration(string vstup)
+    internal static string RemoveXmlDeclaration(string xml)
     {
-        vstup = Regex.Replace(vstup, @"<\?xml.*?\?>", "");
-        vstup = Regex.Replace(vstup, @"<\?xml.*?\>", "");
-        vstup = Regex.Replace(vstup, @"<\?xml.*?\/>", "");
-        return vstup;
+        xml = Regex.Replace(xml, @"<\?xml.*?\?>", "");
+        xml = Regex.Replace(xml, @"<\?xml.*?\>", "");
+        xml = Regex.Replace(xml, @"<\?xml.*?\/>", "");
+        return xml;
     }
 }

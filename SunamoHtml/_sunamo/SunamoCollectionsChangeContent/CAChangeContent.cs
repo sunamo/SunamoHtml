@@ -16,9 +16,9 @@ internal class CAChangeContent
     {
         if (a != null)
         {
-            if (a.removeNull) files_in.Remove(null);
+            if (a.RemoveNull) files_in.Remove(null);
 
-            if (a.removeEmpty)
+            if (a.RemoveEmpty)
                 for (var i = files_in.Count - 1; i >= 0; i--)
                     if (files_in[i].Trim() == string.Empty)
                         files_in.RemoveAt(i);
@@ -36,7 +36,6 @@ internal class CAChangeContent
                 changed = true;
             }
 
-
         RemoveNullOrEmpty(a, files_in);
 
         return changed;
@@ -46,9 +45,9 @@ internal class CAChangeContent
     {
         if (a != null)
         {
-            if (a.removeNull) files_in.Remove(null);
+            if (a.RemoveNull) files_in.Remove(null);
 
-            if (a.removeEmpty)
+            if (a.RemoveEmpty)
                 for (var i = files_in.Count - 1; i >= 0; i--)
                     if (files_in[i].Trim() == string.Empty)
                         files_in.RemoveAt(i);

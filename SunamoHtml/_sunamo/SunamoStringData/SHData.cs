@@ -2,7 +2,7 @@ namespace SunamoHtml._sunamo.SunamoStringData;
 
 internal class SHData
 {
-    internal static char[] spaceAndPuntactionChars =
+    internal static char[] SpaceAndPuntactionChars =
     {
         ' ', '-', '.', ',', ';', ':', '!',
         '?', '\u2013', '\u2014', '\u2010', '\u2026', '\u201E', '\u201C', '\u201A', '\u2018', '\u00BB', '\u00AB',

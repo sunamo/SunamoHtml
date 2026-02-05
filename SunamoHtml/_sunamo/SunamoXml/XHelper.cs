@@ -2,7 +2,7 @@ namespace SunamoHtml._sunamo.SunamoXml;
 
 internal class XHelper
 {
-    internal static Dictionary<string, string> ns = new();
+    internal static Dictionary<string, string> Namespaces = new();
 
     internal static Dictionary<string, string> XmlNamespaces(XmlNamespaceManager nsmgr, bool withPrexixedXmlnsColon)
     {
@@ -20,7 +20,7 @@ internal class XHelper
             }
 
             // Jaký je typ item, at nemusím používat slovník
-            var value = nsmgr.LookupNamespace(item2);
+            var value = nsmgr.LookupNamespace(item2) ?? string.Empty;
 
             if (!ns.ContainsKey(item)) ns.Add(item, value);
         }

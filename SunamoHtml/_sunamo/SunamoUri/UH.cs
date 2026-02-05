@@ -4,11 +4,11 @@ internal class UH
 {
     //internal static Func<string, string> AppendHttpIfNotExists;
 
-    internal static string AppendHttpIfNotExists(string p)
+    internal static string AppendHttpIfNotExists(string url)
     {
-        var p2 = p;
-        if (!p.StartsWith("http")) p2 = "http://" + p;
+        var result = url;
+        if (!url.StartsWith("http")) result = "http://" + url;
 
-        return p2;
+        return result;
     }
 }

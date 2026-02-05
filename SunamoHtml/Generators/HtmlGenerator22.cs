@@ -211,18 +211,18 @@ public partial class HtmlGenerator2 : HtmlGenerator
     private static void AddTree(ref int depth, HtmlGenerator htmlGenerator, NTreeHtml<string> tree)
     {
         depth++;
-        htmlGenerator.WriteTag(HtmlTags.ol);
+        htmlGenerator.WriteTag(HtmlTags.Ol);
         htmlGenerator.WriteRaw(CheckBox(tree.Data));
         foreach (var item in tree.Children)
         {
-            htmlGenerator.WriteTag(HtmlTags.li);
+            htmlGenerator.WriteTag(HtmlTags.Li);
             htmlGenerator.WriteRaw(CheckBox(item.Data));
-            foreach (var item2 in item.Children)
-                AddTree(ref depth, htmlGenerator, item2);
-            htmlGenerator.TerminateTag(HtmlTags.li);
+            foreach (var childNode in item.Children)
+                AddTree(ref depth, htmlGenerator, childNode);
+            htmlGenerator.TerminateTag(HtmlTags.Li);
         }
 
-        htmlGenerator.TerminateTag(HtmlTags.ol);
+        htmlGenerator.TerminateTag(HtmlTags.Ol);
     }
 
     /// <summary>

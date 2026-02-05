@@ -1,7 +1,5 @@
 namespace SunamoHtml;
 
-// EN: Variable names have been checked and replaced with self-descriptive names
-// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
 /// <summary>
 ///     HtmlHelperText - for methods which NOT operate on HtmlAgiityHelper!
 ///     HtmlAgilityHelper - getting new nodes
@@ -10,280 +8,314 @@ namespace SunamoHtml;
 public partial class HtmlAgilityHelper
 {
     /// <summary>
-    ///     A2 =remove #text
-    ///     A3 = remove #comment
+    /// Trims text nodes and optionally comments from a list of HTML nodes.
     /// </summary>
-    /// <param name = "c2"></param>
-    /// <param name = "removeTextNodes"></param>
-    /// <param name = "removeComments"></param>
-    public static List<HtmlNode> TrimTexts(List<HtmlNode> c2, bool removeTextNodes, bool removeComments = false)
+    /// <param name="nodes">The list of HTML nodes to trim.</param>
+    /// <param name="isRemovingTextNodes">Whether to remove text nodes.</param>
+    /// <param name="isRemovingComments">Whether to remove comment nodes.</param>
+    /// <returns>List of nodes with text nodes and/or comments removed.</returns>
+    internal static List<HtmlNode> TrimTextsInternal(List<HtmlNode> nodes, bool isRemovingTextNodes, bool isRemovingComments = false)
     {
         if (!_trimTexts)
-            return c2;
-        var vr = new List<HtmlNode>();
-        var add = true;
-        foreach (var item in c2)
+            return nodes;
+        var result = new List<HtmlNode>();
+        var shouldAdd = true;
+        foreach (var item in nodes)
         {
-            add = true;
-            if (removeTextNodes)
-                if (item.Name == textNode)
-                    add = false;
-            if (removeComments)
+            shouldAdd = true;
+            if (isRemovingTextNodes)
+                if (item.Name == TextNode)
+                    shouldAdd = false;
+            if (isRemovingComments)
                 if (item.Name == "#comment")
-                    add = false;
-            if (add)
-                vr.Add(item);
+                    shouldAdd = false;
+            if (shouldAdd)
+                result.Add(item);
         }
 
-        return vr;
+        return result;
     }
 
-    public static List<HtmlNode> TrimComments(List<HtmlNode> n)
+    /// <summary>
+    /// Removes comment nodes from a list of HTML nodes.
+    /// </summary>
+    /// <param name="nodes">The list of HTML nodes to process.</param>
+    /// <returns>List of nodes with comments removed.</returns>
+    public static List<HtmlNode> TrimComments(List<HtmlNode> nodes)
     {
-        var vr = new List<HtmlNode>();
-        var startWith = false;
-        var endsWith = false;
-        var toTranslate = true;
-        foreach (var item in n)
+        var result = new List<HtmlNode>();
+        var startsWithComment = false;
+        var endsWithComment = false;
+        var shouldTranslate = true;
+        foreach (var item in nodes)
         {
-            startWith = false;
-            endsWith = false;
-            toTranslate = true;
+            startsWithComment = false;
+            endsWithComment = false;
+            shouldTranslate = true;
             var html = item.InnerHtml.Trim();
             // contains whole html comment
-            endsWith = html.Contains(ConstsAspx.endHtmlComment);
-            startWith = html.Contains(ConstsAspx.startHtmlComment);
-            if (startWith && endsWith) //item.NodeType == HtmlNodeType.Comment)
+            endsWithComment = html.Contains(ConstsAspx.EndHtmlComment);
+            startsWithComment = html.Contains(ConstsAspx.StartHtmlComment);
+            if (startsWithComment && endsWithComment)
             {
-                toTranslate = false;
+                shouldTranslate = false;
             }
-            else if (true)
+            else
             {
                 if (html == string.Empty)
                     continue;
-                endsWith = html.Contains(ConstsAspx.endAspxComment);
-                startWith = html.Contains(ConstsAspx.startAspxComment);
-                if (startWith || endsWith)
-                    if (startWith && endsWith)
+                endsWithComment = html.Contains(ConstsAspx.EndAspxComment);
+                startsWithComment = html.Contains(ConstsAspx.StartAspxComment);
+                if (startsWithComment || endsWithComment)
+                    if (startsWithComment && endsWithComment)
                         // contains whole aspx comment
-                        toTranslate = false;
-                if (!toTranslate)
+                        shouldTranslate = false;
+                if (!shouldTranslate)
                     continue;
                 if (html.StartsWith("<%"))
                     continue;
-                //var hd = HtmlAgilityHelper.CreateHtmlDocument();
-                //hd.LoadHtml(html);
                 var count = item.ChildNodes.Count;
                 var textCount = TrimTexts(item.ChildNodes).Count;
                 if (textCount == count && html == string.Empty)
                     continue;
-                //if (textCount != 0)
-                //{
-                //    continue;
-                //}
-                vr.Add(item);
+                result.Add(item);
             }
         }
 
-        return vr;
-    }
-
-    /// <summary>
-    ///     Do A2 se může zadat *
-    /// </summary>
-    /// <param name = "hn"></param>
-    /// <param name = "tag"></param>
-    private static bool HasTagName(HtmlNode hn, string tag)
-    {
-        if (tag == "*")
-            return true;
-        var result = hn.Name == tag;
-        //if (!result && hn.Name != "a")
-        //{
-        //    Debugger.Break();
-        //}
         return result;
     }
 
-    private static bool HasTagAttr(HtmlNode item, string atribut, string hodnotaAtributu, bool isWildCard, bool enoughIsContainsAttribute, bool searchAsSingleString)
+    /// <summary>
+    /// Checks if an HTML node has the specified tag name. Use "*" for any tag.
+    /// </summary>
+    /// <param name="node">The HTML node to check.</param>
+    /// <param name="tag">The tag name to check for, or "*" for any tag.</param>
+    /// <returns>True if the node has the specified tag name or tag is "*".</returns>
+    private static bool HasTagName(HtmlNode node, string tag)
     {
-        if (hodnotaAtributu == "*")
+        if (tag == "*")
             return true;
-        var contains = false;
-        var attrValue = HtmlAssistant.GetValueOfAttribute(atribut, item);
-        if (enoughIsContainsAttribute)
+        var result = node.Name == tag;
+        return result;
+    }
+
+    /// <summary>
+    /// Checks if an HTML node has an attribute with the specified value.
+    /// </summary>
+    /// <param name="node">The HTML node to check.</param>
+    /// <param name="attributeName">The attribute name to check.</param>
+    /// <param name="attributeValue">The attribute value to match.</param>
+    /// <param name="isWildCard">Whether to use wildcard matching.</param>
+    /// <param name="isEnoughContainsAttribute">Whether partial match is sufficient.</param>
+    /// <param name="isSearchAsSingleString">Whether to search as a single string or split by spaces.</param>
+    /// <returns>True if the node has the attribute with matching value.</returns>
+    private static bool HasTagAttr(HtmlNode node, string attributeName, string attributeValue, bool isWildCard, bool isEnoughContainsAttribute, bool isSearchAsSingleString)
+    {
+        if (attributeValue == "*")
+            return true;
+        var hasMatchingAttribute = false;
+        var actualAttributeValue = HtmlAssistant.GetValueOfAttribute(attributeName, node);
+        if (isEnoughContainsAttribute)
         {
-            if (searchAsSingleString)
+            if (isSearchAsSingleString)
             {
                 if (isWildCard)
-                    contains = SH.MatchWildcard(attrValue, hodnotaAtributu);
+                    hasMatchingAttribute = SH.MatchWildcard(actualAttributeValue, attributeValue);
                 else
-                    contains = attrValue.Contains(hodnotaAtributu);
-            //
+                    hasMatchingAttribute = actualAttributeValue.Contains(attributeValue);
             }
             else
             {
-                var cont = true;
-                var parameter = SHSplit.Split(hodnotaAtributu, " ");
-                foreach (var item2 in parameter)
-                    if (!attrValue.Contains(item2))
+                var allParametersMatch = true;
+                var parameters = SHSplit.Split(attributeValue, " ");
+                foreach (var parameter in parameters)
+                    if (!actualAttributeValue.Contains(parameter))
                     {
-                        cont = false;
+                        allParametersMatch = false;
                         break;
                     }
 
-                contains = cont;
+                hasMatchingAttribute = allParametersMatch;
             }
         }
         else
         {
-            contains = attrValue == hodnotaAtributu;
+            hasMatchingAttribute = actualAttributeValue == attributeValue;
         }
 
-        return contains;
+        return hasMatchingAttribute;
     }
 
     /// <summary>
-    ///     A4 = if add one, return. Like Node vs Nodes
-    ///     It's calling by others
-    ///     Do A5 se může vložit *
+    /// Recursively returns HTML tags matching the specified tag name.
+    /// If single is true, returns only the first match (like Node vs Nodes).
+    /// Use "*" in parameter to match any tag.
     /// </summary>
-    /// <param name = "vr"></param>
-    /// <param name = "html"></param>
-    /// <param name = "p"></param>
-    public static void RecursiveReturnTags(List<HtmlNode> vr, HtmlNode html, bool recursive, bool single, string parameter)
+    /// <param name="result">The list to add found nodes to.</param>
+    /// <param name="htmlNode">The HTML node to search in.</param>
+    /// <param name="isRecursive">Whether to search recursively.</param>
+    /// <param name="isSingle">Whether to stop after finding first match.</param>
+    /// <param name="tagName">The tag name to search for, or "*" for any tag.</param>
+    public static void RecursiveReturnTags(List<HtmlNode> result, HtmlNode htmlNode, bool isRecursive, bool isSingle, string tagName)
     {
-        if (html == null)
+        if (htmlNode == null)
             return;
-        foreach (var item in html.ChildNodes)
-            if (HasTagName(item, parameter))
+        foreach (var item in htmlNode.ChildNodes)
+            if (HasTagName(item, tagName))
             {
-                //RecursiveReturnTags(vr, item, parameter);
-                vr.Add(item);
-                if (single)
+                result.Add(item);
+                if (isSingle)
                     return;
-                if (recursive)
-                    RecursiveReturnTags(vr, item, recursive, single, parameter);
+                if (isRecursive)
+                    RecursiveReturnTags(result, item, isRecursive, isSingle, tagName);
             }
             else
             {
-                if (recursive)
-                    RecursiveReturnTags(vr, item, recursive, single, parameter);
+                if (isRecursive)
+                    RecursiveReturnTags(result, item, isRecursive, isSingle, tagName);
             }
     }
 
-    public static List<HtmlNode> Nodes(HtmlNode node, bool recursive /*, bool single*/, string tag)
+    /// <summary>
+    /// Gets all nodes with the specified tag name.
+    /// </summary>
+    /// <param name="node">The HTML node to search in.</param>
+    /// <param name="isRecursive">Whether to search recursively.</param>
+    /// <param name="tag">The tag name to search for.</param>
+    /// <returns>List of matching HTML nodes with text nodes trimmed.</returns>
+    public static List<HtmlNode> Nodes(HtmlNode node, bool isRecursive, string tag)
     {
         tag = tag.ToLower();
-        var vr = new List<HtmlNode>();
-        RecursiveReturnTags(vr, node, recursive, false, tag);
-        if (tag != textNode)
-            vr = TrimTexts(vr);
-        return vr;
+        var result = new List<HtmlNode>();
+        RecursiveReturnTags(result, node, isRecursive, false, tag);
+        if (tag != TextNode)
+            result = TrimTexts(result);
+        return result;
     }
 
-    private static List<HtmlNode> NodesWithAttrWorker(HtmlNode node, bool recursive, string tag, string atribut, string hodnotaAtributu, bool isWildCard, bool enoughIsContainsAttribute, bool searchAsSingleString = true)
+    /// <summary>
+    /// Worker method to get nodes with specified attribute criteria.
+    /// </summary>
+    /// <param name="node">The HTML node to search in.</param>
+    /// <param name="isRecursive">Whether to search recursively.</param>
+    /// <param name="tag">The tag name to search for.</param>
+    /// <param name="attributeName">The attribute name to match.</param>
+    /// <param name="attributeValue">The attribute value to match.</param>
+    /// <param name="isWildCard">Whether to use wildcard matching.</param>
+    /// <param name="isEnoughContainsAttribute">Whether partial match is sufficient.</param>
+    /// <param name="isSearchAsSingleString">Whether to search as a single string.</param>
+    /// <returns>List of matching HTML nodes.</returns>
+    private static List<HtmlNode> NodesWithAttrWorker(HtmlNode node, bool isRecursive, string tag, string attributeName, string attributeValue, bool isWildCard, bool isEnoughContainsAttribute, bool isSearchAsSingleString = true)
     {
-        var vr = new List<HtmlNode>();
-        RecursiveReturnTagsWithContainsAttr(vr, node, recursive, tag, atribut, hodnotaAtributu, isWildCard, enoughIsContainsAttribute, searchAsSingleString);
-        if (tag != textNode)
-            vr = TrimTexts(vr);
-        return vr;
+        var result = new List<HtmlNode>();
+        RecursiveReturnTagsWithContainsAttr(result, node, isRecursive, tag, attributeName, attributeValue, isWildCard, isEnoughContainsAttribute, isSearchAsSingleString);
+        if (tag != TextNode)
+            result = TrimTexts(result);
+        return result;
     }
 
-    public static HtmlDocument CreateHtmlDocument(CreateHtmlDocumentInitData data = null)
+    /// <summary>
+    /// Creates an HTML document with specific initialization options.
+    /// </summary>
+    /// <param name="data">Initialization data, or null for default settings.</param>
+    /// <returns>Configured HTML document instance.</returns>
+    public static HtmlDocument CreateHtmlDocument(CreateHtmlDocumentInitData? data = null)
     {
         if (data == null)
         {
             data = new();
         }
 
-        var hd = new HtmlDocument();
-        hd.OptionOutputOriginalCase = data.OptionOutputOriginalCase;
-        // false - i přesto mi tag ukončený na / převede na </Page>. Musí se ještě tagy jež nechci ukončovat vymazat z HtmlAgilityPack.HtmlNode.ElementsFlags.Remove("form"); před načetním XML https://html-agility-pack.net/knowledge-base/7104652/htmlagilitypack-close-form-tag-automatically
-        hd.OptionAutoCloseOnEnd = false;
-        hd.OptionOutputAsXml = false;
-        hd.OptionFixNestedTags = false;
-        //when OptionCheckSyntax = false, raise NullReferenceException in Load/LoadHtml
-        //hd.OptionCheckSyntax = false;
-        return hd;
-    }
-
-    public static void RecursiveReturnTagsWithContainsAttr(List<HtmlNode> vr, HtmlNode htmlNode, bool recursively, string parameter, string atribut, string hodnotaAtributu, bool enoughIsContainsAttribute, bool searchAsSingleString = true)
-    {
-        RecursiveReturnTagsWithContainsAttr(vr, htmlNode, recursively, parameter, atribut, hodnotaAtributu, false, enoughIsContainsAttribute, searchAsSingleString);
+        var htmlDocument = new HtmlDocument();
+        htmlDocument.OptionOutputOriginalCase = data.OptionOutputOriginalCase;
+        // false - even though tags ending with / are converted to </Page>. Tags that shouldn't be closed must be removed from HtmlAgilityPack.HtmlNode.ElementsFlags.Remove("form"); before loading XML https://html-agility-pack.net/knowledge-base/7104652/htmlagilitypack-close-form-tag-automatically
+        htmlDocument.OptionAutoCloseOnEnd = false;
+        htmlDocument.OptionOutputAsXml = false;
+        htmlDocument.OptionFixNestedTags = false;
+        // when OptionCheckSyntax = false, raises NullReferenceException in Load/LoadHtml
+        return htmlDocument;
     }
 
     /// <summary>
-    ///     Do A3 se může zadat * pro vrácení všech tagů
+    /// Recursively returns tags with attribute containing specified value.
     /// </summary>
-    /// <param name = "vr"></param>
-    /// <param name = "htmlNode"></param>
-    /// <param name = "p"></param>
-    /// <param name = "atribut"></param>
-    /// <param name = "hodnotaAtributu"></param>
-    public static void RecursiveReturnTagsWithContainsAttr(List<HtmlNode> vr, HtmlNode htmlNode, bool recursively, string parameter, string atribut, string hodnotaAtributu, bool isWildCard, bool enoughIsContainsAttribute, bool searchAsSingleString = true)
+    /// <param name="result">The list to add found nodes to.</param>
+    /// <param name="htmlNode">The HTML node to search in.</param>
+    /// <param name="isRecursive">Whether to search recursively.</param>
+    /// <param name="tagName">The tag name to search for.</param>
+    /// <param name="attributeName">The attribute name to match.</param>
+    /// <param name="attributeValue">The attribute value to match.</param>
+    /// <param name="isEnoughContainsAttribute">Whether partial match is sufficient.</param>
+    /// <param name="isSearchAsSingleString">Whether to search as a single string.</param>
+    public static void RecursiveReturnTagsWithContainsAttr(List<HtmlNode> result, HtmlNode htmlNode, bool isRecursive, string tagName, string attributeName, string attributeValue, bool isEnoughContainsAttribute, bool isSearchAsSingleString = true)
     {
-        /*
-isWildCard -
-         */
-#if DEBUG
-        //StringBuilder stringBuilder = new StringBuilder();
-        //stringBuilder.AppendLine("Text nodes:");
-        //stringBuilder.AppendLine();
-        //foreach (var item in htmlNode.ChildNodes)
-        //{
-        //    if (item.Name != "#text")
-        //    {
-        //        continue;
-        //    }
-        //    stringBuilder.AppendLine(item.OuterHtml);
-        //    stringBuilder.AppendLine();
-        //    stringBuilder.AppendLine();
-        //    stringBuilder.AppendLine();
-        //    stringBuilder.AppendLine();
-        //    stringBuilder.AppendLine();
-        //    stringBuilder.AppendLine();
-        //    stringBuilder.AppendLine();
-        //    stringBuilder.AppendLine();
-        //    stringBuilder.AppendLine();
-        //    stringBuilder.AppendLine();
-        //    stringBuilder.AppendLine();
-        //    stringBuilder.AppendLine();
-        //}
-        //ClipboardService.SetText(stringBuilder.ToString());
-#endif
-        var childNodeWithoutText = TrimTexts(htmlNode.ChildNodes);
-        parameter = parameter.ToLower();
-        //atribut = atribut.ToLower();
-        //hodnotaAtributu = atribut.ToLower();
+        RecursiveReturnTagsWithContainsAttr(result, htmlNode, isRecursive, tagName, attributeName, attributeValue, false, isEnoughContainsAttribute, isSearchAsSingleString);
+    }
+
+    /// <summary>
+    /// Recursively returns tags with attribute containing specified value.
+    /// Use "*" in tagName to return all tags.
+    /// </summary>
+    /// <param name="result">The list to add found nodes to.</param>
+    /// <param name="htmlNode">The HTML node to search in.</param>
+    /// <param name="isRecursive">Whether to search recursively.</param>
+    /// <param name="tagName">The tag name to search for, or "*" for all tags.</param>
+    /// <param name="attributeName">The attribute name to match.</param>
+    /// <param name="attributeValue">The attribute value to match.</param>
+    /// <param name="isWildCard">Whether to use wildcard matching.</param>
+    /// <param name="isEnoughContainsAttribute">Whether partial match is sufficient.</param>
+    /// <param name="isSearchAsSingleString">Whether to search as a single string.</param>
+    public static void RecursiveReturnTagsWithContainsAttr(List<HtmlNode> result, HtmlNode htmlNode, bool isRecursive, string tagName, string attributeName, string attributeValue, bool isWildCard, bool isEnoughContainsAttribute, bool isSearchAsSingleString = true)
+    {
+        var childNodesWithoutText = TrimTexts(htmlNode.ChildNodes);
+        tagName = tagName.ToLower();
         if (htmlNode == null)
             return;
-        foreach (var item in childNodeWithoutText)
+        foreach (var item in childNodesWithoutText)
         {
-            var attrValue = HtmlAssistant.GetValueOfAttribute(atribut, item);
-            if (HasTagName(item, parameter))
+            var actualAttributeValue = HtmlAssistant.GetValueOfAttribute(attributeName, item);
+            if (HasTagName(item, tagName))
             {
-                if (HasTagAttr(item, atribut, hodnotaAtributu, isWildCard, enoughIsContainsAttribute, searchAsSingleString))
-                    vr.Add(item);
-                if (recursively)
-                    RecursiveReturnTagsWithContainsAttr(vr, item, recursively, parameter, atribut, hodnotaAtributu, isWildCard, enoughIsContainsAttribute, searchAsSingleString);
+                if (HasTagAttr(item, attributeName, attributeValue, isWildCard, isEnoughContainsAttribute, isSearchAsSingleString))
+                    result.Add(item);
+                if (isRecursive)
+                    RecursiveReturnTagsWithContainsAttr(result, item, isRecursive, tagName, attributeName, attributeValue, isWildCard, isEnoughContainsAttribute, isSearchAsSingleString);
             }
             else
             {
-                if (recursively)
-                    RecursiveReturnTagsWithContainsAttr(vr, item, recursively, parameter, atribut, hodnotaAtributu, isWildCard, enoughIsContainsAttribute, searchAsSingleString);
+                if (isRecursive)
+                    RecursiveReturnTagsWithContainsAttr(result, item, isRecursive, tagName, attributeName, attributeValue, isWildCard, isEnoughContainsAttribute, isSearchAsSingleString);
             }
         }
     }
 
-    public static List<HtmlNode> NodesWithAttrWildCard(HtmlNode node, bool recursive, string tag, string attr, string attrValue, bool contains = false)
+    /// <summary>
+    /// Gets nodes with attribute matching wildcard pattern.
+    /// </summary>
+    /// <param name="node">The HTML node to search in.</param>
+    /// <param name="isRecursive">Whether to search recursively.</param>
+    /// <param name="tag">The tag name to search for.</param>
+    /// <param name="attributeName">The attribute name to match.</param>
+    /// <param name="attributeValue">The attribute value pattern.</param>
+    /// <param name="isContains">Whether to use contains matching.</param>
+    /// <returns>List of matching HTML nodes.</returns>
+    public static List<HtmlNode> NodesWithAttrWildCard(HtmlNode node, bool isRecursive, string tag, string attributeName, string attributeValue, bool isContains = false)
     {
-        return NodesWithAttrWorker(node, recursive, tag, attr, attrValue, true, contains);
+        return NodesWithAttrWorker(node, isRecursive, tag, attributeName, attributeValue, true, isContains);
     }
 
-    public static List<HtmlNode> NodesWithAttr(HtmlNode node, bool recursive, string tag, string attr, string attrValue, bool contains = false)
+    /// <summary>
+    /// Gets nodes with exact attribute match.
+    /// </summary>
+    /// <param name="node">The HTML node to search in.</param>
+    /// <param name="isRecursive">Whether to search recursively.</param>
+    /// <param name="tag">The tag name to search for.</param>
+    /// <param name="attributeName">The attribute name to match.</param>
+    /// <param name="attributeValue">The attribute value to match.</param>
+    /// <param name="isContains">Whether to use contains matching.</param>
+    /// <returns>List of matching HTML nodes.</returns>
+    public static List<HtmlNode> NodesWithAttr(HtmlNode node, bool isRecursive, string tag, string attributeName, string attributeValue, bool isContains = false)
     {
-        return NodesWithAttrWorker(node, recursive, tag, attr, attrValue, false, contains);
+        return NodesWithAttrWorker(node, isRecursive, tag, attributeName, attributeValue, false, isContains);
     }
 }

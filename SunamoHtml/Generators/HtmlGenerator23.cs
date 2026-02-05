@@ -101,24 +101,24 @@ public partial class HtmlGenerator2 : HtmlGenerator
     /// <returns>HTML string with OL element.</returns>
     public static string GetOl(List<string> possibleAnswers, bool isCheckDuplicates = false)
     {
-        return HtmlGeneratorList.GetFor("", possibleAnswers, possibleAnswers, isCheckDuplicates, HtmlTags.ol);
+        return HtmlGeneratorList.GetFor("", possibleAnswers, possibleAnswers, isCheckDuplicates, HtmlTags.Ol);
     }
 
     /// <summary>
     /// Generates OL element without duplicate checking.
     /// </summary>
     /// <param name="anchors">List of anchor URLs.</param>
-    /// <param name="items">List of items to display.</param>
+    /// <param name="texts">List of items to display.</param>
     /// <returns>HTML string with OL element.</returns>
-    public static string GetOlWoCheckDuplicate(List<string> anchors, List<string> items)
+    public static string GetOlWoCheckDuplicate(List<string> anchors, List<string> texts)
     {
-        if (anchors.Count != items.Count)
+        if (anchors.Count != texts.Count)
             throw new Exception("Bullet points and links count differs");
         var generator = new HtmlGenerator();
         generator.WriteTag("ol");
-        for (var i = 0; i < items.Count; i++)
+        for (var i = 0; i < texts.Count; i++)
         {
-            var text = items[i];
+            var text = texts[i];
             generator.WriteTag("li");
             generator.WriteRaw(text);
             generator.TerminateTag("li");

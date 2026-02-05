@@ -2,10 +2,10 @@ namespace SunamoHtml._sunamo.SunamoValues.Values;
 
 internal class StatusPrefixes
 {
-    internal const string error = "error:";
-    internal const string warning = "warning:";
-    internal const string success = "success:";
-    internal const string info = "info:";
-    internal const string information = "information:";
-    internal const string appeal = "appeal:";
+    internal const string Error = "error:";
+    internal const string Warning = "warning:";
+    internal const string Success = "success:";
+    internal const string Info = "info:";
+    internal const string Information = "information:";
+    internal const string Appeal = "appeal:";
 }

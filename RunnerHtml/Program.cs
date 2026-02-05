@@ -1,3 +1,4 @@
+// variables names: ok
 using SunamoHtml.Tests;
 
 namespace RunnerHtml;

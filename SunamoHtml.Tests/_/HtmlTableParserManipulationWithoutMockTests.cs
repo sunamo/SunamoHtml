@@ -1,5 +1,4 @@
-// EN: Variable names have been checked and replaced with self-descriptive names
-// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+// variables names: ok
 
 using SunamoHtml;
 using SunamoHtml.Html;
@@ -16,14 +15,14 @@ public class HtmlTableParserTests
  HtmlTableParserTest()
     {
         var argument = @"D:\_Test\sunamo\sunamo\Html\HtmlTableParserTests\argument.html";
-        var hd = HtmlAgilityHelper.CreateHtmlDocument();
-        hd.LoadHtml(
+        var htmlDocument = HtmlAgilityHelper.CreateHtmlDocument();
+        htmlDocument.LoadHtml(
 #if ASYNC
     await
 #endif
  File.ReadAllTextAsync(argument));
-        var table = HtmlAgilityHelper.Node(hd.DocumentNode, true, "table");
-        HtmlTableParser p = new HtmlTableParser(table, false);
-        var value = p.ColumnValues("1", false, false);
+        var table = HtmlAgilityHelper.Node(htmlDocument.DocumentNode, true, "table");
+        HtmlTableParser parser = new HtmlTableParser(table, false);
+        var value = parser.ColumnValues("1", false, false);
     }
 }

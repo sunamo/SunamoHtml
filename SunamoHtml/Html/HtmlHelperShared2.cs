@@ -277,13 +277,13 @@ public static partial class HtmlHelper
     /// CZ: Vrátí všechny přímé podřízené tagy odpovídající zadanému názvu (nerekurzivně).
     /// Wildcard "*" can be passed but wouldn't make much sense.
     /// </summary>
-    /// <param name="parentNode">The parent HTML node to search in.</param>
+    /// <param name="htmlNode">The parent HTML node to search in.</param>
     /// <param name="tagName">The tag name to search for.</param>
     /// <returns>List of matching child tags.</returns>
-    public static List<HtmlNode> ReturnTags(HtmlNode parentNode, string tagName)
+    public static List<HtmlNode> ReturnTags(HtmlNode htmlNode, string tagName)
     {
         var result = new List<HtmlNode>();
-        foreach (var item in parentNode.ChildNodes)
+        foreach (var item in htmlNode.ChildNodes)
             if (HasTagName(item, tagName))
                 result.Add(item);
         return result;

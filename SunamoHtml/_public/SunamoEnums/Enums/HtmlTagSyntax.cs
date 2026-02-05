@@ -1,8 +1,7 @@
 namespace SunamoHtml._public.SunamoEnums.Enums;
 
 /// <summary>
-/// EN: Specifies the syntax type of an HTML tag.
-/// CZ: Určuje typ syntaxe HTML tagu.
+/// Specifies the syntax type of an HTML tag.
 /// </summary>
 public enum HtmlTagSyntax
 {

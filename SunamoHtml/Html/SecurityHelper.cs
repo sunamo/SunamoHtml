@@ -19,8 +19,8 @@ public static class SecurityHelper
     {
         html = RemoveJsAttributesFromEveryNode(html);
         html = html.Replace(" ", "");
-        html = RegexHelper.rHtmlScript.Replace(html, "");
-        html = RegexHelper.rHtmlComment.Replace(html, "");
+        html = RegexHelper.RHtmlScript.Replace(html, "");
+        html = RegexHelper.RHtmlComment.Replace(html, "");
 
         return html;
     }

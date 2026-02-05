@@ -2,7 +2,7 @@ namespace SunamoHtml._sunamo.SunamoArgs;
 
 internal class ChangeContentArgsHtml
 {
-    internal bool removeEmpty = false;
-    internal bool removeNull = false;
-    internal bool switchFirstAndSecondArg = false;
+    internal bool RemoveEmpty { get; set; } = false;
+    internal bool RemoveNull { get; set; } = false;
+    internal bool SwitchFirstAndSecondArg { get; set; } = false;
 }

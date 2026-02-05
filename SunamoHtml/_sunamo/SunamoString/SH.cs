@@ -81,9 +81,9 @@ internal partial class SH
                 if (allMatch)
                 {
                     var ftw = new FromToWord();
-                    ftw.from = i;
-                    ftw.to = i + offset - 1;
-                    ftw.word = searchWord;
+                    ftw.From = i;
+                    ftw.To = i + offset - 1;
+                    ftw.Word = searchWord;
                     result.Add(ftw);
                     i += offset;
                     break;
@@ -270,15 +270,15 @@ internal partial class SH
     /// EN: Gets text up to and including the first occurrence of a search string.
     /// CZ: Získá text až po první výskyt hledaného řetězce včetně.
     /// </summary>
-    /// <param name="input">The input text.</param>
+    /// <param name="text">The input text.</param>
     /// <param name="searchFor">The string to search for.</param>
     /// <returns>Text up to and including the first occurrence.</returns>
-    internal static string GetToFirst(string input, string searchFor)
+    internal static string GetToFirst(string text, string searchFor)
     {
-        var indexOfChar = input.IndexOf(searchFor);
+        var indexOfChar = text.IndexOf(searchFor);
         if (indexOfChar != -1)
-            return input.Substring(0, indexOfChar + 1);
-        return input;
+            return text.Substring(0, indexOfChar + 1);
+        return text;
     }
 
     /// <summary>

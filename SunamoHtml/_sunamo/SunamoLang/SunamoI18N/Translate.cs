@@ -2,8 +2,8 @@ namespace SunamoHtml._sunamo.SunamoLang.SunamoI18N;
 
 internal class Translate
 {
-    internal static string FromKey(string metodaHtmlGenerator2TopListWithImagesOdkazyPhoto)
+    internal static string FromKey(string key)
     {
-        return metodaHtmlGenerator2TopListWithImagesOdkazyPhoto;
+        return key;
     }
 }

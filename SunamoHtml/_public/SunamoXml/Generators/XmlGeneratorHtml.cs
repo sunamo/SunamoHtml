@@ -5,7 +5,7 @@ namespace SunamoHtml._public.SunamoXml.Generators;
 /// </summary>
 public class XmlGeneratorHtml
 {
-    private readonly Stack<string> _stack;
+    private readonly Stack<string>? _stack;
     private readonly bool _isUseStack;
 
     /// <summary>
@@ -349,7 +349,7 @@ public class XmlGeneratorHtml
     /// </summary>
     public void WriteXmlDeclaration()
     {
-        StringBuilder.Append(XmlTemplates.xml);
+        StringBuilder.Append(XmlTemplates.Xml);
     }
 
     /// <summary>

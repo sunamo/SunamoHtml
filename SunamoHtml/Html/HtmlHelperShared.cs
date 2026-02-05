@@ -10,12 +10,12 @@ public static partial class HtmlHelper
     /// Replaces non-pair HTML tags with XML-valid equivalents (adds self-closing slash).
     /// Problematic with auto translate.
     /// </summary>
-    /// <param name="input">The HTML input string.</param>
+    /// <param name="html">The HTML input string.</param>
     /// <returns>HTML with XML-valid non-pair tags.</returns>
-    public static string ReplaceHtmlNonPairTagsWithXmlValid(string input)
+    public static string ReplaceHtmlNonPairTagsWithXmlValid(string html)
     {
         var alreadyReplaced = new List<string>();
-        var mc = Regex.Matches(input, RegexHelper.rNonPairXmlTagsUnvalid.ToString());
+        var mc = Regex.Matches(html, RegexHelper.RNonPairXmlTagsUnvalid.ToString());
         var col = new List<string>(AllLists.HtmlNonPairTags);
         foreach (Match item in mc)
         {
@@ -32,11 +32,11 @@ public static partial class HtmlHelper
                     {
                         alreadyReplaced.Add(item.Value);
                         var nc = item.Value.Substring(0, item.Value.Length - 1) + " />";
-                        input = input.Replace(item.Value, nc);
+                        html = html.Replace(item.Value, nc);
                     }
         }
 
-        return input;
+        return html;
     }
 
     /// <summary>
@@ -54,33 +54,33 @@ public static partial class HtmlHelper
     /// <summary>
     /// Prepares text for use in HTML attribute by replacing double quotes with single quotes.
     /// </summary>
-    /// <param name="title">The text to prepare.</param>
+    /// <param name="text">The text to prepare.</param>
     /// <returns>Text with double quotes replaced by single quotes.</returns>
-    public static string PrepareToAttribute(string title)
+    public static string PrepareToAttribute(string text)
     {
-        return title.Replace('"', '\'');
+        return text.Replace('"', '\'');
     }
 
     /// <summary>
     /// Replaces all case variations of BR tag with standard lowercased BR tag.
     /// </summary>
-    /// <param name="result">The HTML string to process.</param>
+    /// <param name="html">The HTML string to process.</param>
     /// <returns>HTML with standardized BR tags.</returns>
-    public static string ReplaceAllFontCase(string result)
+    public static string ReplaceAllFontCase(string html)
     {
         var replacement = "<br />";
-        result = result.Replace("<BR />", replacement);
-        result = result.Replace("<bR />", replacement);
-        result = result.Replace("<Br />", replacement);
-        result = result.Replace("<br/>", replacement);
-        result = result.Replace("<BR/>", replacement);
-        result = result.Replace("<bR/>", replacement);
-        result = result.Replace("<Br/>", replacement);
-        result = result.Replace("<br>", replacement);
-        result = result.Replace("<BR>", replacement);
-        result = result.Replace("<bR>", replacement);
-        result = result.Replace("<Br>", replacement);
-        return result;
+        html = html.Replace("<BR />", replacement);
+        html = html.Replace("<bR />", replacement);
+        html = html.Replace("<Br />", replacement);
+        html = html.Replace("<br/>", replacement);
+        html = html.Replace("<BR/>", replacement);
+        html = html.Replace("<bR/>", replacement);
+        html = html.Replace("<Br/>", replacement);
+        html = html.Replace("<br>", replacement);
+        html = html.Replace("<BR>", replacement);
+        html = html.Replace("<bR>", replacement);
+        html = html.Replace("<Br>", replacement);
+        return html;
     }
 
     /// <summary>
@@ -155,8 +155,8 @@ public static partial class HtmlHelper
         var result = new List<HtmlNode>();
         foreach (var item in htmlNode.ChildNodes)
         {
-            var dd = item.ToString();
-            if (dd != "HtmlAgilityPack.HtmlTextNode")
+            var itemType = item.ToString();
+            if (itemType != "HtmlAgilityPack.HtmlTextNode")
                 result.Add(item);
         }
 
@@ -166,33 +166,33 @@ public static partial class HtmlHelper
     /// <summary>
     /// Recursively searches for a tag with specified attribute name and value.
     /// </summary>
-    /// <param name="hn">The HTML node to search in.</param>
+    /// <param name="htmlNode">The HTML node to search in.</param>
     /// <param name="nameOfTag">The tag name to search for.</param>
-    /// <param name="nameOfAtr">The attribute name to match.</param>
-    /// <param name="valueOfAtr">The attribute value to match.</param>
+    /// <param name="nameOfAttribute">The attribute name to match.</param>
+    /// <param name="valueOfAttribute">The attribute value to match.</param>
     /// <returns>Found HTML node or null.</returns>
-    public static HtmlNode? GetTagOfAtributeRek(HtmlNode hn, string nameOfTag, string nameOfAtr, string valueOfAtr)
+    public static HtmlNode? GetTagOfAtributeRek(HtmlNode htmlNode, string nameOfTag, string nameOfAttribute, string valueOfAttribute)
     {
-        hn = TrimNode(hn);
-        foreach (var var in hn.ChildNodes)
+        htmlNode = TrimNode(htmlNode);
+        foreach (var childNode in htmlNode.ChildNodes)
         {
-            var hn2 = var;
-            foreach (var item2 in var.ChildNodes)
+            var currentNode = childNode;
+            foreach (var nestedNode in childNode.ChildNodes)
             {
-                if (GetValueOfAttribute(nameOfAtr, item2) == valueOfAtr)
-                    return item2;
-                var hn3 = GetTagOfAtributeRek(item2, nameOfTag, nameOfAtr, valueOfAtr);
-                if (hn3 != null)
-                    return hn3;
+                if (GetValueOfAttribute(nameOfAttribute, nestedNode) == valueOfAttribute)
+                    return nestedNode;
+                var foundNode = GetTagOfAtributeRek(nestedNode, nameOfTag, nameOfAttribute, valueOfAttribute);
+                if (foundNode != null)
+                    return foundNode;
             }
 
-            if (hn2.Name == nameOfTag)
+            if (currentNode.Name == nameOfTag)
             {
-                if (GetValueOfAttribute(nameOfAtr, hn2) == valueOfAtr)
-                    return hn2;
-                foreach (var var2 in hn2.ChildNodes)
-                    if (GetValueOfAttribute(nameOfAtr, var2) == valueOfAtr)
-                        return var2;
+                if (GetValueOfAttribute(nameOfAttribute, currentNode) == valueOfAttribute)
+                    return currentNode;
+                foreach (var nestedChildNode in currentNode.ChildNodes)
+                    if (GetValueOfAttribute(nameOfAttribute, nestedChildNode) == valueOfAttribute)
+                        return nestedChildNode;
             }
         }
 
@@ -227,82 +227,75 @@ public static partial class HtmlHelper
         for (var i = 0; i < searchedWords.Count; i++)
             searchedWords[i] = searchedWords[i].ToLower();
         entireContent = entireContent.Trim();
-        var ftw = SH.ReturnOccurencesOfStringFromToWord(entireContent, searchedWords.ToArray());
-        if (ftw.Count > 0)
+        var occurrences = SH.ReturnOccurencesOfStringFromToWord(entireContent, searchedWords.ToArray());
+        if (occurrences.Count > 0)
         {
-            var dd = new List<List<FromToWord>>();
-            var fromtw = new List<FromToWord>();
-            fromtw.Add(ftw[0]);
+            var sentenceGroups = new List<List<FromToWord>>();
+            var currentGroup = new List<FromToWord>();
+            currentGroup.Add(occurrences[0]);
             var currentGroupIndex = 0;
-            var lastInsertedFromIndex = ftw[0].from;
-            dd.Add(fromtw);
-            for (var i = 1; i < ftw.Count; i++)
+            var lastInsertedFromIndex = occurrences[0].From;
+            sentenceGroups.Add(currentGroup);
+            for (var i = 1; i < occurrences.Count; i++)
             {
-                var item = ftw[i];
-                if (item.to - lastInsertedFromIndex < maxLettersPerSentence)
+                var item = occurrences[i];
+                if (item.To - lastInsertedFromIndex < maxLettersPerSentence)
                 {
-                    dd[currentGroupIndex].Add(item);
+                    sentenceGroups[currentGroupIndex].Add(item);
                 }
                 else
                 {
-                    var ftw2 = new List<FromToWord>();
-                    ftw2.Add(item);
-                    dd.Add(ftw2);
-                    if (dd.Count == sentenceCount)
+                    var newGroup = new List<FromToWord>();
+                    newGroup.Add(item);
+                    sentenceGroups.Add(newGroup);
+                    if (sentenceGroups.Count == sentenceCount)
                         break;
                     currentGroupIndex++;
                 }
 
-                lastInsertedFromIndex = item.from;
+                lastInsertedFromIndex = item.From;
             }
-
-            // EN: Now calculate the middle element for each collection in DD and take chars left and right from it
-            // CZ: Teď vypočtu pro každou kolekci v DD prostřední prvek a od toho vezmu vždy znaky nalevo i napravo
             var final = new StringBuilder();
-            foreach (var item in dd)
+            foreach (var item in sentenceGroups)
             {
                 var middle = 0;
                 if (item.Count % 2 == 0)
                 {
-                    // EN: Find 2 middle words
-                    // CZ: Zjistím 2 prostřední slova
-                    var from = item[item.Count / 2].from;
+                    var from = item[item.Count / 2].From;
                     var to = 0;
                     if (item.Count != 2)
-                        to = item[item.Count / 2 + 1].to;
+                        to = item[item.Count / 2 + 1].To;
                     else
-                        to = item[item.Count / 2].to;
+                        to = item[item.Count / 2].To;
                     middle = from + (to - from) / 2;
                 }
                 else if (item.Count == 1)
                 {
-                    middle = item[0].from + (item[0].to - item[0].from) / 2;
+                    middle = item[0].From + (item[0].To - item[0].From) / 2;
                 }
                 else
                 {
                     middle = item.Count / 2;
                     middle++;
-                    middle = item[middle].from + (item[middle].to - item[middle].from) / 2;
+                    middle = item[middle].From + (item[middle].To - item[middle].From) / 2;
                 }
 
                 var charsPerSide = maxLettersPerSentence / 2;
                 WhitespaceCharService whitespaceChar = new();
-                var sentence = SH.XCharsBeforeAndAfterWholeWords(SHReplace.ReplaceAllArray(entireContent, " ", whitespaceChar.whiteSpaceChars.ConvertAll(data => data.ToString()).ToArray()), middle, charsPerSide);
-                // EN: Now highlight found words
-                // CZ: Teď zvýrazním nalezené slova
+                var sentence = SH.XCharsBeforeAndAfterWholeWords(SHReplace.ReplaceAllArray(entireContent, " ", whitespaceChar.WhiteSpaceChars.ConvertAll(data => data.ToString()).ToArray()), middle, charsPerSide);
                 var words = SHSplit.SplitBySpaceAndPunctuationCharsLeave(sentence);
                 var sentenceWithHighlightedParts = new StringBuilder();
-                foreach (var item2 in words)
+                foreach (var word in words)
                 {
                     var isSearchedWord = false;
-                    var i2l = item2.ToLower();
-                    foreach (var item3 in searchedWords)
-                        if (i2l == item3)
+                    var wordLower = word.ToLower();
+                    foreach (var searchedWord in searchedWords)
+                        if (wordLower == searchedWord)
                             isSearchedWord = true;
                     if (isSearchedWord)
-                        sentenceWithHighlightedParts.Append("<b>" + item2 + "</b>");
+                        sentenceWithHighlightedParts.Append("<b>" + word + "</b>");
                     else
-                        sentenceWithHighlightedParts.Append(item2);
+                        sentenceWithHighlightedParts.Append(word);
                 }
 
                 final.Append(sentenceWithHighlightedParts + " ... ");

@@ -228,12 +228,12 @@ internal partial class SH
     /// EN: Returns indexes of all occurrences of a character in a string.
     /// CZ: Vrátí indexy všech výskytů znaku ve stringu.
     /// </summary>
-    /// <param name="input">The input string.</param>
+    /// <param name="text">The input string.</param>
     /// <param name="character">The character to find.</param>
     /// <returns>List of indexes where the character appears.</returns>
-    internal static List<int> IndexesOfChars(string input, char character)
+    internal static List<int> IndexesOfChars(string text, char character)
     {
-        return IndexesOfCharsList(input, new List<char>(character));
+        return IndexesOfCharsList(text, new List<char>(character));
     }
 
     /// <summary>
@@ -241,14 +241,14 @@ internal partial class SH
     /// CZ: Vrátí indexy všech výskytů jakéhokoliv znaku ze seznamu ve stringu.
     /// IndexesOfChars - for single char, ReturnOccurencesOfString - for string.
     /// </summary>
-    /// <param name="input">The input string.</param>
+    /// <param name="text">The input string.</param>
     /// <param name="characters">List of characters to find.</param>
     /// <returns>Sorted list of indexes where any of the characters appear.</returns>
-    internal static List<int> IndexesOfCharsList(string input, List<char> characters)
+    internal static List<int> IndexesOfCharsList(string text, List<char> characters)
     {
         var indexes = new List<int>();
         foreach (var character in characters)
-            indexes.AddRange(ReturnOccurencesOfString(input, character.ToString()));
+            indexes.AddRange(ReturnOccurencesOfString(text, character.ToString()));
         indexes.Sort();
         return indexes;
     }

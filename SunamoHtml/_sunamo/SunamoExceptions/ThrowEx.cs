@@ -1,7 +1,6 @@
 namespace SunamoHtml._sunamo.SunamoExceptions;
 
-// EN: Variable names have been checked and replaced with self-descriptive names
-// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+// variables names: ok
 internal partial class ThrowEx
 {
     internal static bool DifferentCountInLists<T>(string namefc, IList<T> countfc, string namesc, IList<T> countsc)
@@ -24,9 +23,9 @@ internal partial class ThrowEx
     #region Other
     internal static string FullNameOfExecutedCode()
     {
-        Tuple<string, string, string> placeOfExc = Exceptions.PlaceOfException();
-        string f = FullNameOfExecutedCode(placeOfExc.Item1, placeOfExc.Item2, true);
-        return f;
+        Tuple<string, string, string> placeOfException = Exceptions.PlaceOfException();
+        string fullName = FullNameOfExecutedCode(placeOfException.Item1, placeOfException.Item2, true);
+        return fullName;
     }
 
     static string FullNameOfExecutedCode(object type, string methodName, bool fromThrowEx = false)
@@ -57,8 +56,8 @@ internal partial class ThrowEx
         }
         else
         {
-            Type t = type.GetType();
-            typeFullName = t.FullName ?? "Type cannot be get via type.GetType()";
+            Type actualType = type.GetType();
+            typeFullName = actualType.FullName ?? "Type cannot be get via type.GetType()";
         }
         return string.Concat(typeFullName, ".", methodName);
     }
@@ -79,12 +78,10 @@ internal partial class ThrowEx
 
     #region For avoid FullNameOfExecutedCode
 
-
-
-    internal static bool ThrowIsNotNull(Func<string, string?> f)
+    internal static bool ThrowIsNotNull(Func<string, string?> exceptionFactory)
     {
-        string? exc = f(FullNameOfExecutedCode());
-        return ThrowIsNotNull(exc);
+        string? exception = exceptionFactory(FullNameOfExecutedCode());
+        return ThrowIsNotNull(exception);
     }
     #endregion
     #endregion

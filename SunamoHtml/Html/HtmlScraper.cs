@@ -11,14 +11,14 @@ public class HtmlScraper
     /// <summary>
     /// Gets all attribute values of a specific tag and appends them to internal string builder.
     /// </summary>
-    /// <param name="hd">The HTML node to search in.</param>
+    /// <param name="node">The HTML node to search in.</param>
     /// <param name="isRecursive">Whether to search recursively.</param>
     /// <param name="tag">The tag name to search for.</param>
     /// <param name="attributeName">The attribute name to get values from.</param>
     /// <returns>String with all attribute values, each on a new line.</returns>
-    public static string AttributeValuesOfTag(HtmlNode hd, bool isRecursive, string tag, string attributeName)
+    public static string AttributeValuesOfTag(HtmlNode node, bool isRecursive, string tag, string attributeName)
     {
-        var nodes = HtmlAgilityHelper.Nodes(hd, isRecursive, tag);
+        var nodes = HtmlAgilityHelper.Nodes(node, isRecursive, tag);
         foreach (var item in nodes)
             StringBuilder.AppendLine(HtmlAssistant.GetValueOfAttribute(attributeName, item));
         return StringBuilder.ToString();

@@ -1,8 +1,7 @@
 namespace SunamoHtml.Html;
 
 /// <summary>
-/// EN: Helper class for HTML text manipulation (tag replacement, tag parsing, syntax detection, etc.).
-/// CZ: Pomocná třída pro manipulaci s HTML textem (nahrazování tagů, parsování tagů, detekce syntaxe atd.).
+/// Helper class for HTML text manipulation (tag replacement, tag parsing, syntax detection, etc.).
 /// </summary>
 public class HtmlHelperText
 {
@@ -11,16 +10,16 @@ public class HtmlHelperText
     /// <summary>
     /// Replaces all occurrences of a pair tag with another tag.
     /// </summary>
-    /// <param name="input">The HTML input string.</param>
+    /// <param name="text">The HTML input string.</param>
     /// <param name="tag">The tag to replace.</param>
     /// <param name="replacement">The replacement tag name.</param>
     /// <returns>HTML with replaced tags.</returns>
-    public static string ReplacePairTag(string input, string tag, string replacement)
+    public static string ReplacePairTag(string text, string tag, string replacement)
     {
-        input = input.Replace("<" + tag + ">", "<" + replacement + ">");
-        input = input.Replace("<" + tag + " ", "<" + replacement + " ");
-        input = input.Replace("</" + tag + ">", "</" + replacement + ">");
-        return input;
+        text = text.Replace("<" + tag + ">", "<" + replacement + ">");
+        text = text.Replace("<" + tag + " ", "<" + replacement + " ");
+        text = text.Replace("</" + tag + ">", "</" + replacement + ">");
+        return text;
     }
 
     /// <summary>
@@ -126,10 +125,10 @@ public class HtmlHelperText
     /// <returns>HTML with all element nodes removed.</returns>
     public static string RemoveAllNodes(string htmlText)
     {
-        var hd = HtmlAgilityHelper.CreateHtmlDocument();
-        hd.LoadHtml(htmlText);
+        var htmlDocument = HtmlAgilityHelper.CreateHtmlDocument();
+        htmlDocument.LoadHtml(htmlText);
 
-        var nodes = hd.DocumentNode.Descendants().ToList();
+        var nodes = htmlDocument.DocumentNode.Descendants().ToList();
         for (var i = 0; i < nodes.Count(); i++)
         {
             var node = nodes[i];
@@ -143,31 +142,31 @@ public class HtmlHelperText
             }
         }
 
-        return hd.DocumentNode.OuterHtml;
+        return htmlDocument.DocumentNode.OuterHtml;
     }
 
     /// <summary>
     /// Gets text between HTML tags and extracts tag attributes.
     /// </summary>
-    /// <param name="c2">The HTML string to search in.</param>
+    /// <param name="html">The HTML string to search in.</param>
     /// <param name="scriptS">The starting tag.</param>
     /// <param name="scriptE">The ending tag.</param>
     /// <param name="isThrowExceptionIfNotContains">Whether to throw exception if tags not found.</param>
     /// <returns>Tuple with text content and attributes string.</returns>
-    public static Tuple<string, string> GetTextBetweenTags(string c2, string scriptS, string scriptE,
+    public static Tuple<string, string> GetTextBetweenTags(string html, string scriptS, string scriptE,
         bool isThrowExceptionIfNotContains = true)
     {
         if (scriptS.EndsWith(">"))
-            return new Tuple<string, string>(SH.GetTextBetweenSimple(c2, scriptS, scriptE, isThrowExceptionIfNotContains),
+            return new Tuple<string, string>(SH.GetTextBetweenSimple(html, scriptS, scriptE, isThrowExceptionIfNotContains),
                 "");
-        var sc = c2.IndexOf(scriptS);
+        var sc = html.IndexOf(scriptS);
         if (sc == -1)
             return new Tuple<string, string>(" ", "");
 
-        var ending = c2.IndexOf('>', sc);
-        var element = c2.IndexOf(scriptE, ending);
+        var ending = html.IndexOf('>', sc);
+        var element = html.IndexOf(scriptE, ending);
 
-        var result = SH.GetTextBetweenTwoCharsInts(c2, ending, element);
+        var result = SH.GetTextBetweenTwoCharsInts(html, ending, element);
 
         var from = sc + scriptS.Length - 1;
         var to = ending;
@@ -176,7 +175,7 @@ public class HtmlHelperText
 
         if (from < to)
         {
-            attrs = SH.GetTextBetweenTwoCharsInts(c2, from, to);
+            attrs = SH.GetTextBetweenTwoCharsInts(html, from, to);
         }
 
         return new Tuple<string, string>(result, attrs);
@@ -185,11 +184,11 @@ public class HtmlHelperText
     /// <summary>
     /// Gets all HTML tags from the input using regex.
     /// </summary>
-    /// <param name="input">The HTML input string.</param>
+    /// <param name="text">The HTML input string.</param>
     /// <returns>List of all HTML tags found.</returns>
-    public static List<string> GetAllTags(string input)
+    public static List<string> GetAllTags(string text)
     {
-        var tags = Regex.Matches(input, regexHtmlTag);
+        var tags = Regex.Matches(text, regexHtmlTag);
         var sourceList = new List<string>();
         foreach (Match item in tags)
             sourceList.Add(item.Value);
@@ -209,13 +208,13 @@ public class HtmlHelperText
     /// <summary>
     /// Removes ASP.NET comments from HTML.
     /// </summary>
-    /// <param name="c">The HTML content.</param>
+    /// <param name="html">The HTML content.</param>
     /// <returns>HTML with ASPX comments removed.</returns>
-    public static string RemoveAspxComments(string c)
+    public static string RemoveAspxComments(string html)
     {
-        c = Regex.Replace(c, ConstsAspx.startAspxComment + ".*?" + ConstsAspx.endAspxComment, string.Empty,
+        html = Regex.Replace(html, ConstsAspx.StartAspxComment + ".*?" + ConstsAspx.EndAspxComment, string.Empty,
             RegexOptions.Singleline);
-        return c;
+        return html;
     }
 
     /// <summary>
@@ -285,7 +284,7 @@ public class HtmlHelperText
     public static bool IsHtmlEntity(string text)
     {
         text = text.TrimStart('&').TrimEnd(';');
-        return AllLists.htmlEntities.Contains(text);
+        return AllLists.HtmlEntities.Contains(text);
     }
 
     /// <summary>
@@ -326,7 +325,7 @@ public class HtmlHelperText
     /// <returns>True if it's a valid CSS property name.</returns>
     public static bool IsCssDeclarationName(string decl)
     {
-        if (AllLists.allCssKeys.Contains(decl))
+        if (AllLists.AllCssKeys.Contains(decl))
             return true;
         return false;
     }

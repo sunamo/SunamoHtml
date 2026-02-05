@@ -71,7 +71,6 @@ bool fillAlsoFirstTwo = true)
     }
     #endregion
 
-
     internal static string? HasOddNumberOfElements(string before, string listName, ICollection list)
     {
         return list.Count % 2 == 1 ? CheckBefore(before) + listName + " has odd number of elements " + list.Count : null;
