@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="SunamoHtml.Tests\\SunamoHtml.Tests.csproj" />
+  <Project Path="RunnerHtml\\RunnerHtml.csproj" />
+  <Project Path="SunamoHtml\SunamoHtml.csproj" />
+</Solution>
