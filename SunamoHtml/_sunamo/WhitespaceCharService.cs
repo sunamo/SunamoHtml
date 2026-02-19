@@ -1,6 +1,6 @@
 namespace SunamoHtml._sunamo;
 
-internal class WhitespaceCharService
+internal sealed class WhitespaceCharService
 {
     internal List<char> WhiteSpaceChars = new();
     internal readonly List<int> WhiteSpacesCodes = new(new[]

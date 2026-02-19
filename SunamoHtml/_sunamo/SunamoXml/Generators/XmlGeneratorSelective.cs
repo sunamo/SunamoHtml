@@ -1,6 +1,6 @@
 namespace SunamoHtml._sunamo.SunamoXml.Generators;
 
-internal class XmlGeneratorSelective : XmlGeneratorHtml
+internal sealed class XmlGeneratorSelective : XmlGeneratorHtml
 {
     
     public override string ToString()

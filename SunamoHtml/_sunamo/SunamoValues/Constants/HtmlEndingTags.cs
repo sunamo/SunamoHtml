@@ -8,8 +8,6 @@ internal class HtmlEndingTags
     internal const string B = "</b>";
     internal const string I = "</i>";
     internal const string S = "</s>";
-    private static Type Type = typeof(HtmlEndingTags);
-
     /// <summary>
     /// Gets the closing tag for the specified tag name.
     /// </summary>

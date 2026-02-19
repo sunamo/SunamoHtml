@@ -13,19 +13,31 @@ public class HtmlGeneratorExtended : HtmlGenerator
     /// <param name="label">The label text to display before the value.</param>
     /// <param name="uri">The URI for the anchor link. If empty, displays plain text.</param>
     /// <param name="name">The name/text to display or link to.</param>
-    public void DetailAnchor(string label, string uri, string name)
+    public void DetailAnchor(string label, System.Uri uri, string name)
+    {
+        DetailAnchor(label, uri?.ToString() ?? string.Empty, name);
+    }
+
+    /// <summary>
+    /// Writes a detail line with label and anchor link using a URL string.
+    /// Only outputs if the name parameter is not empty.
+    /// </summary>
+    /// <param name="label">The label text to display before the value.</param>
+    /// <param name="url">The URL string for the anchor link. If empty, displays plain text.</param>
+    /// <param name="name">The name/text to display or link to.</param>
+    public void DetailAnchor(string label, string url, string name)
     {
         if (!string.IsNullOrEmpty(name))
         {
             WriteElement("b", label + ":");
             WriteRaw(" ");
-            if (string.IsNullOrEmpty(uri))
+            if (string.IsNullOrEmpty(url))
             {
                 WriteRaw(name);
             }
             else
             {
-                WriteTagWithAttrs("a", "href", uri);
+                WriteTagWithAttrs("a", "href", url);
                 WriteRaw(name);
                 TerminateTag("a");
             }
@@ -91,7 +103,7 @@ public class HtmlGeneratorExtended : HtmlGenerator
     /// Currently throws NotImplementedException - needs implementation.
     /// </summary>
     /// <param name="args">Arguments containing CSS and JS paths/content.</param>
-    public
+    public static
 #if ASYNC
         async Task
 #else
@@ -99,7 +111,7 @@ void
 #endif
         BoilerplateStart(BoilerplateStartArgs args)
     {
-        throw new Exception();
+        throw new InvalidOperationException();
     }
 
     /// <summary>
@@ -107,17 +119,17 @@ void
     /// Currently throws NotImplementedException - needs implementation.
     /// </summary>
     /// <param name="args">Optional arguments containing onload handler.</param>
-    public void BoilerplateMiddle(BoilerplateMiddleArgs? args = null)
+    public static void BoilerplateMiddle(BoilerplateMiddleArgs? args = null)
     {
-        throw new Exception();
+        throw new InvalidOperationException();
     }
 
     /// <summary>
     /// Generates HTML5 boilerplate end section (closing body and html tags).
     /// Currently throws NotImplementedException - needs implementation.
     /// </summary>
-    public void BoilerplateEnd()
+    public static void BoilerplateEnd()
     {
-        throw new Exception();
+        throw new InvalidOperationException();
     }
 }

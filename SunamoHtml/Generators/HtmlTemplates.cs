@@ -51,6 +51,7 @@ public static class HtmlTemplates
     /// <param name="generator">The HTML generator to write to.</param>
     public static void Mail(HtmlGenerator generator)
     {
+        ArgumentNullException.ThrowIfNull(generator);
         generator.WriteTagWithAttrs("a", "href", "mailto:radek.jancik@sunamo.cz");
         generator.WriteRaw("radek.jancik@sunamo.cz");
         generator.TerminateTag("a");

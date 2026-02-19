@@ -14,25 +14,26 @@ public static partial class HtmlHelper
     /// <returns>HTML with XML-valid non-pair tags.</returns>
     public static string ReplaceHtmlNonPairTagsWithXmlValid(string html)
     {
+        ArgumentNullException.ThrowIfNull(html);
         var alreadyReplaced = new List<string>();
         var mc = Regex.Matches(html, RegexHelper.RNonPairXmlTagsUnvalid.ToString());
         var col = new List<string>(AllLists.HtmlNonPairTags);
         foreach (Match item in mc)
         {
-            var data = item.Value.Replace(" >", ">");
+            var data = item.Value.Replace(" >", ">", StringComparison.Ordinal);
             var tag = "";
-            if (item.Value.Contains(" "))
+            if (item.Value.Contains(" ", StringComparison.Ordinal))
                 tag = SH.GetFirstPartByLocation(item.Value, ' ');
             else
-                tag = data.Replace("/", "").Replace(">", "");
-            tag = tag.TrimStart('<').Trim().ToLower();
-            if (col.Contains(tag))
-                if (!item.Value.Contains("/>"))
+                tag = data.Replace("/", "", StringComparison.Ordinal).Replace(">", "", StringComparison.Ordinal);
+            tag = tag.TrimStart('<').Trim();
+            if (col.Contains(tag, StringComparer.OrdinalIgnoreCase))
+                if (!item.Value.Contains("/>", StringComparison.Ordinal))
                     if (!alreadyReplaced.Contains(item.Value))
                     {
                         alreadyReplaced.Add(item.Value);
-                        var nc = item.Value.Substring(0, item.Value.Length - 1) + " />";
-                        html = html.Replace(item.Value, nc);
+                        var nc = string.Concat(item.Value.AsSpan(0, item.Value.Length - 1), " />");
+                        html = html.Replace(item.Value, nc, StringComparison.Ordinal);
                     }
         }
 
@@ -46,8 +47,9 @@ public static partial class HtmlHelper
     /// <returns>HTML with BR tags instead of newlines.</returns>
     public static string ConvertTextToHtml(string text)
     {
-        text = text.Replace(Environment.NewLine, "<br />");
-        text = text.Replace("\n", "<br />");
+        ArgumentNullException.ThrowIfNull(text);
+        text = text.Replace(Environment.NewLine, "<br />", StringComparison.Ordinal);
+        text = text.Replace("\n", "<br />", StringComparison.Ordinal);
         return text;
     }
 
@@ -58,6 +60,7 @@ public static partial class HtmlHelper
     /// <returns>Text with double quotes replaced by single quotes.</returns>
     public static string PrepareToAttribute(string text)
     {
+        ArgumentNullException.ThrowIfNull(text);
         return text.Replace('"', '\'');
     }
 
@@ -68,18 +71,19 @@ public static partial class HtmlHelper
     /// <returns>HTML with standardized BR tags.</returns>
     public static string ReplaceAllFontCase(string html)
     {
+        ArgumentNullException.ThrowIfNull(html);
         var replacement = "<br />";
-        html = html.Replace("<BR />", replacement);
-        html = html.Replace("<bR />", replacement);
-        html = html.Replace("<Br />", replacement);
-        html = html.Replace("<br/>", replacement);
-        html = html.Replace("<BR/>", replacement);
-        html = html.Replace("<bR/>", replacement);
-        html = html.Replace("<Br/>", replacement);
-        html = html.Replace("<br>", replacement);
-        html = html.Replace("<BR>", replacement);
-        html = html.Replace("<bR>", replacement);
-        html = html.Replace("<Br>", replacement);
+        html = html.Replace("<BR />", replacement, StringComparison.Ordinal);
+        html = html.Replace("<bR />", replacement, StringComparison.Ordinal);
+        html = html.Replace("<Br />", replacement, StringComparison.Ordinal);
+        html = html.Replace("<br/>", replacement, StringComparison.Ordinal);
+        html = html.Replace("<BR/>", replacement, StringComparison.Ordinal);
+        html = html.Replace("<bR/>", replacement, StringComparison.Ordinal);
+        html = html.Replace("<Br/>", replacement, StringComparison.Ordinal);
+        html = html.Replace("<br>", replacement, StringComparison.Ordinal);
+        html = html.Replace("<BR>", replacement, StringComparison.Ordinal);
+        html = html.Replace("<bR>", replacement, StringComparison.Ordinal);
+        html = html.Replace("<Br>", replacement, StringComparison.Ordinal);
         return html;
     }
 
@@ -90,7 +94,8 @@ public static partial class HtmlHelper
     /// <returns>Text without spaces.</returns>
     public static string ClearSpaces(string text)
     {
-        return text.Replace("&nbsp;", "").Replace(" ", "");
+        ArgumentNullException.ThrowIfNull(text);
+        return text.Replace("&nbsp;", "", StringComparison.Ordinal).Replace(" ", "", StringComparison.Ordinal);
     }
 
     /// <summary>
@@ -119,12 +124,12 @@ public static partial class HtmlHelper
     /// Gets the value of an HTML attribute from a node.
     /// </summary>
     /// <param name="attributeName">The attribute name.</param>
-    /// <param name="divMain">The HTML node.</param>
+    /// <param name="htmlNode">The HTML node.</param>
     /// <param name="isTrim">Whether to trim the value.</param>
     /// <returns>Attribute value or empty string if not found.</returns>
-    private static string GetValueOfAttribute(string attributeName, HtmlNode divMain, bool isTrim = false)
+    private static string GetValueOfAttribute(string attributeName, HtmlNode htmlNode, bool isTrim = false)
     {
-        return HtmlAssistant.GetValueOfAttribute(attributeName, divMain, isTrim);
+        return HtmlAssistant.GetValueOfAttribute(attributeName, htmlNode, isTrim);
     }
 
     /// <summary>
@@ -136,8 +141,9 @@ public static partial class HtmlHelper
     /// <param name="attributeName">The attribute name to match.</param>
     /// <param name="value">The attribute value to match.</param>
     /// <returns>First matching HTML node or null.</returns>
-    public static HtmlNode ReturnTagWithAttr(HtmlNode htmlNode, string tag, string attributeName, string value)
+    public static HtmlNode? ReturnTagWithAttr(HtmlNode htmlNode, string tag, string attributeName, string value)
     {
+        ArgumentNullException.ThrowIfNull(htmlNode);
         var result = new List<HtmlNode>();
         RecursiveReturnTagWithAttr(result, htmlNode, tag, attributeName, value);
         if (result.Count > 0)
@@ -150,8 +156,9 @@ public static partial class HtmlHelper
     /// </summary>
     /// <param name="htmlNode">The HTML node to get children from.</param>
     /// <returns>List of non-text child nodes.</returns>
-    public static List<HtmlNode> GetWithoutTextNodes(HtmlNode htmlNode)
+    public static IList<HtmlNode> GetWithoutTextNodes(HtmlNode htmlNode)
     {
+        ArgumentNullException.ThrowIfNull(htmlNode);
         var result = new List<HtmlNode>();
         foreach (var item in htmlNode.ChildNodes)
         {
@@ -207,8 +214,9 @@ public static partial class HtmlHelper
     /// <returns>HTML without specified opening and closing tags.</returns>
     public static string TrimOpenAndEndTags(string html, string nameOfTag)
     {
-        html = html.Replace("<" + nameOfTag + ">", "");
-        html = html.Replace("</" + nameOfTag + ">", "");
+        ArgumentNullException.ThrowIfNull(html);
+        html = html.Replace("<" + nameOfTag + ">", "", StringComparison.Ordinal);
+        html = html.Replace("</" + nameOfTag + ">", "", StringComparison.Ordinal);
         return html;
     }
 
@@ -222,10 +230,12 @@ public static partial class HtmlHelper
     /// <param name="sentenceCount">Number of sentence snippets to return.</param>
     /// <param name="searchedWords">List of words to search for and highlight.</param>
     /// <returns>HTML string with highlighted words in sentence snippets.</returns>
-    public static string HighlightingWords(string entireContent, int maxLettersPerSentence, int sentenceCount, List<string> searchedWords)
+    public static string HighlightingWords(string entireContent, int maxLettersPerSentence, int sentenceCount, IList<string> searchedWords)
     {
+        ArgumentNullException.ThrowIfNull(entireContent);
+        ArgumentNullException.ThrowIfNull(searchedWords);
         for (var i = 0; i < searchedWords.Count; i++)
-            searchedWords[i] = searchedWords[i].ToLower();
+            searchedWords[i] = searchedWords[i].ToUpperInvariant();
         entireContent = entireContent.Trim();
         var occurrences = SH.ReturnOccurencesOfStringFromToWord(entireContent, searchedWords.ToArray());
         if (occurrences.Count > 0)
@@ -288,7 +298,7 @@ public static partial class HtmlHelper
                 foreach (var word in words)
                 {
                     var isSearchedWord = false;
-                    var wordLower = word.ToLower();
+                    var wordLower = word.ToUpperInvariant();
                     foreach (var searchedWord in searchedWords)
                         if (wordLower == searchedWord)
                             isSearchedWord = true;

@@ -33,7 +33,7 @@ void
 #if ASYNC
             await
 #endif
-                File.ReadAllTextAsync(filePath);
+                File.ReadAllTextAsync(filePath).ConfigureAwait(false);
         htmlContent = XH.RemoveXmlDeclaration(htmlContent);
         HtmlDocument.LoadHtml(htmlContent);
     }
@@ -52,6 +52,6 @@ void
 #if ASYNC
         await
 #endif
-            File.WriteAllTextAsync(Path, XmlTemplates.Xml + "\r\n" + HtmlDocument.DocumentNode.OuterHtml);
+            File.WriteAllTextAsync(Path, XmlTemplates.Xml + "\r\n" + HtmlDocument.DocumentNode.OuterHtml).ConfigureAwait(false);
     }
 }

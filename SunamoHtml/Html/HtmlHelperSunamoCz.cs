@@ -2,9 +2,9 @@ namespace SunamoHtml.Html;
 
 /// <summary>
 /// EN: Helper class for converting plain text to HTML with automatic anchor detection and markdown-like formatting.
-/// CZ: Pomocná třída pro konverzi prostého textu do HTML s automatickou detekcí odkazů a markdown-like formátováním.
+/// CZ: Pomocna trida pro konverzi prosteho textu do HTML s automatickou detekci odkazu a markdown-like formatovanim.
 /// </summary>
-public class HtmlHelperSunamoCz
+public static class HtmlHelperSunamoCz
 {
     /// <summary>
     /// Converts text to HTML with automatic anchor links and markdown-like formatting (*bold*, _italic_, -strike-).
@@ -14,19 +14,20 @@ public class HtmlHelperSunamoCz
     /// <returns>Converted HTML string.</returns>
     public static string ConvertTextToHtmlWithAnchors(string text, ref string error)
     {
+        ArgumentNullException.ThrowIfNull(text);
         const string li = "li";
-        text = text.Replace("-" + li, "" + li);
+        text = text.Replace("-" + li, "" + li, StringComparison.Ordinal);
 
         text = HtmlHelper.ConvertTextToHtml(text);
 
-        text = text.Replace("<", " <");
+        text = text.Replace("<", " <", StringComparison.Ordinal);
         var data = SHSplit.SplitAndKeepDelimiters(text, new List<char>([' ', '<', '>'])
             .ConvertAll(data => data.ToString()));
 
         for (var i = 0; i < data.Count; i++)
         {
             var item = data[i].Trim();
-            if (item.StartsWith("https://") || item.StartsWith("https://") || item.StartsWith("www."))
+            if (item.StartsWith("https://", StringComparison.Ordinal) || item.StartsWith("https://", StringComparison.Ordinal) || item.StartsWith("www.", StringComparison.Ordinal))
             {
                 var res = item;
                 res = HtmlGenerator2.AnchorWithHttp(res);
@@ -104,9 +105,10 @@ public class HtmlHelperSunamoCz
     /// <returns>Converted HTML string with anchor links.</returns>
     public static string ConvertTextToHtmlWithAnchors(string text)
     {
+        ArgumentNullException.ThrowIfNull(text);
         var data = SHSplit.SplitNoneChar(HtmlHelper.ConvertTextToHtml(text), ' ');
         for (var i = 0; i < data.Count; i++)
-            if (data[i].StartsWith("http://") || data[i].StartsWith("https://"))
+            if (data[i].StartsWith("http://", StringComparison.Ordinal) || data[i].StartsWith("https://", StringComparison.Ordinal))
                 data[i] = HtmlGenerator2.AnchorWithHttp(data[i]);
         return string.Join(' ', data);
     }

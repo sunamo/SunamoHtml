@@ -8,10 +8,10 @@ namespace SunamoHtml._public.SunamoData.Data;
 public class NTreeHtml<T>
 {
     /// <summary>
-    /// EN: Gets or sets the child nodes of this node.
-    /// CZ: Získá nebo nastaví podřízené uzly tohoto uzlu.
+    /// EN: Gets the child nodes of this node.
+    /// CZ: Získá podřízené uzly tohoto uzlu.
     /// </summary>
-    public LinkedList<NTreeHtml<T>> Children { get; set; }
+    public LinkedList<NTreeHtml<T>> Children { get; } = new();
 
     /// <summary>
     /// EN: Gets or sets the data stored in this node.
@@ -26,7 +26,6 @@ public class NTreeHtml<T>
     public NTreeHtml(T data)
     {
         Data = data;
-        Children = new LinkedList<NTreeHtml<T>>();
     }
 
     /// <summary>
@@ -48,7 +47,7 @@ public class NTreeHtml<T>
     /// </summary>
     /// <param name="index">The zero-based index of the child to retrieve.</param>
     /// <returns>The child node at the specified index, or null if not found.</returns>
-    public NTreeHtml<T> GetChild(int index)
+    public NTreeHtml<T>? GetChild(int index)
     {
         foreach (var node in Children)
             if (--index == 0)
@@ -64,6 +63,8 @@ public class NTreeHtml<T>
     /// <param name="visitor">The action to call for each node's data.</param>
     public void Traverse(NTreeHtml<T> node, Action<T> visitor)
     {
+        ArgumentNullException.ThrowIfNull(node);
+        ArgumentNullException.ThrowIfNull(visitor);
         visitor(node.Data);
         foreach (var child in node.Children)
             Traverse(child, visitor);

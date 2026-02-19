@@ -17,8 +17,9 @@ public static class SecurityHelper
     /// <returns>Sanitized HTML code.</returns>
     public static string TreatHtmlCode(string html)
     {
+        ArgumentNullException.ThrowIfNull(html);
         html = RemoveJsAttributesFromEveryNode(html);
-        html = html.Replace(" ", "");
+        html = html.Replace(" ", "", StringComparison.Ordinal);
         html = RegexHelper.RHtmlScript.Replace(html, "");
         html = RegexHelper.RHtmlComment.Replace(html, "");
 
@@ -33,6 +34,7 @@ public static class SecurityHelper
     /// <returns>HTML with JavaScript attributes removed.</returns>
     public static string RemoveJsAttributesFromEveryNode(string html)
     {
+        ArgumentNullException.ThrowIfNull(html);
         var document = new HtmlDocument();
         document.LoadHtml(html);
         var nodes = document.DocumentNode.SelectNodes("//*");
@@ -40,9 +42,9 @@ public static class SecurityHelper
         {
             foreach (var eachNode in nodes)
                 foreach (var item in eachNode.Attributes)
-                    if (item.Name.ToLower().StartsWith("on"))
+                    if (item.Name.ToLowerInvariant().StartsWith("on", StringComparison.OrdinalIgnoreCase))
                         item.Remove();
-                    else if (item.Value.ToLower().Trim().StartsWith("javascript:"))
+                    else if (item.Value.ToLowerInvariant().Trim().StartsWith("javascript:", StringComparison.OrdinalIgnoreCase))
                         item.Remove();
             html = document.DocumentNode.OuterHtml;
         }

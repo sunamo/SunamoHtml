@@ -23,7 +23,7 @@ internal partial class AllLists
     /// <summary>
     ///     parsed with WikipediaHelper.HtmlEntitiesList
     /// </summary>
-    internal static List<string> HtmlEntities;
+    internal static List<string> HtmlEntities = null!;
     internal static readonly List<string> BasicImageExtensions = new List<string>([".png", ".bmp", ".jpg", ".jpeg" /*AllExtensions.png,
     AllExtensions.bmp,
     AllExtensions.jpg,

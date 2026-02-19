@@ -69,7 +69,7 @@ internal partial class ThrowEx
             Debugger.Break();
             if (reallyThrow)
             {
-                throw new Exception(exception);
+                throw new InvalidOperationException(exception);
             }
             return true;
         }

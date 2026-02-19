@@ -4,7 +4,7 @@ internal class SHReplace
 {
     internal static string ReplaceWhiteSpacesWithoutSpacesWithReplaceWith(string text, string replaceWith)
     {
-        return text.Replace("\r", replaceWith).Replace("\n", replaceWith).Replace("\t", replaceWith);
+        return text.Replace("\r", replaceWith, StringComparison.Ordinal).Replace("\n", replaceWith, StringComparison.Ordinal).Replace("\t", replaceWith, StringComparison.Ordinal);
     }
 
     internal static string ReplaceAllArray(string text, string replacement, params string[] searchPatterns)
@@ -20,7 +20,7 @@ internal class SHReplace
             if (string.IsNullOrEmpty(item))
                 return text;
 
-        foreach (var item in searchPatterns) text = text.Replace(item, replacement);
+        foreach (var item in searchPatterns) text = text.Replace(item, replacement, StringComparison.Ordinal);
         return text;
     }
 
@@ -30,14 +30,14 @@ internal class SHReplace
 
         if (alsoHtml)
         {
-            text = text.Replace(" &nbsp;", " ");
-            text = text.Replace("&nbsp; ", " ");
-            text = text.Replace("&nbsp;", " ");
+            text = text.Replace(" &nbsp;", " ", StringComparison.Ordinal);
+            text = text.Replace("&nbsp; ", " ", StringComparison.Ordinal);
+            text = text.Replace("&nbsp;", " ", StringComparison.Ordinal);
         }
 
-        while (text.Contains("  "))
+        while (text.Contains("  ", StringComparison.Ordinal))
             text = text.Replace("  ",
-                " "); //ReplaceAll2(text, "", "");
+                " ", StringComparison.Ordinal); //ReplaceAll2(text, "", "");
 
         // Here it was cycling, dont know why, therefore without while
         //while (text.Contains("space160 + space"))
@@ -59,7 +59,7 @@ internal class SHReplace
             if (string.IsNullOrEmpty(item))
                 return text;
 
-        foreach (var item in searchPatterns) text = text.Replace(item, replacement);
+        foreach (var item in searchPatterns) text = text.Replace(item, replacement, StringComparison.Ordinal);
         return text;
     }
 }

@@ -28,7 +28,7 @@ internal class SHSplit
 
             if (isSpaceOrPunctuation)
             {
-                if (result[result.Count - 1] == "")
+                if (string.IsNullOrEmpty(result[result.Count - 1]))
                     result[result.Count - 1] += character.ToString();
                 else
                     result.Add(character.ToString());
@@ -48,12 +48,12 @@ internal class SHSplit
     /// EN: Splits string and keeps delimiters in the result.
     /// CZ: Rozdělí string a zachová oddělovače ve výsledku.
     /// </summary>
-    /// <param name="originalString">The string to split.</param>
+    /// <param name="text">The string to split.</param>
     /// <param name="delimiters">List of delimiter characters.</param>
     /// <returns>List of split parts with delimiters.</returns>
-    internal static List<string> SplitAndKeepDelimiters(string originalString, List<string> delimiters)
+    internal static List<string> SplitAndKeepDelimiters(string text, List<string> delimiters)
     {
-        var result = Regex.Split(originalString, @"(?<=[" + string.Join("", delimiters) + "])");
+        var result = Regex.Split(text, @"(?<=[" + string.Join("", delimiters) + "])");
         return result.ToList();
     }
 

@@ -90,7 +90,7 @@ public class HtmlAgilityHelperManipulationWithoutMockTests : HtmlHelperBaseTests
     //[Fact]
     public void NodesWhichContainsInAttrTest()
     {
-        List<HtmlNode> nodes = null!;
+        IList<HtmlNode> nodes = null!;
 
         // Recursively
         nodes = HtmlAgilityHelper.NodesWhichContainsInAttr(DocumentNode, true, HtmlTags.Span, HtmlAttrs.C, CssClassA);

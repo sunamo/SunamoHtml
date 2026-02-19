@@ -12,8 +12,9 @@ public partial class HtmlGenerator2 : HtmlGenerator
     /// <param name="year">The year.</param>
     /// <param name="month">The month (1-12).</param>
     /// <returns>HTML string representing the calendar.</returns>
-    public static string Calendar(List<string> htmlBoxesEveryDay, int year, int month)
+    public static string Calendar(IList<string> htmlBoxesEveryDay, int year, int month)
     {
+        ArgumentNullException.ThrowIfNull(htmlBoxesEveryDay);
         var colors = new List<string>(htmlBoxesEveryDay.Count);
         foreach (var item in htmlBoxesEveryDay)
             colors.Add(null!);
@@ -49,8 +50,10 @@ public partial class HtmlGenerator2 : HtmlGenerator
     /// <param name="year">The year.</param>
     /// <param name="month">The month (1-12).</param>
     /// <returns>HTML string representing the calendar.</returns>
-    public static string Calendar(List<string> htmlBoxesEveryDay, List<string> colors, int year, int month)
+    public static string Calendar(IList<string> htmlBoxesEveryDay, IList<string> colors, int year, int month)
     {
+        ArgumentNullException.ThrowIfNull(htmlBoxesEveryDay);
+        ArgumentNullException.ThrowIfNull(colors);
         var generator = new HtmlGenerator();
         generator.WriteTagWithAttrs("table", "class", "tabulkaNaStredAutoSirka", "style", "width: 600px");
         generator.WriteTag("tr");
@@ -168,8 +171,11 @@ public partial class HtmlGenerator2 : HtmlGenerator
     /// <param name="memberProfilePictures">List of profile picture URLs.</param>
     /// <param name="memberAnchors">List of anchor URLs.</param>
     /// <returns>HTML string representing the gallery.</returns>
-    public static string GalleryZoomInProfilePhoto(List<string> memberNames, List<string> memberProfilePictures, List<string> memberAnchors)
+    public static string GalleryZoomInProfilePhoto(IList<string> memberNames, IList<string> memberProfilePictures, IList<string> memberAnchors)
     {
+        ArgumentNullException.ThrowIfNull(memberNames);
+        ArgumentNullException.ThrowIfNull(memberProfilePictures);
+        ArgumentNullException.ThrowIfNull(memberAnchors);
         var generator = new HtmlGenerator();
         generator.WriteTag("ul");
         for (var i = 0; i < memberNames.Count; i++)
@@ -198,6 +204,8 @@ public partial class HtmlGenerator2 : HtmlGenerator
     /// <returns>HTML string representing the select element.</returns>
     public static string GetSelect(string id, object defaultValue, IList list)
     {
+        ArgumentNullException.ThrowIfNull(defaultValue);
+        ArgumentNullException.ThrowIfNull(list);
         var generator = new HtmlGenerator();
         generator.WriteTagWithAttrs("select", "name", "select" + id);
         foreach (var item2 in list)
@@ -245,17 +253,23 @@ public partial class HtmlGenerator2 : HtmlGenerator
     /// <param name="srcPhoto">List of photo source paths.</param>
     /// <param name="arrayName">JavaScript array name.</param>
     /// <returns>HTML string representing the list with images.</returns>
-    public static string TopListWithImages(HtmlGenerator htmlGenerator, int widthImage, int heightImage, string initialImageUri, List<string> photoLinks, List<string> textLinks, List<string> innerHtmlText, List<string> srcPhoto, string arrayName)
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1054")]
+    public static string TopListWithImages(HtmlGenerator htmlGenerator, int widthImage, int heightImage, string initialImageUri, IList<string> photoLinks, IList<string> textLinks, IList<string> innerHtmlText, IList<string> srcPhoto, string arrayName)
     {
+        ArgumentNullException.ThrowIfNull(htmlGenerator);
+        ArgumentNullException.ThrowIfNull(photoLinks);
+        ArgumentNullException.ThrowIfNull(textLinks);
+        ArgumentNullException.ThrowIfNull(innerHtmlText);
+        ArgumentNullException.ThrowIfNull(srcPhoto);
         var count = photoLinks.Count;
         if (count == 0)
             return "";
         if (count != textLinks.Count)
-            throw new Exception("Method HtmlGenerator2.TopListWithImages - photoLinks count does not match textLinks count");
+            throw new ArgumentException("Method HtmlGenerator2.TopListWithImages - photoLinks count does not match textLinks count");
         if (count != innerHtmlText.Count)
-            throw new Exception("Method HtmlGenerator2.TopListWithImages - photoLinks count does not match innerHtmlText count");
+            throw new ArgumentException("Method HtmlGenerator2.TopListWithImages - photoLinks count does not match innerHtmlText count");
         if (count != srcPhoto.Count)
-            throw new Exception("Method HtmlGenerator2.TopListWithImages - photoLinks count does not match srcPhoto count");
+            throw new ArgumentException("Method HtmlGenerator2.TopListWithImages - photoLinks count does not match srcPhoto count");
 
         var parsedValue = 0;
         var isAnimated = int.TryParse(srcPhoto[0], out parsedValue);

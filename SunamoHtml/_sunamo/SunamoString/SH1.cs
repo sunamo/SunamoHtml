@@ -28,7 +28,7 @@ internal partial class SH
             {
                 var word = currentWord.ToString();
                 currentWord.Clear();
-                if (word != "")
+                if (!string.IsNullOrEmpty(word))
                 {
                     leftSide.Insert(0, word + " ");
                     if (leftSide.Length + " ".Length + word.Length > charsPerSide)
@@ -54,7 +54,7 @@ internal partial class SH
             {
                 var word = currentWord.ToString();
                 currentWord.Clear();
-                if (word != "")
+                if (!string.IsNullOrEmpty(word))
                 {
                     rightSide.Append(" " + word);
                     if (rightSide.Length + " ".Length + word.Length > charsPerSide)
@@ -69,9 +69,9 @@ internal partial class SH
 
         var rightResult = rightSide.ToString().TrimStart(' ') + " " + currentWord;
         rightResult = rightResult.TrimStart(' ');
-        var result = "";
-        if (entireContent.Contains(leftResult + " ") && entireContent.Contains(" " + rightResult))
-            result = leftResult + "" + rightResult;
+        var result = string.Empty;
+        if (entireContent.Contains(leftResult + " ", StringComparison.Ordinal) && entireContent.Contains(" " + rightResult, StringComparison.Ordinal))
+            result = leftResult + rightResult;
         else
             result = leftResult + rightResult;
         return result;
@@ -128,9 +128,9 @@ internal partial class SH
     internal static string FirstCharUpper(string text)
     {
         if (text.Length == 1)
-            return text.ToUpper();
+            return text.ToUpperInvariant();
         var restOfString = text.Substring(1);
-        return text[0].ToString().ToUpper() + restOfString;
+        return text[0].ToString().ToUpperInvariant() + restOfString;
     }
 
     /// <summary>
@@ -188,8 +188,8 @@ internal partial class SH
         var escapedSingle = Regex.Escape(new string(singleWildcard, 1));
         var escapedMultiple = Regex.Escape(new string(multipleWildcard, 1));
         pattern = Regex.Escape(pattern);
-        pattern = pattern.Replace(escapedSingle, ".");
-        pattern = "^" + pattern.Replace(escapedMultiple, ".*") + "$";
+        pattern = pattern.Replace(escapedSingle, ".", StringComparison.Ordinal);
+        pattern = "^" + pattern.Replace(escapedMultiple, ".*", StringComparison.Ordinal) + "$";
         var regex = new Regex(pattern);
         return regex.IsMatch(text);
     }
@@ -268,7 +268,7 @@ internal partial class SH
             var substring = entireText.Substring(index, searchFor.Length);
             var firstChar = substring[0];
             var searchFirstChar = searchFor[0];
-            if (substring == searchFor)
+            if (string.Equals(substring, searchFor, StringComparison.Ordinal))
                 results.Add(index);
         }
 

@@ -1,6 +1,6 @@
 namespace SunamoHtml._sunamo.SunamoXml;
 
-internal class XH
+internal sealed class XH
 {
     internal static string RemoveXmlDeclaration(string xml)
     {

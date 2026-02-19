@@ -16,15 +16,16 @@ public static partial class HtmlHelper
     {
         xml = ReplaceHtmlNonPairTagsWithXmlValid(xml);
         xml = XH.RemoveXmlDeclaration(xml);
-        return "<?xml version=\"1.0\" encoding=\"utf-8\" ?>" + ReplaceHtmlNonPairTagsWithXmlValid(XH.RemoveXmlDeclaration(xml.Replace("<?xml version=\"1.0\" encoding=\"iso-8859-2\" />", "").Replace("<?xml version=\"1.0\" encoding=\"utf-8\" />", "").Replace("<?xml version=\"1.0\" encoding=\"UTF-8\" />", "")));
+        return "<?xml version=\"1.0\" encoding=\"utf-8\" ?>" + ReplaceHtmlNonPairTagsWithXmlValid(XH.RemoveXmlDeclaration(xml.Replace("<?xml version=\"1.0\" encoding=\"iso-8859-2\" />", "", StringComparison.Ordinal).Replace("<?xml version=\"1.0\" encoding=\"utf-8\" />", "", StringComparison.Ordinal).Replace("<?xml version=\"1.0\" encoding=\"UTF-8\" />", "", StringComparison.Ordinal)));
     }
 
     /// <summary>
     /// Deletes all attributes from all HTML nodes in a list.
     /// </summary>
     /// <param name="nodes">The list of HTML nodes to remove attributes from.</param>
-    public static void DeleteAttributesFromAllNodes(List<HtmlNode> nodes)
+    public static void DeleteAttributesFromAllNodes(IList<HtmlNode> nodes)
     {
+        ArgumentNullException.ThrowIfNull(nodes);
         foreach (var node in nodes)
             for (var i = node.Attributes.Count - 1; i >= 0; i--)
                 node.Attributes.RemoveAt(i);
@@ -42,8 +43,8 @@ public static partial class HtmlHelper
     {
         var doc = HtmlAgilityHelper.CreateHtmlDocument();
         doc.LoadHtml(xml);
-        var sw = new StringWriter();
-        var tw = XmlWriter.Create(sw);
+        using var sw = new StringWriter();
+        using var tw = XmlWriter.Create(sw);
         doc.DocumentNode.WriteTo(tw);
         tw.Flush();
         sw.Flush();
@@ -73,7 +74,7 @@ public static partial class HtmlHelper
     /// </summary>
     /// <param name="text">The HTML text to process.</param>
     /// <returns>List of words without HTML tags.</returns>
-    public static List<string> StripAllTagsList(string text)
+    public static IList<string> StripAllTagsList(string text)
     {
         var replaced = StripAllTags(text, " ");
         return SHSplit.Split(replaced, " ");
@@ -141,6 +142,7 @@ public static partial class HtmlHelper
     /// <returns>Modified HTML content.</returns>
     public static string ReturnApplyToAllTags(string text, string tagName, EditHtmlWidthHandler handler, string value)
     {
+        ArgumentNullException.ThrowIfNull(handler);
         var result = new List<HtmlNode>();
         var doc = HtmlAgilityHelper.CreateHtmlDocument();
         doc.LoadHtml(text);
@@ -189,14 +191,14 @@ public static partial class HtmlHelper
     {
         var result = new Dictionary<string, string>();
         var styleAttribute = GetValueOfAttribute("style", htmlNode);
-        if (styleAttribute.Contains(";"))
+        if (styleAttribute.Contains(";", StringComparison.Ordinal))
         {
             var data = SHSplit.Split(styleAttribute, ";");
             foreach (var item in data)
-                if (item.Contains(":"))
+                if (item.Contains(":", StringComparison.Ordinal))
                 {
                     var keyValue = SHSplit.SplitNone(item, ":");
-                    result.Add(keyValue[0].Trim().ToLower(), keyValue[1].Trim().ToLower());
+                    result.Add(keyValue[0].Trim().ToUpperInvariant(), keyValue[1].Trim().ToUpperInvariant());
                 }
         }
 
@@ -209,8 +211,9 @@ public static partial class HtmlHelper
     /// <param name="htmlNode">The HTML node to search in.</param>
     /// <param name="tagName">The original tag name to search for.</param>
     /// <returns>First matching child tag or null.</returns>
-    public static HtmlNode GetTag(HtmlNode htmlNode, string tagName)
+    public static HtmlNode? GetTag(HtmlNode htmlNode, string tagName)
     {
+        ArgumentNullException.ThrowIfNull(htmlNode);
         foreach (var item in htmlNode.ChildNodes)
             if (item.OriginalName == tagName)
                 return item;
@@ -224,7 +227,7 @@ public static partial class HtmlHelper
     /// <param name="htmlNode">The HTML node to search in.</param>
     /// <param name="tagName">The tag name to search for.</param>
     /// <returns>First matching tag or null.</returns>
-    public static HtmlNode ReturnTagRek(HtmlNode htmlNode, string tagName)
+    public static HtmlNode? ReturnTagRek(HtmlNode htmlNode, string tagName)
     {
         htmlNode = TrimNode(htmlNode);
         foreach (var childNode in htmlNode.ChildNodes)
@@ -254,8 +257,9 @@ public static partial class HtmlHelper
     /// <param name="htmlNode">The HTML node to search in.</param>
     /// <param name="tagName">The tag name to search for (e.g., img).</param>
     /// <returns>List of matching child tags.</returns>
-    public static List<HtmlNode> ReturnAllTagsImg(HtmlNode htmlNode, string tagName)
+    public static IList<HtmlNode> ReturnAllTagsImg(HtmlNode htmlNode, string tagName)
     {
+        ArgumentNullException.ThrowIfNull(htmlNode);
         var result = new List<HtmlNode>();
         foreach (var item in htmlNode.ChildNodes)
             if (item.Name == tagName)
@@ -280,8 +284,9 @@ public static partial class HtmlHelper
     /// <param name="htmlNode">The parent HTML node to search in.</param>
     /// <param name="tagName">The tag name to search for.</param>
     /// <returns>List of matching child tags.</returns>
-    public static List<HtmlNode> ReturnTags(HtmlNode htmlNode, string tagName)
+    public static IList<HtmlNode> ReturnTags(HtmlNode htmlNode, string tagName)
     {
+        ArgumentNullException.ThrowIfNull(htmlNode);
         var result = new List<HtmlNode>();
         foreach (var item in htmlNode.ChildNodes)
             if (HasTagName(item, tagName))

@@ -15,12 +15,12 @@ internal class CA
     /// <param name="items">The list to divide.</param>
     /// <param name="groupSize">The number of items per group.</param>
     /// <returns>List of groups, each containing the specified number of items.</returns>
-    /// <exception cref="Exception">Thrown when the list count is not evenly divisible by group size.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when the list count is not evenly divisible by group size.</exception>
     internal static List<List<T>> DivideBy<T>(List<T> items, int groupSize)
     {
         if (items.Count % groupSize != 0)
         {
-            throw new Exception($"Elements in {nameof(items)} is not dividable by {nameof(groupSize)}");
+            throw new InvalidOperationException($"Elements in {nameof(items)} is not dividable by {nameof(groupSize)}");
         }
 
         List<List<T>> result = new List<List<T>>();

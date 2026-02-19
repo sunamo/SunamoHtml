@@ -40,7 +40,7 @@ public class XmlGeneratorHtml
     }
 
     /// <summary>
-    /// 
+    ///
     /// CZ: Zapíše nepárový tag se dvěma atributy.
     /// </summary>
     /// <param name="tagName">The tag name.</param>
@@ -50,11 +50,11 @@ public class XmlGeneratorHtml
     /// <param name="attribute2Value">The second attribute value.</param>
     public void WriteNonPairTagWith2Attrs(string tagName, string attribute1Name, string attribute1Value, string attribute2Name, string attribute2Value)
     {
-        StringBuilder.AppendFormat("<{0} {1}=\"{2}\" {3}=\"{4}\" />", tagName, attribute1Name, attribute1Value, attribute2Name, attribute2Value);
+        StringBuilder.AppendFormat(CultureInfo.InvariantCulture, "<{0} {1}=\"{2}\" {3}=\"{4}\" />", tagName, attribute1Name, attribute1Value, attribute2Name, attribute2Value);
     }
 
     /// <summary>
-    /// 
+    ///
     /// CZ: Zapíše nepárový tag s jedním atributem.
     /// </summary>
     /// <param name="tagName">The tag name.</param>
@@ -62,7 +62,7 @@ public class XmlGeneratorHtml
     /// <param name="attributeValue">The attribute value.</param>
     public void WriteNonPairTagWithAttr(string tagName, string attributeName, string attributeValue)
     {
-        StringBuilder.AppendFormat("<{0} {1}=\"{2}\" />", tagName, attributeName, attributeValue);
+        StringBuilder.AppendFormat(CultureInfo.InvariantCulture, "<{0} {1}=\"{2}\" />", tagName, attributeName, attributeValue);
     }
 
     /// <summary>
@@ -100,60 +100,65 @@ public class XmlGeneratorHtml
     }
 
     /// <summary>
-    /// 
+    ///
     /// CZ: Zapíše nepárový tag s více atributy.
     /// </summary>
     /// <param name="tagName">The tag name.</param>
     /// <param name="attributes">List of attribute name-value pairs (alternating name, value).</param>
-    public void WriteNonPairTagWithAttrs(string tagName, List<string> attributes)
+    public void WriteNonPairTagWithAttrs(string tagName, IList<string> attributes)
     {
+        ArgumentNullException.ThrowIfNull(attributes);
         WriteNonPairTagWithAttrs(tagName, attributes.ToArray());
     }
 
     /// <summary>
-    /// 
+    ///
     /// CZ: Zapíše nepárový tag s více atributy.
     /// </summary>
     /// <param name="tagName">The tag name.</param>
     /// <param name="attributes">Attribute name-value pairs (alternating name, value).</param>
     public void WriteNonPairTagWithAttrs(string tagName, params string[] attributes)
     {
-        StringBuilder.AppendFormat("<{0} ", tagName);
+        ArgumentNullException.ThrowIfNull(attributes);
+        StringBuilder.AppendFormat(CultureInfo.InvariantCulture, "<{0} ", tagName);
         for (var i = 0; i < attributes.Length; i++)
         {
             var attributeName = attributes[i];
             object attributeValue = attributes[++i];
-            StringBuilder.AppendFormat("{0}=\"{1}\" ", attributeName, attributeValue);
+            StringBuilder.AppendFormat(CultureInfo.InvariantCulture, "{0}=\"{1}\" ", attributeName, attributeValue);
         }
 
         StringBuilder.Append(" />");
     }
 
     /// <summary>
-    /// 
+    ///
     /// CZ: Zapíše CDATA sekci se zadaným obsahem.
     /// </summary>
     /// <param name="innerCData">The content inside the CDATA section.</param>
     public void WriteCData(string innerCData)
     {
-        WriteRaw(string.Format("<![CDATA[{0}]]>", innerCData));
+        WriteRaw(string.Format(CultureInfo.InvariantCulture, "<![CDATA[{0}]]>", innerCData));
     }
 
     /// <summary>
-    /// 
+    ///
     /// CZ: Zapíše odkaz (anchor element).
     /// </summary>
     /// <param name="link">The href URL.</param>
     /// <param name="innerText">The link text.</param>
+    [SuppressMessage("Design", "CA1054:UriParametersShouldNotBeStrings")]
     public void WriteLink(string link, string innerText)
     {
+        ArgumentNullException.ThrowIfNull(link);
+        ArgumentNullException.ThrowIfNull(innerText);
         WriteTagWithAttrs("a", "href", link);
         WriteRaw(innerText);
         TerminateTag("a");
     }
 
     /// <summary>
-    /// 
+    ///
     /// CZ: Zapíše otevírací tag s jedním atributem. ZASTARALÉ: Použijte WriteTagWithAttrs.
     /// </summary>
     /// <param name="tagName">The tag name.</param>
@@ -166,8 +171,8 @@ public class XmlGeneratorHtml
         if (isSkipEmptyOrNull)
             if (string.IsNullOrWhiteSpace(attributeValue))
                 return;
-        var result = string.Format("<{0} {1}=\"{2}\">", tagName, attributeName, attributeValue);
-        if (_isUseStack) _stack.Push(result);
+        var result = string.Format(CultureInfo.InvariantCulture, "<{0} {1}=\"{2}\">", tagName, attributeName, attributeValue);
+        if (_isUseStack) _stack!.Push(result);
         StringBuilder.Append(result);
     }
 
@@ -181,24 +186,24 @@ public class XmlGeneratorHtml
     }
 
     /// <summary>
-    /// 
+    ///
     /// CZ: Zapíše zavírací tag.
     /// </summary>
     /// <param name="tagName">The tag name to close.</param>
     public void TerminateTag(string tagName)
     {
-        StringBuilder.AppendFormat("</{0}>", tagName);
+        StringBuilder.AppendFormat(CultureInfo.InvariantCulture, "</{0}>", tagName);
     }
 
     /// <summary>
-    /// 
+    ///
     /// CZ: Zapíše otevírací tag bez atributů.
     /// </summary>
     /// <param name="tagName">The tag name.</param>
     public void WriteTag(string tagName)
     {
         var result = $"<{tagName}>";
-        if (_isUseStack) _stack.Push(result);
+        if (_isUseStack) _stack!.Push(result);
         StringBuilder.Append(result);
     }
 
@@ -212,29 +217,31 @@ public class XmlGeneratorHtml
     }
 
     /// <summary>
-    /// 
+    ///
     /// CZ: Zapíše otevírací tag s více atributy.
     /// </summary>
     /// <param name="tagName">The tag name.</param>
     /// <param name="attributes">List of attribute name-value pairs (alternating name, value).</param>
-    public void WriteTagWithAttrs(string tagName, List<string> attributes)
+    public void WriteTagWithAttrs(string tagName, IList<string> attributes)
     {
+        ArgumentNullException.ThrowIfNull(attributes);
         WriteTagWithAttrs(tagName, attributes.ToArray());
     }
 
     /// <summary>
-    /// 
+    ///
     /// CZ: Zapíše otevírací tag s více atributy.
     /// </summary>
     /// <param name="tagName">The tag name.</param>
     /// <param name="attributes">Attribute name-value pairs (alternating name, value).</param>
     public void WriteTagWithAttrs(string tagName, params string[] attributes)
     {
+        ArgumentNullException.ThrowIfNull(attributes);
         WriteTagWithAttrs(true, tagName, attributes);
     }
 
     /// <summary>
-    /// 
+    ///
     /// CZ: Zapíše otevírací tag s atributy ze slovníku.
     /// </summary>
     /// <param name="tagName">The tag name.</param>
@@ -245,13 +252,14 @@ public class XmlGeneratorHtml
     }
 
     /// <summary>
-    /// 
+    ///
     /// CZ: Zapíše otevírací tag s atributy, kontroluje null hodnoty.
     /// </summary>
     /// <param name="tagName">The tag name.</param>
     /// <param name="attributes">Attribute name-value pairs (alternating name, value).</param>
     public void WriteTagWithAttrsCheckNull(string tagName, params string[] attributes)
     {
+        ArgumentNullException.ThrowIfNull(attributes);
         WriteTagWithAttrs(false, tagName, attributes);
     }
 
@@ -260,14 +268,14 @@ public class XmlGeneratorHtml
     /// </summary>
     /// <param name="text">The text to check.</param>
     /// <returns>True if the text is null, empty, or "(null)", false otherwise.</returns>
-    private bool IsNulledOrEmpty(string text)
+    private static bool IsNulledOrEmpty(string text)
     {
         if (string.IsNullOrEmpty(text) || text == "(null)") return true;
         return false;
     }
 
     /// <summary>
-    /// 
+    ///
     /// CZ: Zapíše otevírací tag s XML namespace managerem a dalšími atributy.
     /// </summary>
     /// <param name="tagName">The tag name.</param>
@@ -275,13 +283,15 @@ public class XmlGeneratorHtml
     /// <param name="attributes">Additional attribute name-value pairs (alternating name, value).</param>
     public void WriteTagNamespaceManager(string tagName, XmlNamespaceManager namespaceManager, params string[] attributes)
     {
+        ArgumentNullException.ThrowIfNull(namespaceManager);
+        ArgumentNullException.ThrowIfNull(attributes);
         var allAttributes = XHelper.XmlNamespaces(namespaceManager, true);
-        for (var i = 0; i < attributes.Count(); i++) allAttributes.Add(attributes[i], attributes[++i]);
+        for (var i = 0; i < attributes.Length; i++) allAttributes.Add(attributes[i], attributes[++i]);
         WriteTagWithAttrs(tagName, allAttributes);
     }
 
     /// <summary>
-    /// 
+    ///
     /// CZ: Zapíše nepárový tag s více atributy, volitelně připojí null hodnoty.
     /// </summary>
     /// <param name="isAppendNull">Whether to append null values.</param>
@@ -290,25 +300,25 @@ public class XmlGeneratorHtml
     public void WriteNonPairTagWithAttrs(bool isAppendNull, string tagName, params string[] attributes)
     {
         var stringBuilder = new StringBuilder();
-        stringBuilder.AppendFormat("<{0} ", tagName);
+        stringBuilder.AppendFormat(CultureInfo.InvariantCulture, "<{0} ", tagName);
         for (var i = 0; i < attributes.Length; i++)
         {
             var attributeName = attributes[i];
             var attributeValue = attributes[++i];
             if ((string.IsNullOrEmpty(attributeValue) && isAppendNull) || !string.IsNullOrEmpty(attributeValue))
                 if ((!IsNulledOrEmpty(attributeName) && isAppendNull) || !IsNulledOrEmpty(attributeValue))
-                    stringBuilder.AppendFormat("{0}=\"{1}\" ", attributeName, attributeValue);
+                    stringBuilder.AppendFormat(CultureInfo.InvariantCulture, "{0}=\"{1}\" ", attributeName, attributeValue);
         }
 
         stringBuilder.Append(" /");
         stringBuilder.Append(">");
         var result = stringBuilder.ToString();
-        if (_isUseStack) _stack.Push(result);
+        if (_isUseStack) _stack!.Push(result);
         StringBuilder.Append(result);
     }
 
     /// <summary>
-    /// 
+    ///
     /// CZ: Zapíše otevírací tag s více atributy, volitelně připojí null hodnoty.
     /// </summary>
     /// <param name="isAppendNull">Whether to append null values.</param>
@@ -317,31 +327,31 @@ public class XmlGeneratorHtml
     private void WriteTagWithAttrs(bool isAppendNull, string tagName, params string[] attributes)
     {
         var stringBuilder = new StringBuilder();
-        stringBuilder.AppendFormat("<{0} ", tagName);
+        stringBuilder.AppendFormat(CultureInfo.InvariantCulture, "<{0} ", tagName);
         for (var i = 0; i < attributes.Length; i++)
         {
             var attributeName = attributes[i];
             var attributeValue = attributes[++i];
             if ((string.IsNullOrEmpty(attributeValue) && isAppendNull) || !string.IsNullOrEmpty(attributeValue))
                 if ((!IsNulledOrEmpty(attributeName) && isAppendNull) || !IsNulledOrEmpty(attributeValue))
-                    stringBuilder.AppendFormat("{0}=\"{1}\" ", attributeName, attributeValue);
+                    stringBuilder.AppendFormat(CultureInfo.InvariantCulture, "{0}=\"{1}\" ", attributeName, attributeValue);
         }
 
         stringBuilder.Append(">");
         var result = stringBuilder.ToString();
-        if (_isUseStack) _stack.Push(result);
+        if (_isUseStack) _stack!.Push(result);
         StringBuilder.Append(result);
     }
 
     /// <summary>
-    /// 
+    ///
     /// CZ: Zapíše kompletní element s otevíracím tagem, vnitřním obsahem a zavíracím tagem.
     /// </summary>
     /// <param name="tagName">The tag name.</param>
     /// <param name="innerContent">The inner content.</param>
     public void WriteElement(string tagName, string innerContent)
     {
-        StringBuilder.AppendFormat("<{0}>{1}</{0}>", tagName, innerContent);
+        StringBuilder.AppendFormat(CultureInfo.InvariantCulture, "<{0}>{1}</{0}>", tagName, innerContent);
     }
 
     /// <summary>
@@ -353,7 +363,7 @@ public class XmlGeneratorHtml
     }
 
     /// <summary>
-    /// 
+    ///
     /// CZ: Zapíše otevírací tag se dvěma atributy. ZASTARALÉ: Použijte WriteTagWithAttrs.
     /// </summary>
     /// <param name="tagName">The tag name.</param>
@@ -364,18 +374,18 @@ public class XmlGeneratorHtml
     [Obsolete("only WriteTagWithAttrs should be used anymore")]
     public void WriteTagWith2Attrs(string tagName, string attribute1Name, string attribute1Value, string attribute2Name, string attribute2Value)
     {
-        var result = string.Format("<{0} {1}=\"{2}\" {3}=\"{4}\">", tagName, attribute1Name, attribute1Value, attribute2Name, attribute2Value);
-        if (_isUseStack) _stack.Push(result);
+        var result = string.Format(CultureInfo.InvariantCulture, "<{0} {1}=\"{2}\" {3}=\"{4}\">", tagName, attribute1Name, attribute1Value, attribute2Name, attribute2Value);
+        if (_isUseStack) _stack!.Push(result);
         StringBuilder.Append(result);
     }
 
     /// <summary>
-    /// 
+    ///
     /// CZ: Zapíše nepárový tag bez atributů.
     /// </summary>
     /// <param name="tagName">The tag name.</param>
     public void WriteNonPairTag(string tagName)
     {
-        StringBuilder.AppendFormat("<{0} />", tagName);
+        StringBuilder.AppendFormat(CultureInfo.InvariantCulture, "<{0} />", tagName);
     }
 }

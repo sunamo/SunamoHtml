@@ -23,12 +23,12 @@ bool fillAlsoFirstTwo = true)
         {
             var item = lines[i];
             if (fillAlsoFirstTwo)
-                if (!item.StartsWith("   at ThrowEx"))
+                if (!item.StartsWith("   at ThrowEx", StringComparison.Ordinal))
                 {
                     TypeAndMethodName(item, out type, out methodName);
                     fillAlsoFirstTwo = false;
                 }
-            if (item.StartsWith("at System."))
+            if (item.StartsWith("at System.", StringComparison.Ordinal))
             {
                 lines.Add(string.Empty);
                 lines.Add(string.Empty);
@@ -40,7 +40,7 @@ bool fillAlsoFirstTwo = true)
     internal static void TypeAndMethodName(string lines, out string type, out string methodName)
     {
         var s2 = lines.Split("at ")[1].Trim();
-        var text = s2.Split("(")[0];
+        var text = s2.Split('(')[0];
         var parameter = text.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries).ToList();
         methodName = parameter[^1];
         parameter.RemoveAt(parameter.Count - 1);
@@ -90,7 +90,7 @@ bool fillAlsoFirstTwo = true)
     {
         List<string> notContained = [];
         foreach (var item in shouldContains)
-            if (!originalText.Contains(item))
+            if (!originalText.Contains(item, StringComparison.Ordinal))
                 notContained.Add(item);
         return notContained.Count == 0
         ? null

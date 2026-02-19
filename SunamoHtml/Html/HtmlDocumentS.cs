@@ -42,7 +42,7 @@ HtmlNode
 #if ASYNC
             await
 #endif
-                File.ReadAllTextAsync(path);
+                File.ReadAllTextAsync(path).ConfigureAwait(false);
         s_htmlContent = WebUtility.HtmlDecode(s_htmlContent);
         htmlDocument.LoadHtml(s_htmlContent);
         return htmlDocument.DocumentNode;
@@ -55,7 +55,8 @@ HtmlNode
     /// <returns>The title text, or empty string if not found.</returns>
     public static string Title(HtmlNode htmlNode)
     {
-        return InnerHtmlToStringEmpty(HtmlAgilityHelper.Node(htmlNode, true, HtmlTags.Title));
+        var titleNode = HtmlAgilityHelper.Node(htmlNode, true, HtmlTags.Title);
+        return InnerHtmlToStringEmpty(titleNode);
     }
 
     /// <summary>
@@ -63,7 +64,7 @@ HtmlNode
     /// </summary>
     /// <param name="htmlNode">The HTML node to get inner HTML from.</param>
     /// <returns>Trimmed inner HTML, or empty string if node is null.</returns>
-    public static string InnerHtmlToStringEmpty(HtmlNode htmlNode)
+    public static string InnerHtmlToStringEmpty(HtmlNode? htmlNode)
     {
         if (htmlNode == null)
             return string.Empty;

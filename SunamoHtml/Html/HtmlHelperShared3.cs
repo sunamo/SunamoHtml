@@ -15,7 +15,7 @@ public static partial class HtmlHelper
     /// <param name="attributeName">The attribute name to match.</param>
     /// <param name="attributeValue">The attribute value to match.</param>
     /// <returns>First matching HTML node or null.</returns>
-    public static HtmlNode GetTagOfAtribute(HtmlNode htmlNode, string tagName, string attributeName, string attributeValue)
+    public static HtmlNode? GetTagOfAtribute(HtmlNode htmlNode, string tagName, string attributeName, string attributeValue)
     {
         htmlNode = TrimNode(htmlNode);
         foreach (var childNode in htmlNode.ChildNodes)
@@ -44,8 +44,9 @@ public static partial class HtmlHelper
     /// <param name="attributeName">The attribute name to match.</param>
     /// <param name="attributeValue">The attribute value to match.</param>
     /// <returns>List of matching HTML nodes.</returns>
-    public static List<HtmlNode> ReturnTagsWithAttrRek2(HtmlNode htmlNode, string tagName, string attributeName, string attributeValue)
+    public static IList<HtmlNode> ReturnTagsWithAttrRek2(HtmlNode htmlNode, string tagName, string attributeName, string attributeValue)
     {
+        ArgumentNullException.ThrowIfNull(htmlNode);
         var result = new List<HtmlNode>();
         RecursiveReturnAllTags(result, htmlNode, tagName);
         for (var i = result.Count - 1; i >= 0; i--)
@@ -63,8 +64,9 @@ public static partial class HtmlHelper
     /// <param name="attributeName">The attribute name to match.</param>
     /// <param name="attributeValue">The attribute value to match.</param>
     /// <returns>List of matching child HTML nodes.</returns>
-    public static List<HtmlNode> GetTagsOfAtribute(HtmlNode htmlNode, string tagName, string attributeName, string attributeValue)
+    public static IList<HtmlNode> GetTagsOfAtribute(HtmlNode htmlNode, string tagName, string attributeName, string attributeValue)
     {
+        ArgumentNullException.ThrowIfNull(htmlNode);
         var result = new List<HtmlNode>();
         foreach (var childNode in htmlNode.ChildNodes)
             if (childNode.Name == tagName)
@@ -99,13 +101,15 @@ public static partial class HtmlHelper
     /// <param name="attributeValue">The attribute value to search for.</param>
     /// <param name="isContains">Whether to use Contains instead of exact match.</param>
     /// <param name="isRecursively">Whether to search recursively.</param>
-    public static void RecursiveReturnTagsWithContainsAttr(List<HtmlNode> result, HtmlNode htmlNode, string tagName, string attributeName, string attributeValue, bool isContains, bool isRecursively)
+    public static void RecursiveReturnTagsWithContainsAttr(IList<HtmlNode> result, HtmlNode htmlNode, string tagName, string attributeName, string attributeValue, bool isContains, bool isRecursively)
     {
+        ArgumentNullException.ThrowIfNull(result);
+        ArgumentNullException.ThrowIfNull(htmlNode);
         foreach (var item in htmlNode.ChildNodes)
         {
             var attrValue = GetValueOfAttribute(attributeName, item);
             if (isContains)
-                isContains = attrValue.Contains(attributeValue);
+                isContains = attrValue.Contains(attributeValue, StringComparison.Ordinal);
             else
                 isContains = attrValue == attributeValue;
             if (HasTagName(item, tagName) && isContains)
@@ -156,7 +160,7 @@ public static partial class HtmlHelper
     /// <param name="attributeName">The attribute name to check.</param>
     /// <param name="attributeValue">The attribute value to search for.</param>
     /// <returns>List of matching HTML nodes.</returns>
-    public static List<HtmlNode> ReturnTagsWithContainsAttrRek(HtmlNode htmlNode, string tagName, string attributeName, string attributeValue)
+    public static IList<HtmlNode> ReturnTagsWithContainsAttrRek(HtmlNode htmlNode, string tagName, string attributeName, string attributeValue)
     {
         var result = new List<HtmlNode>();
         RecursiveReturnTagsWithContainsAttr(result, htmlNode, tagName, attributeName, attributeValue);
@@ -174,7 +178,7 @@ public static partial class HtmlHelper
     /// <param name="isContains">Whether to use Contains instead of exact match.</param>
     /// <param name="isRecursively">Whether to search recursively.</param>
     /// <returns>List of matching HTML nodes.</returns>
-    public static List<HtmlNode> ReturnTagsWithContainsAttrRek(HtmlNode htmlNode, string tagName, string attributeName, string attributeValue, bool isContains, bool isRecursively)
+    public static IList<HtmlNode> ReturnTagsWithContainsAttrRek(HtmlNode htmlNode, string tagName, string attributeName, string attributeValue, bool isContains, bool isRecursively)
     {
         var result = new List<HtmlNode>();
         RecursiveReturnTagsWithContainsAttr(result, htmlNode, tagName, attributeName, attributeValue, isContains, isRecursively);
@@ -190,8 +194,9 @@ public static partial class HtmlHelper
     /// <param name="tagName">The tag name to search for, or "*" for all tags.</param>
     /// <param name="className">The class name to search for.</param>
     /// <returns>List of matching HTML nodes.</returns>
-    public static List<HtmlNode> ReturnTagsWithContainsClassRek(HtmlNode htmlNode, string tagName, string className)
+    public static IList<HtmlNode> ReturnTagsWithContainsClassRek(HtmlNode htmlNode, string tagName, string className)
     {
+        ArgumentNullException.ThrowIfNull(htmlNode);
         var result = new List<HtmlNode>();
         RecursiveReturnTagsWithContainsAttrWithSplittedElement(result, htmlNode, tagName, "class", className, " ");
         return result;

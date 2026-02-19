@@ -13,6 +13,7 @@ public static partial class HtmlHelper
     /// <returns>Plain text without HTML tags.</returns>
     public static string ConvertHtmlToText(string htmlContent)
     {
+        ArgumentNullException.ThrowIfNull(htmlContent);
         htmlContent = WebUtility.HtmlDecode(htmlContent);
         htmlContent = SHReplace.ReplaceAllArray(htmlContent, Environment.NewLine, "<br>", "<br />", "<br/>");
         htmlContent = StripAllTags(htmlContent);
@@ -51,6 +52,7 @@ public static partial class HtmlHelper
     /// <returns>The trimmed HTML node.</returns>
     public static HtmlNode TrimNode(HtmlNode htmlNode)
     {
+        ArgumentNullException.ThrowIfNull(htmlNode);
         if (htmlNode.FirstChild == null)
             return htmlNode;
         if (string.IsNullOrWhiteSpace(htmlNode.FirstChild.InnerHtml))
@@ -69,12 +71,12 @@ public static partial class HtmlHelper
     /// <param name="htmlNode">The HTML node to search in.</param>
     /// <param name="tagName">The tag name to search for, or "*" for all tags.</param>
     /// <returns>List of matching HTML nodes with trimmed text.</returns>
-    public static List<HtmlNode> ReturnTagsRek(HtmlNode htmlNode, string tagName)
+    public static IList<HtmlNode> ReturnTagsRek(HtmlNode htmlNode, string tagName)
     {
+        ArgumentNullException.ThrowIfNull(htmlNode);
         var result = new List<HtmlNode>();
         RecursiveReturnTags(result, htmlNode, tagName);
-        result = TrimTexts(result);
-        return result;
+        return TrimTexts(result);
     }
 
     /// <summary>
@@ -87,7 +89,7 @@ public static partial class HtmlHelper
     /// <param name="attributeName">The attribute name to match.</param>
     /// <param name="attributeValue">The attribute value to match.</param>
     /// <returns>First matching HTML node or null.</returns>
-    public static HtmlNode ReturnTagWithAttrRek(HtmlNode htmlNode, string tagName, string attributeName, string attributeValue)
+    public static HtmlNode? ReturnTagWithAttrRek(HtmlNode htmlNode, string tagName, string attributeName, string attributeValue)
     {
         return ReturnTagWithAttr(htmlNode, tagName, attributeName, attributeValue);
     }
@@ -103,8 +105,9 @@ public static partial class HtmlHelper
     /// <param name="attributeName">The attribute name to match.</param>
     /// <param name="attributeValue">The attribute value to match, or "*" for any value.</param>
     /// <returns>List of matching HTML nodes.</returns>
-    public static List<HtmlNode> ReturnTagsWithAttrRek(HtmlNode htmlNode, string tagName, string attributeName, string attributeValue)
+    public static IList<HtmlNode> ReturnTagsWithAttrRek(HtmlNode htmlNode, string tagName, string attributeName, string attributeValue)
     {
+        ArgumentNullException.ThrowIfNull(htmlNode);
         var result = new List<HtmlNode>();
         RecursiveReturnTagsWithAttr(result, htmlNode, tagName, attributeName, attributeValue);
         return result;
@@ -117,8 +120,10 @@ public static partial class HtmlHelper
     /// <param name="htmlNode">The HTML node to search in.</param>
     /// <param name="tagNames">Tag names to search for.</param>
     /// <returns>List of matching HTML nodes.</returns>
-    public static List<HtmlNode> ReturnAllTags(HtmlNode htmlNode, params string[] tagNames)
+    public static IList<HtmlNode> ReturnAllTags(HtmlNode htmlNode, params string[] tagNames)
     {
+        ArgumentNullException.ThrowIfNull(htmlNode);
+        ArgumentNullException.ThrowIfNull(tagNames);
         var result = new List<HtmlNode>();
         RecursiveReturnAllTags(result, htmlNode, tagNames);
         return result;
@@ -129,7 +134,7 @@ public static partial class HtmlHelper
     /// </summary>
     /// <param name="htmlNodeCollection">The HTML node collection to trim.</param>
     /// <returns>List of trimmed HTML nodes.</returns>
-    public static List<HtmlNode> TrimTexts(HtmlNodeCollection htmlNodeCollection)
+    public static IList<HtmlNode> TrimTexts(HtmlNodeCollection htmlNodeCollection)
     {
         return HtmlAgilityHelper.TrimTexts(htmlNodeCollection);
     }
@@ -139,9 +144,9 @@ public static partial class HtmlHelper
     /// </summary>
     /// <param name="nodes">The list of HTML nodes to trim.</param>
     /// <returns>List of trimmed HTML nodes without text nodes.</returns>
-    public static List<HtmlNode> TrimTexts(List<HtmlNode> nodes)
+    public static IList<HtmlNode> TrimTexts(IList<HtmlNode> nodes)
     {
-        return HtmlAgilityHelper.TrimTexts(nodes);
+        return HtmlAgilityHelper.TrimTexts(nodes as List<HtmlNode> ?? new List<HtmlNode>(nodes));
     }
 
     /// <summary>
@@ -151,9 +156,10 @@ public static partial class HtmlHelper
     /// <param name="isRemoveTextNodes">Whether to remove text nodes.</param>
     /// <param name="isRemoveComments">Whether to remove comments.</param>
     /// <returns>List of trimmed HTML nodes.</returns>
-    public static List<HtmlNode> TrimTexts(List<HtmlNode> nodes, bool isRemoveTextNodes, bool isRemoveComments = false)
+    public static IList<HtmlNode> TrimTexts(IList<HtmlNode> nodes, bool isRemoveTextNodes, bool isRemoveComments = false)
     {
-        return HtmlAgilityHelper.TrimTextsInternal(nodes, isRemoveTextNodes, isRemoveComments);
+        ArgumentNullException.ThrowIfNull(nodes);
+        return HtmlAgilityHelper.TrimTextsInternal(nodes as List<HtmlNode> ?? new List<HtmlNode>(nodes), isRemoveTextNodes, isRemoveComments);
     }
 
     /// <summary>
@@ -273,7 +279,7 @@ public static partial class HtmlHelper
         var contains = false;
         var attrValue = GetValueOfAttribute(attributeName, htmlNode);
         if (isEnoughContains)
-            contains = attrValue.Contains(attributeValue);
+            contains = attrValue.Contains(attributeValue, StringComparison.Ordinal);
         else
             contains = attrValue == attributeValue;
         return contains;
@@ -287,8 +293,9 @@ public static partial class HtmlHelper
     /// <param name="htmlNode">The parent HTML node to search in.</param>
     /// <param name="tagName">The tag name to search for.</param>
     /// <returns>First matching HTML node or null.</returns>
-    public static HtmlNode ReturnTag(HtmlNode htmlNode, string tagName)
+    public static HtmlNode? ReturnTag(HtmlNode htmlNode, string tagName)
     {
+        ArgumentNullException.ThrowIfNull(htmlNode);
         foreach (var item in htmlNode.ChildNodes)
             if (item.Name == tagName)
                 return item;
@@ -304,6 +311,7 @@ public static partial class HtmlHelper
     /// <param name="newNode">The new node to replace with.</param>
     public static void ReplaceChildNodeByOuterHtml(HtmlNode htmlNode, string oldOuterHtml, HtmlNode newNode)
     {
+        ArgumentNullException.ThrowIfNull(htmlNode);
         for (var i = 0; i < htmlNode.ChildNodes.Count; i++)
         {
             var item = htmlNode.ChildNodes[i];

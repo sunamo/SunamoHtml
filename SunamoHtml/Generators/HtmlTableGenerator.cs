@@ -35,7 +35,7 @@ public class HtmlTableGenerator : HtmlGeneratorExtended
     /// </summary>
     /// <param name="cssClass">CSS class to apply to the tr element.</param>
     /// <param name="possibleAnswersAll">List of cell contents.</param>
-    public void WriteRowTh(string cssClass, List<string> possibleAnswersAll)
+    public void WriteRowTh(string cssClass, IList<string> possibleAnswersAll)
     {
         WriteRowWorker(WriteTh, cssClass, possibleAnswersAll);
     }
@@ -45,7 +45,7 @@ public class HtmlTableGenerator : HtmlGeneratorExtended
     /// </summary>
     /// <param name="cssClass">CSS class to apply to the tr element.</param>
     /// <param name="possibleAnswersAll">List of cell contents.</param>
-    public void WriteRow(string cssClass, List<string> possibleAnswersAll)
+    public void WriteRow(string cssClass, IList<string> possibleAnswersAll)
     {
         WriteRowWorker(WriteTd, cssClass, possibleAnswersAll);
     }
@@ -57,8 +57,10 @@ public class HtmlTableGenerator : HtmlGeneratorExtended
     /// <param name="cssClass">CSS class to apply to the tr element.</param>
     /// <param name="possibleAnswersAll">List of cell contents.</param>
     public void WriteRowWorker(Action<string> cellWriter, string cssClass,
-        List<string> possibleAnswersAll)
+        IList<string> possibleAnswersAll)
     {
+        ArgumentNullException.ThrowIfNull(cellWriter);
+        ArgumentNullException.ThrowIfNull(possibleAnswersAll);
         WriteTagWithAttrs(HtmlTags.Tr, HtmlAttrs.C, cssClass);
         foreach (var item in possibleAnswersAll)
             cellWriter(item);

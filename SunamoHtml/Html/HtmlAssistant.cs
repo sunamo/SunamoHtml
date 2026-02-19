@@ -4,14 +4,14 @@ namespace SunamoHtml.Html;
 /// Helper class with various HTML manipulation methods (parsing, attribute handling, HTML decoding, etc.).
 /// Note: This is a mix of various HTML utilities - consider splitting into more specific classes.
 /// </summary>
-public class HtmlAssistant
+public static class HtmlAssistant
 {
     /// <summary>
     /// Parses the inner text of every TD element in a table row.
     /// </summary>
     /// <param name="tr">The table row (TR) HTML node.</param>
     /// <returns>List of trimmed inner text values from all TD elements.</returns>
-    public static List<string> ParseInnerTextOfEveryTd(HtmlNode tr)
+    public static IList<string> ParseInnerTextOfEveryTd(HtmlNode tr)
     {
         var tds = HtmlAgilityHelper.Nodes(tr, false, "td");
 
@@ -29,6 +29,7 @@ public class HtmlAssistant
     /// <returns>HTML with all style tags removed.</returns>
     public static string RemoveStyleTagsText(string html)
     {
+        ArgumentNullException.ThrowIfNull(html);
         var doc = new HtmlDocument();
         doc.LoadHtml(html);
 
@@ -50,19 +51,20 @@ public class HtmlAssistant
     /// Returns "(null)" when attribute exists without a value (e.g., input readonly).
     /// </summary>
     /// <param name="attributeName">The name of the attribute to get.</param>
-    /// <param name="htmlNode">The HTML node to get the attribute from.</param>
+    /// <param name="node">The HTML node to get the attribute from.</param>
     /// <param name="isTrim">Whether to trim the attribute value.</param>
     /// <returns>Attribute value, empty string if not found, or "(null)" if attribute exists without value.</returns>
-    public static string GetValueOfAttribute(string attributeName, HtmlNode htmlNode, bool isTrim = false)
+    public static string GetValueOfAttribute(string attributeName, HtmlNode node, bool isTrim = false)
     {
-        object o = htmlNode.Attributes[attributeName];
+        ArgumentNullException.ThrowIfNull(node);
+        object o = node.Attributes[attributeName];
         if (o != null)
         {
             var st = ((HtmlAttribute)o).Value;
             if (isTrim)
                 st = st.Trim();
 
-            if (st == string.Empty)
+            if (string.IsNullOrEmpty(st))
                 return "(null)";
 
             return st;
@@ -91,7 +93,7 @@ public class HtmlAssistant
     /// </summary>
     /// <param name="html">The HTML input to split.</param>
     /// <returns>List of HTML segments split by BR tags.</returns>
-    public static List<string> SplitByBr(string html)
+    public static IList<string> SplitByBr(string html)
     {
         return SplitByTag(html, "br");
     }
@@ -102,6 +104,7 @@ public class HtmlAssistant
     /// <param name="node">The HTML node to remove comments from.</param>
     public static void RemoveComments(HtmlNode node)
     {
+        ArgumentNullException.ThrowIfNull(node);
         if (!node.HasChildNodes)
             return;
 
@@ -123,8 +126,9 @@ public class HtmlAssistant
     /// <param name="html">The HTML input to split.</param>
     /// <param name="tagName">The tag name to split by.</param>
     /// <returns>List of HTML segments split by the specified tag.</returns>
-    public static List<string> SplitByTag(string html, string tagName)
+    public static IList<string> SplitByTag(string html, string tagName)
     {
+        ArgumentNullException.ThrowIfNull(html);
         var validatedHtml = html;
         validatedHtml = HtmlHelper.ReplaceHtmlNonPairTagsWithXmlValid(validatedHtml);
         var lines = SHSplit.Split(validatedHtml, tagName);
@@ -139,12 +143,13 @@ public class HtmlAssistant
     /// <param name="value">The value for the attribute.</param>
     public static void SetAttribute(HtmlNode node, string attributeName, string value)
     {
-        object o = null;
+        ArgumentNullException.ThrowIfNull(node);
+        HtmlAttribute? o = null;
         while (true)
         {
             o = node.Attributes.FirstOrDefault(a => a.Name == attributeName);
             if (o != null)
-                node.Attributes.Remove((HtmlAttribute)o);
+                node.Attributes.Remove(o);
             else
                 break;
         }
@@ -166,6 +171,7 @@ public class HtmlAssistant
     public static string InnerText(HtmlNode node, bool isRecursive, string tag, string attributeName, string attributeValue,
         bool isContains = false)
     {
+        ArgumentNullException.ThrowIfNull(node);
         return InnerContentWithAttr(node, isRecursive, tag, attributeName, attributeValue, false, isContains);
     }
 
@@ -231,7 +237,7 @@ public class HtmlAssistant
     /// <param name="isRecursive">Whether to search recursively.</param>
     /// <param name="isStopAfterFirst">Whether to stop after finding the first header.</param>
     /// <returns>List of found header nodes.</returns>
-    public static List<HtmlNode> GetAnyHeader(HtmlNode node, bool isRecursive, bool isStopAfterFirst)
+    public static IList<HtmlNode> GetAnyHeader(HtmlNode node, bool isRecursive, bool isStopAfterFirst)
     {
         var headers = new List<HtmlNode>();
         for (var i = 1; i < 7; i++)
@@ -256,8 +262,9 @@ public class HtmlAssistant
     /// <returns>The new clean node that replaced the original.</returns>
     public static HtmlNode RemoveAllAttrs(HtmlNode node)
     {
-        var tagL = node.Name.ToLower();
-        var html = "";
+        ArgumentNullException.ThrowIfNull(node);
+        var tagL = node.Name.ToLowerInvariant();
+        string html;
         if (AllLists.HtmlNonPairTags.Contains(tagL))
             html = "<" + tagL + " />";
         else
@@ -273,8 +280,9 @@ public class HtmlAssistant
     /// <param name="anchors">List of HTML nodes.</param>
     /// <param name="attributeName">The attribute name to get values for.</param>
     /// <returns>List of attribute values.</returns>
-    public static List<string> AttrsValues(List<HtmlNode> anchors, string attributeName)
+    public static IList<string> AttrsValues(IList<HtmlNode> anchors, string attributeName)
     {
+        ArgumentNullException.ThrowIfNull(anchors);
         var result = new List<string>();
 
         foreach (var item in anchors)
@@ -303,6 +311,7 @@ public class HtmlAssistant
     /// <returns>Cleaned and decoded inner text.</returns>
     public static string InnerTextDecodeTrim(HtmlNode node)
     {
+        ArgumentNullException.ThrowIfNull(node);
         var result = node.InnerText.Trim();
         return InnerTextDecodeTrim(result);
     }
@@ -345,7 +354,8 @@ public class HtmlAssistant
     /// <returns>Dictionary of attribute name-value pairs.</returns>
     public static Dictionary<string, string> GetAttributesPairs(string text)
     {
-        if (!text.Contains("<"))
+        ArgumentNullException.ThrowIfNull(text);
+        if (!text.Contains('<'))
             text = "<img " + text + "/>";
 
         var result = new Dictionary<string, string>();

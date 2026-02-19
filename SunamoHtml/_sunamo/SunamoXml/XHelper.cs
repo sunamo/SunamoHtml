@@ -1,6 +1,6 @@
 namespace SunamoHtml._sunamo.SunamoXml;
 
-internal class XHelper
+internal sealed class XHelper
 {
     internal static Dictionary<string, string> Namespaces = new();
 
@@ -13,7 +13,7 @@ internal class XHelper
 
             if (withPrexixedXmlnsColon)
             {
-                if (item == string.Empty || item == "xmlns")
+                if (string.IsNullOrEmpty(item) || item == "xmlns")
                     item = "xmlns";
                 else
                     item = "xmlns:" + item;
@@ -22,7 +22,7 @@ internal class XHelper
             // Jaký je typ item, at nemusím používat slovník
             var value = nsmgr.LookupNamespace(item2) ?? string.Empty;
 
-            if (!ns.ContainsKey(item)) ns.Add(item, value);
+            ns.TryAdd(item, value);
         }
 
         return ns;

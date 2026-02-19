@@ -8,8 +8,6 @@ internal class HtmlStartingTags
     internal const string B = "<b>";
     internal const string I = "<i>";
     internal const string S = "<s>";
-    private static Type Type = typeof(HtmlStartingTags);
-
     /// <summary>
     /// Gets the opening tag for the specified tag name.
     /// </summary>

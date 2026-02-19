@@ -3,7 +3,7 @@ namespace SunamoHtml.Html;
 /// <summary>
 /// Helper class for HTML text manipulation (tag replacement, tag parsing, syntax detection, etc.).
 /// </summary>
-public class HtmlHelperText
+public static class HtmlHelperText
 {
     private const string regexHtmlTag = "<[^<>]+>";
 
@@ -16,9 +16,12 @@ public class HtmlHelperText
     /// <returns>HTML with replaced tags.</returns>
     public static string ReplacePairTag(string text, string tag, string replacement)
     {
-        text = text.Replace("<" + tag + ">", "<" + replacement + ">");
-        text = text.Replace("<" + tag + " ", "<" + replacement + " ");
-        text = text.Replace("</" + tag + ">", "</" + replacement + ">");
+        ArgumentNullException.ThrowIfNull(text);
+        ArgumentNullException.ThrowIfNull(tag);
+        ArgumentNullException.ThrowIfNull(replacement);
+        text = text.Replace("<" + tag + ">", "<" + replacement + ">", StringComparison.Ordinal);
+        text = text.Replace("<" + tag + " ", "<" + replacement + " ", StringComparison.Ordinal);
+        text = text.Replace("</" + tag + ">", "</" + replacement + ">", StringComparison.Ordinal);
         return text;
     }
 
@@ -30,6 +33,8 @@ public class HtmlHelperText
     /// <returns>HTML with missing ending tags inserted.</returns>
     public static string InsertMissingEndingTags(string text, string tag)
     {
+        ArgumentNullException.ThrowIfNull(text);
+        ArgumentNullException.ThrowIfNull(tag);
         var textBuilder = new StringBuilder(text);
 
         var start = SH.ReturnOccurencesOfString(text, "<" + tag);
@@ -85,8 +90,9 @@ public class HtmlHelperText
     /// </summary>
     /// <param name="lines">List of lines to process.</param>
     /// <returns>List with numbered items wrapped in H2 tags.</returns>
-    public static List<string> CreateH2FromNumberedList(List<string> lines)
+    public static IList<string> CreateH2FromNumberedList(IList<string> lines)
     {
+        ArgumentNullException.ThrowIfNull(lines);
         for (var i = 0; i < lines.Count; i++)
             lines[i] = lines[i].Trim();
 
@@ -102,8 +108,9 @@ public class HtmlHelperText
     /// </summary>
     /// <param name="tagName">The tag name.</param>
     /// <returns>List of tag variations: &lt;tag>, &lt;tag />, &lt;tag/>.</returns>
-    public static List<string> GetAllEquvivalentsOfNonPairingTag(string tagName)
+    public static IList<string> GetAllEquvivalentsOfNonPairingTag(string tagName)
     {
+        ArgumentNullException.ThrowIfNull(tagName);
         return new List<string>(["<" + tagName + ">", "<" + tagName + " />", "<" + tagName + "/>"]);
     }
 
@@ -125,11 +132,12 @@ public class HtmlHelperText
     /// <returns>HTML with all element nodes removed.</returns>
     public static string RemoveAllNodes(string htmlText)
     {
+        ArgumentNullException.ThrowIfNull(htmlText);
         var htmlDocument = HtmlAgilityHelper.CreateHtmlDocument();
         htmlDocument.LoadHtml(htmlText);
 
         var nodes = htmlDocument.DocumentNode.Descendants().ToList();
-        for (var i = 0; i < nodes.Count(); i++)
+        for (var i = 0; i < nodes.Count; i++)
         {
             var node = nodes[i];
 
@@ -156,15 +164,18 @@ public class HtmlHelperText
     public static Tuple<string, string> GetTextBetweenTags(string html, string scriptS, string scriptE,
         bool isThrowExceptionIfNotContains = true)
     {
-        if (scriptS.EndsWith(">"))
+        ArgumentNullException.ThrowIfNull(html);
+        ArgumentNullException.ThrowIfNull(scriptS);
+        ArgumentNullException.ThrowIfNull(scriptE);
+        if (scriptS.EndsWith('>'))
             return new Tuple<string, string>(SH.GetTextBetweenSimple(html, scriptS, scriptE, isThrowExceptionIfNotContains),
                 "");
-        var sc = html.IndexOf(scriptS);
+        var sc = html.IndexOf(scriptS, StringComparison.Ordinal);
         if (sc == -1)
             return new Tuple<string, string>(" ", "");
 
         var ending = html.IndexOf('>', sc);
-        var element = html.IndexOf(scriptE, ending);
+        var element = html.IndexOf(scriptE, ending, StringComparison.Ordinal);
 
         var result = SH.GetTextBetweenTwoCharsInts(html, ending, element);
 
@@ -186,8 +197,9 @@ public class HtmlHelperText
     /// </summary>
     /// <param name="text">The HTML input string.</param>
     /// <returns>List of all HTML tags found.</returns>
-    public static List<string> GetAllTags(string text)
+    public static IList<string> GetAllTags(string text)
     {
+        ArgumentNullException.ThrowIfNull(text);
         var tags = Regex.Matches(text, regexHtmlTag);
         var sourceList = new List<string>();
         foreach (Match item in tags)
@@ -202,6 +214,7 @@ public class HtmlHelperText
     /// <returns>Text with all HTML tags and spaces removed.</returns>
     public static string RemoveHtmlTags(string clipboardText)
     {
+        ArgumentNullException.ThrowIfNull(clipboardText);
         return SHReplace.ReplaceAll(HtmlHelper.RemoveAllTags(clipboardText), " ", "");
     }
 
@@ -212,6 +225,7 @@ public class HtmlHelperText
     /// <returns>HTML with ASPX comments removed.</returns>
     public static string RemoveAspxComments(string html)
     {
+        ArgumentNullException.ThrowIfNull(html);
         html = Regex.Replace(html, ConstsAspx.StartAspxComment + ".*?" + ConstsAspx.EndAspxComment, string.Empty,
             RegexOptions.Singleline);
         return html;
@@ -223,10 +237,12 @@ public class HtmlHelperText
     /// <param name="text">The text to check.</param>
     /// <param name="allHtmlTagsWithLeftArrow">List of HTML tags to check for (with &lt;).</param>
     /// <returns>True if text contains any of the specified tags.</returns>
-    public static bool ContainsTag(string text, List<string> allHtmlTagsWithLeftArrow)
+    public static bool ContainsTag(string text, IList<string> allHtmlTagsWithLeftArrow)
     {
+        ArgumentNullException.ThrowIfNull(text);
+        ArgumentNullException.ThrowIfNull(allHtmlTagsWithLeftArrow);
         foreach (var item in allHtmlTagsWithLeftArrow)
-            if (text.Contains(item))
+            if (text.Contains(item, StringComparison.Ordinal))
                 return true;
         return false;
     }
@@ -241,7 +257,7 @@ public class HtmlHelperText
         ThrowEx.InvalidParameter((string)tag, "tag");
 
         tag = SH.GetToFirst((string)tag, " ");
-        tag = tag.Trim().TrimStart('<').TrimEnd('>').ToLower();
+        tag = tag.Trim().TrimStart('<').TrimEnd('>').ToLowerInvariant();
 
         if (AllLists.HtmlNonPairTags.Contains((string)tag))
             return HtmlTagSyntax.NonPairingNotEnded;
@@ -260,6 +276,7 @@ public class HtmlHelperText
     /// <returns>Text with spaces added around encoded brackets.</returns>
     public static string TrimInnerOfEncodedHtml(string value)
     {
+        ArgumentNullException.ThrowIfNull(value);
         value = SHReplace.ReplaceAll(value, "&gt;", "&gt; ");
         value = SHReplace.ReplaceAll(value, "&lt;", " &lt;");
         return value;
@@ -270,8 +287,9 @@ public class HtmlHelperText
     /// </summary>
     /// <param name="shortDescription">The text to split.</param>
     /// <returns>List of split segments.</returns>
-    public static List<string> SplitBySpaceAndLtGt(string shortDescription)
+    public static IList<string> SplitBySpaceAndLtGt(string shortDescription)
     {
+        ArgumentNullException.ThrowIfNull(shortDescription);
         var f = SHSplit.Split(shortDescription, "<", ">", " ");
         return f;
     }
@@ -283,6 +301,7 @@ public class HtmlHelperText
     /// <returns>True if text is a valid HTML entity name.</returns>
     public static bool IsHtmlEntity(string text)
     {
+        ArgumentNullException.ThrowIfNull(text);
         text = text.TrimStart('&').TrimEnd(';');
         return AllLists.HtmlEntities.Contains(text);
     }
@@ -293,26 +312,28 @@ public class HtmlHelperText
     /// <param name="text">The HTML text to search.</param>
     /// <param name="tagName">The tag name to extract content from.</param>
     /// <returns>List of content strings from all found tags.</returns>
-    public static List<string> GetContentOfTags(string text, string tagName)
+    public static IList<string> GetContentOfTags(string text, string tagName)
     {
+        ArgumentNullException.ThrowIfNull(text);
+        ArgumentNullException.ThrowIfNull(tagName);
         var result = new List<string>();
         var start = $"<{tagName}";
         var end = $"</{tagName}>";
-        var dex = text.IndexOf(start);
+        var dex = text.IndexOf(start, StringComparison.Ordinal);
         while (dex != -1)
         {
             var dexEndLetter = text.IndexOf('>', dex);
 
-            var dex2 = text.IndexOf(start, dex + start.Length);
-            var dexEnd = text.IndexOf(end, dex);
+            var dex2 = text.IndexOf(start, dex + start.Length, StringComparison.Ordinal);
+            var dexEnd = text.IndexOf(end, dex, StringComparison.Ordinal);
 
             if (dex2 != -1)
                 if (dexEnd > dex2)
-                    throw new Exception($"Another starting tag is before ending <{tagName}>");
+                    throw new InvalidOperationException($"Another starting tag is before ending <{tagName}>");
 
             result.Add(SH.GetTextBetweenTwoCharsInts(text, dexEndLetter, dexEnd).Trim());
 
-            dex = text.IndexOf(start, dexEnd);
+            dex = text.IndexOf(start, dexEnd, StringComparison.Ordinal);
         }
 
         return result;
@@ -325,6 +346,7 @@ public class HtmlHelperText
     /// <returns>True if it's a valid CSS property name.</returns>
     public static bool IsCssDeclarationName(string decl)
     {
+        ArgumentNullException.ThrowIfNull(decl);
         if (AllLists.AllCssKeys.Contains(decl))
             return true;
         return false;
@@ -335,16 +357,17 @@ public class HtmlHelperText
     /// </summary>
     /// <param name="lines">List of text lines to convert.</param>
     /// <returns>HTML string with lines wrapped in paragraphs.</returns>
-    public static string ConvertTextToHtml(List<string> lines)
+    public static string ConvertTextToHtml(IList<string> lines)
     {
-        lines = lines.Where(d => !string.IsNullOrWhiteSpace(d)).ToList();
+        ArgumentNullException.ThrowIfNull(lines);
+        var filteredLines = lines.Where(d => !string.IsNullOrWhiteSpace(d)).ToList();
 
         var endP = "</p>";
 
-        CAChangeContent.ChangeContent0(null, lines, AddIntoParagraph);
+        CAChangeContent.ChangeContent0(null!, filteredLines, AddIntoParagraph);
 
-        var result = SH.JoinNL(lines);
-        result = result.Replace(endP, endP + "\r" + "\n");
+        var result = SH.JoinNL(filteredLines);
+        result = result.Replace(endP, endP + "\r" + "\n", StringComparison.Ordinal);
 
         return result;
     }
@@ -358,19 +381,19 @@ public class HtmlHelperText
     {
         const string spaceDash = " -";
 
-        if (text.Contains(spaceDash))
+        if (text.Contains(spaceDash, StringComparison.Ordinal))
         {
             text = "<b>" + text;
-            text = text.Replace(spaceDash, "</b>" + spaceDash);
+            text = text.Replace(spaceDash, "</b>" + spaceDash, StringComparison.Ordinal);
         }
 
         if (text[0] == '<')
         {
-            var tag = GetFirstTag(text).ToLower();
+            var tag = GetFirstTag(text).ToLowerInvariant();
 
             if (AllLists.PairingTagsDontWrapToParagraph.Contains(tag))
                 return text;
-            if (tag.StartsWith("/"))
+            if (tag.StartsWith('/'))
                 if (AllLists.PairingTagsDontWrapToParagraph.Contains(tag.Substring(1)))
                     return text;
         }
@@ -387,7 +410,7 @@ public class HtmlHelperText
     {
         var between = SH.GetTextBetweenSimple(text, "<", ">");
 
-        if (between.Contains(" "))
+        if (between.Contains(' '))
             return SH.GetToFirst(between, " ");
         return between;
     }

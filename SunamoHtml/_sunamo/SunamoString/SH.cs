@@ -50,7 +50,7 @@ internal partial class SH
     {
         if (searchWords == null || searchWords.Length == 0)
             return new List<FromToWord>();
-        entireContent = entireContent.ToLower();
+        entireContent = entireContent.ToLowerInvariant();
         var result = new List<FromToWord>();
         var contentLength = entireContent.Length;
         for (var i = 0; i < contentLength; i++)
@@ -119,7 +119,7 @@ internal partial class SH
         if (position == -1)
         {
             before = text;
-            after = "";
+            after = string.Empty;
         }
         else
         {
@@ -198,7 +198,7 @@ internal partial class SH
                 }
 
                 data = data.Substring(0, spaceIndex + 1);
-                if (data.Trim() != "")
+                if (!string.IsNullOrEmpty(data.Trim()))
                     isAddThreeDots = true;
                 return data;
             }
@@ -255,7 +255,7 @@ internal partial class SH
                 }
 
                 data = data.Substring(spaceIndex + 1);
-                if (data.Trim() != "")
+                if (!string.IsNullOrEmpty(data.Trim()))
                     data = " ... " + data;
                 return data;
             }
@@ -275,7 +275,7 @@ internal partial class SH
     /// <returns>Text up to and including the first occurrence.</returns>
     internal static string GetToFirst(string text, string searchFor)
     {
-        var indexOfChar = text.IndexOf(searchFor);
+        var indexOfChar = text.IndexOf(searchFor, StringComparison.Ordinal);
         if (indexOfChar != -1)
             return text.Substring(0, indexOfChar + 1);
         return text;
@@ -308,11 +308,11 @@ internal partial class SH
     /// <param name="startSearchingAt">Index to start searching at.</param>
     /// <param name="isThrowExceptionIfNotContains">Whether to throw exception if delimiters not found.</param>
     /// <returns>Text between the delimiters.</returns>
-    internal static string GetTextBetween(string text, string after, string before, out int foundIndex, int startSearchingAt, bool isThrowExceptionIfNotContains = true)
+    internal static string? GetTextBetween(string text, string after, string before, out int foundIndex, int startSearchingAt, bool isThrowExceptionIfNotContains = true)
     {
-        string result = null;
-        foundIndex = text.IndexOf(after, startSearchingAt);
-        var beforeIndex = text.IndexOf(before, foundIndex + after.Length);
+        string? result = null;
+        foundIndex = text.IndexOf(after, startSearchingAt, StringComparison.Ordinal);
+        var beforeIndex = text.IndexOf(before, foundIndex + after.Length, StringComparison.Ordinal);
         var afterFound = foundIndex != -1;
         var beforeFound = beforeIndex != -1;
         if (afterFound && beforeFound)
@@ -322,7 +322,6 @@ internal partial class SH
             var length = beforeIndex - foundIndex + 1;
             if (length < 1)
             {
-                // Logically nonsense to return full text when length < 1
             }
 
             result = text.Substring(foundIndex, length).Trim();
@@ -335,6 +334,6 @@ internal partial class SH
                 return null;
         }
 
-        return result.Trim();
+        return result?.Trim();
     }
 }

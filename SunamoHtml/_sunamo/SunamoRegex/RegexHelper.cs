@@ -36,59 +36,9 @@ internal static class RegexHelper
     internal static readonly Regex RWhitespace = new(@"\s+");
     internal static string LastTelephone = string.Empty;
 
-    static RegexHelper()
-    {
-        // this one I unfortunately cant use because I use .net core 2.0, available from 2.1
-        // from https://haacked.com/archive/2004/10/25/usingregularexpressionstomatchhtml.aspx/ and https://gist.github.com/Haacked/7729259
-        ////HtmlTagRegex.
-        //RegexCompilationInfo[] compInfo =
-        //{
-        //        //HtmlTag Regex.
-        //        new RegexCompilationInfo
-        //        (
-        //            @"<"
-        //            +    @"(?<endTag>/)?"    //Captures the / if this is an end tag.
-        //            +    @"(?<tagname>\w+)"    //Captures TagName
-        //            +    @"("                //Groups tag contents
-        //            +        @"(\s+"            //Groups attributes
-        //            +            @"(?<attName>\w+)"  //Attribute name
-        //            +            @"("                //groups =value portion.
-        //            +                @"\s*=\s*"            // =
-        //            +                @"(?:"        //Groups attribute "value" portion.
-        //            +                    @"""(?<attVal>[^""]*)"""    // attVal='double quoted'
-        //            +                    @"|'(?<attVal>[^']*)'"        // attVal='single quoted'
-        //            +                    @"|(?<attVal>[^'"">\s]+)"    // attVal=urlnospaces
-        //            +                @")"
-        //            +            @")?"        //end optional att value portion.
-        //            +        @")+\s*"        //One or more attribute pairs
-        //            +        @"|\s*"            //Some white space.
-        //            +    @")"
-        //            + @"(?<completeTag>/)?>" //Captures the "/" if this is a complete tag.
-        //            , RegexOptions.IgnoreCase
-        //            , "HtmlTagRegex"
-        //            , "Haack.RegularExpressions"
-        //            , true
-        //        )
-        //        ,
-        //        // Matches double words.
-        //        new RegexCompilationInfo
-        //        (
-        //            @"\b(\w+)\s+\1\b"
-        //            , RegexOptions.None
-        //            , "DoubleWordRegex"
-        //            , "Haack.RegularExpressions", true
-        //        )
-        //    };
-        //AssemblyName assemblyName = new AssemblyName();
-        //assemblyName.Name = "Haack.RegularExpressions";
-        //assemblyName.Version = new Version("1.0.0.0");
-        //Regex.CompileToAssembly(compInfo, assemblyName);
-    }
-
-
     internal static bool IsUri(string text)
     {
-        return RUri.IsMatch(text) && (text.StartsWith("http://") || text.StartsWith("https://"));
+        return RUri.IsMatch(text) && (text.StartsWith("http://", StringComparison.Ordinal) || text.StartsWith("https://", StringComparison.Ordinal));
     }
 
 }

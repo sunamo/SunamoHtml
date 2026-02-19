@@ -41,8 +41,9 @@ public partial class HtmlAgilityHelper
     /// </summary>
     /// <param name="nodes">The list of HTML nodes to process.</param>
     /// <returns>List of nodes with comments removed.</returns>
-    public static List<HtmlNode> TrimComments(List<HtmlNode> nodes)
+    public static IList<HtmlNode> TrimComments(IList<HtmlNode> nodes)
     {
+        ArgumentNullException.ThrowIfNull(nodes);
         var result = new List<HtmlNode>();
         var startsWithComment = false;
         var endsWithComment = false;
@@ -54,29 +55,29 @@ public partial class HtmlAgilityHelper
             shouldTranslate = true;
             var html = item.InnerHtml.Trim();
             // contains whole html comment
-            endsWithComment = html.Contains(ConstsAspx.EndHtmlComment);
-            startsWithComment = html.Contains(ConstsAspx.StartHtmlComment);
+            endsWithComment = html.Contains(ConstsAspx.EndHtmlComment, StringComparison.Ordinal);
+            startsWithComment = html.Contains(ConstsAspx.StartHtmlComment, StringComparison.Ordinal);
             if (startsWithComment && endsWithComment)
             {
                 shouldTranslate = false;
             }
             else
             {
-                if (html == string.Empty)
+                if (string.IsNullOrEmpty(html))
                     continue;
-                endsWithComment = html.Contains(ConstsAspx.EndAspxComment);
-                startsWithComment = html.Contains(ConstsAspx.StartAspxComment);
+                endsWithComment = html.Contains(ConstsAspx.EndAspxComment, StringComparison.Ordinal);
+                startsWithComment = html.Contains(ConstsAspx.StartAspxComment, StringComparison.Ordinal);
                 if (startsWithComment || endsWithComment)
                     if (startsWithComment && endsWithComment)
                         // contains whole aspx comment
                         shouldTranslate = false;
                 if (!shouldTranslate)
                     continue;
-                if (html.StartsWith("<%"))
+                if (html.StartsWith("<%", StringComparison.Ordinal))
                     continue;
                 var count = item.ChildNodes.Count;
                 var textCount = TrimTexts(item.ChildNodes).Count;
-                if (textCount == count && html == string.Empty)
+                if (textCount == count && string.IsNullOrEmpty(html))
                     continue;
                 result.Add(item);
             }
@@ -122,14 +123,14 @@ public partial class HtmlAgilityHelper
                 if (isWildCard)
                     hasMatchingAttribute = SH.MatchWildcard(actualAttributeValue, attributeValue);
                 else
-                    hasMatchingAttribute = actualAttributeValue.Contains(attributeValue);
+                    hasMatchingAttribute = actualAttributeValue.Contains(attributeValue, StringComparison.Ordinal);
             }
             else
             {
                 var allParametersMatch = true;
                 var parameters = SHSplit.Split(attributeValue, " ");
                 foreach (var parameter in parameters)
-                    if (!actualAttributeValue.Contains(parameter))
+                    if (!actualAttributeValue.Contains(parameter, StringComparison.Ordinal))
                     {
                         allParametersMatch = false;
                         break;
@@ -158,6 +159,7 @@ public partial class HtmlAgilityHelper
     /// <param name="tagName">The tag name to search for, or "*" for any tag.</param>
     public static void RecursiveReturnTags(List<HtmlNode> result, HtmlNode htmlNode, bool isRecursive, bool isSingle, string tagName)
     {
+        ArgumentNullException.ThrowIfNull(result);
         if (htmlNode == null)
             return;
         foreach (var item in htmlNode.ChildNodes)
@@ -185,7 +187,9 @@ public partial class HtmlAgilityHelper
     /// <returns>List of matching HTML nodes with text nodes trimmed.</returns>
     public static List<HtmlNode> Nodes(HtmlNode node, bool isRecursive, string tag)
     {
-        tag = tag.ToLower();
+        ArgumentNullException.ThrowIfNull(node);
+        ArgumentNullException.ThrowIfNull(tag);
+        tag = tag.ToLowerInvariant();
         var result = new List<HtmlNode>();
         RecursiveReturnTags(result, node, isRecursive, false, tag);
         if (tag != TextNode)
@@ -267,8 +271,12 @@ public partial class HtmlAgilityHelper
     /// <param name="isSearchAsSingleString">Whether to search as a single string.</param>
     public static void RecursiveReturnTagsWithContainsAttr(List<HtmlNode> result, HtmlNode htmlNode, bool isRecursive, string tagName, string attributeName, string attributeValue, bool isWildCard, bool isEnoughContainsAttribute, bool isSearchAsSingleString = true)
     {
+        ArgumentNullException.ThrowIfNull(result);
+        ArgumentNullException.ThrowIfNull(tagName);
+        ArgumentNullException.ThrowIfNull(attributeName);
+        ArgumentNullException.ThrowIfNull(attributeValue);
         var childNodesWithoutText = TrimTexts(htmlNode.ChildNodes);
-        tagName = tagName.ToLower();
+        tagName = tagName.ToLowerInvariant();
         if (htmlNode == null)
             return;
         foreach (var item in childNodesWithoutText)
@@ -299,8 +307,12 @@ public partial class HtmlAgilityHelper
     /// <param name="attributeValue">The attribute value pattern.</param>
     /// <param name="isContains">Whether to use contains matching.</param>
     /// <returns>List of matching HTML nodes.</returns>
-    public static List<HtmlNode> NodesWithAttrWildCard(HtmlNode node, bool isRecursive, string tag, string attributeName, string attributeValue, bool isContains = false)
+    public static IList<HtmlNode> NodesWithAttrWildCard(HtmlNode node, bool isRecursive, string tag, string attributeName, string attributeValue, bool isContains = false)
     {
+        ArgumentNullException.ThrowIfNull(node);
+        ArgumentNullException.ThrowIfNull(tag);
+        ArgumentNullException.ThrowIfNull(attributeName);
+        ArgumentNullException.ThrowIfNull(attributeValue);
         return NodesWithAttrWorker(node, isRecursive, tag, attributeName, attributeValue, true, isContains);
     }
 
@@ -314,8 +326,12 @@ public partial class HtmlAgilityHelper
     /// <param name="attributeValue">The attribute value to match.</param>
     /// <param name="isContains">Whether to use contains matching.</param>
     /// <returns>List of matching HTML nodes.</returns>
-    public static List<HtmlNode> NodesWithAttr(HtmlNode node, bool isRecursive, string tag, string attributeName, string attributeValue, bool isContains = false)
+    public static IList<HtmlNode> NodesWithAttr(HtmlNode node, bool isRecursive, string tag, string attributeName, string attributeValue, bool isContains = false)
     {
+        ArgumentNullException.ThrowIfNull(node);
+        ArgumentNullException.ThrowIfNull(tag);
+        ArgumentNullException.ThrowIfNull(attributeName);
+        ArgumentNullException.ThrowIfNull(attributeValue);
         return NodesWithAttrWorker(node, isRecursive, tag, attributeName, attributeValue, false, isContains);
     }
 }

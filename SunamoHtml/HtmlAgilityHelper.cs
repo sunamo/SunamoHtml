@@ -25,10 +25,12 @@ public partial class HtmlAgilityHelper
     /// <returns>Dictionary with DT text as keys and DD text as values.</returns>
     public static Dictionary<string, string> PairsDdDt(HtmlNode dl, bool recursive, Dictionary<string, string> replaceHtmLForText)
     {
+        ArgumentNullException.ThrowIfNull(dl);
+        ArgumentNullException.ThrowIfNull(replaceHtmLForText);
         var dd = Nodes(dl, recursive, "dd");
         var dt = Nodes(dl, recursive, "dt");
         if (dd.Count == 0 && dt.Count == 0)
-            throw new Exception("dd && dt is zero");
+            throw new InvalidOperationException("dd && dt is zero");
         ThrowEx.IsEmpty(dt, "dd");
         ThrowEx.IsEmpty(dt, "dt");
         ThrowEx.DifferentCountInLists("dd", dd, "dt", dt);
@@ -45,8 +47,8 @@ public partial class HtmlAgilityHelper
             var val = JoinHtmlElementsToOneString(dd[i]);
             foreach (var item in replaceHtmLForText)
             {
-                key = key.Replace(item.Key, item.Value);
-                val = val.Replace(item.Key, item.Value);
+                key = key.Replace(item.Key, item.Value, StringComparison.Ordinal);
+                val = val.Replace(item.Key, item.Value, StringComparison.Ordinal);
             }
 
             // Default replaces with " "
@@ -92,7 +94,7 @@ public partial class HtmlAgilityHelper
                 }
 
                 result = stringBuilder.ToString().Substring(0, stringBuilder.Length - 2);
-                if (result == "")
+                if (string.IsNullOrEmpty(result))
                 {
                     result = previousInnerText.Trim();
                 }
@@ -122,8 +124,10 @@ public partial class HtmlAgilityHelper
     /// <param name="recursive">Whether to search recursively in child nodes.</param>
     /// <param name="tag">The HTML tag name to search for.</param>
     /// <returns>The first matching HTML node, or null if not found.</returns>
-    public static HtmlNode Node(HtmlNode node, bool recursive, string tag)
+    public static HtmlNode? Node(HtmlNode node, bool recursive, string tag)
     {
+        ArgumentNullException.ThrowIfNull(node);
+        ArgumentNullException.ThrowIfNull(tag);
         return Nodes(node, recursive, tag).FirstOrDefault();
     }
 
@@ -137,8 +141,12 @@ public partial class HtmlAgilityHelper
     /// <param name = "attrValue"></param>
     /// <param name = "contains"></param>
     /// <returns></returns>
-    public static HtmlNode NodeWithAttr(HtmlNode node, bool recursive, string tag, string attr, string attrValue, bool contains = false)
+    public static HtmlNode? NodeWithAttr(HtmlNode node, bool recursive, string tag, string attr, string attrValue, bool contains = false)
     {
+        ArgumentNullException.ThrowIfNull(node);
+        ArgumentNullException.ThrowIfNull(tag);
+        ArgumentNullException.ThrowIfNull(attr);
+        ArgumentNullException.ThrowIfNull(attrValue);
         return NodesWithAttrWorker(node, recursive, tag, attr, attrValue, false, contains).FirstOrDefault();
     }
 
@@ -152,8 +160,12 @@ public partial class HtmlAgilityHelper
     /// <param name = "attrValue">The value to search for within the attribute.</param>
     /// <param name = "searchAsSingleString">Whether to search the attribute value as a single string (true) or split by whitespace (false).</param>
     /// <returns>List of matching HTML nodes.</returns>
-    public static List<HtmlNode> NodesWhichContainsInAttr(HtmlNode node, bool recursive, string tag, string attr, string attrValue, bool searchAsSingleString = true)
+    public static IList<HtmlNode> NodesWhichContainsInAttr(HtmlNode node, bool recursive, string tag, string attr, string attrValue, bool searchAsSingleString = true)
     {
+        ArgumentNullException.ThrowIfNull(node);
+        ArgumentNullException.ThrowIfNull(tag);
+        ArgumentNullException.ThrowIfNull(attr);
+        ArgumentNullException.ThrowIfNull(attrValue);
         return NodesWithAttrWorker(node, recursive, tag, attr, attrValue, false, searchAsSingleString);
     }
 
@@ -162,8 +174,10 @@ public partial class HtmlAgilityHelper
     /// </summary>
     /// <param name="html">The HTML string to process.</param>
     /// <returns>HTML string with plain URIs converted to anchor tags.</returns>
+    [SuppressMessage("Design", "CA1055:UriReturnValuesShouldNotBeStrings")]
     public static string ReplacePlainUriForAnchors(string html)
     {
+        ArgumentNullException.ThrowIfNull(html);
         var htmlDocument = CreateHtmlDocument();
         return ReplacePlainUriForAnchors(htmlDocument, html);
     }
@@ -174,11 +188,14 @@ public partial class HtmlAgilityHelper
     /// <param name="htmlDocument">The HtmlDocument to use for parsing.</param>
     /// <param name="html">The HTML string to process.</param>
     /// <returns>HTML string with plain URIs converted to anchor tags.</returns>
+    [SuppressMessage("Design", "CA1055:UriReturnValuesShouldNotBeStrings")]
     public static string ReplacePlainUriForAnchors(HtmlDocument htmlDocument, string html)
     {
+        ArgumentNullException.ThrowIfNull(htmlDocument);
+        ArgumentNullException.ThrowIfNull(html);
         /*
-         * Kurví se mi to tady, přidává se na konec </installedapp></installedapp></installedapp></string></string>.
-         * Zde jsem ani po krokování neobjevil kde to vzniká, čímž bude to nejnodušší odstranit při formátu
+         * Kurvi se mi to tady, pridava se na konec </installedapp></installedapp></installedapp></string></string>.
+         * Zde jsem ani po krokovani neobjevil kde to vznika, cimz bude to nejnoduzssi odstranit pri formatu
          */
         html = WrapIntoTagIfNot(html);
         htmlDocument.LoadHtml(html);
@@ -190,7 +207,7 @@ public partial class HtmlAgilityHelper
             if (item.ParentNode.Name == "pre")
                 continue;
             var data = SHSplit.SplitByWhiteSpaces(item.InnerText);
-            var changed = CAChangeContent.ChangeContentWithCondition(null, data, RegexHelper.IsUri, HtmlGenerator2.Anchor);
+            var changed = CAChangeContent.ChangeContentWithCondition(new ChangeContentArgsHtml(), data, RegexHelper.IsUri, HtmlGenerator2.Anchor);
             item.InnerHtml = string.Empty;
             InsertGroup(item, data);
         //item.ParentNode.ReplaceChild(CreateNode(item.InnerHtml), item);
@@ -215,6 +232,8 @@ public partial class HtmlAgilityHelper
     /// <returns>The wrapped HTML string.</returns>
     public static string WrapIntoTagIfNot(string html, string tag = HtmlTags.Div)
     {
+        ArgumentNullException.ThrowIfNull(html);
+        ArgumentNullException.ThrowIfNull(tag);
         html = html.Trim();
         if (html[0] != '<')
             html = WrapIntoTag(tag, html);
@@ -241,6 +260,8 @@ public partial class HtmlAgilityHelper
     /// <param name="list">List of strings to insert as inner HTML.</param>
     public static void InsertGroup(HtmlNode insertAfter, List<string> list)
     {
+        ArgumentNullException.ThrowIfNull(insertAfter);
+        ArgumentNullException.ThrowIfNull(list);
         foreach (var item in list)
             insertAfter.InnerHtml += SH.WrapWithChar(item, ' ');
         //insertAfter = insertAfter.ParentNode.InsertAfter(CreateNode(item), insertAfter);
@@ -254,6 +275,7 @@ public partial class HtmlAgilityHelper
     /// <returns>The created HTML node.</returns>
     public static HtmlNode CreateNode(string html)
     {
+        ArgumentNullException.ThrowIfNull(html);
         if (!RegexHelper.RHtmlTag.IsMatch(html))
             html = SH.WrapWithChar(html, ' ');
         return HtmlNode.CreateNode(html);
@@ -286,6 +308,7 @@ public partial class HtmlAgilityHelper
     /// <returns>List of nodes with text nodes removed.</returns>
     public static List<HtmlNode> TrimTexts(HtmlNodeCollection htmlNodeCollection)
     {
+        ArgumentNullException.ThrowIfNull(htmlNodeCollection);
         if (!_trimTexts)
             return htmlNodeCollection.ToList();
         var result = new List<HtmlNode>();
@@ -301,8 +324,9 @@ public partial class HtmlAgilityHelper
     /// <param name="node">The starting HTML node.</param>
     /// <param name="tagName">The tag name to search for in ancestors.</param>
     /// <returns>The ancestor node with matching tag name, or null if not found.</returns>
-    public static HtmlNode FindAncestorParentNode(HtmlNode node, string tagName)
+    public static HtmlNode? FindAncestorParentNode(HtmlNode node, string tagName)
     {
+        ArgumentNullException.ThrowIfNull(tagName);
         while (node != null)
         {
             if (node.Name == tagName)
@@ -321,6 +345,7 @@ public partial class HtmlAgilityHelper
     /// <returns>True if an ancestor with the tag name exists, false otherwise.</returns>
     public static bool HasAncestorParentNode(HtmlNode node, string tagName)
     {
+        ArgumentNullException.ThrowIfNull(tagName);
         while (node != null)
         {
             if (node.Name == tagName)

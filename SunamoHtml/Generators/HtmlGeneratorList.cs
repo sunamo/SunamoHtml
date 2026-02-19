@@ -16,9 +16,10 @@ public static class HtmlGeneratorList
     /// <param name="isCheckDuplicates">Whether to skip duplicate items.</param>
     /// <param name="tag">The HTML tag to use for the list (ul or ol).</param>
     /// <returns>HTML string with list and anchors.</returns>
-    public static string GetFor(string baseAnchor, List<string> relativeAnchors, List<string>? titles, bool isCheckDuplicates,
+    public static string GetFor(string baseAnchor, IList<string> relativeAnchors, IList<string>? titles, bool isCheckDuplicates,
         string tag)
     {
+        ArgumentNullException.ThrowIfNull(relativeAnchors);
         var generator = new HtmlGenerator();
         List<string> alreadyWritten;
 
@@ -55,7 +56,7 @@ public static class HtmlGeneratorList
     /// <param name="titles">List of titles to display as link text.</param>
     /// <param name="isCheckDuplicates">Whether to skip duplicate items.</param>
     /// <returns>HTML string with UL and anchors.</returns>
-    public static string Ul(string baseAnchor, List<string> relativeAnchors, List<string> titles, bool isCheckDuplicates)
+    public static string Ul(string baseAnchor, IList<string> relativeAnchors, IList<string> titles, bool isCheckDuplicates)
     {
         return GetFor(baseAnchor, relativeAnchors, titles, isCheckDuplicates, HtmlTags.Ul);
     }
@@ -68,7 +69,7 @@ public static class HtmlGeneratorList
     /// <param name="titles">List of titles to display as link text.</param>
     /// <param name="isCheckDuplicates">Whether to skip duplicate items.</param>
     /// <returns>HTML string with OL and anchors.</returns>
-    public static string Ol(string baseAnchor, List<string> relativeAnchors, List<string> titles, bool isCheckDuplicates)
+    public static string Ol(string baseAnchor, IList<string> relativeAnchors, IList<string> titles, bool isCheckDuplicates)
     {
         return GetFor(baseAnchor, relativeAnchors, titles, isCheckDuplicates, HtmlTags.Ol);
     }

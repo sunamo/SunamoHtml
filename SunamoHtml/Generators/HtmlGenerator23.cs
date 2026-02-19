@@ -12,8 +12,12 @@ public partial class HtmlGenerator2 : HtmlGenerator
     /// <param name="ids">List of IDs for anchors.</param>
     /// <param name="texts">List of display texts.</param>
     /// <returns>HTML string with list items.</returns>
-    public static string GetForUlWoCheckDuplicate(string baseAnchor, List<string> ids, List<string> texts)
+    public static string GetForUlWoCheckDuplicate(string baseAnchor, IList<string> ids, IList<string> texts)
     {
+        ArgumentNullException.ThrowIfNull(baseAnchor);
+        ArgumentNullException.ThrowIfNull(ids);
+        ArgumentNullException.ThrowIfNull(texts);
+
         return GetForUl(baseAnchor, ids, texts, false);
     }
 
@@ -24,8 +28,11 @@ public partial class HtmlGenerator2 : HtmlGenerator
     /// <param name="anchors">List of anchor URLs.</param>
     /// <param name="items">List of display texts.</param>
     /// <returns>HTML string with list items.</returns>
-    public static string GetForUlWoCheckDuplicate(List<string> anchors, List<string> items)
+    public static string GetForUlWoCheckDuplicate(IList<string> anchors, IList<string> items)
     {
+        ArgumentNullException.ThrowIfNull(anchors);
+        ArgumentNullException.ThrowIfNull(items);
+
         return GetForUl("", anchors, items, false);
     }
 
@@ -35,8 +42,10 @@ public partial class HtmlGenerator2 : HtmlGenerator
     /// </summary>
     /// <param name="items">List of items to display.</param>
     /// <returns>HTML string with list items.</returns>
-    public static string GetForUlWoCheckDuplicate(List<string> items)
+    public static string GetForUlWoCheckDuplicate(IList<string> items)
     {
+        ArgumentNullException.ThrowIfNull(items);
+
         var generator = new HtmlGenerator();
         for (var i = 0; i < items.Count; i++)
         {
@@ -54,14 +63,17 @@ public partial class HtmlGenerator2 : HtmlGenerator
     /// <param name="baseAnchor">Base anchor URL.</param>
     /// <param name="items">List of items.</param>
     /// <returns>HTML string with UL element.</returns>
-    public static string GetUlWoCheckDuplicate(string baseAnchor, List<string> items)
+    public static string GetUlWoCheckDuplicate(string baseAnchor, IList<string> items)
     {
+        ArgumentNullException.ThrowIfNull(baseAnchor);
+        ArgumentNullException.ThrowIfNull(items);
+
         HtmlGenerator generator = new HtmlGenerator();
         for (int i = 0; i < items.Count; i++)
         {
             string text = items[i];
             generator.WriteTag("li");
-            generator.WriteTagWithAttrs("a", "href", baseAnchor + (i + 1).ToString());
+            generator.WriteTagWithAttrs("a", "href", baseAnchor + (i + 1).ToString(CultureInfo.InvariantCulture));
             generator.WriteRaw(text);
             generator.TerminateTag("a");
             generator.TerminateTag("li");
@@ -77,8 +89,11 @@ public partial class HtmlGenerator2 : HtmlGenerator
     /// <param name="list">List of items.</param>
     /// <param name="appendClass">Additional CSS class to append.</param>
     /// <returns>HTML string with UL element.</returns>
-    public static string GetUlWoCheckDuplicate(List<string> list, string appendClass)
+    public static string GetUlWoCheckDuplicate(IList<string> list, string appendClass)
     {
+        ArgumentNullException.ThrowIfNull(list);
+        ArgumentNullException.ThrowIfNull(appendClass);
+
         return "<ul class=\"textVlevo " + appendClass + "\">" + GetForUlWoCheckDuplicate(list) + "</ul>";
     }
 
@@ -88,8 +103,11 @@ public partial class HtmlGenerator2 : HtmlGenerator
     /// <param name="anchors">List of anchor URLs.</param>
     /// <param name="texts">List of display texts.</param>
     /// <returns>HTML string with UL element.</returns>
-    public static string GetUlWoCheckDuplicate(List<string> anchors, List<string> texts)
+    public static string GetUlWoCheckDuplicate(IList<string> anchors, IList<string> texts)
     {
+        ArgumentNullException.ThrowIfNull(anchors);
+        ArgumentNullException.ThrowIfNull(texts);
+
         return "<ul class=\"textVlevo\">" + GetForUlWoCheckDuplicate(anchors, texts) + "</ul>";
     }
 
@@ -99,8 +117,10 @@ public partial class HtmlGenerator2 : HtmlGenerator
     /// <param name="possibleAnswers">List of possible answers.</param>
     /// <param name="isCheckDuplicates">Whether to check for duplicates.</param>
     /// <returns>HTML string with OL element.</returns>
-    public static string GetOl(List<string> possibleAnswers, bool isCheckDuplicates = false)
+    public static string GetOl(IList<string> possibleAnswers, bool isCheckDuplicates = false)
     {
+        ArgumentNullException.ThrowIfNull(possibleAnswers);
+
         return HtmlGeneratorList.GetFor("", possibleAnswers, possibleAnswers, isCheckDuplicates, HtmlTags.Ol);
     }
 
@@ -110,10 +130,13 @@ public partial class HtmlGenerator2 : HtmlGenerator
     /// <param name="anchors">List of anchor URLs.</param>
     /// <param name="texts">List of items to display.</param>
     /// <returns>HTML string with OL element.</returns>
-    public static string GetOlWoCheckDuplicate(List<string> anchors, List<string> texts)
+    public static string GetOlWoCheckDuplicate(IList<string> anchors, IList<string> texts)
     {
+        ArgumentNullException.ThrowIfNull(anchors);
+        ArgumentNullException.ThrowIfNull(texts);
+
         if (anchors.Count != texts.Count)
-            throw new Exception("Bullet points and links count differs");
+            throw new InvalidOperationException("Bullet points and links count differs");
         var generator = new HtmlGenerator();
         generator.WriteTag("ol");
         for (var i = 0; i < texts.Count; i++)
