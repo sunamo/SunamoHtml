@@ -10,11 +10,11 @@ internal partial class SH
     /// EN: Returns X characters before and after a center position, ensuring whole words are included.
     /// CZ: Vrátí X znaků před a po středové pozici, zajistí že jsou zahrnutá celá slova.
     /// </summary>
-    /// <param name="entireContent">The entire content to extract from.</param>
+    /// <param name="text">The entire content to extract from.</param>
     /// <param name="centerPosition">The center position.</param>
     /// <param name="charsPerSide">Number of characters per side.</param>
     /// <returns>Text with whole words around the center position.</returns>
-    internal static string XCharsBeforeAndAfterWholeWords(string entireContent, int centerPosition, int charsPerSide)
+    internal static string XCharsBeforeAndAfterWholeWords(string text, int centerPosition, int charsPerSide)
     {
         var rightSide = new StringBuilder();
         var currentWord = new StringBuilder();
@@ -23,7 +23,7 @@ internal partial class SH
         // Process left side from center backwards
         for (var i = centerPosition - 1; i >= 0; i--)
         {
-            var ch = entireContent[i];
+            var ch = text[i];
             if (ch == ' ')
             {
                 var word = currentWord.ToString();
@@ -47,9 +47,9 @@ internal partial class SH
         currentWord.Clear();
 
         // Process right side from center forwards
-        for (var i = centerPosition; i < entireContent.Length; i++)
+        for (var i = centerPosition; i < text.Length; i++)
         {
-            var ch = entireContent[i];
+            var ch = text[i];
             if (ch == ' ')
             {
                 var word = currentWord.ToString();
@@ -70,7 +70,7 @@ internal partial class SH
         var rightResult = rightSide.ToString().TrimStart(' ') + " " + currentWord;
         rightResult = rightResult.TrimStart(' ');
         var result = string.Empty;
-        if (entireContent.Contains(leftResult + " ", StringComparison.Ordinal) && entireContent.Contains(" " + rightResult, StringComparison.Ordinal))
+        if (text.Contains(leftResult + " ", StringComparison.Ordinal) && text.Contains(" " + rightResult, StringComparison.Ordinal))
             result = leftResult + rightResult;
         else
             result = leftResult + rightResult;
@@ -164,12 +164,12 @@ internal partial class SH
     /// EN: Matches a string against a wildcard pattern.
     /// CZ: Porovná string s wildcard vzorem.
     /// </summary>
-    /// <param name="name">The string to match.</param>
+    /// <param name="text">The string to match.</param>
     /// <param name="mask">The wildcard mask pattern.</param>
     /// <returns>True if the string matches the pattern, false otherwise.</returns>
-    internal static bool MatchWildcard(string name, string mask)
+    internal static bool MatchWildcard(string text, string mask)
     {
-        return IsMatchRegex(name, mask, '?', '*');
+        return IsMatchRegex(text, mask, '?', '*');
     }
 
     /// <summary>
@@ -198,30 +198,30 @@ internal partial class SH
     /// EN: Wraps a value with a character on both sides.
     /// CZ: Obalí hodnotu znakem z obou stran.
     /// </summary>
-    /// <param name="value">The value to wrap.</param>
+    /// <param name="text">The value to wrap.</param>
     /// <param name="wrapChar">The character to wrap with.</param>
     /// <param name="isTrimWrapping">Whether to trim the value before wrapping.</param>
     /// <param name="isAlsoIfWhitespaceOrEmpty">Whether to wrap even if value is whitespace or empty.</param>
     /// <returns>Wrapped value.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static string WrapWithChar(string value, char wrapChar, bool isTrimWrapping = false, bool isAlsoIfWhitespaceOrEmpty = true)
+    internal static string WrapWithChar(string text, char wrapChar, bool isTrimWrapping = false, bool isAlsoIfWhitespaceOrEmpty = true)
     {
-        if (string.IsNullOrWhiteSpace(value) && !isAlsoIfWhitespaceOrEmpty)
+        if (string.IsNullOrWhiteSpace(text) && !isAlsoIfWhitespaceOrEmpty)
             return string.Empty;
-        return WrapWith(isTrimWrapping ? value.Trim() : value, wrapChar.ToString());
+        return WrapWith(isTrimWrapping ? text.Trim() : text, wrapChar.ToString());
     }
 
     /// <summary>
     /// EN: Wraps a value with a string on both sides.
     /// CZ: Obalí hodnotu stringem z obou stran.
     /// </summary>
-    /// <param name="value">The value to wrap.</param>
+    /// <param name="text">The value to wrap.</param>
     /// <param name="wrapper">The string to wrap with.</param>
     /// <returns>Wrapped value.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static string WrapWith(string value, string wrapper)
+    internal static string WrapWith(string text, string wrapper)
     {
-        return wrapper + value + wrapper;
+        return wrapper + text + wrapper;
     }
 
     /// <summary>
@@ -257,15 +257,15 @@ internal partial class SH
     /// EN: Returns indexes of all occurrences of a substring in a string.
     /// CZ: Vrátí indexy všech výskytů podřetězce ve stringu.
     /// </summary>
-    /// <param name="entireText">The text to search in.</param>
+    /// <param name="text">The text to search in.</param>
     /// <param name="searchFor">The substring to search for.</param>
     /// <returns>List of indexes where the substring appears.</returns>
-    internal static List<int> ReturnOccurencesOfString(string entireText, string searchFor)
+    internal static List<int> ReturnOccurencesOfString(string text, string searchFor)
     {
         var results = new List<int>();
-        for (var index = 0; index < entireText.Length - searchFor.Length + 1; index++)
+        for (var index = 0; index < text.Length - searchFor.Length + 1; index++)
         {
-            var substring = entireText.Substring(index, searchFor.Length);
+            var substring = text.Substring(index, searchFor.Length);
             var firstChar = substring[0];
             var searchFirstChar = searchFor[0];
             if (string.Equals(substring, searchFor, StringComparison.Ordinal))

@@ -98,7 +98,7 @@ public static class HtmlTemplates
     /// <param name="isAddColon">Whether to add a colon after the name.</param>
     /// <returns>HTML tr element string.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string tr(string name, string value, bool isAddColon)
+    public static string Tr(string name, string value, bool isAddColon)
     {
         if (isAddColon)
             return "<tr><td>" + name + ": </td><td>" + value + "</td></tr>";
@@ -112,7 +112,7 @@ public static class HtmlTemplates
     /// <param name="displayText">The text to display.</param>
     /// <returns>HTML anchor element string.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string a(string href, string displayText)
+    public static string Anchor(string href, string displayText)
     {
         return "<a href=\"" + href + ">" + displayText + "</a>";
     }
@@ -124,7 +124,7 @@ public static class HtmlTemplates
     /// <param name="value">The value for the data row.</param>
     /// <param name="isAddColon">Whether to add a colon after the name.</param>
     /// <returns>HTML string with two tr elements.</returns>
-    public static string trColspan2(string name, string value, bool isAddColon)
+    public static string TrColspan2(string name, string value, bool isAddColon)
     {
         if (isAddColon)
             return "<tr><td colspan='2'><b>" + name + ": </b></td></tr><tr><td colspan='2'>" + value + "</td></tr>";

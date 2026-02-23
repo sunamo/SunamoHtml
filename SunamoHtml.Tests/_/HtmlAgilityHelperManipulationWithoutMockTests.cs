@@ -44,7 +44,7 @@ public class HtmlAgilityHelperManipulationWithoutMockTests : HtmlHelperBaseTests
     //[Fact]
     public void NodesWithAttrTest()
     {
-        List<HtmlNode> nodes = null!;
+        IList<HtmlNode> nodes = null!;
 
         // Recursively
         nodes = HtmlAgilityHelper.NodesWithAttr(DocumentNode, true, HtmlTags.Span, HtmlAttrs.C, CssClassC);
