@@ -272,14 +272,14 @@ public static class HtmlHelperText
     /// <summary>
     /// Trims inner content of HTML-encoded text by adding spaces around &gt; and &lt;.
     /// </summary>
-    /// <param name="value">The HTML-encoded text.</param>
+    /// <param name="text">The HTML-encoded text.</param>
     /// <returns>Text with spaces added around encoded brackets.</returns>
-    public static string TrimInnerOfEncodedHtml(string value)
+    public static string TrimInnerOfEncodedHtml(string text)
     {
-        ArgumentNullException.ThrowIfNull(value);
-        value = SHReplace.ReplaceAll(value, "&gt;", "&gt; ");
-        value = SHReplace.ReplaceAll(value, "&lt;", " &lt;");
-        return value;
+        ArgumentNullException.ThrowIfNull(text);
+        text = SHReplace.ReplaceAll(text, "&gt;", "&gt; ");
+        text = SHReplace.ReplaceAll(text, "&lt;", " &lt;");
+        return text;
     }
 
     /// <summary>
