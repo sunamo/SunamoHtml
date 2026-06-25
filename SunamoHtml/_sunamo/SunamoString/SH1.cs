@@ -1,19 +1,7 @@
 namespace SunamoHtml._sunamo.SunamoString;
 
-/// <summary>
-/// EN: String helper methods (partial class - part 2).
-/// CZ: Pomocné metody pro stringy (partial class - část 2).
-/// </summary>
 internal partial class SH
 {
-    /// <summary>
-    /// EN: Returns X characters before and after a center position, ensuring whole words are included.
-    /// CZ: Vrátí X znaků před a po středové pozici, zajistí že jsou zahrnutá celá slova.
-    /// </summary>
-    /// <param name="text">The entire content to extract from.</param>
-    /// <param name="centerPosition">The center position.</param>
-    /// <param name="charsPerSide">Number of characters per side.</param>
-    /// <returns>Text with whole words around the center position.</returns>
     internal static string XCharsBeforeAndAfterWholeWords(string text, int centerPosition, int charsPerSide)
     {
         var rightSide = new StringBuilder();
@@ -69,22 +57,10 @@ internal partial class SH
 
         var rightResult = rightSide.ToString().TrimStart(' ') + " " + currentWord;
         rightResult = rightResult.TrimStart(' ');
-        var result = string.Empty;
-        if (text.Contains(leftResult + " ", StringComparison.Ordinal) && text.Contains(" " + rightResult, StringComparison.Ordinal))
-            result = leftResult + rightResult;
-        else
-            result = leftResult + rightResult;
+        var result = leftResult + rightResult;
         return result;
     }
 
-    /// <summary>
-    /// EN: Gets text between two character positions (by integer indexes).
-    /// CZ: Získá text mezi dvěma znakovými pozicemi (podle celočíselných indexů).
-    /// </summary>
-    /// <param name="text">The text to extract from.</param>
-    /// <param name="beginIndex">The begin index.</param>
-    /// <param name="endIndex">The end index.</param>
-    /// <returns>Text between the two positions.</returns>
     internal static string GetTextBetweenTwoCharsInts(string text, int beginIndex, int endIndex)
     {
         if (endIndex > beginIndex)
@@ -92,12 +68,6 @@ internal partial class SH
         return text;
     }
 
-    /// <summary>
-    /// EN: Checks if a string represents a numbered list item (digits followed by dot).
-    /// CZ: Zkontroluje zda string reprezentuje položku číslovaného seznamu (číslice následované tečkou).
-    /// </summary>
-    /// <param name="text">The text to check.</param>
-    /// <returns>True if the text is a numbered item, false otherwise.</returns>
     internal static bool IsNumbered(string text)
     {
         var digitCount = 0;
@@ -119,12 +89,6 @@ internal partial class SH
         return false;
     }
 
-    /// <summary>
-    /// EN: Converts the first character of a string to uppercase.
-    /// CZ: Převede první znak stringu na velké písmeno.
-    /// </summary>
-    /// <param name="text">The text to convert.</param>
-    /// <returns>Text with first character uppercase.</returns>
     internal static string FirstCharUpper(string text)
     {
         if (text.Length == 1)
@@ -133,25 +97,11 @@ internal partial class SH
         return text[0].ToString().ToUpperInvariant() + restOfString;
     }
 
-    /// <summary>
-    /// EN: Converts first character of every dash-separated word to uppercase.
-    /// CZ: Převede první znak každého pomlčkou odděleného slova na velké písmeno.
-    /// </summary>
-    /// <param name="text">The text to convert.</param>
-    /// <returns>Text with first character of each dash-separated word uppercase, joined with spaces.</returns>
     internal static string FirstCharOfEveryWordUpperDash(string text)
     {
         return FirstCharOfEveryWordUpper(text, '-');
     }
 
-    /// <summary>
-    /// EN: Converts first character of every word (separated by delimiter) to uppercase.
-    /// CZ: Převede první znak každého slova (odděleného oddělovačem) na velké písmeno.
-    /// Returns words joined with space.
-    /// </summary>
-    /// <param name="text">The text to convert.</param>
-    /// <param name="delimiter">The delimiter character.</param>
-    /// <returns>Text with first character of each word uppercase, joined with spaces.</returns>
     private static string FirstCharOfEveryWordUpper(string text, char delimiter)
     {
         var words = SHSplit.SplitChar(text, delimiter);
@@ -160,27 +110,11 @@ internal partial class SH
         return string.Join(" ", words);
     }
 
-    /// <summary>
-    /// EN: Matches a string against a wildcard pattern.
-    /// CZ: Porovná string s wildcard vzorem.
-    /// </summary>
-    /// <param name="text">The string to match.</param>
-    /// <param name="mask">The wildcard mask pattern.</param>
-    /// <returns>True if the string matches the pattern, false otherwise.</returns>
     internal static bool MatchWildcard(string text, string mask)
     {
         return IsMatchRegex(text, mask, '?', '*');
     }
 
-    /// <summary>
-    /// EN: Checks if a string matches a pattern with wildcard characters.
-    /// CZ: Zkontroluje zda string odpovídá vzoru s wildcard znaky.
-    /// </summary>
-    /// <param name="text">The text to match.</param>
-    /// <param name="pattern">The pattern to match against.</param>
-    /// <param name="singleWildcard">Single character wildcard.</param>
-    /// <param name="multipleWildcard">Multiple character wildcard.</param>
-    /// <returns>True if the text matches the pattern, false otherwise.</returns>
     private static bool IsMatchRegex(string text, string pattern, char singleWildcard, char multipleWildcard)
     {
         if (text == pattern)
@@ -194,15 +128,6 @@ internal partial class SH
         return regex.IsMatch(text);
     }
 
-    /// <summary>
-    /// EN: Wraps a value with a character on both sides.
-    /// CZ: Obalí hodnotu znakem z obou stran.
-    /// </summary>
-    /// <param name="text">The value to wrap.</param>
-    /// <param name="wrapChar">The character to wrap with.</param>
-    /// <param name="isTrimWrapping">Whether to trim the value before wrapping.</param>
-    /// <param name="isAlsoIfWhitespaceOrEmpty">Whether to wrap even if value is whitespace or empty.</param>
-    /// <returns>Wrapped value.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static string WrapWithChar(string text, char wrapChar, bool isTrimWrapping = false, bool isAlsoIfWhitespaceOrEmpty = true)
     {
@@ -211,39 +136,17 @@ internal partial class SH
         return WrapWith(isTrimWrapping ? text.Trim() : text, wrapChar.ToString());
     }
 
-    /// <summary>
-    /// EN: Wraps a value with a string on both sides.
-    /// CZ: Obalí hodnotu stringem z obou stran.
-    /// </summary>
-    /// <param name="text">The value to wrap.</param>
-    /// <param name="wrapper">The string to wrap with.</param>
-    /// <returns>Wrapped value.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static string WrapWith(string text, string wrapper)
     {
         return wrapper + text + wrapper;
     }
 
-    /// <summary>
-    /// EN: Returns indexes of all occurrences of a character in a string.
-    /// CZ: Vrátí indexy všech výskytů znaku ve stringu.
-    /// </summary>
-    /// <param name="text">The input string.</param>
-    /// <param name="character">The character to find.</param>
-    /// <returns>List of indexes where the character appears.</returns>
     internal static List<int> IndexesOfChars(string text, char character)
     {
         return IndexesOfCharsList(text, new List<char>(character));
     }
 
-    /// <summary>
-    /// EN: Returns indexes of all occurrences of any character from a list in a string.
-    /// CZ: Vrátí indexy všech výskytů jakéhokoliv znaku ze seznamu ve stringu.
-    /// IndexesOfChars - for single char, ReturnOccurencesOfString - for string.
-    /// </summary>
-    /// <param name="text">The input string.</param>
-    /// <param name="characters">List of characters to find.</param>
-    /// <returns>Sorted list of indexes where any of the characters appear.</returns>
     internal static List<int> IndexesOfCharsList(string text, List<char> characters)
     {
         var indexes = new List<int>();
@@ -253,21 +156,12 @@ internal partial class SH
         return indexes;
     }
 
-    /// <summary>
-    /// EN: Returns indexes of all occurrences of a substring in a string.
-    /// CZ: Vrátí indexy všech výskytů podřetězce ve stringu.
-    /// </summary>
-    /// <param name="text">The text to search in.</param>
-    /// <param name="searchFor">The substring to search for.</param>
-    /// <returns>List of indexes where the substring appears.</returns>
     internal static List<int> ReturnOccurencesOfString(string text, string searchFor)
     {
         var results = new List<int>();
         for (var index = 0; index < text.Length - searchFor.Length + 1; index++)
         {
             var substring = text.Substring(index, searchFor.Length);
-            var firstChar = substring[0];
-            var searchFirstChar = searchFor[0];
             if (string.Equals(substring, searchFor, StringComparison.Ordinal))
                 results.Add(index);
         }

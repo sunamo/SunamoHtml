@@ -1,33 +1,16 @@
 namespace SunamoHtml.Generators;
 
-/// <summary>
-/// Extended HTML generator with calendar, gallery, and form generation methods.
-/// </summary>
 public partial class HtmlGenerator2 : HtmlGenerator
 {
-    /// <summary>
-    /// Generates a calendar for the specified year and month with HTML boxes for each day.
-    /// </summary>
-    /// <param name="htmlBoxesEveryDay">List of HTML content for each day.</param>
-    /// <param name="year">The year.</param>
-    /// <param name="month">The month (1-12).</param>
-    /// <returns>HTML string representing the calendar.</returns>
     public static string Calendar(IList<string> htmlBoxesEveryDay, int year, int month)
     {
-        ArgumentNullException.ThrowIfNull(htmlBoxesEveryDay);
+        if (htmlBoxesEveryDay == null) throw new ArgumentNullException(nameof(htmlBoxesEveryDay));
         var colors = new List<string>(htmlBoxesEveryDay.Count);
         foreach (var item in htmlBoxesEveryDay)
             colors.Add(null!);
         return Calendar(htmlBoxesEveryDay, colors, year, month);
     }
 
-    /// <summary>
-    /// Generates HTML checkboxes from files in the specified directory.
-    /// </summary>
-    /// <param name="path">The directory path.</param>
-    /// <param name="searchPattern">The search pattern for files.</param>
-    /// <param name="searchOption">The search option.</param>
-    /// <returns>HTML string with checkboxes.</returns>
     public static string GenerateHtmlCheckBoxesFromFiles(string path, string searchPattern, SearchOption searchOption)
     {
         var generator = new HtmlGenerator();
@@ -42,18 +25,10 @@ public partial class HtmlGenerator2 : HtmlGenerator
         return generator.ToString();
     }
 
-    /// <summary>
-    /// Generates a calendar with colored boxes for each day.
-    /// </summary>
-    /// <param name="htmlBoxesEveryDay">List of HTML content for each day.</param>
-    /// <param name="colors">List of background colors for each day.</param>
-    /// <param name="year">The year.</param>
-    /// <param name="month">The month (1-12).</param>
-    /// <returns>HTML string representing the calendar.</returns>
     public static string Calendar(IList<string> htmlBoxesEveryDay, IList<string> colors, int year, int month)
     {
-        ArgumentNullException.ThrowIfNull(htmlBoxesEveryDay);
-        ArgumentNullException.ThrowIfNull(colors);
+        if (htmlBoxesEveryDay == null) throw new ArgumentNullException(nameof(htmlBoxesEveryDay));
+        if (colors == null) throw new ArgumentNullException(nameof(colors));
         var generator = new HtmlGenerator();
         generator.WriteTagWithAttrs("table", "class", "tabulkaNaStredAutoSirka", "style", "width: 600px");
         generator.WriteTag("tr");
@@ -164,18 +139,11 @@ public partial class HtmlGenerator2 : HtmlGenerator
         return generator.ToString();
     }
 
-    /// <summary>
-    /// Generates a photo gallery with zoom functionality.
-    /// </summary>
-    /// <param name="memberNames">List of member names.</param>
-    /// <param name="memberProfilePictures">List of profile picture URLs.</param>
-    /// <param name="memberAnchors">List of anchor URLs.</param>
-    /// <returns>HTML string representing the gallery.</returns>
     public static string GalleryZoomInProfilePhoto(IList<string> memberNames, IList<string> memberProfilePictures, IList<string> memberAnchors)
     {
-        ArgumentNullException.ThrowIfNull(memberNames);
-        ArgumentNullException.ThrowIfNull(memberProfilePictures);
-        ArgumentNullException.ThrowIfNull(memberAnchors);
+        if (memberNames == null) throw new ArgumentNullException(nameof(memberNames));
+        if (memberProfilePictures == null) throw new ArgumentNullException(nameof(memberProfilePictures));
+        if (memberAnchors == null) throw new ArgumentNullException(nameof(memberAnchors));
         var generator = new HtmlGenerator();
         generator.WriteTag("ul");
         for (var i = 0; i < memberNames.Count; i++)
@@ -195,17 +163,10 @@ public partial class HtmlGenerator2 : HtmlGenerator
         return generator.ToString();
     }
 
-    /// <summary>
-    /// Generates an HTML select element with options.
-    /// </summary>
-    /// <param name="id">The ID for the select element.</param>
-    /// <param name="defaultValue">The default selected value.</param>
-    /// <param name="list">The list of options.</param>
-    /// <returns>HTML string representing the select element.</returns>
     public static string GetSelect(string id, object defaultValue, IList list)
     {
-        ArgumentNullException.ThrowIfNull(defaultValue);
-        ArgumentNullException.ThrowIfNull(list);
+        if (defaultValue == null) throw new ArgumentNullException(nameof(defaultValue));
+        if (list == null) throw new ArgumentNullException(nameof(list));
         var generator = new HtmlGenerator();
         generator.WriteTagWithAttrs("select", "name", "select" + id);
         foreach (var item2 in list)
@@ -227,12 +188,6 @@ public partial class HtmlGenerator2 : HtmlGenerator
         return generator.ToString();
     }
 
-    /// <summary>
-    /// Generates an HTML text input element.
-    /// </summary>
-    /// <param name="id">The ID for the input element.</param>
-    /// <param name="value">The initial value.</param>
-    /// <returns>HTML string representing the input element.</returns>
     public static string GetInputText(string id, string value)
     {
         var generator = new HtmlGenerator();
@@ -240,27 +195,15 @@ public partial class HtmlGenerator2 : HtmlGenerator
         return generator.ToString();
     }
 
-    /// <summary>
-    /// Generates a top list with images (divs stacked vertically, not ol/ul>li).
-    /// </summary>
-    /// <param name="htmlGenerator">The HTML generator to use.</param>
-    /// <param name="widthImage">Image width in pixels.</param>
-    /// <param name="heightImage">Image height in pixels.</param>
-    /// <param name="initialImageUri">Initial image URI.</param>
-    /// <param name="photoLinks">List of photo link URLs.</param>
-    /// <param name="textLinks">List of text link URLs.</param>
-    /// <param name="innerHtmlText">List of inner HTML text.</param>
-    /// <param name="srcPhoto">List of photo source paths.</param>
-    /// <param name="arrayName">JavaScript array name.</param>
-    /// <returns>HTML string representing the list with images.</returns>
+    // divs stacked vertically, not ol/ul>li
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1054")]
     public static string TopListWithImages(HtmlGenerator htmlGenerator, int widthImage, int heightImage, string initialImageUri, IList<string> photoLinks, IList<string> textLinks, IList<string> innerHtmlText, IList<string> srcPhoto, string arrayName)
     {
-        ArgumentNullException.ThrowIfNull(htmlGenerator);
-        ArgumentNullException.ThrowIfNull(photoLinks);
-        ArgumentNullException.ThrowIfNull(textLinks);
-        ArgumentNullException.ThrowIfNull(innerHtmlText);
-        ArgumentNullException.ThrowIfNull(srcPhoto);
+        if (htmlGenerator == null) throw new ArgumentNullException(nameof(htmlGenerator));
+        if (photoLinks == null) throw new ArgumentNullException(nameof(photoLinks));
+        if (textLinks == null) throw new ArgumentNullException(nameof(textLinks));
+        if (innerHtmlText == null) throw new ArgumentNullException(nameof(innerHtmlText));
+        if (srcPhoto == null) throw new ArgumentNullException(nameof(srcPhoto));
         var count = photoLinks.Count;
         if (count == 0)
             return "";
@@ -271,8 +214,7 @@ public partial class HtmlGenerator2 : HtmlGenerator
         if (count != srcPhoto.Count)
             throw new ArgumentException("Method HtmlGenerator2.TopListWithImages - photoLinks count does not match srcPhoto count");
 
-        var parsedValue = 0;
-        var isAnimated = int.TryParse(srcPhoto[0], out parsedValue);
+        var isAnimated = int.TryParse(srcPhoto[0], out _);
         for (var i = 0; i < count; i++)
         {
             htmlGenerator.WriteTagWithAttrs("div", "style", "padding: 5px;");

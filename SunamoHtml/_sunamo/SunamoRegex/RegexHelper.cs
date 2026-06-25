@@ -1,8 +1,6 @@
 namespace SunamoHtml._sunamo.SunamoRegex;
 
-/// <summary>
-///     Most NotTranslateAble class due to many regex and duplicated \
-/// </summary>
+// Most NotTranslateAble class due to many regex and duplicated \
 internal static class RegexHelper
 {
     internal static Regex RHtmlScript =

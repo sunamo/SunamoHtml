@@ -1,9 +1,5 @@
 namespace SunamoHtml._sunamo.SunamoValues.Constants;
 
-/// <summary>
-/// HTML attribute value constants.
-/// Everything must be consts to use in AllHtmlAttrsValues.
-/// </summary>
 internal class HtmlAttrValue
 {
     internal const string TextCss = "text/css";

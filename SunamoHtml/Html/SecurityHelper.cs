@@ -1,23 +1,10 @@
 namespace SunamoHtml.Html;
 
-/// <summary>
-/// EN: Helper class for treating HTML code by removing dangerous scripts and JavaScript attributes.
-/// CZ: Pomocná třída pro ošetření HTML kódu odstraněním nebezpečných skriptů a JavaScript atributů.
-/// </summary>
 public static class SecurityHelper
 {
-    /// <summary>
-    /// Treats HTML code by removing dangerous elements:
-    /// - JavaScript attributes (onclick, onload, etc.)
-    /// - Script tags
-    /// - HTML comments
-    /// - Non-breaking spaces
-    /// </summary>
-    /// <param name="html">The HTML code to treat.</param>
-    /// <returns>Sanitized HTML code.</returns>
     public static string TreatHtmlCode(string html)
     {
-        ArgumentNullException.ThrowIfNull(html);
+        if (html == null) throw new ArgumentNullException(nameof(html));
         html = RemoveJsAttributesFromEveryNode(html);
         html = html.Replace(" ", "", StringComparison.Ordinal);
         html = RegexHelper.RHtmlScript.Replace(html, "");
@@ -26,15 +13,9 @@ public static class SecurityHelper
         return html;
     }
 
-    /// <summary>
-    /// Removes all JavaScript-related attributes from every HTML node.
-    /// Removes attributes starting with "on" (onclick, onload, etc.) and attributes with "javascript:" values.
-    /// </summary>
-    /// <param name="html">The HTML code to process.</param>
-    /// <returns>HTML with JavaScript attributes removed.</returns>
     public static string RemoveJsAttributesFromEveryNode(string html)
     {
-        ArgumentNullException.ThrowIfNull(html);
+        if (html == null) throw new ArgumentNullException(nameof(html));
         var document = new HtmlDocument();
         document.LoadHtml(html);
         var nodes = document.DocumentNode.SelectNodes("//*");

@@ -1,20 +1,10 @@
 namespace SunamoHtml.Html;
 
-/// <summary>
-/// EN: Helper class for converting plain text to HTML with automatic anchor detection and markdown-like formatting.
-/// CZ: Pomocna trida pro konverzi prosteho textu do HTML s automatickou detekci odkazu a markdown-like formatovanim.
-/// </summary>
 public static class HtmlHelperSunamoCz
 {
-    /// <summary>
-    /// Converts text to HTML with automatic anchor links and markdown-like formatting (*bold*, _italic_, -strike-).
-    /// </summary>
-    /// <param name="text">The text to convert.</param>
-    /// <param name="error">Output error message if conversion fails.</param>
-    /// <returns>Converted HTML string.</returns>
     public static string ConvertTextToHtmlWithAnchors(string text, ref string error)
     {
-        ArgumentNullException.ThrowIfNull(text);
+        if (text == null) throw new ArgumentNullException(nameof(text));
         const string li = "li";
         text = text.Replace("-" + li, "" + li, StringComparison.Ordinal);
 
@@ -98,27 +88,16 @@ public static class HtmlHelperSunamoCz
         return text;
     }
 
-    /// <summary>
-    /// Converts text to HTML with automatic anchor links for URLs.
-    /// </summary>
-    /// <param name="text">The text to convert.</param>
-    /// <returns>Converted HTML string with anchor links.</returns>
     public static string ConvertTextToHtmlWithAnchors(string text)
     {
-        ArgumentNullException.ThrowIfNull(text);
+        if (text == null) throw new ArgumentNullException(nameof(text));
         var data = SHSplit.SplitNoneChar(HtmlHelper.ConvertTextToHtml(text), ' ');
         for (var i = 0; i < data.Count; i++)
             if (data[i].StartsWith("http://", StringComparison.Ordinal) || data[i].StartsWith("https://", StringComparison.Ordinal))
                 data[i] = HtmlGenerator2.AnchorWithHttp(data[i]);
-        return string.Join(' ', data);
+        return string.Join(" ", data);
     }
 
-    /// <summary>
-    /// Adds all integer positions to the dictionary with the specified tag value.
-    /// </summary>
-    /// <param name="tagsDict">The dictionary to add to.</param>
-    /// <param name="positions">List of positions to add.</param>
-    /// <param name="tagName">The tag name value to associate with each position.</param>
     private static void AddToDict(Dictionary<int, string> tagsDict, List<int> positions, string tagName)
     {
         foreach (var item in positions)

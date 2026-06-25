@@ -1,20 +1,11 @@
 namespace SunamoHtml.Html;
 
-/// <summary>
-/// EN: Shared HTML helper methods (mix of various utilities - consider splitting into more specific classes).
-/// CZ: Sdílené HTML pomocné metody (mix různých utilit - zvažte rozdělení do specifičtějších tříd).
-/// </summary>
+// Problematic with auto translate.
 public static partial class HtmlHelper
 {
-    /// <summary>
-    /// Replaces non-pair HTML tags with XML-valid equivalents (adds self-closing slash).
-    /// Problematic with auto translate.
-    /// </summary>
-    /// <param name="html">The HTML input string.</param>
-    /// <returns>HTML with XML-valid non-pair tags.</returns>
     public static string ReplaceHtmlNonPairTagsWithXmlValid(string html)
     {
-        ArgumentNullException.ThrowIfNull(html);
+        if (html == null) throw new ArgumentNullException(nameof(html));
         var alreadyReplaced = new List<string>();
         var mc = Regex.Matches(html, RegexHelper.RNonPairXmlTagsUnvalid.ToString());
         var col = new List<string>(AllLists.HtmlNonPairTags);
@@ -32,7 +23,7 @@ public static partial class HtmlHelper
                     if (!alreadyReplaced.Contains(item.Value))
                     {
                         alreadyReplaced.Add(item.Value);
-                        var nc = string.Concat(item.Value.AsSpan(0, item.Value.Length - 1), " />");
+                        var nc = item.Value.Substring(0, item.Value.Length - 1) + " />";
                         html = html.Replace(item.Value, nc, StringComparison.Ordinal);
                     }
         }
@@ -40,38 +31,23 @@ public static partial class HtmlHelper
         return html;
     }
 
-    /// <summary>
-    /// Converts plain text to HTML by replacing newlines with BR tags.
-    /// </summary>
-    /// <param name="text">The text to convert.</param>
-    /// <returns>HTML with BR tags instead of newlines.</returns>
     public static string ConvertTextToHtml(string text)
     {
-        ArgumentNullException.ThrowIfNull(text);
+        if (text == null) throw new ArgumentNullException(nameof(text));
         text = text.Replace(Environment.NewLine, "<br />", StringComparison.Ordinal);
         text = text.Replace("\n", "<br />", StringComparison.Ordinal);
         return text;
     }
 
-    /// <summary>
-    /// Prepares text for use in HTML attribute by replacing double quotes with single quotes.
-    /// </summary>
-    /// <param name="text">The text to prepare.</param>
-    /// <returns>Text with double quotes replaced by single quotes.</returns>
     public static string PrepareToAttribute(string text)
     {
-        ArgumentNullException.ThrowIfNull(text);
+        if (text == null) throw new ArgumentNullException(nameof(text));
         return text.Replace('"', '\'');
     }
 
-    /// <summary>
-    /// Replaces all case variations of BR tag with standard lowercased BR tag.
-    /// </summary>
-    /// <param name="html">The HTML string to process.</param>
-    /// <returns>HTML with standardized BR tags.</returns>
     public static string ReplaceAllFontCase(string html)
     {
-        ArgumentNullException.ThrowIfNull(html);
+        if (html == null) throw new ArgumentNullException(nameof(html));
         var replacement = "<br />";
         html = html.Replace("<BR />", replacement, StringComparison.Ordinal);
         html = html.Replace("<bR />", replacement, StringComparison.Ordinal);
@@ -87,25 +63,12 @@ public static partial class HtmlHelper
         return html;
     }
 
-    /// <summary>
-    /// Clears all space characters (nbsp and regular spaces) from text.
-    /// </summary>
-    /// <param name="text">The text to clear spaces from.</param>
-    /// <returns>Text without spaces.</returns>
     public static string ClearSpaces(string text)
     {
-        ArgumentNullException.ThrowIfNull(text);
+        if (text == null) throw new ArgumentNullException(nameof(text));
         return text.Replace("&nbsp;", "", StringComparison.Ordinal).Replace(" ", "", StringComparison.Ordinal);
     }
 
-    /// <summary>
-    /// Recursively finds HTML nodes matching tag and attribute criteria.
-    /// </summary>
-    /// <param name="result">The result list to add found nodes to.</param>
-    /// <param name="htmlNode">The HTML node to search in.</param>
-    /// <param name="tag">The tag name to search for.</param>
-    /// <param name="attributeName">The attribute name to match.</param>
-    /// <param name="value">The attribute value to match.</param>
     private static void RecursiveReturnTagWithAttr(List<HtmlNode> result, HtmlNode htmlNode, string tag, string attributeName, string value)
     {
         foreach (var item in htmlNode.ChildNodes)
@@ -120,30 +83,16 @@ public static partial class HtmlHelper
             }
     }
 
-    /// <summary>
-    /// Gets the value of an HTML attribute from a node.
-    /// </summary>
-    /// <param name="attributeName">The attribute name.</param>
-    /// <param name="htmlNode">The HTML node.</param>
-    /// <param name="isTrim">Whether to trim the value.</param>
-    /// <returns>Attribute value or empty string if not found.</returns>
     private static string GetValueOfAttribute(string attributeName, HtmlNode htmlNode, bool isTrim = false)
     {
         return HtmlAssistant.GetValueOfAttribute(attributeName, htmlNode, isTrim);
     }
 
-    /// <summary>
-    /// EN: Returns the first tag with specified attribute name and value. Returns null if not found.
-    /// CZ: Vrátí první tag se zadaným názvem atributu a hodnotou. Vrátí null pokud není nalezen.
-    /// </summary>
-    /// <param name="htmlNode">The HTML node to search in.</param>
-    /// <param name="tag">The tag name to search for.</param>
-    /// <param name="attributeName">The attribute name to match.</param>
-    /// <param name="value">The attribute value to match.</param>
-    /// <returns>First matching HTML node or null.</returns>
+    // EN: Returns the first tag with specified attribute name and value. Returns null if not found.
+    // CZ: Vrátí první tag se zadaným názvem atributu a hodnotou. Vrátí null pokud není nalezen.
     public static HtmlNode? ReturnTagWithAttr(HtmlNode htmlNode, string tag, string attributeName, string value)
     {
-        ArgumentNullException.ThrowIfNull(htmlNode);
+        if (htmlNode == null) throw new ArgumentNullException(nameof(htmlNode));
         var result = new List<HtmlNode>();
         RecursiveReturnTagWithAttr(result, htmlNode, tag, attributeName, value);
         if (result.Count > 0)
@@ -151,14 +100,9 @@ public static partial class HtmlHelper
         return null;
     }
 
-    /// <summary>
-    /// Gets all child nodes excluding text nodes.
-    /// </summary>
-    /// <param name="htmlNode">The HTML node to get children from.</param>
-    /// <returns>List of non-text child nodes.</returns>
     public static IList<HtmlNode> GetWithoutTextNodes(HtmlNode htmlNode)
     {
-        ArgumentNullException.ThrowIfNull(htmlNode);
+        if (htmlNode == null) throw new ArgumentNullException(nameof(htmlNode));
         var result = new List<HtmlNode>();
         foreach (var item in htmlNode.ChildNodes)
         {
@@ -170,14 +114,6 @@ public static partial class HtmlHelper
         return result;
     }
 
-    /// <summary>
-    /// Recursively searches for a tag with specified attribute name and value.
-    /// </summary>
-    /// <param name="htmlNode">The HTML node to search in.</param>
-    /// <param name="nameOfTag">The tag name to search for.</param>
-    /// <param name="nameOfAttribute">The attribute name to match.</param>
-    /// <param name="valueOfAttribute">The attribute value to match.</param>
-    /// <returns>Found HTML node or null.</returns>
     public static HtmlNode? GetTagOfAtributeRek(HtmlNode htmlNode, string nameOfTag, string nameOfAttribute, string valueOfAttribute)
     {
         htmlNode = TrimNode(htmlNode);
@@ -206,34 +142,21 @@ public static partial class HtmlHelper
         return null;
     }
 
-    /// <summary>
-    /// Removes opening and closing tags from HTML string.
-    /// </summary>
-    /// <param name="html">The HTML string.</param>
-    /// <param name="nameOfTag">The tag name to remove.</param>
-    /// <returns>HTML without specified opening and closing tags.</returns>
     public static string TrimOpenAndEndTags(string html, string nameOfTag)
     {
-        ArgumentNullException.ThrowIfNull(html);
+        if (html == null) throw new ArgumentNullException(nameof(html));
         html = html.Replace("<" + nameOfTag + ">", "", StringComparison.Ordinal);
         html = html.Replace("</" + nameOfTag + ">", "", StringComparison.Ordinal);
         return html;
     }
 
-    /// <summary>
-    /// EN: Highlights searched words in text content with bold tags, returning sentence snippets.
-    /// CZ: Zvýrazní hledaná slova v textovém obsahu tučnými tagy, vrátí úryvky vět.
-    /// Before calling, white space characters must be converted to spaces in the content.
-    /// </summary>
-    /// <param name="entireContent">The entire content to search in.</param>
-    /// <param name="maxLettersPerSentence">Maximum letters per sentence snippet.</param>
-    /// <param name="sentenceCount">Number of sentence snippets to return.</param>
-    /// <param name="searchedWords">List of words to search for and highlight.</param>
-    /// <returns>HTML string with highlighted words in sentence snippets.</returns>
+    // EN: Highlights searched words in text content with bold tags, returning sentence snippets.
+    // CZ: Zvýrazní hledaná slova v textovém obsahu tučnými tagy, vrátí úryvky vět.
+    // Before calling, white space characters must be converted to spaces in the content.
     public static string HighlightingWords(string entireContent, int maxLettersPerSentence, int sentenceCount, IList<string> searchedWords)
     {
-        ArgumentNullException.ThrowIfNull(entireContent);
-        ArgumentNullException.ThrowIfNull(searchedWords);
+        if (entireContent == null) throw new ArgumentNullException(nameof(entireContent));
+        if (searchedWords == null) throw new ArgumentNullException(nameof(searchedWords));
         for (var i = 0; i < searchedWords.Count; i++)
             searchedWords[i] = searchedWords[i].ToUpperInvariant();
         entireContent = entireContent.Trim();

@@ -1,20 +1,9 @@
 namespace SunamoHtml.Html;
 
-/// <summary>
-/// EN: Shared HTML helper methods (partial class - part 3).
-/// CZ: Sdílené HTML pomocné metody (partial class - část 3).
-/// </summary>
 public static partial class HtmlHelper
 {
-    /// <summary>
-    /// EN: Returns the first tag with specified name and attribute value.
-    /// CZ: Vrátí první tag se zadaným názvem a hodnotou atributu.
-    /// </summary>
-    /// <param name="htmlNode">The HTML node to search in.</param>
-    /// <param name="tagName">The tag name to search for.</param>
-    /// <param name="attributeName">The attribute name to match.</param>
-    /// <param name="attributeValue">The attribute value to match.</param>
-    /// <returns>First matching HTML node or null.</returns>
+    // EN: Returns the first tag with specified name and attribute value.
+    // CZ: Vrátí první tag se zadaným názvem a hodnotou atributu.
     public static HtmlNode? GetTagOfAtribute(HtmlNode htmlNode, string tagName, string attributeName, string attributeValue)
     {
         htmlNode = TrimNode(htmlNode);
@@ -34,19 +23,12 @@ public static partial class HtmlHelper
         return null;
     }
 
-    /// <summary>
-    /// EN: Returns all tags with specified name and attribute value, recursively searching the node tree.
-    /// CZ: Vrátí všechny tagy se zadaným názvem a hodnotou atributu, rekurzivně prohledá strom uzlů.
-    /// Originally from HtmlDocument.
-    /// </summary>
-    /// <param name="htmlNode">The HTML node to search in.</param>
-    /// <param name="tagName">The tag name to search for.</param>
-    /// <param name="attributeName">The attribute name to match.</param>
-    /// <param name="attributeValue">The attribute value to match.</param>
-    /// <returns>List of matching HTML nodes.</returns>
+    // EN: Returns all tags with specified name and attribute value, recursively searching the node tree.
+    // CZ: Vrátí všechny tagy se zadaným názvem a hodnotou atributu, rekurzivně prohledá strom uzlů.
+    // Originally from HtmlDocument.
     public static IList<HtmlNode> ReturnTagsWithAttrRek2(HtmlNode htmlNode, string tagName, string attributeName, string attributeValue)
     {
-        ArgumentNullException.ThrowIfNull(htmlNode);
+        if (htmlNode == null) throw new ArgumentNullException(nameof(htmlNode));
         var result = new List<HtmlNode>();
         RecursiveReturnAllTags(result, htmlNode, tagName);
         for (var i = result.Count - 1; i >= 0; i--)
@@ -55,18 +37,11 @@ public static partial class HtmlHelper
         return result;
     }
 
-    /// <summary>
-    /// EN: Returns all immediate child tags with specified name and attribute value.
-    /// CZ: Vrátí všechny přímé podřízené tagy se zadaným názvem a hodnotou atributu.
-    /// </summary>
-    /// <param name="htmlNode">The HTML node to search in.</param>
-    /// <param name="tagName">The tag name to search for.</param>
-    /// <param name="attributeName">The attribute name to match.</param>
-    /// <param name="attributeValue">The attribute value to match.</param>
-    /// <returns>List of matching child HTML nodes.</returns>
+    // EN: Returns all immediate child tags with specified name and attribute value.
+    // CZ: Vrátí všechny přímé podřízené tagy se zadaným názvem a hodnotou atributu.
     public static IList<HtmlNode> GetTagsOfAtribute(HtmlNode htmlNode, string tagName, string attributeName, string attributeValue)
     {
-        ArgumentNullException.ThrowIfNull(htmlNode);
+        if (htmlNode == null) throw new ArgumentNullException(nameof(htmlNode));
         var result = new List<HtmlNode>();
         foreach (var childNode in htmlNode.ChildNodes)
             if (childNode.Name == tagName)
@@ -75,36 +50,20 @@ public static partial class HtmlHelper
         return result;
     }
 
-    /// <summary>
-    /// EN: Recursively searches for tags with attribute value containing specified text.
-    /// CZ: Rekurzivně vyhledává tagy s hodnotou atributu obsahující zadaný text.
-    /// </summary>
-    /// <param name="result">The result list to add found nodes to.</param>
-    /// <param name="htmlNode">The HTML node to search in.</param>
-    /// <param name="tagName">The tag name to search for.</param>
-    /// <param name="attributeName">The attribute name to check.</param>
-    /// <param name="attributeValue">The attribute value to search for.</param>
+    // EN: Recursively searches for tags with attribute value containing specified text.
+    // CZ: Rekurzivně vyhledává tagy s hodnotou atributu obsahující zadaný text.
     private static void RecursiveReturnTagsWithContainsAttr(List<HtmlNode> result, HtmlNode htmlNode, string tagName, string attributeName, string attributeValue)
     {
         RecursiveReturnTagsWithContainsAttr(result, htmlNode, tagName, attributeName, attributeValue, true, true);
     }
 
-    /// <summary>
-    /// EN: Recursively searches for tags with attribute value matching specified criteria.
-    /// CZ: Rekurzivně vyhledává tagy s hodnotou atributu odpovídající zadaným kritériím.
-    /// Supports wildcard "*" for tag name to match all tags.
-    /// </summary>
-    /// <param name="result">The result list to add found nodes to.</param>
-    /// <param name="htmlNode">The HTML node to search in.</param>
-    /// <param name="tagName">The tag name to search for, or "*" for all tags.</param>
-    /// <param name="attributeName">The attribute name to check.</param>
-    /// <param name="attributeValue">The attribute value to search for.</param>
-    /// <param name="isContains">Whether to use Contains instead of exact match.</param>
-    /// <param name="isRecursively">Whether to search recursively.</param>
+    // EN: Recursively searches for tags with attribute value matching specified criteria.
+    // CZ: Rekurzivně vyhledává tagy s hodnotou atributu odpovídající zadaným kritériím.
+    // Supports wildcard "*" for tag name to match all tags.
     public static void RecursiveReturnTagsWithContainsAttr(IList<HtmlNode> result, HtmlNode htmlNode, string tagName, string attributeName, string attributeValue, bool isContains, bool isRecursively)
     {
-        ArgumentNullException.ThrowIfNull(result);
-        ArgumentNullException.ThrowIfNull(htmlNode);
+        if (result == null) throw new ArgumentNullException(nameof(result));
+        if (htmlNode == null) throw new ArgumentNullException(nameof(htmlNode));
         foreach (var item in htmlNode.ChildNodes)
         {
             var attrValue = GetValueOfAttribute(attributeName, item);
@@ -125,17 +84,9 @@ public static partial class HtmlHelper
         }
     }
 
-    /// <summary>
-    /// EN: Recursively searches for tags with attribute value containing specified text after splitting by delimiter.
-    /// CZ: Rekurzivně vyhledává tagy s hodnotou atributu obsahující zadaný text po rozdělení pomocí oddělovače.
-    /// Supports wildcard "*" for tag name to match all tags.
-    /// </summary>
-    /// <param name="result">The result list to add found nodes to.</param>
-    /// <param name="htmlNode">The HTML node to search in.</param>
-    /// <param name="tagName">The tag name to search for, or "*" for all tags.</param>
-    /// <param name="attributeName">The attribute name to check.</param>
-    /// <param name="attributeValue">The attribute value to search for.</param>
-    /// <param name="delimiter">The delimiter to split the attribute value by.</param>
+    // EN: Recursively searches for tags with attribute value containing specified text after splitting by delimiter.
+    // CZ: Rekurzivně vyhledává tagy s hodnotou atributu obsahující zadaný text po rozdělení pomocí oddělovače.
+    // Supports wildcard "*" for tag name to match all tags.
     private static void RecursiveReturnTagsWithContainsAttrWithSplittedElement(List<HtmlNode> result, HtmlNode htmlNode, string tagName, string attributeName, string attributeValue, string delimiter)
     {
         foreach (var item in htmlNode.ChildNodes)
@@ -150,16 +101,9 @@ public static partial class HtmlHelper
             }
     }
 
-    /// <summary>
-    /// EN: Returns all tags with attribute value containing specified text, recursively searching the node tree.
-    /// CZ: Vrátí všechny tagy s hodnotou atributu obsahující zadaný text, rekurzivně prohledá strom uzlů.
-    /// Supports wildcard "*" for tag name to match all tags.
-    /// </summary>
-    /// <param name="htmlNode">The HTML node to search in.</param>
-    /// <param name="tagName">The tag name to search for, or "*" for all tags.</param>
-    /// <param name="attributeName">The attribute name to check.</param>
-    /// <param name="attributeValue">The attribute value to search for.</param>
-    /// <returns>List of matching HTML nodes.</returns>
+    // EN: Returns all tags with attribute value containing specified text, recursively searching the node tree.
+    // CZ: Vrátí všechny tagy s hodnotou atributu obsahující zadaný text, rekurzivně prohledá strom uzlů.
+    // Supports wildcard "*" for tag name to match all tags.
     public static IList<HtmlNode> ReturnTagsWithContainsAttrRek(HtmlNode htmlNode, string tagName, string attributeName, string attributeValue)
     {
         var result = new List<HtmlNode>();
@@ -167,17 +111,8 @@ public static partial class HtmlHelper
         return result;
     }
 
-    /// <summary>
-    /// EN: Returns all tags with attribute value matching specified criteria, recursively searching the node tree.
-    /// CZ: Vrátí všechny tagy s hodnotou atributu odpovídající zadaným kritériím, rekurzivně prohledá strom uzlů.
-    /// </summary>
-    /// <param name="htmlNode">The HTML node to search in.</param>
-    /// <param name="tagName">The tag name to search for.</param>
-    /// <param name="attributeName">The attribute name to check.</param>
-    /// <param name="attributeValue">The attribute value to search for.</param>
-    /// <param name="isContains">Whether to use Contains instead of exact match.</param>
-    /// <param name="isRecursively">Whether to search recursively.</param>
-    /// <returns>List of matching HTML nodes.</returns>
+    // EN: Returns all tags with attribute value matching specified criteria, recursively searching the node tree.
+    // CZ: Vrátí všechny tagy s hodnotou atributu odpovídající zadaným kritériím, rekurzivně prohledá strom uzlů.
     public static IList<HtmlNode> ReturnTagsWithContainsAttrRek(HtmlNode htmlNode, string tagName, string attributeName, string attributeValue, bool isContains, bool isRecursively)
     {
         var result = new List<HtmlNode>();
@@ -185,29 +120,17 @@ public static partial class HtmlHelper
         return result;
     }
 
-    /// <summary>
-    /// EN: Returns all tags with class attribute containing specified class name, recursively searching the node tree.
-    /// CZ: Vrátí všechny tagy s atributem class obsahujícím zadaný název třídy, rekurzivně prohledá strom uzlů.
-    /// Supports wildcard "*" for tag name to match all tags.
-    /// </summary>
-    /// <param name="htmlNode">The HTML node to search in.</param>
-    /// <param name="tagName">The tag name to search for, or "*" for all tags.</param>
-    /// <param name="className">The class name to search for.</param>
-    /// <returns>List of matching HTML nodes.</returns>
+    // EN: Returns all tags with class attribute containing specified class name, recursively searching the node tree.
+    // CZ: Vrátí všechny tagy s atributem class obsahujícím zadaný název třídy, rekurzivně prohledá strom uzlů.
+    // Supports wildcard "*" for tag name to match all tags.
     public static IList<HtmlNode> ReturnTagsWithContainsClassRek(HtmlNode htmlNode, string tagName, string className)
     {
-        ArgumentNullException.ThrowIfNull(htmlNode);
+        if (htmlNode == null) throw new ArgumentNullException(nameof(htmlNode));
         var result = new List<HtmlNode>();
         RecursiveReturnTagsWithContainsAttrWithSplittedElement(result, htmlNode, tagName, "class", className, " ");
         return result;
     }
 
-    /// <summary>
-    /// Recursively returns the first tag matching specified tag name.
-    /// </summary>
-    /// <param name="htmlNode">The HTML node to search in.</param>
-    /// <param name="tagName">The tag name to search for.</param>
-    /// <returns>First matching tag or null.</returns>
     public static HtmlNode ReturnTagRek(HtmlNode htmlNode, object tagName)
     {
         throw new NotImplementedException();

@@ -1,10 +1,5 @@
 namespace SunamoHtml._sunamo.SunamoValues.Constants;
 
-/// <summary>
-/// EN: HTML attribute name constants (all lowercase).
-/// CZ: Konstanty názvů HTML atributů (vše malými písmeny).
-/// All attribute names are lowercase - even if they're defaultly uppercase (like in Web Forms).
-/// </summary>
 internal class HtmlAttrs
 {
     internal const string Jscontroller = "jscontroller";
@@ -20,10 +15,6 @@ internal class HtmlAttrs
     internal const string DataTitle = "data-title";
     internal const string DataMedia = "data-media";
 
-    /// <summary>
-    /// EN: Class attribute (named 'C' to avoid mass replacing of 'class' keyword).
-    /// CZ: Atribut class (pojmenovaný 'C' kvůli zamezení hromadného nahrazování klíčového slova 'class').
-    /// </summary>
     internal static string C = "class";
 
     internal static string Runat = "runat";

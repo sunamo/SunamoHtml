@@ -1,19 +1,10 @@
 namespace SunamoHtml;
 
-/// <summary>
-///     HtmlHelperText - for methods which NOT operate on HtmlAgiityHelper!
-///     HtmlAgilityHelper - getting new nodes
-///     HtmlAssistant - Only for methods which operate on HtmlAgiityHelper!
-/// </summary>
+// HtmlHelperText - for methods which NOT operate on HtmlAgiityHelper!
+// HtmlAgilityHelper - getting new nodes
+// HtmlAssistant - Only for methods which operate on HtmlAgiityHelper!
 public partial class HtmlAgilityHelper
 {
-    /// <summary>
-    /// Trims text nodes and optionally comments from a list of HTML nodes.
-    /// </summary>
-    /// <param name="nodes">The list of HTML nodes to trim.</param>
-    /// <param name="isRemovingTextNodes">Whether to remove text nodes.</param>
-    /// <param name="isRemovingComments">Whether to remove comment nodes.</param>
-    /// <returns>List of nodes with text nodes and/or comments removed.</returns>
     internal static List<HtmlNode> TrimTextsInternal(List<HtmlNode> nodes, bool isRemovingTextNodes, bool isRemovingComments = false)
     {
         if (!_trimTexts)
@@ -36,14 +27,9 @@ public partial class HtmlAgilityHelper
         return result;
     }
 
-    /// <summary>
-    /// Removes comment nodes from a list of HTML nodes.
-    /// </summary>
-    /// <param name="nodes">The list of HTML nodes to process.</param>
-    /// <returns>List of nodes with comments removed.</returns>
     public static IList<HtmlNode> TrimComments(IList<HtmlNode> nodes)
     {
-        ArgumentNullException.ThrowIfNull(nodes);
+        if (nodes == null) throw new ArgumentNullException(nameof(nodes));
         var result = new List<HtmlNode>();
         var startsWithComment = false;
         var endsWithComment = false;
@@ -86,12 +72,7 @@ public partial class HtmlAgilityHelper
         return result;
     }
 
-    /// <summary>
-    /// Checks if an HTML node has the specified tag name. Use "*" for any tag.
-    /// </summary>
-    /// <param name="node">The HTML node to check.</param>
-    /// <param name="tag">The tag name to check for, or "*" for any tag.</param>
-    /// <returns>True if the node has the specified tag name or tag is "*".</returns>
+    // Use "*" for any tag.
     private static bool HasTagName(HtmlNode node, string tag)
     {
         if (tag == "*")
@@ -100,16 +81,6 @@ public partial class HtmlAgilityHelper
         return result;
     }
 
-    /// <summary>
-    /// Checks if an HTML node has an attribute with the specified value.
-    /// </summary>
-    /// <param name="node">The HTML node to check.</param>
-    /// <param name="attributeName">The attribute name to check.</param>
-    /// <param name="attributeValue">The attribute value to match.</param>
-    /// <param name="isWildCard">Whether to use wildcard matching.</param>
-    /// <param name="isEnoughContainsAttribute">Whether partial match is sufficient.</param>
-    /// <param name="isSearchAsSingleString">Whether to search as a single string or split by spaces.</param>
-    /// <returns>True if the node has the attribute with matching value.</returns>
     private static bool HasTagAttr(HtmlNode node, string attributeName, string attributeValue, bool isWildCard, bool isEnoughContainsAttribute, bool isSearchAsSingleString)
     {
         if (attributeValue == "*")
@@ -147,19 +118,12 @@ public partial class HtmlAgilityHelper
         return hasMatchingAttribute;
     }
 
-    /// <summary>
-    /// Recursively returns HTML tags matching the specified tag name.
-    /// If single is true, returns only the first match (like Node vs Nodes).
-    /// Use "*" in parameter to match any tag.
-    /// </summary>
-    /// <param name="result">The list to add found nodes to.</param>
-    /// <param name="htmlNode">The HTML node to search in.</param>
-    /// <param name="isRecursive">Whether to search recursively.</param>
-    /// <param name="isSingle">Whether to stop after finding first match.</param>
-    /// <param name="tagName">The tag name to search for, or "*" for any tag.</param>
+    // Recursively returns HTML tags matching the specified tag name.
+    // If single is true, returns only the first match (like Node vs Nodes).
+    // Use "*" in parameter to match any tag.
     public static void RecursiveReturnTags(List<HtmlNode> result, HtmlNode htmlNode, bool isRecursive, bool isSingle, string tagName)
     {
-        ArgumentNullException.ThrowIfNull(result);
+        if (result == null) throw new ArgumentNullException(nameof(result));
         if (htmlNode == null)
             return;
         foreach (var item in htmlNode.ChildNodes)
@@ -178,17 +142,10 @@ public partial class HtmlAgilityHelper
             }
     }
 
-    /// <summary>
-    /// Gets all nodes with the specified tag name.
-    /// </summary>
-    /// <param name="node">The HTML node to search in.</param>
-    /// <param name="isRecursive">Whether to search recursively.</param>
-    /// <param name="tag">The tag name to search for.</param>
-    /// <returns>List of matching HTML nodes with text nodes trimmed.</returns>
     public static List<HtmlNode> Nodes(HtmlNode node, bool isRecursive, string tag)
     {
-        ArgumentNullException.ThrowIfNull(node);
-        ArgumentNullException.ThrowIfNull(tag);
+        if (node == null) throw new ArgumentNullException(nameof(node));
+        if (tag == null) throw new ArgumentNullException(nameof(tag));
         tag = tag.ToLowerInvariant();
         var result = new List<HtmlNode>();
         RecursiveReturnTags(result, node, isRecursive, false, tag);
@@ -197,18 +154,6 @@ public partial class HtmlAgilityHelper
         return result;
     }
 
-    /// <summary>
-    /// Worker method to get nodes with specified attribute criteria.
-    /// </summary>
-    /// <param name="node">The HTML node to search in.</param>
-    /// <param name="isRecursive">Whether to search recursively.</param>
-    /// <param name="tag">The tag name to search for.</param>
-    /// <param name="attributeName">The attribute name to match.</param>
-    /// <param name="attributeValue">The attribute value to match.</param>
-    /// <param name="isWildCard">Whether to use wildcard matching.</param>
-    /// <param name="isEnoughContainsAttribute">Whether partial match is sufficient.</param>
-    /// <param name="isSearchAsSingleString">Whether to search as a single string.</param>
-    /// <returns>List of matching HTML nodes.</returns>
     private static List<HtmlNode> NodesWithAttrWorker(HtmlNode node, bool isRecursive, string tag, string attributeName, string attributeValue, bool isWildCard, bool isEnoughContainsAttribute, bool isSearchAsSingleString = true)
     {
         var result = new List<HtmlNode>();
@@ -218,11 +163,6 @@ public partial class HtmlAgilityHelper
         return result;
     }
 
-    /// <summary>
-    /// Creates an HTML document with specific initialization options.
-    /// </summary>
-    /// <param name="data">Initialization data, or null for default settings.</param>
-    /// <returns>Configured HTML document instance.</returns>
     public static HtmlDocument CreateHtmlDocument(CreateHtmlDocumentInitData? data = null)
     {
         if (data == null)
@@ -240,41 +180,19 @@ public partial class HtmlAgilityHelper
         return htmlDocument;
     }
 
-    /// <summary>
-    /// Recursively returns tags with attribute containing specified value.
-    /// </summary>
-    /// <param name="result">The list to add found nodes to.</param>
-    /// <param name="htmlNode">The HTML node to search in.</param>
-    /// <param name="isRecursive">Whether to search recursively.</param>
-    /// <param name="tagName">The tag name to search for.</param>
-    /// <param name="attributeName">The attribute name to match.</param>
-    /// <param name="attributeValue">The attribute value to match.</param>
-    /// <param name="isEnoughContainsAttribute">Whether partial match is sufficient.</param>
-    /// <param name="isSearchAsSingleString">Whether to search as a single string.</param>
     public static void RecursiveReturnTagsWithContainsAttr(List<HtmlNode> result, HtmlNode htmlNode, bool isRecursive, string tagName, string attributeName, string attributeValue, bool isEnoughContainsAttribute, bool isSearchAsSingleString = true)
     {
         RecursiveReturnTagsWithContainsAttr(result, htmlNode, isRecursive, tagName, attributeName, attributeValue, false, isEnoughContainsAttribute, isSearchAsSingleString);
     }
 
-    /// <summary>
-    /// Recursively returns tags with attribute containing specified value.
-    /// Use "*" in tagName to return all tags.
-    /// </summary>
-    /// <param name="result">The list to add found nodes to.</param>
-    /// <param name="htmlNode">The HTML node to search in.</param>
-    /// <param name="isRecursive">Whether to search recursively.</param>
-    /// <param name="tagName">The tag name to search for, or "*" for all tags.</param>
-    /// <param name="attributeName">The attribute name to match.</param>
-    /// <param name="attributeValue">The attribute value to match.</param>
-    /// <param name="isWildCard">Whether to use wildcard matching.</param>
-    /// <param name="isEnoughContainsAttribute">Whether partial match is sufficient.</param>
-    /// <param name="isSearchAsSingleString">Whether to search as a single string.</param>
+    // Recursively returns tags with attribute containing specified value.
+    // Use "*" in tagName to return all tags.
     public static void RecursiveReturnTagsWithContainsAttr(List<HtmlNode> result, HtmlNode htmlNode, bool isRecursive, string tagName, string attributeName, string attributeValue, bool isWildCard, bool isEnoughContainsAttribute, bool isSearchAsSingleString = true)
     {
-        ArgumentNullException.ThrowIfNull(result);
-        ArgumentNullException.ThrowIfNull(tagName);
-        ArgumentNullException.ThrowIfNull(attributeName);
-        ArgumentNullException.ThrowIfNull(attributeValue);
+        if (result == null) throw new ArgumentNullException(nameof(result));
+        if (tagName == null) throw new ArgumentNullException(nameof(tagName));
+        if (attributeName == null) throw new ArgumentNullException(nameof(attributeName));
+        if (attributeValue == null) throw new ArgumentNullException(nameof(attributeValue));
         var childNodesWithoutText = TrimTexts(htmlNode.ChildNodes);
         tagName = tagName.ToLowerInvariant();
         if (htmlNode == null)
@@ -297,41 +215,21 @@ public partial class HtmlAgilityHelper
         }
     }
 
-    /// <summary>
-    /// Gets nodes with attribute matching wildcard pattern.
-    /// </summary>
-    /// <param name="node">The HTML node to search in.</param>
-    /// <param name="isRecursive">Whether to search recursively.</param>
-    /// <param name="tag">The tag name to search for.</param>
-    /// <param name="attributeName">The attribute name to match.</param>
-    /// <param name="attributeValue">The attribute value pattern.</param>
-    /// <param name="isContains">Whether to use contains matching.</param>
-    /// <returns>List of matching HTML nodes.</returns>
     public static IList<HtmlNode> NodesWithAttrWildCard(HtmlNode node, bool isRecursive, string tag, string attributeName, string attributeValue, bool isContains = false)
     {
-        ArgumentNullException.ThrowIfNull(node);
-        ArgumentNullException.ThrowIfNull(tag);
-        ArgumentNullException.ThrowIfNull(attributeName);
-        ArgumentNullException.ThrowIfNull(attributeValue);
+        if (node == null) throw new ArgumentNullException(nameof(node));
+        if (tag == null) throw new ArgumentNullException(nameof(tag));
+        if (attributeName == null) throw new ArgumentNullException(nameof(attributeName));
+        if (attributeValue == null) throw new ArgumentNullException(nameof(attributeValue));
         return NodesWithAttrWorker(node, isRecursive, tag, attributeName, attributeValue, true, isContains);
     }
 
-    /// <summary>
-    /// Gets nodes with exact attribute match.
-    /// </summary>
-    /// <param name="node">The HTML node to search in.</param>
-    /// <param name="isRecursive">Whether to search recursively.</param>
-    /// <param name="tag">The tag name to search for.</param>
-    /// <param name="attributeName">The attribute name to match.</param>
-    /// <param name="attributeValue">The attribute value to match.</param>
-    /// <param name="isContains">Whether to use contains matching.</param>
-    /// <returns>List of matching HTML nodes.</returns>
     public static IList<HtmlNode> NodesWithAttr(HtmlNode node, bool isRecursive, string tag, string attributeName, string attributeValue, bool isContains = false)
     {
-        ArgumentNullException.ThrowIfNull(node);
-        ArgumentNullException.ThrowIfNull(tag);
-        ArgumentNullException.ThrowIfNull(attributeName);
-        ArgumentNullException.ThrowIfNull(attributeValue);
+        if (node == null) throw new ArgumentNullException(nameof(node));
+        if (tag == null) throw new ArgumentNullException(nameof(tag));
+        if (attributeName == null) throw new ArgumentNullException(nameof(attributeName));
+        if (attributeValue == null) throw new ArgumentNullException(nameof(attributeValue));
         return NodesWithAttrWorker(node, isRecursive, tag, attributeName, attributeValue, false, isContains);
     }
 }

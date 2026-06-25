@@ -1,50 +1,29 @@
 namespace SunamoHtml.Generators;
 
-/// <summary>
-/// Extended HTML generator with list generation methods (part 4).
-/// </summary>
 public partial class HtmlGenerator2 : HtmlGenerator
 {
-    /// <summary>
-    /// Generates list items for UL without duplicate checking.
-    /// </summary>
-    /// <param name="baseAnchor">Base anchor URL.</param>
-    /// <param name="ids">List of IDs for anchors.</param>
-    /// <param name="texts">List of display texts.</param>
-    /// <returns>HTML string with list items.</returns>
     public static string GetForUlWoCheckDuplicate(string baseAnchor, IList<string> ids, IList<string> texts)
     {
-        ArgumentNullException.ThrowIfNull(baseAnchor);
-        ArgumentNullException.ThrowIfNull(ids);
-        ArgumentNullException.ThrowIfNull(texts);
+        if (baseAnchor == null) throw new ArgumentNullException(nameof(baseAnchor));
+        if (ids == null) throw new ArgumentNullException(nameof(ids));
+        if (texts == null) throw new ArgumentNullException(nameof(texts));
 
         return GetForUl(baseAnchor, ids, texts, false);
     }
 
-    /// <summary>
-    /// Generates list items for UL without duplicate checking.
-    /// Counts in both parameters must be equal.
-    /// </summary>
-    /// <param name="anchors">List of anchor URLs.</param>
-    /// <param name="items">List of display texts.</param>
-    /// <returns>HTML string with list items.</returns>
+    // Counts in both parameters must be equal.
     public static string GetForUlWoCheckDuplicate(IList<string> anchors, IList<string> items)
     {
-        ArgumentNullException.ThrowIfNull(anchors);
-        ArgumentNullException.ThrowIfNull(items);
+        if (anchors == null) throw new ArgumentNullException(nameof(anchors));
+        if (items == null) throw new ArgumentNullException(nameof(items));
 
         return GetForUl("", anchors, items, false);
     }
 
-    /// <summary>
-    /// Generates list items for UL without anchors.
-    /// This method is used when you don't use any links in UL.
-    /// </summary>
-    /// <param name="items">List of items to display.</param>
-    /// <returns>HTML string with list items.</returns>
+    // This method is used when you don't use any links in UL.
     public static string GetForUlWoCheckDuplicate(IList<string> items)
     {
-        ArgumentNullException.ThrowIfNull(items);
+        if (items == null) throw new ArgumentNullException(nameof(items));
 
         var generator = new HtmlGenerator();
         for (var i = 0; i < items.Count; i++)
@@ -57,21 +36,15 @@ public partial class HtmlGenerator2 : HtmlGenerator
         return generator.ToString();
     }
 
-    /// <summary>
-    /// Generates complete UL element with list items.
-    /// </summary>
-    /// <param name="baseAnchor">Base anchor URL.</param>
-    /// <param name="items">List of items.</param>
-    /// <returns>HTML string with UL element.</returns>
     public static string GetUlWoCheckDuplicate(string baseAnchor, IList<string> items)
     {
-        ArgumentNullException.ThrowIfNull(baseAnchor);
-        ArgumentNullException.ThrowIfNull(items);
+        if (baseAnchor == null) throw new ArgumentNullException(nameof(baseAnchor));
+        if (items == null) throw new ArgumentNullException(nameof(items));
 
-        HtmlGenerator generator = new HtmlGenerator();
-        for (int i = 0; i < items.Count; i++)
+        var generator = new HtmlGenerator();
+        for (var i = 0; i < items.Count; i++)
         {
-            string text = items[i];
+            var text = items[i];
             generator.WriteTag("li");
             generator.WriteTagWithAttrs("a", "href", baseAnchor + (i + 1).ToString(CultureInfo.InvariantCulture));
             generator.WriteRaw(text);
@@ -82,58 +55,34 @@ public partial class HtmlGenerator2 : HtmlGenerator
         return generator.ToString() + "</ul>";
     }
 
-    /// <summary>
-    /// Generates complete UL element with list items and custom class.
-    /// Takes only one parameter, so it's without links.
-    /// </summary>
-    /// <param name="list">List of items.</param>
-    /// <param name="appendClass">Additional CSS class to append.</param>
-    /// <returns>HTML string with UL element.</returns>
+    // Takes only one parameter, so it's without links.
     public static string GetUlWoCheckDuplicate(IList<string> list, string appendClass)
     {
-        ArgumentNullException.ThrowIfNull(list);
-        ArgumentNullException.ThrowIfNull(appendClass);
+        if (list == null) throw new ArgumentNullException(nameof(list));
+        if (appendClass == null) throw new ArgumentNullException(nameof(appendClass));
 
         return "<ul class=\"textVlevo " + appendClass + "\">" + GetForUlWoCheckDuplicate(list) + "</ul>";
     }
 
-    /// <summary>
-    /// Generates complete UL element with anchors and texts.
-    /// </summary>
-    /// <param name="anchors">List of anchor URLs.</param>
-    /// <param name="texts">List of display texts.</param>
-    /// <returns>HTML string with UL element.</returns>
     public static string GetUlWoCheckDuplicate(IList<string> anchors, IList<string> texts)
     {
-        ArgumentNullException.ThrowIfNull(anchors);
-        ArgumentNullException.ThrowIfNull(texts);
+        if (anchors == null) throw new ArgumentNullException(nameof(anchors));
+        if (texts == null) throw new ArgumentNullException(nameof(texts));
 
         return "<ul class=\"textVlevo\">" + GetForUlWoCheckDuplicate(anchors, texts) + "</ul>";
     }
 
-    /// <summary>
-    /// Generates an OL (ordered list) element.
-    /// </summary>
-    /// <param name="possibleAnswers">List of possible answers.</param>
-    /// <param name="isCheckDuplicates">Whether to check for duplicates.</param>
-    /// <returns>HTML string with OL element.</returns>
     public static string GetOl(IList<string> possibleAnswers, bool isCheckDuplicates = false)
     {
-        ArgumentNullException.ThrowIfNull(possibleAnswers);
+        if (possibleAnswers == null) throw new ArgumentNullException(nameof(possibleAnswers));
 
         return HtmlGeneratorList.GetFor("", possibleAnswers, possibleAnswers, isCheckDuplicates, HtmlTags.Ol);
     }
 
-    /// <summary>
-    /// Generates OL element without duplicate checking.
-    /// </summary>
-    /// <param name="anchors">List of anchor URLs.</param>
-    /// <param name="texts">List of items to display.</param>
-    /// <returns>HTML string with OL element.</returns>
     public static string GetOlWoCheckDuplicate(IList<string> anchors, IList<string> texts)
     {
-        ArgumentNullException.ThrowIfNull(anchors);
-        ArgumentNullException.ThrowIfNull(texts);
+        if (anchors == null) throw new ArgumentNullException(nameof(anchors));
+        if (texts == null) throw new ArgumentNullException(nameof(texts));
 
         if (anchors.Count != texts.Count)
             throw new InvalidOperationException("Bullet points and links count differs");

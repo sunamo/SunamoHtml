@@ -1,9 +1,5 @@
 namespace SunamoHtml._sunamo.SunamoValues.Constants;
 
-/// <summary>
-/// EN: Constants for date and time operations.
-/// CZ: Konstanty pro operace s datem a časem.
-/// </summary>
 internal class DTConstants
 {
     internal const long SecondsInMinute = 60;

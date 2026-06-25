@@ -1,24 +1,12 @@
 namespace SunamoHtml.Html;
 
-/// <summary>
-/// EN: Parser for HTML tables into 2D string array with colspan support.
-/// CZ: Parser HTML tabulek do 2D string pole s podporou colspan.
-/// Row/column indexing.
-/// </summary>
 public sealed class HtmlTableParser
 {
-    /// <summary>
-    /// EN: The parsed table data. If an element contains null, it was a colspan cell.
-    /// CZ: Naparsovaná tabulková data. Pokud prvek obsahuje null, jednalo se o colspan buňku.
-    /// </summary>
+    // EN: The parsed table data. If an element contains null, it was a colspan cell.
+    // CZ: Naparsovaná tabulková data. Pokud prvek obsahuje null, jednalo se o colspan buňku.
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1819")]
     public string[][] Data { get; set; }
 
-    /// <summary>
-    /// Initializes a new instance by parsing an HTML table node.
-    /// </summary>
-    /// <param name="html">The HTML table node to parse.</param>
-    /// <param name="isIgnoreFirstRow">Whether to ignore the first row (typically headers).</param>
     public HtmlTableParser(HtmlNode html, bool isIgnoreFirstRow)
     {
         Data = Array.Empty<string[]>();
@@ -89,24 +77,13 @@ public sealed class HtmlTableParser
         }
     }
 
-    /// <summary>
-    /// Gets the number of rows in the parsed table.
-    /// </summary>
     public int RowCount => Data.Length;
 
-    /// <summary>
-    /// Gets the number of columns in the parsed table.
-    /// </summary>
     public int ColumnCount => Data.Length > 0 ? Data[0].Length : 0;
 
-    /// <summary>
-    /// Normalizes values in a column by removing HTML tags and decoding HTML entities.
-    /// </summary>
-    /// <param name="chars">List of column values to normalize.</param>
-    /// <param name="isRemoveAlsoInnerHtmlOfSubNodes">Whether to remove inner HTML of sub nodes.</param>
     public static void NormalizeValuesInColumn(IList<string> chars, bool isRemoveAlsoInnerHtmlOfSubNodes)
     {
-        ArgumentNullException.ThrowIfNull(chars);
+        if (chars == null) throw new ArgumentNullException(nameof(chars));
         for (var i = 0; i < chars.Count; i++)
         {
             if (isRemoveAlsoInnerHtmlOfSubNodes)
@@ -117,14 +94,6 @@ public sealed class HtmlTableParser
         }
     }
 
-    /// <summary>
-    /// Gets all values from a specific column by index.
-    /// </summary>
-    /// <param name="columnIndex">The zero-based column index.</param>
-    /// <param name="isNormalizeValuesInColumn">Whether to normalize values by removing HTML.</param>
-    /// <param name="isRemoveAlsoInnerHtmlOfSubNodes">Whether to remove inner HTML of sub nodes.</param>
-    /// <param name="isSkipFirstRow">Whether to skip the first row.</param>
-    /// <returns>List of column values.</returns>
     public IList<string> ColumnValues(int columnIndex, bool isNormalizeValuesInColumn, bool isRemoveAlsoInnerHtmlOfSubNodes,
         bool isSkipFirstRow)
     {
@@ -139,13 +108,6 @@ public sealed class HtmlTableParser
         return result;
     }
 
-    /// <summary>
-    /// Gets all values from a column by column name (found in first row).
-    /// </summary>
-    /// <param name="columnName">The column name to search for in the first row.</param>
-    /// <param name="isNormalizeValuesInColumn">Whether to normalize values by removing HTML.</param>
-    /// <param name="isRemoveAlsoInnerHtmlOfSubNodes">Whether to remove inner HTML of sub nodes.</param>
-    /// <returns>List of column values.</returns>
     public IList<string> ColumnValues(string columnName, bool isNormalizeValuesInColumn, bool isRemoveAlsoInnerHtmlOfSubNodes)
     {
         var d0 = Data.Length;
@@ -166,12 +128,6 @@ public sealed class HtmlTableParser
         return result;
     }
 
-    /// <summary>
-    /// Finalizes column values by normalizing if requested.
-    /// </summary>
-    /// <param name="isNormalizeValuesInColumn">Whether to normalize values.</param>
-    /// <param name="isRemoveAlsoInnerHtmlOfSubNodes">Whether to remove inner HTML.</param>
-    /// <param name="result">The result list to finalize.</param>
     private static void FinalizeColumnValues(bool isNormalizeValuesInColumn, bool isRemoveAlsoInnerHtmlOfSubNodes,
         List<string> result)
     {

@@ -14,7 +14,7 @@ bool fillAlsoFirstTwo = true)
     {
         StackTrace st = new();
         var value = st.ToString();
-        var lines = value.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList();
+        var lines = value.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList();
         lines.RemoveAt(0);
         var i = 0;
         string type = string.Empty;
@@ -41,7 +41,7 @@ bool fillAlsoFirstTwo = true)
     {
         var s2 = lines.Split("at ")[1].Trim();
         var text = s2.Split('(')[0];
-        var parameter = text.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+        var parameter = text.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries).ToList();
         methodName = parameter[^1];
         parameter.RemoveAt(parameter.Count - 1);
         type = string.Join(".", parameter);

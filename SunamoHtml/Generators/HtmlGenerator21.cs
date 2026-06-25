@@ -1,35 +1,19 @@
 namespace SunamoHtml.Generators;
 
-/// <summary>
-/// Extended HTML generator with list, anchor, and tag cloud generation methods (part 2).
-/// </summary>
 public partial class HtmlGenerator2 : HtmlGenerator
 {
-    /// <summary>
-    /// Generates a top list with images and badges (divs stacked vertically, not ol/ul>li).
-    /// </summary>
-    /// <param name="htmlGenerator">The HTML generator to use.</param>
-    /// <param name="widthImage">Image width in pixels.</param>
-    /// <param name="heightImage">Image height in pixels.</param>
-    /// <param name="initialImageUri">Initial image URI.</param>
-    /// <param name="photoLinks">List of photo link URLs.</param>
-    /// <param name="textLinks">List of text link URLs.</param>
-    /// <param name="innerHtmlText">List of inner HTML text.</param>
-    /// <param name="srcPhoto">List of photo source paths.</param>
-    /// <param name="idBadges">List of badge IDs.</param>
-    /// <param name="arrayName">JavaScript array name.</param>
-    /// <returns>HTML string representing the list with images and badges.</returns>
+    // divs stacked vertically, not ol/ul>li
     [SuppressMessage("Design", "CA1054", Justification = "initialImageUri is used as a raw HTML attribute value, not as a System.Uri")]
     public static string TopListWithImages(HtmlGenerator htmlGenerator, int widthImage, int heightImage, string initialImageUri, IList<string> photoLinks, IList<string> textLinks, IList<string> innerHtmlText, IList<string> srcPhoto, IList<string> idBadges, string arrayName)
     {
-        ArgumentNullException.ThrowIfNull(htmlGenerator);
-        ArgumentNullException.ThrowIfNull(initialImageUri);
-        ArgumentNullException.ThrowIfNull(photoLinks);
-        ArgumentNullException.ThrowIfNull(textLinks);
-        ArgumentNullException.ThrowIfNull(innerHtmlText);
-        ArgumentNullException.ThrowIfNull(srcPhoto);
-        ArgumentNullException.ThrowIfNull(idBadges);
-        ArgumentNullException.ThrowIfNull(arrayName);
+        if (htmlGenerator == null) throw new ArgumentNullException(nameof(htmlGenerator));
+        if (initialImageUri == null) throw new ArgumentNullException(nameof(initialImageUri));
+        if (photoLinks == null) throw new ArgumentNullException(nameof(photoLinks));
+        if (textLinks == null) throw new ArgumentNullException(nameof(textLinks));
+        if (innerHtmlText == null) throw new ArgumentNullException(nameof(innerHtmlText));
+        if (srcPhoto == null) throw new ArgumentNullException(nameof(srcPhoto));
+        if (idBadges == null) throw new ArgumentNullException(nameof(idBadges));
+        if (arrayName == null) throw new ArgumentNullException(nameof(arrayName));
 
         var count = photoLinks.Count;
         if (count == 0)
@@ -43,8 +27,7 @@ public partial class HtmlGenerator2 : HtmlGenerator
         if (count != idBadges.Count)
             throw new InvalidOperationException(Translate.FromKey(XlfKeys.MetodaHtmlGenerator2TopListWithImagesOdkazyPhoto) + " " + count + " does not match idBadges count " + idBadges.Count);
 
-        var parsedValue = 0;
-        var isAnimated = int.TryParse(srcPhoto[0], out parsedValue);
+        var isAnimated = int.TryParse(srcPhoto[0], out _);
         for (var i = 0; i < count; i++)
         {
             htmlGenerator.WriteTagWithAttrs("div", "style", "padding: 5px;", "class", "hoverable");
@@ -65,14 +48,9 @@ public partial class HtmlGenerator2 : HtmlGenerator
         return htmlGenerator.ToString();
     }
 
-    /// <summary>
-    /// Generates list items for UL with duplicate checking.
-    /// </summary>
-    /// <param name="items">List of items to generate.</param>
-    /// <returns>HTML string with list items.</returns>
     public static string GetForUlWCheckDuplicate(IList<string> items)
     {
-        ArgumentNullException.ThrowIfNull(items);
+        if (items == null) throw new ArgumentNullException(nameof(items));
 
         var generator = new HtmlGenerator();
         var alreadyWritten = new List<string>();
@@ -91,14 +69,9 @@ public partial class HtmlGenerator2 : HtmlGenerator
         return generator.ToString();
     }
 
-    /// <summary>
-    /// Generates a success message div.
-    /// </summary>
-    /// <param name="message">The success message.</param>
-    /// <returns>HTML string with success div.</returns>
     public static string Success(string message)
     {
-        ArgumentNullException.ThrowIfNull(message);
+        if (message == null) throw new ArgumentNullException(nameof(message));
 
         var generator = new HtmlGenerator();
         generator.WriteTagWithAttrs("div", "class", "success");
@@ -107,16 +80,11 @@ public partial class HtmlGenerator2 : HtmlGenerator
         return generator.ToString();
     }
 
-    /// <summary>
-    /// Creates an anchor link, automatically adding http:// if not present.
-    /// Provide URL without https://, it will be added to the link automatically, but not to the text.
-    /// </summary>
-    /// <param name="url">The URL (without http://).</param>
-    /// <returns>HTML anchor string.</returns>
+    // Provide URL without https://, it will be added to the link automatically, but not to the text.
     [SuppressMessage("Design", "CA1054", Justification = "url is used as a raw HTML attribute value, not as a System.Uri")]
     public static string Anchor(string url)
     {
-        ArgumentNullException.ThrowIfNull(url);
+        if (url == null) throw new ArgumentNullException(nameof(url));
 
         if (url.Contains("=\"", StringComparison.Ordinal))
             return url;
@@ -124,29 +92,19 @@ public partial class HtmlGenerator2 : HtmlGenerator
         return "<a href=\"" + httpUrl + "\"" + ">" + url + "</a>";
     }
 
-    /// <summary>
-    /// Creates a mailto anchor link.
-    /// </summary>
-    /// <param name="email">The email address.</param>
-    /// <returns>HTML mailto anchor string.</returns>
     public static string AnchorMailto(string email)
     {
-        ArgumentNullException.ThrowIfNull(email);
+        if (email == null) throw new ArgumentNullException(nameof(email));
 
         return "<a href=\"mailto:" + email + ">" + email + "</a>";
     }
 
-    /// <summary>
-    /// Creates an anchor with HTTP protocol.
-    /// URL without http:// / https:// will have it added to the link.
-    /// The text will always have http:// removed if present.
-    /// </summary>
-    /// <param name="url">The URL.</param>
-    /// <returns>HTML anchor string.</returns>
+    // URL without http:// / https:// will have it added to the link.
+    // The text will always have http:// removed if present.
     [SuppressMessage("Design", "CA1054", Justification = "url is used as a raw HTML attribute value, not as a System.Uri")]
     public static string AnchorWithHttp(string url)
     {
-        ArgumentNullException.ThrowIfNull(url);
+        if (url == null) throw new ArgumentNullException(nameof(url));
 
         // First add if not present
         if (!url.StartsWith("http", StringComparison.Ordinal))
@@ -157,69 +115,42 @@ public partial class HtmlGenerator2 : HtmlGenerator
         return "<a href=\"" + httpUrl + "\"" + ">" + displayText + "</a>";
     }
 
-    /// <summary>
-    /// Creates an anchor with HTTP protocol and custom text.
-    /// </summary>
-    /// <param name="url">The URL.</param>
-    /// <param name="text">The link text.</param>
-    /// <returns>HTML anchor string.</returns>
     [SuppressMessage("Design", "CA1054", Justification = "url is used as a raw HTML attribute value, not as a System.Uri")]
     public static string AnchorWithHttp(string url, string text)
     {
-        ArgumentNullException.ThrowIfNull(url);
-        ArgumentNullException.ThrowIfNull(text);
+        if (url == null) throw new ArgumentNullException(nameof(url));
+        if (text == null) throw new ArgumentNullException(nameof(text));
 
         var httpUrl = UH.AppendHttpIfNotExists(url);
         return "<a href=\"" + httpUrl + "\"" + ">" + text + "</a>";
     }
 
-    /// <summary>
-    /// Creates an anchor with HTTP protocol and optional target blank.
-    /// </summary>
-    /// <param name="isTargetBlank">Whether to open in new tab.</param>
-    /// <param name="url">The URL.</param>
-    /// <param name="text">The link text.</param>
-    /// <returns>HTML anchor string.</returns>
     [SuppressMessage("Design", "CA1054", Justification = "url is used as a raw HTML attribute value, not as a System.Uri")]
     public static string AnchorWithHttp(bool isTargetBlank, string url, string text)
     {
-        ArgumentNullException.ThrowIfNull(url);
-        ArgumentNullException.ThrowIfNull(text);
+        if (url == null) throw new ArgumentNullException(nameof(url));
+        if (text == null) throw new ArgumentNullException(nameof(text));
 
         string httpUrl = UH.AppendHttpIfNotExists(url);
         return AnchorWithHttpCore(isTargetBlank, text, httpUrl);
     }
 
-    /// <summary>
-    /// Core method for creating anchors with HTTP protocol.
-    /// </summary>
-    /// <param name="isTargetBlank">Whether to open in new tab.</param>
-    /// <param name="text">The link text.</param>
-    /// <param name="httpUrl">The HTTP URL.</param>
-    /// <returns>HTML anchor string.</returns>
     [SuppressMessage("Design", "CA1054", Justification = "httpUrl is used as a raw HTML attribute value, not as a System.Uri")]
     public static string AnchorWithHttpCore(bool isTargetBlank, string text, string httpUrl)
     {
-        ArgumentNullException.ThrowIfNull(text);
-        ArgumentNullException.ThrowIfNull(httpUrl);
+        if (text == null) throw new ArgumentNullException(nameof(text));
+        if (httpUrl == null) throw new ArgumentNullException(nameof(httpUrl));
 
         if (isTargetBlank)
             return "<a href=\"" + httpUrl + "\" target=\"_blank\">" + text + "</a>";
         return "<a href=\"" + httpUrl + ">" + text + "</a>";
     }
 
-    /// <summary>
-    /// Generates radio buttons without duplicate checking.
-    /// </summary>
-    /// <param name="name">The name attribute for radio buttons.</param>
-    /// <param name="ids">List of radio button IDs/values.</param>
-    /// <param name="labels">List of radio button labels.</param>
-    /// <returns>HTML string with radio buttons.</returns>
     public static string GetRadioButtonsWoCheckDuplicate(string name, IList<string> ids, IList<string> labels)
     {
-        ArgumentNullException.ThrowIfNull(name);
-        ArgumentNullException.ThrowIfNull(ids);
-        ArgumentNullException.ThrowIfNull(labels);
+        if (name == null) throw new ArgumentNullException(nameof(name));
+        if (ids == null) throw new ArgumentNullException(nameof(ids));
+        if (labels == null) throw new ArgumentNullException(nameof(labels));
 
         var generator = new HtmlGenerator();
         for (var i = 0; i < ids.Count; i++)
@@ -232,20 +163,12 @@ public partial class HtmlGenerator2 : HtmlGenerator
         return generator.ToString();
     }
 
-    /// <summary>
-    /// Generates radio buttons with click event handler.
-    /// </summary>
-    /// <param name="name">The name attribute for radio buttons.</param>
-    /// <param name="ids">List of radio button IDs/values.</param>
-    /// <param name="labels">List of radio button labels.</param>
-    /// <param name="eventHandlerSelected">The onclick event handler.</param>
-    /// <returns>HTML string with radio buttons.</returns>
     public static string GetRadioButtonsWoCheckDuplicate(string name, IList<string> ids, IList<string> labels, string eventHandlerSelected)
     {
-        ArgumentNullException.ThrowIfNull(name);
-        ArgumentNullException.ThrowIfNull(ids);
-        ArgumentNullException.ThrowIfNull(labels);
-        ArgumentNullException.ThrowIfNull(eventHandlerSelected);
+        if (name == null) throw new ArgumentNullException(nameof(name));
+        if (ids == null) throw new ArgumentNullException(nameof(ids));
+        if (labels == null) throw new ArgumentNullException(nameof(labels));
+        if (eventHandlerSelected == null) throw new ArgumentNullException(nameof(eventHandlerSelected));
 
         var generator = new HtmlGenerator();
         for (var i = 0; i < ids.Count; i++)
@@ -258,43 +181,25 @@ public partial class HtmlGenerator2 : HtmlGenerator
         return generator.ToString();
     }
 
-    /// <summary>
-    /// Generates tag cloud HTML for jquery.tagcloud.js.
-    /// </summary>
-    /// <param name="wordCount">Dictionary of words and their counts.</param>
-    /// <param name="cssSelector">CSS selector prefix for JavaScript method.</param>
-    /// <returns>HTML string for tag cloud.</returns>
+    // For jquery.tagcloud.js
     public static string GetWordsForTagCloud(Dictionary<string, short> wordCount, string cssSelector)
     {
-        ArgumentNullException.ThrowIfNull(wordCount);
-        ArgumentNullException.ThrowIfNull(cssSelector);
+        if (wordCount == null) throw new ArgumentNullException(nameof(wordCount));
+        if (cssSelector == null) throw new ArgumentNullException(nameof(cssSelector));
 
         var onClickHandler = "AfterWordCloudClick";
         return GetWordsForTagCloud(wordCount, onClickHandler, cssSelector);
     }
 
-    /// <summary>
-    /// Generates tag cloud HTML for manage tags page.
-    /// </summary>
-    /// <param name="wordCount">Dictionary of words and their counts.</param>
-    /// <param name="cssSelector">CSS selector prefix for JavaScript method.</param>
-    /// <returns>HTML string for tag cloud.</returns>
     public static string GetWordsForTagCloudManageTags(Dictionary<string, short> wordCount, string cssSelector)
     {
-        ArgumentNullException.ThrowIfNull(wordCount);
-        ArgumentNullException.ThrowIfNull(cssSelector);
+        if (wordCount == null) throw new ArgumentNullException(nameof(wordCount));
+        if (cssSelector == null) throw new ArgumentNullException(nameof(cssSelector));
 
         var onClickHandler = "AfterWordCloudClick2";
         return GetWordsForTagCloud(wordCount, onClickHandler, cssSelector);
     }
 
-    /// <summary>
-    /// Core method for generating tag cloud HTML.
-    /// </summary>
-    /// <param name="wordCount">Dictionary of words and their counts.</param>
-    /// <param name="onClickHandler">JavaScript onclick handler method name.</param>
-    /// <param name="cssSelector">CSS selector prefix for JavaScript method.</param>
-    /// <returns>HTML string for tag cloud.</returns>
     private static string GetWordsForTagCloud(Dictionary<string, short> wordCount, string onClickHandler, string cssSelector)
     {
         var generator = new HtmlGenerator();
@@ -310,27 +215,17 @@ public partial class HtmlGenerator2 : HtmlGenerator
         return generator.ToString();
     }
 
-    /// <summary>
-    /// Writes a detail line with name and value.
-    /// </summary>
-    /// <param name="name">The detail name.</param>
-    /// <param name="value">The detail value.</param>
     public void Detail(string name, object value)
     {
-        ArgumentNullException.ThrowIfNull(name);
+        if (name == null) throw new ArgumentNullException(nameof(name));
 
         WriteRaw("<b>" + name + ":</b> " + value);
         WriteBr();
     }
 
-    /// <summary>
-    /// Writes a detail line with name and value if value is not empty.
-    /// </summary>
-    /// <param name="name">The detail name.</param>
-    /// <param name="value">The detail value.</param>
     public void DetailIfNotEmpty(string name, string value)
     {
-        ArgumentNullException.ThrowIfNull(name);
+        if (name == null) throw new ArgumentNullException(nameof(name));
 
         if (!string.IsNullOrEmpty(value))
         {
@@ -339,43 +234,24 @@ public partial class HtmlGenerator2 : HtmlGenerator
         }
     }
 
-    /// <summary>
-    /// Returns a static detail line with name and value.
-    /// </summary>
-    /// <param name="name">The detail name.</param>
-    /// <param name="value">The detail value.</param>
-    /// <returns>HTML string with detail.</returns>
     public static string DetailStatic(string name, object value)
     {
-        ArgumentNullException.ThrowIfNull(name);
+        if (name == null) throw new ArgumentNullException(nameof(name));
 
         return "<b>" + name + ":</b> " + value + "<br />";
     }
 
-    /// <summary>
-    /// Returns a static detail line with custom color.
-    /// </summary>
-    /// <param name="color">The text color.</param>
-    /// <param name="name">The detail name.</param>
-    /// <param name="value">The detail value.</param>
-    /// <returns>HTML string with colored detail.</returns>
     public static string DetailStatic(string color, string name, object value)
     {
-        ArgumentNullException.ThrowIfNull(color);
-        ArgumentNullException.ThrowIfNull(name);
+        if (color == null) throw new ArgumentNullException(nameof(color));
+        if (name == null) throw new ArgumentNullException(nameof(name));
 
         return "<div style='color:" + color + "'><b>" + name + ":</b> " + value + "</div>";
     }
 
-    /// <summary>
-    /// Shortens text to specified letter count with ellipsis tooltip.
-    /// </summary>
-    /// <param name="text">The text to shorten.</param>
-    /// <param name="maxLength">Maximum length in characters.</param>
-    /// <returns>HTML string with shortened text and tooltip.</returns>
     public static string ShortForLettersCount(string text, int maxLength)
     {
-        ArgumentNullException.ThrowIfNull(text);
+        if (text == null) throw new ArgumentNullException(nameof(text));
 
         text = text.Replace(" ", "", StringComparison.Ordinal);
         if (text.Length > maxLength)
@@ -388,14 +264,9 @@ public partial class HtmlGenerator2 : HtmlGenerator
         return text;
     }
 
-    /// <summary>
-    /// Wraps text in li and i tags.
-    /// </summary>
-    /// <param name="text">The text to wrap.</param>
-    /// <returns>HTML string with li>i tags.</returns>
     public static string LiI(string text)
     {
-        ArgumentNullException.ThrowIfNull(text);
+        if (text == null) throw new ArgumentNullException(nameof(text));
 
         return "<li><i>" + text + "</i></li>";
     }

@@ -1,8 +1,5 @@
 namespace SunamoHtml._sunamo.SunamoValues.Constants;
 
-/// <summary>
-/// HTML tag names as string constants.
-/// </summary>
 internal class HtmlTags
 {
     internal const string Img = "img";
