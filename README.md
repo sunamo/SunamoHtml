@@ -1,5 +1,10 @@
 # SunamoHtml
 
+## Short description
+
+Knihovna s různými způsoby práce s HTML a XML dokumenty, včetně parsování a úprav. Součástí je Runner a testy.
+
+
 Many ways to work with XML (extensible markup language)
 
 ## Overview
