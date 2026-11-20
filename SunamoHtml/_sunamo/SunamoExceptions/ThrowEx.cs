@@ -1,6 +1,5 @@
 namespace SunamoHtml._sunamo.SunamoExceptions;
 
-// variables names: ok
 internal partial class ThrowEx
 {
     internal static bool DifferentCountInLists<T>(string namefc, IList<T> countfc, string namesc, IList<T> countsc)

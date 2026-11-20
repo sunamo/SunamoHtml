@@ -1,4 +1,3 @@
-// variables names: ok
 
 /// <summary>
 /// HTML tag names as string constants.

@@ -1,4 +1,3 @@
-// variables names: ok
 using SunamoHtml.Html;
 
 public class HtmlHelperSunamoCzTests

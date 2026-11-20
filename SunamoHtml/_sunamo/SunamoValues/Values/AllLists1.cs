@@ -1,6 +1,5 @@
 namespace SunamoHtml._sunamo.SunamoValues.Values;
 
-// variables names: ok
 internal partial class AllLists
 {
     static AllLists()
