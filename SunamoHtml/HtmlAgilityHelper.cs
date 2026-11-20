@@ -138,8 +138,8 @@ public partial class HtmlAgilityHelper
         if (htmlDocument == null) throw new ArgumentNullException(nameof(htmlDocument));
         if (html == null) throw new ArgumentNullException(nameof(html));
         /*
-         * Kurvi se mi to tady, pridava se na konec </installedapp></installedapp></installedapp></string></string>.
-         * Zde jsem ani po krokovani neobjevil kde to vznika, cimz bude to nejnoduzssi odstranit pri formatu
+         * It gets messed up here, it is appended to the end of </installedapp></installedapp></installedapp></string></string>.
+         * Even after stepping through it I did not find where it originates, so the simplest fix is to remove it during formatting
          */
         html = WrapIntoTagIfNot(html);
         htmlDocument.LoadHtml(html);
