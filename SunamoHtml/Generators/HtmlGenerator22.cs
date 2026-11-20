@@ -2,6 +2,14 @@ namespace SunamoHtml.Generators;
 
 public partial class HtmlGenerator2 : HtmlGenerator
 {
+    /// <summary>
+    /// Get for check box list wo check duplicate.
+    /// </summary>
+    /// <param name="idClassCheckbox">The id class checkbox.</param>
+    /// <param name="idClassSpan">The id class span.</param>
+    /// <param name="idCheckBoxes">The id check boxes.</param>
+    /// <param name="list">The list.</param>
+    /// <returns>The get for check box list wo check duplicate result.</returns>
     public static string GetForCheckBoxListWoCheckDuplicate(string idClassCheckbox, string idClassSpan, IList<string> idCheckBoxes, IList<string> list)
     {
         if (idClassCheckbox == null) throw new ArgumentNullException(nameof(idClassCheckbox));
@@ -25,6 +33,11 @@ public partial class HtmlGenerator2 : HtmlGenerator
         return generator.ToString();
     }
 
+    /// <summary>
+    /// Html generator to string.
+    /// </summary>
+    /// <param name="action">The action.</param>
+    /// <returns>The html generator to string result.</returns>
     public static string HtmlGeneratorToString(Action<HtmlGenerator> action)
     {
         if (action == null) throw new ArgumentNullException(nameof(action));
@@ -34,6 +47,11 @@ public partial class HtmlGenerator2 : HtmlGenerator
         return generator.ToString();
     }
 
+    /// <summary>
+    /// Italic.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <returns>The italic result.</returns>
     public static string Italic(string text)
     {
         if (text == null) throw new ArgumentNullException(nameof(text));
@@ -41,6 +59,13 @@ public partial class HtmlGenerator2 : HtmlGenerator
         return "<i>" + text + "</i>";
     }
 
+    /// <summary>
+    /// Button delete.
+    /// </summary>
+    /// <param name="htmlGenerator">The html generator.</param>
+    /// <param name="text">The text.</param>
+    /// <param name="attributeName">The attribute name.</param>
+    /// <param name="attributeValue">The attribute value.</param>
     public static void ButtonDelete(HtmlGenerator htmlGenerator, string text, string attributeName, string attributeValue)
     {
         if (htmlGenerator == null) throw new ArgumentNullException(nameof(htmlGenerator));
@@ -55,6 +80,11 @@ public partial class HtmlGenerator2 : HtmlGenerator
         htmlGenerator.TerminateTag("button");
     }
 
+    /// <summary>
+    /// Bold.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <returns>The bold result.</returns>
     public static string Bold(string text)
     {
         if (text == null) throw new ArgumentNullException(nameof(text));
@@ -62,6 +92,12 @@ public partial class HtmlGenerator2 : HtmlGenerator
         return "<b>" + text + "</b>";
     }
 
+    /// <summary>
+    /// Anchor with custom label.
+    /// </summary>
+    /// <param name="uri">The uri.</param>
+    /// <param name="text">The text.</param>
+    /// <returns>The anchor with custom label result.</returns>
     [SuppressMessage("Design", "CA1054", Justification = "uri is used as a raw HTML attribute value, not as a System.Uri")]
     public static string AnchorWithCustomLabel(string uri, string text)
     {
@@ -71,6 +107,12 @@ public partial class HtmlGenerator2 : HtmlGenerator
         return "<a href=\"" + uri + ">" + text + "</a>";
     }
 
+    /// <summary>
+    /// All months table.
+    /// </summary>
+    /// <param name="allYearsHtmlBoxes">The all years html boxes.</param>
+    /// <param name="allMonthsBoxColors">The all months box colors.</param>
+    /// <returns>The all months table result.</returns>
     public static string AllMonthsTable(IList<string> allYearsHtmlBoxes, IList<string> allMonthsBoxColors)
     {
         if (allYearsHtmlBoxes == null) throw new ArgumentNullException(nameof(allYearsHtmlBoxes));
@@ -123,6 +165,13 @@ public partial class HtmlGenerator2 : HtmlGenerator
         return generator.ToString();
     }
 
+    /// <summary>
+    /// All years table.
+    /// </summary>
+    /// <param name="years">The years.</param>
+    /// <param name="allYearsHtmlBoxes">The all years html boxes.</param>
+    /// <param name="allYearsBoxColors">The all years box colors.</param>
+    /// <returns>The all years table result.</returns>
     public static string AllYearsTable(IList<string> years, IList<string> allYearsHtmlBoxes, IList<string> allYearsBoxColors)
     {
         if (years == null) throw new ArgumentNullException(nameof(years));
@@ -163,6 +212,11 @@ public partial class HtmlGenerator2 : HtmlGenerator
         return generator.ToString();
     }
 
+    /// <summary>
+    /// Generate tree with check boxes.
+    /// </summary>
+    /// <param name="tree">The tree.</param>
+    /// <returns>The generate tree with check boxes result.</returns>
     public static string GenerateTreeWithCheckBoxes(NTreeHtml<string> tree)
     {
         if (tree == null) throw new ArgumentNullException(nameof(tree));
@@ -190,6 +244,11 @@ public partial class HtmlGenerator2 : HtmlGenerator
         htmlGenerator.TerminateTag(HtmlTags.Ol);
     }
 
+    /// <summary>
+    /// Check box.
+    /// </summary>
+    /// <param name="data">The data.</param>
+    /// <returns>The check box result.</returns>
     public static string CheckBox(string data)
     {
         if (!string.IsNullOrEmpty(data))
@@ -198,6 +257,12 @@ public partial class HtmlGenerator2 : HtmlGenerator
     }
 
     // When URI args and titles are the same.
+    /// <summary>
+    /// Get for ul wo check duplicate.
+    /// </summary>
+    /// <param name="baseAnchor">The base anchor.</param>
+    /// <param name="items">The items.</param>
+    /// <returns>The get for ul wo check duplicate result.</returns>
     public static string GetForUlWoCheckDuplicate(string baseAnchor, IList<string> items)
     {
         if (baseAnchor == null) throw new ArgumentNullException(nameof(baseAnchor));
@@ -206,6 +271,15 @@ public partial class HtmlGenerator2 : HtmlGenerator
         return GetForUl(baseAnchor, items, items, false);
     }
 
+    /// <summary>
+    /// Get for ul wo check duplicate.
+    /// </summary>
+    /// <param name="baseAnchor">The base anchor.</param>
+    /// <param name="ids">The ids.</param>
+    /// <param name="findInText">The find in text.</param>
+    /// <param name="replaceInText">The replace in text.</param>
+    /// <param name="suffix">The suffix.</param>
+    /// <returns>The get for ul wo check duplicate result.</returns>
     public static string GetForUlWoCheckDuplicate(string baseAnchor, IList<string> ids, string findInText, string replaceInText, string suffix = "")
     {
         if (baseAnchor == null) throw new ArgumentNullException(nameof(baseAnchor));
@@ -231,6 +305,14 @@ public partial class HtmlGenerator2 : HtmlGenerator
         return generator.ToString();
     }
 
+    /// <summary>
+    /// Get for ul.
+    /// </summary>
+    /// <param name="baseAnchor">The base anchor.</param>
+    /// <param name="ids">The ids.</param>
+    /// <param name="texts">The texts.</param>
+    /// <param name="isSkipDuplicates">The is skip duplicates.</param>
+    /// <returns>The get for ul result.</returns>
     public static string GetForUl(string baseAnchor, string[] ids, string[] texts, bool isSkipDuplicates)
     {
         if (baseAnchor == null) throw new ArgumentNullException(nameof(baseAnchor));
@@ -240,6 +322,14 @@ public partial class HtmlGenerator2 : HtmlGenerator
         return GetForUl(baseAnchor, ids.ToList(), texts.ToList(), isSkipDuplicates);
     }
 
+    /// <summary>
+    /// Get for ul.
+    /// </summary>
+    /// <param name="baseAnchor">The base anchor.</param>
+    /// <param name="ids">The ids.</param>
+    /// <param name="texts">The texts.</param>
+    /// <param name="isSkipDuplicates">The is skip duplicates.</param>
+    /// <returns>The get for ul result.</returns>
     public static string GetForUl(string baseAnchor, IList<string> ids, IList<string> texts, bool isSkipDuplicates)
     {
         if (baseAnchor == null) throw new ArgumentNullException(nameof(baseAnchor));

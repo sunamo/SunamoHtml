@@ -1,8 +1,16 @@
 namespace SunamoHtml.Html;
 
 // Problematic with auto translate.
+/// <summary>
+/// Represents the html helper type.
+/// </summary>
 public static partial class HtmlHelper
 {
+    /// <summary>
+    /// Replace html non pair tags with xml valid.
+    /// </summary>
+    /// <param name="html">The html.</param>
+    /// <returns>The replace html non pair tags with xml valid result.</returns>
     public static string ReplaceHtmlNonPairTagsWithXmlValid(string html)
     {
         if (html == null) throw new ArgumentNullException(nameof(html));
@@ -31,6 +39,11 @@ public static partial class HtmlHelper
         return html;
     }
 
+    /// <summary>
+    /// Convert text to html.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <returns>The convert text to html result.</returns>
     public static string ConvertTextToHtml(string text)
     {
         if (text == null) throw new ArgumentNullException(nameof(text));
@@ -39,12 +52,22 @@ public static partial class HtmlHelper
         return text;
     }
 
+    /// <summary>
+    /// Prepare to attribute.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <returns>The prepare to attribute result.</returns>
     public static string PrepareToAttribute(string text)
     {
         if (text == null) throw new ArgumentNullException(nameof(text));
         return text.Replace('"', '\'');
     }
 
+    /// <summary>
+    /// Replace all font case.
+    /// </summary>
+    /// <param name="html">The html.</param>
+    /// <returns>The replace all font case result.</returns>
     public static string ReplaceAllFontCase(string html)
     {
         if (html == null) throw new ArgumentNullException(nameof(html));
@@ -63,6 +86,11 @@ public static partial class HtmlHelper
         return html;
     }
 
+    /// <summary>
+    /// Clear spaces.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <returns>The clear spaces result.</returns>
     public static string ClearSpaces(string text)
     {
         if (text == null) throw new ArgumentNullException(nameof(text));
@@ -89,6 +117,14 @@ public static partial class HtmlHelper
     }
 
     // Returns the first tag with specified attribute name and value. Returns null if not found.
+    /// <summary>
+    /// Return tag with attr.
+    /// </summary>
+    /// <param name="htmlNode">The html node.</param>
+    /// <param name="tag">The tag.</param>
+    /// <param name="attributeName">The attribute name.</param>
+    /// <param name="value">The value.</param>
+    /// <returns>The return tag with attr result.</returns>
     public static HtmlNode? ReturnTagWithAttr(HtmlNode htmlNode, string tag, string attributeName, string value)
     {
         if (htmlNode == null) throw new ArgumentNullException(nameof(htmlNode));
@@ -99,6 +135,11 @@ public static partial class HtmlHelper
         return null;
     }
 
+    /// <summary>
+    /// Get without text nodes.
+    /// </summary>
+    /// <param name="htmlNode">The html node.</param>
+    /// <returns>The get without text nodes result.</returns>
     public static IList<HtmlNode> GetWithoutTextNodes(HtmlNode htmlNode)
     {
         if (htmlNode == null) throw new ArgumentNullException(nameof(htmlNode));
@@ -113,6 +154,14 @@ public static partial class HtmlHelper
         return result;
     }
 
+    /// <summary>
+    /// Get tag of atribute rek.
+    /// </summary>
+    /// <param name="htmlNode">The html node.</param>
+    /// <param name="nameOfTag">The name of tag.</param>
+    /// <param name="nameOfAttribute">The name of attribute.</param>
+    /// <param name="valueOfAttribute">The value of attribute.</param>
+    /// <returns>The get tag of atribute rek result.</returns>
     public static HtmlNode? GetTagOfAtributeRek(HtmlNode htmlNode, string nameOfTag, string nameOfAttribute, string valueOfAttribute)
     {
         htmlNode = TrimNode(htmlNode);
@@ -141,6 +190,12 @@ public static partial class HtmlHelper
         return null;
     }
 
+    /// <summary>
+    /// Trim open and end tags.
+    /// </summary>
+    /// <param name="html">The html.</param>
+    /// <param name="nameOfTag">The name of tag.</param>
+    /// <returns>The trim open and end tags result.</returns>
     public static string TrimOpenAndEndTags(string html, string nameOfTag)
     {
         if (html == null) throw new ArgumentNullException(nameof(html));
@@ -151,6 +206,14 @@ public static partial class HtmlHelper
 
     // Highlights searched words in text content with bold tags, returning sentence snippets.
     // Before calling, white space characters must be converted to spaces in the content.
+    /// <summary>
+    /// Highlighting words.
+    /// </summary>
+    /// <param name="entireContent">The entire content.</param>
+    /// <param name="maxLettersPerSentence">The max letters per sentence.</param>
+    /// <param name="sentenceCount">The sentence count.</param>
+    /// <param name="searchedWords">The searched words.</param>
+    /// <returns>The highlighting words result.</returns>
     public static string HighlightingWords(string entireContent, int maxLettersPerSentence, int sentenceCount, IList<string> searchedWords)
     {
         if (entireContent == null) throw new ArgumentNullException(nameof(entireContent));

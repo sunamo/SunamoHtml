@@ -1,7 +1,15 @@
 namespace SunamoHtml.Html;
 
+/// <summary>
+/// Represents the security helper type.
+/// </summary>
 public static class SecurityHelper
 {
+    /// <summary>
+    /// Treat html code.
+    /// </summary>
+    /// <param name="html">The html.</param>
+    /// <returns>The treat html code result.</returns>
     public static string TreatHtmlCode(string html)
     {
         if (html == null) throw new ArgumentNullException(nameof(html));
@@ -13,6 +21,11 @@ public static class SecurityHelper
         return html;
     }
 
+    /// <summary>
+    /// Remove js attributes from every node.
+    /// </summary>
+    /// <param name="html">The html.</param>
+    /// <returns>The remove js attributes from every node result.</returns>
     public static string RemoveJsAttributesFromEveryNode(string html)
     {
         if (html == null) throw new ArgumentNullException(nameof(html));

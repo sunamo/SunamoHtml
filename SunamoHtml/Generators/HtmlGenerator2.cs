@@ -1,7 +1,17 @@
 namespace SunamoHtml.Generators;
 
+/// <summary>
+/// Represents the html generator 2 type.
+/// </summary>
 public partial class HtmlGenerator2 : HtmlGenerator
 {
+    /// <summary>
+    /// Calendar.
+    /// </summary>
+    /// <param name="htmlBoxesEveryDay">The html boxes every day.</param>
+    /// <param name="year">The year.</param>
+    /// <param name="month">The month.</param>
+    /// <returns>The calendar result.</returns>
     public static string Calendar(IList<string> htmlBoxesEveryDay, int year, int month)
     {
         if (htmlBoxesEveryDay == null) throw new ArgumentNullException(nameof(htmlBoxesEveryDay));
@@ -11,6 +21,13 @@ public partial class HtmlGenerator2 : HtmlGenerator
         return Calendar(htmlBoxesEveryDay, colors, year, month);
     }
 
+    /// <summary>
+    /// Generate html check boxes from files.
+    /// </summary>
+    /// <param name="path">The path.</param>
+    /// <param name="searchPattern">The search pattern.</param>
+    /// <param name="searchOption">The search option.</param>
+    /// <returns>The generate html check boxes from files result.</returns>
     public static string GenerateHtmlCheckBoxesFromFiles(string path, string searchPattern, SearchOption searchOption)
     {
         var generator = new HtmlGenerator();
@@ -25,6 +42,14 @@ public partial class HtmlGenerator2 : HtmlGenerator
         return generator.ToString();
     }
 
+    /// <summary>
+    /// Calendar.
+    /// </summary>
+    /// <param name="htmlBoxesEveryDay">The html boxes every day.</param>
+    /// <param name="colors">The colors.</param>
+    /// <param name="year">The year.</param>
+    /// <param name="month">The month.</param>
+    /// <returns>The calendar result.</returns>
     public static string Calendar(IList<string> htmlBoxesEveryDay, IList<string> colors, int year, int month)
     {
         if (htmlBoxesEveryDay == null) throw new ArgumentNullException(nameof(htmlBoxesEveryDay));
@@ -139,6 +164,13 @@ public partial class HtmlGenerator2 : HtmlGenerator
         return generator.ToString();
     }
 
+    /// <summary>
+    /// Gallery zoom in profile photo.
+    /// </summary>
+    /// <param name="memberNames">The member names.</param>
+    /// <param name="memberProfilePictures">The member profile pictures.</param>
+    /// <param name="memberAnchors">The member anchors.</param>
+    /// <returns>The gallery zoom in profile photo result.</returns>
     public static string GalleryZoomInProfilePhoto(IList<string> memberNames, IList<string> memberProfilePictures, IList<string> memberAnchors)
     {
         if (memberNames == null) throw new ArgumentNullException(nameof(memberNames));
@@ -163,6 +195,13 @@ public partial class HtmlGenerator2 : HtmlGenerator
         return generator.ToString();
     }
 
+    /// <summary>
+    /// Get select.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="defaultValue">The default value.</param>
+    /// <param name="list">The list.</param>
+    /// <returns>The get select result.</returns>
     public static string GetSelect(string id, object defaultValue, IList list)
     {
         if (defaultValue == null) throw new ArgumentNullException(nameof(defaultValue));
@@ -188,6 +227,12 @@ public partial class HtmlGenerator2 : HtmlGenerator
         return generator.ToString();
     }
 
+    /// <summary>
+    /// Get input text.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="value">The value.</param>
+    /// <returns>The get input text result.</returns>
     public static string GetInputText(string id, string value)
     {
         var generator = new HtmlGenerator();
@@ -196,6 +241,19 @@ public partial class HtmlGenerator2 : HtmlGenerator
     }
 
     // divs stacked vertically, not ol/ul>li
+    /// <summary>
+    /// Top list with images.
+    /// </summary>
+    /// <param name="htmlGenerator">The html generator.</param>
+    /// <param name="widthImage">The width image.</param>
+    /// <param name="heightImage">The height image.</param>
+    /// <param name="initialImageUri">The initial image uri.</param>
+    /// <param name="photoLinks">The photo links.</param>
+    /// <param name="textLinks">The text links.</param>
+    /// <param name="innerHtmlText">The inner html text.</param>
+    /// <param name="srcPhoto">The src photo.</param>
+    /// <param name="arrayName">The array name.</param>
+    /// <returns>The top list with images result.</returns>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1054")]
     public static string TopListWithImages(HtmlGenerator htmlGenerator, int widthImage, int heightImage, string initialImageUri, IList<string> photoLinks, IList<string> textLinks, IList<string> innerHtmlText, IList<string> srcPhoto, string arrayName)
     {

@@ -27,6 +27,11 @@ public partial class HtmlAgilityHelper
         return result;
     }
 
+    /// <summary>
+    /// Trim comments.
+    /// </summary>
+    /// <param name="nodes">The nodes.</param>
+    /// <returns>The trim comments result.</returns>
     public static IList<HtmlNode> TrimComments(IList<HtmlNode> nodes)
     {
         if (nodes == null) throw new ArgumentNullException(nameof(nodes));
@@ -121,6 +126,14 @@ public partial class HtmlAgilityHelper
     // Recursively returns HTML tags matching the specified tag name.
     // If single is true, returns only the first match (like Node vs Nodes).
     // Use "*" in parameter to match any tag.
+    /// <summary>
+    /// Recursive return tags.
+    /// </summary>
+    /// <param name="result">The result.</param>
+    /// <param name="htmlNode">The html node.</param>
+    /// <param name="isRecursive">The is recursive.</param>
+    /// <param name="isSingle">The is single.</param>
+    /// <param name="tagName">The tag name.</param>
     public static void RecursiveReturnTags(List<HtmlNode> result, HtmlNode htmlNode, bool isRecursive, bool isSingle, string tagName)
     {
         if (result == null) throw new ArgumentNullException(nameof(result));
@@ -142,6 +155,13 @@ public partial class HtmlAgilityHelper
             }
     }
 
+    /// <summary>
+    /// Nodes.
+    /// </summary>
+    /// <param name="node">The node.</param>
+    /// <param name="isRecursive">The is recursive.</param>
+    /// <param name="tag">The tag.</param>
+    /// <returns>The nodes result.</returns>
     public static List<HtmlNode> Nodes(HtmlNode node, bool isRecursive, string tag)
     {
         if (node == null) throw new ArgumentNullException(nameof(node));
@@ -163,6 +183,11 @@ public partial class HtmlAgilityHelper
         return result;
     }
 
+    /// <summary>
+    /// Create html document.
+    /// </summary>
+    /// <param name="data">The data.</param>
+    /// <returns>The create html document result.</returns>
     public static HtmlDocument CreateHtmlDocument(CreateHtmlDocumentInitData? data = null)
     {
         if (data == null)
@@ -179,6 +204,17 @@ public partial class HtmlAgilityHelper
         return htmlDocument;
     }
 
+    /// <summary>
+    /// Recursive return tags with contains attr.
+    /// </summary>
+    /// <param name="result">The result.</param>
+    /// <param name="htmlNode">The html node.</param>
+    /// <param name="isRecursive">The is recursive.</param>
+    /// <param name="tagName">The tag name.</param>
+    /// <param name="attributeName">The attribute name.</param>
+    /// <param name="attributeValue">The attribute value.</param>
+    /// <param name="isEnoughContainsAttribute">The is enough contains attribute.</param>
+    /// <param name="isSearchAsSingleString">The is search as single string.</param>
     public static void RecursiveReturnTagsWithContainsAttr(List<HtmlNode> result, HtmlNode htmlNode, bool isRecursive, string tagName, string attributeName, string attributeValue, bool isEnoughContainsAttribute, bool isSearchAsSingleString = true)
     {
         RecursiveReturnTagsWithContainsAttr(result, htmlNode, isRecursive, tagName, attributeName, attributeValue, false, isEnoughContainsAttribute, isSearchAsSingleString);
@@ -186,6 +222,18 @@ public partial class HtmlAgilityHelper
 
     // Recursively returns tags with attribute containing specified value.
     // Use "*" in tagName to return all tags.
+    /// <summary>
+    /// Recursive return tags with contains attr.
+    /// </summary>
+    /// <param name="result">The result.</param>
+    /// <param name="htmlNode">The html node.</param>
+    /// <param name="isRecursive">The is recursive.</param>
+    /// <param name="tagName">The tag name.</param>
+    /// <param name="attributeName">The attribute name.</param>
+    /// <param name="attributeValue">The attribute value.</param>
+    /// <param name="isWildCard">The is wild card.</param>
+    /// <param name="isEnoughContainsAttribute">The is enough contains attribute.</param>
+    /// <param name="isSearchAsSingleString">The is search as single string.</param>
     public static void RecursiveReturnTagsWithContainsAttr(List<HtmlNode> result, HtmlNode htmlNode, bool isRecursive, string tagName, string attributeName, string attributeValue, bool isWildCard, bool isEnoughContainsAttribute, bool isSearchAsSingleString = true)
     {
         if (result == null) throw new ArgumentNullException(nameof(result));
@@ -214,6 +262,16 @@ public partial class HtmlAgilityHelper
         }
     }
 
+    /// <summary>
+    /// Nodes with attr wild card.
+    /// </summary>
+    /// <param name="node">The node.</param>
+    /// <param name="isRecursive">The is recursive.</param>
+    /// <param name="tag">The tag.</param>
+    /// <param name="attributeName">The attribute name.</param>
+    /// <param name="attributeValue">The attribute value.</param>
+    /// <param name="isContains">The is contains.</param>
+    /// <returns>The nodes with attr wild card result.</returns>
     public static IList<HtmlNode> NodesWithAttrWildCard(HtmlNode node, bool isRecursive, string tag, string attributeName, string attributeValue, bool isContains = false)
     {
         if (node == null) throw new ArgumentNullException(nameof(node));
@@ -223,6 +281,16 @@ public partial class HtmlAgilityHelper
         return NodesWithAttrWorker(node, isRecursive, tag, attributeName, attributeValue, true, isContains);
     }
 
+    /// <summary>
+    /// Nodes with attr.
+    /// </summary>
+    /// <param name="node">The node.</param>
+    /// <param name="isRecursive">The is recursive.</param>
+    /// <param name="tag">The tag.</param>
+    /// <param name="attributeName">The attribute name.</param>
+    /// <param name="attributeValue">The attribute value.</param>
+    /// <param name="isContains">The is contains.</param>
+    /// <returns>The nodes with attr result.</returns>
     public static IList<HtmlNode> NodesWithAttr(HtmlNode node, bool isRecursive, string tag, string attributeName, string attributeValue, bool isContains = false)
     {
         if (node == null) throw new ArgumentNullException(nameof(node));
