@@ -15,10 +15,7 @@ internal static class RegexHelper
 
     internal static Regex RUri = new(@"(https?://[^\s]+)");
 
-    //static Regex rUriOnlyOutsideTags = new Regex("https?:\/\/[^\s]*|<\/?\w+\b(?=\s|>)(?:='[^']*'|="[^ "]*" |=[^ '"][^\s>]*|[^>])*>|\&nbsp;John|(John)/gi");
-    //static Regex rUriOnlyOutsideTags = new Regex("(text|simple)(?![^<]*>|[^<>]*</)");
     // cant compile
-    //static Regex rHtmlTag = new Regex(@"(?<==)["']?((?:.(?!["']?\\s+(?:\S+)=|[>"']))+.)["']?");
     internal static Regex RHtmlTag = new("<\\s*([A-Za-z])*?[^>]*/?>");
     internal static Regex RgColor6 = new(@"^(?:[0-9a-fA-F]{3}){1,2}$");
     internal static Regex RgColor8 = new(@"^(?:[0-9a-fA-F]{3}){1,2}(?:[0-9a-fA-F]){2}$");

@@ -106,7 +106,6 @@ public class HtmlAgilityHelperTests
     public void Test1()
     {
         var htmlDocument = HtmlAgilityHelper.CreateHtmlDocument();
-        //htmlDocument.Load(@"D:\_Test\PlatformIndependentNuGetPackages\SunamoHtml\a.html");
         htmlDocument.Load(@"E:\vs\Projects\_tests\CompareTwoFiles\CompareTwoFiles\html\2.html");
         var adsParent = htmlDocument.DocumentNode.FirstChild; //HtmlAgilityHelper.NodeWithAttr(hd.DocumentNode, true, "div", "class", "row inzlist");
         var ads = HtmlAgilityHelper.NodesWithAttr(adsParent, false, "div", "class", "col-xs-12", false);

@@ -176,7 +176,6 @@ public partial class HtmlAgilityHelper
         htmlDocument.OptionAutoCloseOnEnd = false;
         htmlDocument.OptionOutputAsXml = false;
         htmlDocument.OptionFixNestedTags = false;
-        // when OptionCheckSyntax = false, raises NullReferenceException in Load/LoadHtml
         return htmlDocument;
     }
 

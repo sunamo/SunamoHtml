@@ -144,7 +144,6 @@ public partial class HtmlAgilityHelper
         html = WrapIntoTagIfNot(html);
         htmlDocument.LoadHtml(html);
         var textNodes = TextNodes(htmlDocument.DocumentNode, "a");
-        //RegexHelper.rUri = rUri;
         for (var i = textNodes.Count - 1; i >= 0; i--)
         {
             var item = textNodes[i];
@@ -154,14 +153,7 @@ public partial class HtmlAgilityHelper
             var changed = CAChangeContent.ChangeContentWithCondition(new ChangeContentArgsHtml(), data, RegexHelper.IsUri, HtmlGenerator2.Anchor);
             item.InnerHtml = string.Empty;
             InsertGroup(item, data);
-        //item.ParentNode.ReplaceChild(CreateNode(item.InnerHtml), item);
         // must be last because use ParentNode above
-        //item.ParentNode.RemoveChild(item);
-        //new HtmlNode(HtmlNodeType.Element, htmlDocument, 0);
-        //    var ret = item.ParentNode.ReplaceChild(newNode, item);
-        //newNode.ParentNode.InsertAfter(HtmlNode.CreateNode(data[1]), newNode);
-        //int x = 0;
-        //}
         }
 
         var output = htmlDocument.DocumentNode.OuterHtml;
@@ -197,7 +189,6 @@ public partial class HtmlAgilityHelper
         if (list == null) throw new ArgumentNullException(nameof(list));
         foreach (var item in list)
             insertAfter.InnerHtml += SH.WrapWithChar(item, ' ');
-        //insertAfter = insertAfter.ParentNode.InsertAfter(CreateNode(item), insertAfter);
         insertAfter.InnerHtml = SHReplace.ReplaceAllDoubleSpaceToSingle(insertAfter.InnerHtml).Trim();
     }
 
