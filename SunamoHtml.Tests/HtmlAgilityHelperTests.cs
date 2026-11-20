@@ -125,7 +125,7 @@ public class HtmlAgilityHelperTests
             if (anchor == null)
             {
                 Console.WriteLine("Ad was skipped");
-                // zatím nevím proč se tak děje
+                // I do not know yet why it happens
                 continue;
             }
             var hrefUserDetail = "https://www.seznamka.cz" + HtmlAssistant.GetValueOfAttribute("href", anchor).TrimStart('.');
