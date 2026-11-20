@@ -25,7 +25,7 @@ public partial class HtmlGenerator2 : HtmlGenerator
         if (count != srcPhoto.Count)
             throw new InvalidOperationException("Method HtmlGenerator2.TopListWithImages - photoLinks count does not match srcPhoto count");
         if (count != idBadges.Count)
-            throw new InvalidOperationException(Translate.FromKey(XlfKeys.MethodHtmlGenerator2TopListWithImagesLinksPhoto) + " " + count + " does not match idBadges count " + idBadges.Count);
+            throw new InvalidOperationException("Method html generator 2 top list with images links photo" + " " + count + " does not match idBadges count " + idBadges.Count);
 
         var isAnimated = int.TryParse(srcPhoto[0], out _);
         for (var i = 0; i < count; i++)
