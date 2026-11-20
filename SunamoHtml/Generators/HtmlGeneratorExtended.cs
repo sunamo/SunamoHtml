@@ -1,7 +1,6 @@
 namespace SunamoHtml.Generators;
 
-// EN: Extended HTML generator with detail display methods for labels, anchors, and mailto links.
-// CZ: Rozšířený HTML generátor s metodami pro zobrazení detailů s labely, odkazy a mailto linky.
+// Extended HTML generator with detail display methods for labels, anchors, and mailto links.
 public class HtmlGeneratorExtended : HtmlGenerator
 {
     // Only outputs if the name parameter is not empty.

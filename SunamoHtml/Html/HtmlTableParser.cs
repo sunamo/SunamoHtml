@@ -2,8 +2,7 @@ namespace SunamoHtml.Html;
 
 public sealed class HtmlTableParser
 {
-    // EN: The parsed table data. If an element contains null, it was a colspan cell.
-    // CZ: Naparsovaná tabulková data. Pokud prvek obsahuje null, jednalo se o colspan buňku.
+    // The parsed table data. If an element contains null, it was a colspan cell.
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1819")]
     public string[][] Data { get; set; }
 

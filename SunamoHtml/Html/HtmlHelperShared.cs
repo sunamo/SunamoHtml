@@ -88,8 +88,7 @@ public static partial class HtmlHelper
         return HtmlAssistant.GetValueOfAttribute(attributeName, htmlNode, isTrim);
     }
 
-    // EN: Returns the first tag with specified attribute name and value. Returns null if not found.
-    // CZ: Vrátí první tag se zadaným názvem atributu a hodnotou. Vrátí null pokud není nalezen.
+    // Returns the first tag with specified attribute name and value. Returns null if not found.
     public static HtmlNode? ReturnTagWithAttr(HtmlNode htmlNode, string tag, string attributeName, string value)
     {
         if (htmlNode == null) throw new ArgumentNullException(nameof(htmlNode));
@@ -150,8 +149,7 @@ public static partial class HtmlHelper
         return html;
     }
 
-    // EN: Highlights searched words in text content with bold tags, returning sentence snippets.
-    // CZ: Zvýrazní hledaná slova v textovém obsahu tučnými tagy, vrátí úryvky vět.
+    // Highlights searched words in text content with bold tags, returning sentence snippets.
     // Before calling, white space characters must be converted to spaces in the content.
     public static string HighlightingWords(string entireContent, int maxLettersPerSentence, int sentenceCount, IList<string> searchedWords)
     {

@@ -2,8 +2,7 @@ namespace SunamoHtml.Html;
 
 public static partial class HtmlHelper
 {
-    // EN: Converts HTML to final XML format by replacing non-pair tags with XML-valid versions and removing XML declarations.
-    // CZ: Převede HTML do finálního XML formátu nahrazením nepárových tagů XML-validními verzemi a odstraněním XML deklarací.
+    // Converts HTML to final XML format by replacing non-pair tags with XML-valid versions and removing XML declarations.
     public static string ToXmlFinal(string xml)
     {
         xml = ReplaceHtmlNonPairTagsWithXmlValid(xml);
@@ -19,8 +18,7 @@ public static partial class HtmlHelper
                 node.Attributes.RemoveAt(i);
     }
 
-    // EN: Converts HTML to XML format, optionally removing XML declaration.
-    // CZ: Převede HTML do XML formátu, volitelně odstraní XML deklaraci.
+    // Converts HTML to XML format, optionally removing XML declaration.
     // Already calls ReplaceHtmlNonPairTagsWithXmlValid.
     public static string ToXml(string xml, bool isRemoveXmlDeclaration)
     {
@@ -38,16 +36,14 @@ public static partial class HtmlHelper
         return result;
     }
 
-    // EN: Converts HTML to XML format, removing XML declaration.
-    // CZ: Převede HTML do XML formátu, odstraní XML deklaraci.
+    // Converts HTML to XML format, removing XML declaration.
     // Already calls RemoveXmlDeclaration and ReplaceHtmlNonPairTagsWithXmlValid.
     public static string ToXml(string xml)
     {
         return ToXml(xml, true);
     }
 
-    // EN: Strips all HTML tags from text and returns individual words as a list.
-    // CZ: Odstraní všechny HTML tagy z textu a vrátí jednotlivá slova jako seznam.
+    // Strips all HTML tags from text and returns individual words as a list.
     // Use RemoveAllNodes when need to remove also inner HTML.
     public static IList<string> StripAllTagsList(string text)
     {
@@ -55,16 +51,14 @@ public static partial class HtmlHelper
         return SHSplit.Split(replaced, " ");
     }
 
-    // EN: Strips all HTML tags from text, replacing them with a space.
-    // CZ: Odstraní všechny HTML tagy z textu, nahradí je mezerou.
+    // Strips all HTML tags from text, replacing them with a space.
     // Replaces every tag <*> with a space. Inner non-XML content is left as is.
     public static string StripAllTagsSpace(string text)
     {
         return Regex.Replace(text, @"<[^>]*>", " ");
     }
 
-    // EN: Removes all HTML tags from text. Just calls StripAllTags method.
-    // CZ: Odstraní všechny HTML tagy z textu. Pouze volá metodu StripAllTags.
+    // Removes all HTML tags from text. Just calls StripAllTags method.
     // Replaces every tag <*> with a period. Inner non-XML content is left as is.
     public static string RemoveAllTags(string text)
     {
@@ -83,8 +77,7 @@ public static partial class HtmlHelper
         return ReturnTags(htmlNode, tagName).Count != 0;
     }
 
-    // EN: Returns HTML with all tags of specified type modified by the handler.
-    // CZ: Vrátí HTML se všemi tagy zadaného typu upravenými handlerem.
+    // Returns HTML with all tags of specified type modified by the handler.
     // Not suitable for returning content of entire page.
     public static string ReturnApplyToAllTags(string text, string tagName, EditHtmlWidthHandler handler, string value)
     {
@@ -97,8 +90,7 @@ public static partial class HtmlHelper
         return htmlNode.OuterHtml;
     }
 
-    // EN: Recursively applies a handler to all tags matching specified tag name.
-    // CZ: Rekurzivně aplikuje handler na všechny tagy odpovídající zadanému názvu.
+    // Recursively applies a handler to all tags matching specified tag name.
     private static void RecursiveApplyToAllTags(List<HtmlNode> result, ref HtmlNode htmlNode, string tagName, EditHtmlWidthHandler handler, string value)
     {
         for (var i = 0; i < htmlNode.ChildNodes.Count; i++)
@@ -120,8 +112,7 @@ public static partial class HtmlHelper
         }
     }
 
-    // EN: Parses the style attribute of an HTML node and returns it as a dictionary.
-    // CZ: Naparsuje style atribut HTML uzlu a vrátí ho jako slovník.
+    // Parses the style attribute of an HTML node and returns it as a dictionary.
     public static Dictionary<string, string> GetValuesOfStyle(HtmlNode htmlNode)
     {
         var result = new Dictionary<string, string>();
@@ -149,8 +140,7 @@ public static partial class HtmlHelper
         return null;
     }
 
-    // EN: Recursively returns the first tag matching specified tag name.
-    // CZ: Rekurzivně vrátí první tag odpovídající zadanému názvu tagu.
+    // Recursively returns the first tag matching specified tag name.
     public static HtmlNode? ReturnTagRek(HtmlNode htmlNode, string tagName)
     {
         htmlNode = TrimNode(htmlNode);
@@ -173,8 +163,7 @@ public static partial class HtmlHelper
         return null;
     }
 
-    // EN: Returns all immediate child tags matching the specified tag name (non-recursive).
-    // CZ: Vrátí všechny přímé podřízené tagy odpovídající zadanému názvu (nerekurzivně).
+    // Returns all immediate child tags matching the specified tag name (non-recursive).
     // If tag is the specified name, doesn't apply recursion on that.
     public static IList<HtmlNode> ReturnAllTagsImg(HtmlNode htmlNode, string tagName)
     {
@@ -195,8 +184,7 @@ public static partial class HtmlHelper
         return result;
     }
 
-    // EN: Returns all immediate child tags matching the specified tag name (non-recursive).
-    // CZ: Vrátí všechny přímé podřízené tagy odpovídající zadanému názvu (nerekurzivně).
+    // Returns all immediate child tags matching the specified tag name (non-recursive).
     // Wildcard "*" can be passed but wouldn't make much sense.
     public static IList<HtmlNode> ReturnTags(HtmlNode htmlNode, string tagName)
     {

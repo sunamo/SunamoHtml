@@ -11,15 +11,13 @@ public static partial class HtmlHelper
         return htmlContent;
     }
 
-    // EN: Strips all HTML tags from text, replacing them with a single space.
-    // CZ: Odstraní všechny HTML tagy z textu, nahradí je jednou mezerou.
+    // Strips all HTML tags from text, replacing them with a single space.
     public static string StripAllTags(string text)
     {
         return StripAllTags(text, " ");
     }
 
-    // EN: Strips all HTML tags from text, replacing them with a specified replacement string.
-    // CZ: Odstraní všechny HTML tagy z textu, nahradí je zadaným řetězcem.
+    // Strips all HTML tags from text, replacing them with a specified replacement string.
     public static string StripAllTags(string text, string replacement)
     {
         var result = Regex.Replace(text, @"<[^>]*>", replacement);
@@ -40,8 +38,7 @@ public static partial class HtmlHelper
         return htmlNode;
     }
 
-    // EN: Returns all tags matching the specified tag name, recursively searching the node tree.
-    // CZ: Vrátí všechny tagy odpovídající zadanému názvu tagu, rekurzivně prohledá strom uzlů.
+    // Returns all tags matching the specified tag name, recursively searching the node tree.
     // Supports wildcard "*" to match all tags.
     public static IList<HtmlNode> ReturnTagsRek(HtmlNode htmlNode, string tagName)
     {
@@ -51,16 +48,14 @@ public static partial class HtmlHelper
         return TrimTexts(result);
     }
 
-    // EN: Returns the first tag with specified name and attribute value, recursively searching the node tree.
-    // CZ: Vrátí první tag se zadaným názvem a hodnotou atributu, rekurzivně prohledá strom uzlů.
+    // Returns the first tag with specified name and attribute value, recursively searching the node tree.
     // Returns null if tag is not found.
     public static HtmlNode? ReturnTagWithAttrRek(HtmlNode htmlNode, string tagName, string attributeName, string attributeValue)
     {
         return ReturnTagWithAttr(htmlNode, tagName, attributeName, attributeValue);
     }
 
-    // EN: Returns all tags matching specified name and attribute value, recursively searching the node tree.
-    // CZ: Vrátí všechny tagy odpovídající zadanému názvu a hodnotě atributu, rekurzivně prohledá strom uzlů.
+    // Returns all tags matching specified name and attribute value, recursively searching the node tree.
     // Supports wildcard "*" for tag name to match all tags.
     // Supports wildcard "*" for attribute value to match any value.
     public static IList<HtmlNode> ReturnTagsWithAttrRek(HtmlNode htmlNode, string tagName, string attributeName, string attributeValue)
@@ -71,8 +66,7 @@ public static partial class HtmlHelper
         return result;
     }
 
-    // EN: Returns all child tags matching specified tag names.
-    // CZ: Vrátí všechny podřízené tagy odpovídající zadaným názvům tagů.
+    // Returns all child tags matching specified tag names.
     public static IList<HtmlNode> ReturnAllTags(HtmlNode htmlNode, params string[] tagNames)
     {
         if (htmlNode == null) throw new ArgumentNullException(nameof(htmlNode));
@@ -98,8 +92,7 @@ public static partial class HtmlHelper
         return HtmlAgilityHelper.TrimTextsInternal(nodes as List<HtmlNode> ?? new List<HtmlNode>(nodes), isRemoveTextNodes, isRemoveComments);
     }
 
-    // EN: Recursively searches for tags matching specified tag name.
-    // CZ: Rekurzivně vyhledává tagy odpovídající zadanému názvu tagu.
+    // Recursively searches for tags matching specified tag name.
     // Supports wildcard "*" to match all tags.
     private static void RecursiveReturnTags(List<HtmlNode> result, HtmlNode htmlNode, string tagName)
     {
@@ -115,8 +108,7 @@ public static partial class HtmlHelper
             }
     }
 
-    // EN: Recursively searches for all tags matching any of the specified tag names.
-    // CZ: Rekurzivně vyhledává všechny tagy odpovídající některému ze zadaných názvů tagů.
+    // Recursively searches for all tags matching any of the specified tag names.
     private static void RecursiveReturnAllTags(List<HtmlNode> result, HtmlNode htmlNode, params string[] tagNames)
     {
         foreach (var item in htmlNode.ChildNodes)
@@ -147,8 +139,7 @@ public static partial class HtmlHelper
         }
     }
 
-    // EN: Checks if an HTML node has the specified tag name.
-    // CZ: Zkontroluje zda má HTML uzel zadaný název tagu.
+    // Checks if an HTML node has the specified tag name.
     // Supports wildcard "*" to match any tag name.
     private static bool HasTagName(HtmlNode htmlNode, string tagName)
     {
@@ -157,8 +148,7 @@ public static partial class HtmlHelper
         return htmlNode.Name == tagName;
     }
 
-    // EN: Recursively searches for tags matching specified tag name and attribute value.
-    // CZ: Rekurzivně vyhledává tagy odpovídající zadanému názvu tagu a hodnotě atributu.
+    // Recursively searches for tags matching specified tag name and attribute value.
     // Supports wildcard "*" for tag name to match all tags.
     // Supports wildcard "*" for attribute value to match any value.
     private static void RecursiveReturnTagsWithAttr(List<HtmlNode> result, HtmlNode htmlNode, string tagName, string attributeName, string attributeValue)
@@ -176,8 +166,7 @@ public static partial class HtmlHelper
             }
     }
 
-    // EN: Checks if an HTML node has an attribute with the specified name and value.
-    // CZ: Zkontroluje zda má HTML uzel atribut se zadaným názvem a hodnotou.
+    // Checks if an HTML node has an attribute with the specified name and value.
     // Supports wildcard "*" for attribute value to match any value.
     private static bool HasTagAttr(HtmlNode htmlNode, string attributeName, string attributeValue, bool isEnoughContains)
     {
@@ -192,8 +181,7 @@ public static partial class HtmlHelper
         return contains;
     }
 
-    // EN: Returns the first child tag matching the specified tag name.
-    // CZ: Vrátí první podřízený tag odpovídající zadanému názvu tagu.
+    // Returns the first child tag matching the specified tag name.
     // Returns null if tag is not found.
     public static HtmlNode? ReturnTag(HtmlNode htmlNode, string tagName)
     {
@@ -204,8 +192,7 @@ public static partial class HtmlHelper
         return null;
     }
 
-    // EN: Replaces a child node by matching its OuterHtml with a new node.
-    // CZ: Nahradí podřízený uzel porovnáním jeho OuterHtml s novým uzlem.
+    // Replaces a child node by matching its OuterHtml with a new node.
     public static void ReplaceChildNodeByOuterHtml(HtmlNode htmlNode, string oldOuterHtml, HtmlNode newNode)
     {
         if (htmlNode == null) throw new ArgumentNullException(nameof(htmlNode));
