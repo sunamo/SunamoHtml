@@ -3,12 +3,25 @@ namespace SunamoHtml;
 // HtmlHelperText - for methods which NOT operate on HtmlAgiityHelper!
 // HtmlAgilityHelper - getting new nodes
 // HtmlAssistant - Only for methods which operate on HtmlAgiityHelper!
+/// <summary>
+/// Represents the html agility helper type.
+/// </summary>
 public partial class HtmlAgilityHelper
 {
+    /// <summary>
+    /// The text node constant.
+    /// </summary>
     public const string TextNode = "#text";
     // Previously was false but that was incorrect.
     private static bool _trimTexts = true;
 
+    /// <summary>
+    /// Pairs dd dt.
+    /// </summary>
+    /// <param name="dl">The dl.</param>
+    /// <param name="recursive">The recursive.</param>
+    /// <param name="replaceHtmLForText">The replace htm l for text.</param>
+    /// <returns>The pairs dd dt result.</returns>
     public static Dictionary<string, string> PairsDdDt(HtmlNode dl, bool recursive, Dictionary<string, string> replaceHtmLForText)
     {
         if (dl == null) throw new ArgumentNullException(nameof(dl));
@@ -98,32 +111,105 @@ public partial class HtmlAgilityHelper
         return nodes[0];
     }
 
-    public static HtmlNode? Node(HtmlNode node, bool recursive, string tag)
+    /// <summary>
+    /// Node.
+    /// </summary>
+    /// <param name="node">The node.</param>
+    /// <param name="recursive">The recursive.</param>
+    /// <param name="tag">The tag.</param>
+    /// <returns>The node result.</returns>
+    public static HtmlNode? Node(HtmlNode? node, bool recursive, string tag)
     {
-        if (node == null) throw new ArgumentNullException(nameof(node));
         if (tag == null) throw new ArgumentNullException(nameof(tag));
         return Nodes(node, recursive, tag).FirstOrDefault();
     }
 
     // Return null if not found
-    public static HtmlNode? NodeWithAttr(HtmlNode node, bool recursive, string tag, string attr, string attrValue, bool contains = false)
+    /// <summary>
+    /// Node with attr.
+    /// </summary>
+    /// <param name="node">The node.</param>
+    /// <param name="recursive">The recursive.</param>
+    /// <param name="tag">The tag.</param>
+    /// <param name="attr">The attr.</param>
+    /// <param name="attrValue">The attr value.</param>
+    /// <param name="contains">The contains.</param>
+    /// <returns>The node with attr result.</returns>
+    public static HtmlNode? NodeWithAttr(HtmlNode? node, bool recursive, string tag, string attr, string attrValue, bool contains = false)
     {
-        if (node == null) throw new ArgumentNullException(nameof(node));
         if (tag == null) throw new ArgumentNullException(nameof(tag));
         if (attr == null) throw new ArgumentNullException(nameof(attr));
         if (attrValue == null) throw new ArgumentNullException(nameof(attrValue));
         return NodesWithAttrWorker(node, recursive, tag, attr, attrValue, false, contains).FirstOrDefault();
     }
 
-    public static IList<HtmlNode> NodesWhichContainsInAttr(HtmlNode node, bool recursive, string tag, string attr, string attrValue, bool searchAsSingleString = true)
+    /// <summary>
+    /// Returns the first node whose attribute equals the token or contains it as one of its whitespace separated tokens; null when the node is null or nothing matches.
+    /// </summary>
+    /// <param name="node">The node to search in; null gives null.</param>
+    /// <param name="isRecursive">Whether all descendants are searched, not only direct children.</param>
+    /// <param name="tag">The tag name, "*" for any tag.</param>
+    /// <param name="attributeName">The attribute name.</param>
+    /// <param name="token">The whole attribute value or one of its tokens (e.g. one CSS class).</param>
+    /// <returns>The first matching node or null.</returns>
+    public static HtmlNode? NodeWithAttrToken(HtmlNode? node, bool isRecursive, string tag, string attributeName, string token)
     {
-        if (node == null) throw new ArgumentNullException(nameof(node));
+        return NodesWithAttrToken(node, isRecursive, tag, attributeName, token).FirstOrDefault();
+    }
+
+    /// <summary>
+    /// Returns the nodes whose attribute equals the token or contains it as one of its whitespace separated tokens (class="a b" matches "a", "b" and "a b"); an empty list when the node is null.
+    /// </summary>
+    /// <param name="node">The node to search in; null gives an empty list.</param>
+    /// <param name="isRecursive">Whether all descendants are searched, not only direct children.</param>
+    /// <param name="tag">The tag name, "*" for any tag.</param>
+    /// <param name="attributeName">The attribute name.</param>
+    /// <param name="token">The whole attribute value or one of its tokens (e.g. one CSS class).</param>
+    /// <returns>The matching nodes in document order.</returns>
+    public static List<HtmlNode> NodesWithAttrToken(HtmlNode? node, bool isRecursive, string tag, string attributeName, string token)
+    {
+        if (tag == null) throw new ArgumentNullException(nameof(tag));
+        if (attributeName == null) throw new ArgumentNullException(nameof(attributeName));
+        if (token == null) throw new ArgumentNullException(nameof(token));
+        var result = new List<HtmlNode>();
+        foreach (var item in Nodes(node, isRecursive, tag))
+        {
+            var attribute = item.Attributes[attributeName];
+            if (attribute == null)
+                continue;
+            var actual = attribute.Value ?? string.Empty;
+            if (actual == token || actual.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries).Contains(token))
+                result.Add(item);
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// Nodes which contains in attr.
+    /// </summary>
+    /// <param name="node">The node.</param>
+    /// <param name="recursive">The recursive.</param>
+    /// <param name="tag">The tag.</param>
+    /// <param name="attr">The attr.</param>
+    /// <param name="attrValue">The attr value.</param>
+    /// <param name="false">The false.</param>
+    /// <param name="contains">The contains.</param>
+    /// <returns>The nodes which contains in attr result.</returns>
+    public static IList<HtmlNode> NodesWhichContainsInAttr(HtmlNode? node, bool recursive, string tag, string attr, string attrValue, bool searchAsSingleString = true)
+    {
         if (tag == null) throw new ArgumentNullException(nameof(tag));
         if (attr == null) throw new ArgumentNullException(nameof(attr));
         if (attrValue == null) throw new ArgumentNullException(nameof(attrValue));
         return NodesWithAttrWorker(node, recursive, tag, attr, attrValue, false, searchAsSingleString);
     }
 
+    /// <summary>
+    /// Replace plain uri for anchors.
+    /// </summary>
+    /// <param name=""Design"">The design.</param>
+    /// <param name=""CA1055:UriReturnValuesShouldNotBeStrings"">The CA 1055 uri return values should not be strings.</param>
+    /// <returns>The replace plain uri for anchors result.</returns>
     [SuppressMessage("Design", "CA1055:UriReturnValuesShouldNotBeStrings")]
     public static string ReplacePlainUriForAnchors(string html)
     {
@@ -132,19 +218,24 @@ public partial class HtmlAgilityHelper
         return ReplacePlainUriForAnchors(htmlDocument, html);
     }
 
+    /// <summary>
+    /// Replace plain uri for anchors.
+    /// </summary>
+    /// <param name=""Design"">The design.</param>
+    /// <param name=""CA1055:UriReturnValuesShouldNotBeStrings"">The CA 1055 uri return values should not be strings.</param>
+    /// <returns>The replace plain uri for anchors result.</returns>
     [SuppressMessage("Design", "CA1055:UriReturnValuesShouldNotBeStrings")]
     public static string ReplacePlainUriForAnchors(HtmlDocument htmlDocument, string html)
     {
         if (htmlDocument == null) throw new ArgumentNullException(nameof(htmlDocument));
         if (html == null) throw new ArgumentNullException(nameof(html));
         /*
-         * Kurvi se mi to tady, pridava se na konec </installedapp></installedapp></installedapp></string></string>.
-         * Zde jsem ani po krokovani neobjevil kde to vznika, cimz bude to nejnoduzssi odstranit pri formatu
+         * It gets messed up here, it is appended to the end of </installedapp></installedapp></installedapp></string></string>.
+         * Even after stepping through it I did not find where it originates, so the simplest fix is to remove it during formatting
          */
         html = WrapIntoTagIfNot(html);
         htmlDocument.LoadHtml(html);
         var textNodes = TextNodes(htmlDocument.DocumentNode, "a");
-        //RegexHelper.rUri = rUri;
         for (var i = textNodes.Count - 1; i >= 0; i--)
         {
             var item = textNodes[i];
@@ -154,20 +245,19 @@ public partial class HtmlAgilityHelper
             var changed = CAChangeContent.ChangeContentWithCondition(new ChangeContentArgsHtml(), data, RegexHelper.IsUri, HtmlGenerator2.Anchor);
             item.InnerHtml = string.Empty;
             InsertGroup(item, data);
-        //item.ParentNode.ReplaceChild(CreateNode(item.InnerHtml), item);
         // must be last because use ParentNode above
-        //item.ParentNode.RemoveChild(item);
-        //new HtmlNode(HtmlNodeType.Element, htmlDocument, 0);
-        //    var ret = item.ParentNode.ReplaceChild(newNode, item);
-        //newNode.ParentNode.InsertAfter(HtmlNode.CreateNode(data[1]), newNode);
-        //int x = 0;
-        //}
         }
 
         var output = htmlDocument.DocumentNode.OuterHtml;
         return output;
     }
 
+    /// <summary>
+    /// Wrap into tag if not.
+    /// </summary>
+    /// <param name="html">The html.</param>
+    /// <param name="tag">The tag.</param>
+    /// <returns>The wrap into tag if not result.</returns>
     public static string WrapIntoTagIfNot(string html, string tag = HtmlTags.Div)
     {
         if (html == null) throw new ArgumentNullException(nameof(html));
@@ -191,16 +281,24 @@ public partial class HtmlAgilityHelper
         return stringBuilder.ToString();
     }
 
+    /// <summary>
+    /// Insert group.
+    /// </summary>
+    /// <returns>The insert group result.</returns>
     public static void InsertGroup(HtmlNode insertAfter, List<string> list)
     {
         if (insertAfter == null) throw new ArgumentNullException(nameof(insertAfter));
         if (list == null) throw new ArgumentNullException(nameof(list));
         foreach (var item in list)
             insertAfter.InnerHtml += SH.WrapWithChar(item, ' ');
-        //insertAfter = insertAfter.ParentNode.InsertAfter(CreateNode(item), insertAfter);
         insertAfter.InnerHtml = SHReplace.ReplaceAllDoubleSpaceToSingle(insertAfter.InnerHtml).Trim();
     }
 
+    /// <summary>
+    /// Create node.
+    /// </summary>
+    /// <param name="insertAfter.InnerHtml">The insert after inner html.</param>
+    /// <returns>The create node result.</returns>
     public static HtmlNode CreateNode(string html)
     {
         if (html == null) throw new ArgumentNullException(nameof(html));
@@ -229,6 +327,11 @@ public partial class HtmlAgilityHelper
         return result;
     }
 
+    /// <summary>
+    /// Trim texts.
+    /// </summary>
+    /// <param name="htmlNodeCollection">The html node collection.</param>
+    /// <returns>The trim texts result.</returns>
     public static List<HtmlNode> TrimTexts(HtmlNodeCollection htmlNodeCollection)
     {
         if (htmlNodeCollection == null) throw new ArgumentNullException(nameof(htmlNodeCollection));
@@ -241,6 +344,12 @@ public partial class HtmlAgilityHelper
         return result;
     }
 
+    /// <summary>
+    /// Find ancestor parent node.
+    /// </summary>
+    /// <param name="node">The node.</param>
+    /// <param name="tagName">The tag name.</param>
+    /// <returns>The find ancestor parent node result.</returns>
     public static HtmlNode? FindAncestorParentNode(HtmlNode node, string tagName)
     {
         if (tagName == null) throw new ArgumentNullException(nameof(tagName));
@@ -254,6 +363,12 @@ public partial class HtmlAgilityHelper
         return null;
     }
 
+    /// <summary>
+    /// Has ancestor parent node.
+    /// </summary>
+    /// <param name="node">The node.</param>
+    /// <param name="tagName">The tag name.</param>
+    /// <returns>The has ancestor parent node result.</returns>
     public static bool HasAncestorParentNode(HtmlNode node, string tagName)
     {
         if (tagName == null) throw new ArgumentNullException(nameof(tagName));
@@ -267,6 +382,11 @@ public partial class HtmlAgilityHelper
         return false;
     }
 
+    /// <summary>
+    /// Trim texts.
+    /// </summary>
+    /// <param name="nodes">The nodes.</param>
+    /// <returns>The trim texts result.</returns>
     public static List<HtmlNode> TrimTexts(List<HtmlNode> nodes)
     {
         return TrimTextsInternal(nodes, true);

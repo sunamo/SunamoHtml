@@ -22,40 +22,40 @@ internal class DTConstants
     internal static readonly DateTime UnixFsStart = new(YearStartUnixDate, 1, 1);
 
     internal static readonly List<string> DaysInWeekCS = new()
-        { Pondeli, Utery, Streda, Ctvrtek, Patek, Sobota, Nedele };
+        { MondayCs, TuesdayCs, WednesdayCs, ThursdayCs, FridayCs, SaturdayCs, SundayCs };
 
     internal static DateTime UnixTimeStartEpoch = new(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
     internal static DateTime WinTimeStartEpoch = new(1601, 1, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
     internal static readonly List<string> MonthsInYearCZ = new()
-        { Leden, Unor, Brezen, Duben, Kveten, Cerven, Cervenec, Srpen, Zari, Rijen, Listopad, Prosinec };
+        { JanuaryCs, FebruaryCs, MarchCs, AprilCs, MayCs, JuneCs, JulyCs, AugustCs, SeptemberCs, OctoberCs, NovemberCs, DecemberCs };
 
-    #region Dny v týdny CS
+    #region Days of the week CS
 
-    internal const string Pondeli = "Pond\u011Bl\u00ED";
-    internal const string Utery = "\u00DAter\u00FD";
-    internal const string Streda = "St\u0159eda";
-    internal const string Ctvrtek = "\u010Ctvrtek";
-    internal const string Patek = "P\u00E1tek";
-    internal const string Sobota = "Sobota";
-    internal const string Nedele = "Ned\u011Ble";
+    internal const string MondayCs = "Pond\u011Bl\u00ED";
+    internal const string TuesdayCs = "\u00DAter\u00FD";
+    internal const string WednesdayCs = "St\u0159eda";
+    internal const string ThursdayCs = "\u010Ctvrtek";
+    internal const string FridayCs = "P\u00E1tek";
+    internal const string SaturdayCs = "Sobota";
+    internal const string SundayCs = "Ned\u011Ble";
 
     #endregion
 
-    #region Měsíce v roce CS
+    #region Months of the year CS
 
-    internal const string Leden = "Leden";
-    internal const string Unor = "\u00DAnor";
-    internal const string Brezen = "B\u0159ezen";
-    internal const string Duben = "Duben";
-    internal const string Kveten = "Kv\u011Bten";
-    internal const string Cerven = "\u010Cerven";
-    internal const string Cervenec = "\u010Cervenec";
-    internal const string Srpen = "Srpen";
-    internal const string Zari = "Z\u00E1\u0159\u00ED";
-    internal const string Rijen = "\u0158\u00EDjen";
-    internal const string Listopad = "Listopad";
-    internal const string Prosinec = "Prosinec";
+    internal const string JanuaryCs = "Leden";
+    internal const string FebruaryCs = "\u00DAnor";
+    internal const string MarchCs = "B\u0159ezen";
+    internal const string AprilCs = "Duben";
+    internal const string MayCs = "Kv\u011Bten";
+    internal const string JuneCs = "\u010Cerven";
+    internal const string JulyCs = "\u010Cervenec";
+    internal const string AugustCs = "Srpen";
+    internal const string SeptemberCs = "Z\u00E1\u0159\u00ED";
+    internal const string OctoberCs = "\u0158\u00EDjen";
+    internal const string NovemberCs = "Listopad";
+    internal const string DecemberCs = "Prosinec";
 
     #endregion
 }

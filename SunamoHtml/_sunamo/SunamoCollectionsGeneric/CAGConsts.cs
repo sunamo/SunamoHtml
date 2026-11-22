@@ -2,8 +2,8 @@ namespace SunamoHtml._sunamo.SunamoCollectionsGeneric;
 
 internal class CAGConsts
 {
-    // Tady to musí být, SunamoValues nemůže dědit od SunamoCollectionGeneric - vzniklo by Cycle detected
-    // Těch pár řádků mě snad nezabije.
+    // It must be here, SunamoValues cannot inherit from SunamoCollectionGeneric - it would cause Cycle detected
+    // Those few lines will hopefully not kill me.
     internal static List<T> ToList<T>(params T[] array)
     {
         return array.ToList();

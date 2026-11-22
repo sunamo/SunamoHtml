@@ -19,7 +19,7 @@ internal sealed class XHelper
                     item = "xmlns:" + item;
             }
 
-            // Jaký je typ item, at nemusím používat slovník
+            // What the type of item is, so I do not have to use a dictionary
             var value = nsmgr.LookupNamespace(item2) ?? string.Empty;
 
             ns.TryAdd(item, value);

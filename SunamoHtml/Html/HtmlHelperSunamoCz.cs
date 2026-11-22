@@ -1,7 +1,16 @@
 namespace SunamoHtml.Html;
 
+/// <summary>
+/// Represents the html helper sunamo cz type.
+/// </summary>
 public static class HtmlHelperSunamoCz
 {
+    /// <summary>
+    /// Convert text to html with anchors.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <param name="error">The error.</param>
+    /// <returns>The convert text to html with anchors result.</returns>
     public static string ConvertTextToHtmlWithAnchors(string text, ref string error)
     {
         if (text == null) throw new ArgumentNullException(nameof(text));
@@ -88,6 +97,11 @@ public static class HtmlHelperSunamoCz
         return text;
     }
 
+    /// <summary>
+    /// Convert text to html with anchors.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <returns>The convert text to html with anchors result.</returns>
     public static string ConvertTextToHtmlWithAnchors(string text)
     {
         if (text == null) throw new ArgumentNullException(nameof(text));

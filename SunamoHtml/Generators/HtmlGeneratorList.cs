@@ -1,7 +1,19 @@
 namespace SunamoHtml.Generators;
 
+/// <summary>
+/// Represents the html generator list type.
+/// </summary>
 public static class HtmlGeneratorList
 {
+    /// <summary>
+    /// Get for.
+    /// </summary>
+    /// <param name="baseAnchor">The base anchor.</param>
+    /// <param name="relativeAnchors">The relative anchors.</param>
+    /// <param name="titles">The titles.</param>
+    /// <param name="isCheckDuplicates">The is check duplicates.</param>
+    /// <param name="tag">The tag.</param>
+    /// <returns>The get for result.</returns>
     public static string GetFor(string baseAnchor, IList<string> relativeAnchors, IList<string>? titles, bool isCheckDuplicates,
         string tag)
     {
@@ -33,11 +45,27 @@ public static class HtmlGeneratorList
         return generator.ToString();
     }
 
+    /// <summary>
+    /// Ul.
+    /// </summary>
+    /// <param name="baseAnchor">The base anchor.</param>
+    /// <param name="relativeAnchors">The relative anchors.</param>
+    /// <param name="titles">The titles.</param>
+    /// <param name="isCheckDuplicates">The is check duplicates.</param>
+    /// <returns>The ul result.</returns>
     public static string Ul(string baseAnchor, IList<string> relativeAnchors, IList<string> titles, bool isCheckDuplicates)
     {
         return GetFor(baseAnchor, relativeAnchors, titles, isCheckDuplicates, HtmlTags.Ul);
     }
 
+    /// <summary>
+    /// Ol.
+    /// </summary>
+    /// <param name="baseAnchor">The base anchor.</param>
+    /// <param name="relativeAnchors">The relative anchors.</param>
+    /// <param name="titles">The titles.</param>
+    /// <param name="isCheckDuplicates">The is check duplicates.</param>
+    /// <returns>The ol result.</returns>
     public static string Ol(string baseAnchor, IList<string> relativeAnchors, IList<string> titles, bool isCheckDuplicates)
     {
         return GetFor(baseAnchor, relativeAnchors, titles, isCheckDuplicates, HtmlTags.Ol);

@@ -1,4 +1,3 @@
-// variables names: ok
 using HtmlAgilityPack;
 using SunamoHtml;
 using SunamoHtml.Html;

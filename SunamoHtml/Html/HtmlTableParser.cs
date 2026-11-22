@@ -1,12 +1,22 @@
 namespace SunamoHtml.Html;
 
+/// <summary>
+/// Represents the html table parser type.
+/// </summary>
 public sealed class HtmlTableParser
 {
-    // EN: The parsed table data. If an element contains null, it was a colspan cell.
-    // CZ: Naparsovaná tabulková data. Pokud prvek obsahuje null, jednalo se o colspan buňku.
+    // The parsed table data. If an element contains null, it was a colspan cell.
+    /// <summary>
+    /// Gets or sets the data.
+    /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1819")]
     public string[][] Data { get; set; }
 
+    /// <summary>
+    /// Initializes a new instance of the html table parser class.
+    /// </summary>
+    /// <param name=""Performance"">The performance.</param>
+    /// <param name=""CA1819"">The CA 1819.</param>
     public HtmlTableParser(HtmlNode html, bool isIgnoreFirstRow)
     {
         Data = Array.Empty<string[]>();
@@ -77,10 +87,22 @@ public sealed class HtmlTableParser
         }
     }
 
+    /// <summary>
+    /// Gets the row count.
+    /// </summary>
     public int RowCount => Data.Length;
 
+    /// <summary>
+    /// Gets the column count.
+    /// </summary>
     public int ColumnCount => Data.Length > 0 ? Data[0].Length : 0;
 
+    /// <summary>
+    /// Normalize values in column.
+    /// </summary>
+    /// <param name="chars">The chars.</param>
+    /// <param name="isRemoveAlsoInnerHtmlOfSubNodes">The is remove also inner html of sub nodes.</param>
+    /// <returns>The normalize values in column result.</returns>
     public static void NormalizeValuesInColumn(IList<string> chars, bool isRemoveAlsoInnerHtmlOfSubNodes)
     {
         if (chars == null) throw new ArgumentNullException(nameof(chars));
@@ -94,6 +116,11 @@ public sealed class HtmlTableParser
         }
     }
 
+    /// <summary>
+    /// Column values.
+    /// </summary>
+    /// <param name="isRemoveAlsoInnerHtmlOfSubNodes">The is remove also inner html of sub nodes.</param>
+    /// <returns>The column values result.</returns>
     public IList<string> ColumnValues(int columnIndex, bool isNormalizeValuesInColumn, bool isRemoveAlsoInnerHtmlOfSubNodes,
         bool isSkipFirstRow)
     {
@@ -108,6 +135,11 @@ public sealed class HtmlTableParser
         return result;
     }
 
+    /// <summary>
+    /// Column values.
+    /// </summary>
+    /// <param name="isSkipFirstRow">The is skip first row.</param>
+    /// <returns>The column values result.</returns>
     public IList<string> ColumnValues(string columnName, bool isNormalizeValuesInColumn, bool isRemoveAlsoInnerHtmlOfSubNodes)
     {
         var d0 = Data.Length;

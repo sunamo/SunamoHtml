@@ -1,9 +1,19 @@
 namespace SunamoHtml.Html;
 
+/// <summary>
+/// Represents the html helper text type.
+/// </summary>
 public static class HtmlHelperText
 {
     private const string regexHtmlTag = "<[^<>]+>";
 
+    /// <summary>
+    /// Replace pair tag.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <param name="tag">The tag.</param>
+    /// <param name="replacement">The replacement.</param>
+    /// <returns>The replace pair tag result.</returns>
     public static string ReplacePairTag(string text, string tag, string replacement)
     {
         if (text == null) throw new ArgumentNullException(nameof(text));
@@ -15,6 +25,12 @@ public static class HtmlHelperText
         return text;
     }
 
+    /// <summary>
+    /// Insert missing ending tags.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <param name="tag">The tag.</param>
+    /// <returns>The insert missing ending tags result.</returns>
     public static string InsertMissingEndingTags(string text, string tag)
     {
         if (text == null) throw new ArgumentNullException(nameof(text));
@@ -69,6 +85,11 @@ public static class HtmlHelperText
         return textBuilder.ToString();
     }
 
+    /// <summary>
+    /// Create h 2 from numbered list.
+    /// </summary>
+    /// <param name="lines">The lines.</param>
+    /// <returns>The create h 2 from numbered list result.</returns>
     public static IList<string> CreateH2FromNumberedList(IList<string> lines)
     {
         if (lines == null) throw new ArgumentNullException(nameof(lines));
@@ -82,6 +103,11 @@ public static class HtmlHelperText
         return lines;
     }
 
+    /// <summary>
+    /// Get all equvivalents of non pairing tag.
+    /// </summary>
+    /// <param name="tagName">The tag name.</param>
+    /// <returns>The get all equvivalents of non pairing tag result.</returns>
     public static IList<string> GetAllEquvivalentsOfNonPairingTag(string tagName)
     {
         if (tagName == null) throw new ArgumentNullException(nameof(tagName));
@@ -93,6 +119,11 @@ public static class HtmlHelperText
         return "<" + tagName + ">" + text + "</" + tagName + ">";
     }
 
+    /// <summary>
+    /// Remove all nodes.
+    /// </summary>
+    /// <param name="htmlText">The html text.</param>
+    /// <returns>The remove all nodes result.</returns>
     public static string RemoveAllNodes(string htmlText)
     {
         if (htmlText == null) throw new ArgumentNullException(nameof(htmlText));
@@ -116,6 +147,14 @@ public static class HtmlHelperText
         return htmlDocument.DocumentNode.OuterHtml;
     }
 
+    /// <summary>
+    /// Get text between tags.
+    /// </summary>
+    /// <param name="html">The html.</param>
+    /// <param name="scriptS">The script s.</param>
+    /// <param name="scriptE">The script e.</param>
+    /// <param name="isThrowExceptionIfNotContains">The is throw exception if not contains.</param>
+    /// <returns>The get text between tags result.</returns>
     public static Tuple<string, string> GetTextBetweenTags(string html, string scriptS, string scriptE,
         bool isThrowExceptionIfNotContains = true)
     {
@@ -147,6 +186,11 @@ public static class HtmlHelperText
         return new Tuple<string, string>(result, attrs);
     }
 
+    /// <summary>
+    /// Get all tags.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <returns>The get all tags result.</returns>
     public static IList<string> GetAllTags(string text)
     {
         if (text == null) throw new ArgumentNullException(nameof(text));
@@ -157,12 +201,22 @@ public static class HtmlHelperText
         return sourceList;
     }
 
+    /// <summary>
+    /// Remove html tags.
+    /// </summary>
+    /// <param name="clipboardText">The clipboard text.</param>
+    /// <returns>The remove html tags result.</returns>
     public static string RemoveHtmlTags(string clipboardText)
     {
         if (clipboardText == null) throw new ArgumentNullException(nameof(clipboardText));
         return SHReplace.ReplaceAll(HtmlHelper.RemoveAllTags(clipboardText), " ", "");
     }
 
+    /// <summary>
+    /// Remove aspx comments.
+    /// </summary>
+    /// <param name="html">The html.</param>
+    /// <returns>The remove aspx comments result.</returns>
     public static string RemoveAspxComments(string html)
     {
         if (html == null) throw new ArgumentNullException(nameof(html));
@@ -171,6 +225,12 @@ public static class HtmlHelperText
         return html;
     }
 
+    /// <summary>
+    /// Contains tag.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <param name="allHtmlTagsWithLeftArrow">The all html tags with left arrow.</param>
+    /// <returns>The contains tag result.</returns>
     public static bool ContainsTag(string text, IList<string> allHtmlTagsWithLeftArrow)
     {
         if (text == null) throw new ArgumentNullException(nameof(text));
@@ -181,6 +241,11 @@ public static class HtmlHelperText
         return false;
     }
 
+    /// <summary>
+    /// Get syntax.
+    /// </summary>
+    /// <param name="tag">The tag.</param>
+    /// <returns>The get syntax result.</returns>
     public static HtmlTagSyntax GetSyntax(ref string tag)
     {
         ThrowEx.InvalidParameter((string)tag, "tag");
@@ -198,6 +263,11 @@ public static class HtmlHelperText
         return HtmlTagSyntax.Start;
     }
 
+    /// <summary>
+    /// Trim inner of encoded html.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <returns>The trim inner of encoded html result.</returns>
     public static string TrimInnerOfEncodedHtml(string text)
     {
         if (text == null) throw new ArgumentNullException(nameof(text));
@@ -206,6 +276,11 @@ public static class HtmlHelperText
         return text;
     }
 
+    /// <summary>
+    /// Split by space and lt gt.
+    /// </summary>
+    /// <param name="shortDescription">The short description.</param>
+    /// <returns>The split by space and lt gt result.</returns>
     public static IList<string> SplitBySpaceAndLtGt(string shortDescription)
     {
         if (shortDescription == null) throw new ArgumentNullException(nameof(shortDescription));
@@ -213,6 +288,11 @@ public static class HtmlHelperText
         return f;
     }
 
+    /// <summary>
+    /// Is html entity.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <returns>The is html entity result.</returns>
     public static bool IsHtmlEntity(string text)
     {
         if (text == null) throw new ArgumentNullException(nameof(text));
@@ -220,6 +300,12 @@ public static class HtmlHelperText
         return AllLists.HtmlEntities.Contains(text);
     }
 
+    /// <summary>
+    /// Get content of tags.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <param name="tagName">The tag name.</param>
+    /// <returns>The get content of tags result.</returns>
     public static IList<string> GetContentOfTags(string text, string tagName)
     {
         if (text == null) throw new ArgumentNullException(nameof(text));
@@ -247,6 +333,11 @@ public static class HtmlHelperText
         return result;
     }
 
+    /// <summary>
+    /// Is css declaration name.
+    /// </summary>
+    /// <param name="decl">The decl.</param>
+    /// <returns>The is css declaration name result.</returns>
     public static bool IsCssDeclarationName(string decl)
     {
         if (decl == null) throw new ArgumentNullException(nameof(decl));
@@ -255,6 +346,11 @@ public static class HtmlHelperText
         return false;
     }
 
+    /// <summary>
+    /// Convert text to html.
+    /// </summary>
+    /// <param name="lines">The lines.</param>
+    /// <returns>The convert text to html result.</returns>
     public static string ConvertTextToHtml(IList<string> lines)
     {
         if (lines == null) throw new ArgumentNullException(nameof(lines));
