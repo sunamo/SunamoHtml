@@ -118,9 +118,8 @@ public partial class HtmlAgilityHelper
     /// <param name="recursive">The recursive.</param>
     /// <param name="tag">The tag.</param>
     /// <returns>The node result.</returns>
-    public static HtmlNode? Node(HtmlNode node, bool recursive, string tag)
+    public static HtmlNode? Node(HtmlNode? node, bool recursive, string tag)
     {
-        if (node == null) throw new ArgumentNullException(nameof(node));
         if (tag == null) throw new ArgumentNullException(nameof(tag));
         return Nodes(node, recursive, tag).FirstOrDefault();
     }
@@ -136,13 +135,54 @@ public partial class HtmlAgilityHelper
     /// <param name="attrValue">The attr value.</param>
     /// <param name="contains">The contains.</param>
     /// <returns>The node with attr result.</returns>
-    public static HtmlNode? NodeWithAttr(HtmlNode node, bool recursive, string tag, string attr, string attrValue, bool contains = false)
+    public static HtmlNode? NodeWithAttr(HtmlNode? node, bool recursive, string tag, string attr, string attrValue, bool contains = false)
     {
-        if (node == null) throw new ArgumentNullException(nameof(node));
         if (tag == null) throw new ArgumentNullException(nameof(tag));
         if (attr == null) throw new ArgumentNullException(nameof(attr));
         if (attrValue == null) throw new ArgumentNullException(nameof(attrValue));
         return NodesWithAttrWorker(node, recursive, tag, attr, attrValue, false, contains).FirstOrDefault();
+    }
+
+    /// <summary>
+    /// Returns the first node whose attribute equals the token or contains it as one of its whitespace separated tokens; null when the node is null or nothing matches.
+    /// </summary>
+    /// <param name="node">The node to search in; null gives null.</param>
+    /// <param name="isRecursive">Whether all descendants are searched, not only direct children.</param>
+    /// <param name="tag">The tag name, "*" for any tag.</param>
+    /// <param name="attributeName">The attribute name.</param>
+    /// <param name="token">The whole attribute value or one of its tokens (e.g. one CSS class).</param>
+    /// <returns>The first matching node or null.</returns>
+    public static HtmlNode? NodeWithAttrToken(HtmlNode? node, bool isRecursive, string tag, string attributeName, string token)
+    {
+        return NodesWithAttrToken(node, isRecursive, tag, attributeName, token).FirstOrDefault();
+    }
+
+    /// <summary>
+    /// Returns the nodes whose attribute equals the token or contains it as one of its whitespace separated tokens (class="a b" matches "a", "b" and "a b"); an empty list when the node is null.
+    /// </summary>
+    /// <param name="node">The node to search in; null gives an empty list.</param>
+    /// <param name="isRecursive">Whether all descendants are searched, not only direct children.</param>
+    /// <param name="tag">The tag name, "*" for any tag.</param>
+    /// <param name="attributeName">The attribute name.</param>
+    /// <param name="token">The whole attribute value or one of its tokens (e.g. one CSS class).</param>
+    /// <returns>The matching nodes in document order.</returns>
+    public static List<HtmlNode> NodesWithAttrToken(HtmlNode? node, bool isRecursive, string tag, string attributeName, string token)
+    {
+        if (tag == null) throw new ArgumentNullException(nameof(tag));
+        if (attributeName == null) throw new ArgumentNullException(nameof(attributeName));
+        if (token == null) throw new ArgumentNullException(nameof(token));
+        var result = new List<HtmlNode>();
+        foreach (var item in Nodes(node, isRecursive, tag))
+        {
+            var attribute = item.Attributes[attributeName];
+            if (attribute == null)
+                continue;
+            var actual = attribute.Value ?? string.Empty;
+            if (actual == token || actual.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries).Contains(token))
+                result.Add(item);
+        }
+
+        return result;
     }
 
     /// <summary>
@@ -156,9 +196,8 @@ public partial class HtmlAgilityHelper
     /// <param name="false">The false.</param>
     /// <param name="contains">The contains.</param>
     /// <returns>The nodes which contains in attr result.</returns>
-    public static IList<HtmlNode> NodesWhichContainsInAttr(HtmlNode node, bool recursive, string tag, string attr, string attrValue, bool searchAsSingleString = true)
+    public static IList<HtmlNode> NodesWhichContainsInAttr(HtmlNode? node, bool recursive, string tag, string attr, string attrValue, bool searchAsSingleString = true)
     {
-        if (node == null) throw new ArgumentNullException(nameof(node));
         if (tag == null) throw new ArgumentNullException(nameof(tag));
         if (attr == null) throw new ArgumentNullException(nameof(attr));
         if (attrValue == null) throw new ArgumentNullException(nameof(attrValue));

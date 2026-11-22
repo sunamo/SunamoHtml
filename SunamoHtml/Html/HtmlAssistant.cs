@@ -44,8 +44,7 @@ public static class HtmlAssistant
         return doc.DocumentNode.OuterHtml;
     }
 
-    // Returns empty string if attribute is not found.
-    // Returns "(null)" when attribute exists without a value (e.g., input readonly).
+    // Returns empty string if attribute is not found or has no value (e.g., input readonly).
     /// <summary>
     /// Get value of attribute.
     /// </summary>
@@ -63,10 +62,7 @@ public static class HtmlAssistant
             if (isTrim)
                 st = st.Trim();
 
-            if (string.IsNullOrEmpty(st))
-                return "(null)";
-
-            return st;
+            return st ?? string.Empty;
         }
 
         return string.Empty;
@@ -166,11 +162,25 @@ public static class HtmlAssistant
     /// <param name="attributeValue">The attribute value.</param>
     /// <param name="isContains">The is contains.</param>
     /// <returns>The inner text result.</returns>
-    public static string InnerText(HtmlNode node, bool isRecursive, string tag, string attributeName, string attributeValue,
+    public static string InnerText(HtmlNode? node, bool isRecursive, string tag, string attributeName, string attributeValue,
         bool isContains = false)
     {
-        if (node == null) throw new ArgumentNullException(nameof(node));
         return InnerContentWithAttr(node, isRecursive, tag, attributeName, attributeValue, false, isContains);
+    }
+
+    /// <summary>
+    /// Returns the trimmed and entity-decoded inner text of the first node whose attribute equals the token or contains it as one of its whitespace separated tokens; empty string when the node is null or nothing matches.
+    /// </summary>
+    /// <param name="node">The node to search in; null gives an empty string.</param>
+    /// <param name="isRecursive">Whether all descendants are searched, not only direct children.</param>
+    /// <param name="tag">The tag name, "*" for any tag.</param>
+    /// <param name="attributeName">The attribute name.</param>
+    /// <param name="token">The whole attribute value or one of its tokens (e.g. one CSS class).</param>
+    /// <returns>The trimmed, decoded inner text or an empty string.</returns>
+    public static string InnerTextWithAttrToken(HtmlNode? node, bool isRecursive, string tag, string attributeName, string token)
+    {
+        var found = HtmlAgilityHelper.NodeWithAttrToken(node, isRecursive, tag, attributeName, token);
+        return found == null ? string.Empty : HtmlDecode(found.InnerText.Trim());
     }
 
     /// <summary>
@@ -183,7 +193,7 @@ public static class HtmlAssistant
     /// <param name="attributeValue">The attribute value.</param>
     /// <param name="isContains">The is contains.</param>
     /// <returns>The inner html with attr result.</returns>
-    public static string InnerHtmlWithAttr(HtmlNode node, bool isRecursive, string tag, string attributeName, string attributeValue,
+    public static string InnerHtmlWithAttr(HtmlNode? node, bool isRecursive, string tag, string attributeName, string attributeValue,
         bool isContains = false)
     {
         return InnerContentWithAttr(node, isRecursive, tag, attributeName, attributeValue, true, isContains);
@@ -200,7 +210,7 @@ public static class HtmlAssistant
     /// <param name="isHtml">The is html.</param>
     /// <param name="isContains">The is contains.</param>
     /// <returns>The inner content with attr result.</returns>
-    public static string InnerContentWithAttr(HtmlNode node, bool isRecursive, string tag, string attributeName, string attributeValue,
+    public static string InnerContentWithAttr(HtmlNode? node, bool isRecursive, string tag, string attributeName, string attributeValue,
         bool isHtml, bool isContains = false)
     {
         var node2 = HtmlAgilityHelper.NodeWithAttr(node, isRecursive, tag, attributeName, attributeValue, isContains);
@@ -316,7 +326,7 @@ public static class HtmlAssistant
     /// <param name="isRecursive">The is recursive.</param>
     /// <param name="tag">The tag.</param>
     /// <returns>The inner text result.</returns>
-    public static string InnerText(HtmlNode node, bool isRecursive, string tag)
+    public static string InnerText(HtmlNode? node, bool isRecursive, string tag)
     {
         var foundNode = HtmlAgilityHelper.Node(node, isRecursive, tag);
         if (foundNode == null)
@@ -331,7 +341,7 @@ public static class HtmlAssistant
     /// <param name="isRecursive">The is recursive.</param>
     /// <param name="tag">The tag.</param>
     /// <returns>The inner html result.</returns>
-    public static string InnerHtml(HtmlNode node, bool isRecursive, string tag)
+    public static string InnerHtml(HtmlNode? node, bool isRecursive, string tag)
     {
         var foundNode = HtmlAgilityHelper.Node(node, isRecursive, tag);
         if (foundNode == null)

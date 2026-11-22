@@ -134,7 +134,7 @@ public partial class HtmlAgilityHelper
     /// <param name="isRecursive">The is recursive.</param>
     /// <param name="isSingle">The is single.</param>
     /// <param name="tagName">The tag name.</param>
-    public static void RecursiveReturnTags(List<HtmlNode> result, HtmlNode htmlNode, bool isRecursive, bool isSingle, string tagName)
+    public static void RecursiveReturnTags(List<HtmlNode> result, HtmlNode? htmlNode, bool isRecursive, bool isSingle, string tagName)
     {
         if (result == null) throw new ArgumentNullException(nameof(result));
         if (htmlNode == null)
@@ -162,9 +162,8 @@ public partial class HtmlAgilityHelper
     /// <param name="isRecursive">The is recursive.</param>
     /// <param name="tag">The tag.</param>
     /// <returns>The nodes result.</returns>
-    public static List<HtmlNode> Nodes(HtmlNode node, bool isRecursive, string tag)
+    public static List<HtmlNode> Nodes(HtmlNode? node, bool isRecursive, string tag)
     {
-        if (node == null) throw new ArgumentNullException(nameof(node));
         if (tag == null) throw new ArgumentNullException(nameof(tag));
         tag = tag.ToLowerInvariant();
         var result = new List<HtmlNode>();
@@ -174,7 +173,7 @@ public partial class HtmlAgilityHelper
         return result;
     }
 
-    private static List<HtmlNode> NodesWithAttrWorker(HtmlNode node, bool isRecursive, string tag, string attributeName, string attributeValue, bool isWildCard, bool isEnoughContainsAttribute, bool isSearchAsSingleString = true)
+    private static List<HtmlNode> NodesWithAttrWorker(HtmlNode? node, bool isRecursive, string tag, string attributeName, string attributeValue, bool isWildCard, bool isEnoughContainsAttribute, bool isSearchAsSingleString = true)
     {
         var result = new List<HtmlNode>();
         RecursiveReturnTagsWithContainsAttr(result, node, isRecursive, tag, attributeName, attributeValue, isWildCard, isEnoughContainsAttribute, isSearchAsSingleString);
@@ -215,7 +214,7 @@ public partial class HtmlAgilityHelper
     /// <param name="attributeValue">The attribute value.</param>
     /// <param name="isEnoughContainsAttribute">The is enough contains attribute.</param>
     /// <param name="isSearchAsSingleString">The is search as single string.</param>
-    public static void RecursiveReturnTagsWithContainsAttr(List<HtmlNode> result, HtmlNode htmlNode, bool isRecursive, string tagName, string attributeName, string attributeValue, bool isEnoughContainsAttribute, bool isSearchAsSingleString = true)
+    public static void RecursiveReturnTagsWithContainsAttr(List<HtmlNode> result, HtmlNode? htmlNode, bool isRecursive, string tagName, string attributeName, string attributeValue, bool isEnoughContainsAttribute, bool isSearchAsSingleString = true)
     {
         RecursiveReturnTagsWithContainsAttr(result, htmlNode, isRecursive, tagName, attributeName, attributeValue, false, isEnoughContainsAttribute, isSearchAsSingleString);
     }
@@ -234,19 +233,18 @@ public partial class HtmlAgilityHelper
     /// <param name="isWildCard">The is wild card.</param>
     /// <param name="isEnoughContainsAttribute">The is enough contains attribute.</param>
     /// <param name="isSearchAsSingleString">The is search as single string.</param>
-    public static void RecursiveReturnTagsWithContainsAttr(List<HtmlNode> result, HtmlNode htmlNode, bool isRecursive, string tagName, string attributeName, string attributeValue, bool isWildCard, bool isEnoughContainsAttribute, bool isSearchAsSingleString = true)
+    public static void RecursiveReturnTagsWithContainsAttr(List<HtmlNode> result, HtmlNode? htmlNode, bool isRecursive, string tagName, string attributeName, string attributeValue, bool isWildCard, bool isEnoughContainsAttribute, bool isSearchAsSingleString = true)
     {
         if (result == null) throw new ArgumentNullException(nameof(result));
         if (tagName == null) throw new ArgumentNullException(nameof(tagName));
         if (attributeName == null) throw new ArgumentNullException(nameof(attributeName));
         if (attributeValue == null) throw new ArgumentNullException(nameof(attributeValue));
-        var childNodesWithoutText = TrimTexts(htmlNode.ChildNodes);
-        tagName = tagName.ToLowerInvariant();
         if (htmlNode == null)
             return;
+        var childNodesWithoutText = TrimTexts(htmlNode.ChildNodes);
+        tagName = tagName.ToLowerInvariant();
         foreach (var item in childNodesWithoutText)
         {
-            var actualAttributeValue = HtmlAssistant.GetValueOfAttribute(attributeName, item);
             if (HasTagName(item, tagName))
             {
                 if (HasTagAttr(item, attributeName, attributeValue, isWildCard, isEnoughContainsAttribute, isSearchAsSingleString))
@@ -272,9 +270,8 @@ public partial class HtmlAgilityHelper
     /// <param name="attributeValue">The attribute value.</param>
     /// <param name="isContains">The is contains.</param>
     /// <returns>The nodes with attr wild card result.</returns>
-    public static IList<HtmlNode> NodesWithAttrWildCard(HtmlNode node, bool isRecursive, string tag, string attributeName, string attributeValue, bool isContains = false)
+    public static IList<HtmlNode> NodesWithAttrWildCard(HtmlNode? node, bool isRecursive, string tag, string attributeName, string attributeValue, bool isContains = false)
     {
-        if (node == null) throw new ArgumentNullException(nameof(node));
         if (tag == null) throw new ArgumentNullException(nameof(tag));
         if (attributeName == null) throw new ArgumentNullException(nameof(attributeName));
         if (attributeValue == null) throw new ArgumentNullException(nameof(attributeValue));
@@ -291,9 +288,8 @@ public partial class HtmlAgilityHelper
     /// <param name="attributeValue">The attribute value.</param>
     /// <param name="isContains">The is contains.</param>
     /// <returns>The nodes with attr result.</returns>
-    public static IList<HtmlNode> NodesWithAttr(HtmlNode node, bool isRecursive, string tag, string attributeName, string attributeValue, bool isContains = false)
+    public static IList<HtmlNode> NodesWithAttr(HtmlNode? node, bool isRecursive, string tag, string attributeName, string attributeValue, bool isContains = false)
     {
-        if (node == null) throw new ArgumentNullException(nameof(node));
         if (tag == null) throw new ArgumentNullException(nameof(tag));
         if (attributeName == null) throw new ArgumentNullException(nameof(attributeName));
         if (attributeValue == null) throw new ArgumentNullException(nameof(attributeValue));
