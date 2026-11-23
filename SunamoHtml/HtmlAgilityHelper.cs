@@ -322,7 +322,7 @@ public partial class HtmlAgilityHelper
         RecursiveReturnTags(allNodes, node, true, false, "*");
         foreach (var item in allNodes)
             if (item.Name == TextNode)
-                if (!dontHaveAsParentTag.Any(data => data != item.ParentNode.Name) /*!CAG.IsEqualToAnyElement<string>(item.ParentNode.Name, dontHaveAsParentTag)*/)
+                if (!dontHaveAsParentTag.Contains(item.ParentNode.Name))
                     result.Add(item);
         return result;
     }
